@@ -63,7 +63,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: notebook-test-results
-        path: tangelo/junit/notebook-test-results.xml
+        path: examples/junit/notebook-test-results.xml
 
     - name: Download all workflow run artifacts
       uses: actions/download-artifact@v3
