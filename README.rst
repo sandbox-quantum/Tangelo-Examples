@@ -24,15 +24,15 @@ This is the repository that holds the example jupyter notebooks for `Tangelo <ht
 
 A list of the example notebooks is
 
-* `Adapt VQE Solver <https://github.com/goodchemistryco/Tangelo-Examples/examples/adapt.ipynb>`_
-* `Classical Shadows <https://github.com/goodchemistryco/Tangelo-Examples/examples/classical_shadows.ipynb>`_
-* `Density Matrix Embedding Theory <https://github.com/goodchemistryco/Tangelo-Examples/examples/dmet.ipynb>`_
-* `Excited State methods <https://github.com/goodchemistryco/Tangelo-Examples/examples/excited_states.ipynb>`_
-* `Iterative Qubit Coupled Cluster using only Clifford Circuits <https://github.com/goodchemistryco/Tangelo-Examples/examples/iqcc_using_clifford.ipynb>`_
-* `MIFNO <https://github.com/goodchemistryco/Tangelo-Examples/examples/mifno.ipynb>`_
-* `ONIOM <https://github.com/goodchemistryco/Tangelo-Examples/examples/oniom.ipynb>`_
-* `End-to-End hardware experiment <https://github.com/goodchemistryco/Tangelo-Examples/examples/overview_endtoend.ipynb>`_
-* `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/examples/qchem_modelling_basics.ipynb>`_
-* `Hardware Experiment using QEMIST Cloud <https://github.com/goodchemistryco/Tangelo-Examples/examples/qemist_cloud_hardware_experiment.ipynb>`_
-* `VQE <https://github.com/goodchemistryco/Tangelo-Examples/examples/vqe.ipynb>`_
-* `VQE with user defined ansatz <https://github.com/goodchemistryco/Tangelo-Examples/examples/vqe_custom_ansatz_hamiltonian.ipynb>`_
+* `Adapt VQE Solver <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/adapt.ipynb>`_
+* `Classical Shadows <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/classical_shadows.ipynb>`_
+* `Density Matrix Embedding Theory <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/dmet.ipynb>`_
+* `Excited State methods <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/excited_states.ipynb>`_
+* `Iterative Qubit Coupled Cluster using only Clifford Circuits <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/iqcc_using_clifford.ipynb>`_
+* `MIFNO <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/mifno.ipynb>`_
+* `ONIOM <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/oniom.ipynb>`_
+* `End-to-End hardware experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/overview_endtoend.ipynb>`_
+* `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/qchem_modelling_basics.ipynb>`_
+* `Hardware Experiment using QEMIST Cloud <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/qemist_cloud_hardware_experiment.ipynb>`_
+* `VQE <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/vqe.ipynb>`_
+* `VQE with user defined ansatz <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/vqe_custom_ansatz_hamiltonian.ipynb>`_
