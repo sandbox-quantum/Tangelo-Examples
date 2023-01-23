@@ -23,6 +23,7 @@ Welcome !
 This is the repository that holds the example jupyter notebooks for `Tangelo <https://github.com/goodchemistryco/Tangelo>`_.
 
 A list of the example notebooks is
+
 * `Adapt VQE Solver <https://github.com/goodchemistryco/Tangelo-Examples/examples/adapt.ipynb>`_
 * `Classical Shadows <https://github.com/goodchemistryco/Tangelo-Examples/examples/classical_shadows.ipynb>`_
 * `Density Matrix Embedding Theory <https://github.com/goodchemistryco/Tangelo-Examples/examples/dmet.ipynb>`_
