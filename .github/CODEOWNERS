@@ -1,0 +1,11 @@
+# Default reviewers
+*		@ValentinS4t1qbit @AlexandreF-1qbit @JamesB-1qbit
+
+# DevOPs, scripts
+*.sh		@JamesB-1qbit
+/.github/	@JamesB-1qbit
+
+# Docs
+/docs/	@JamesB-1qbit @AlexandreF-1qbit
+*.txt		@JamesB-1qbit
+*.rst 		@JamesB-1qbit
