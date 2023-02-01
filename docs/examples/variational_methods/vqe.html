@@ -199,7 +199,7 @@ E = \min\limits_{\vec{\theta}} \frac{\langle \Psi(\vec{\theta}) \vert \hat{H} \v
 E = \langle \Psi(\vec{\theta}) \vert \hat{H} \vert \Psi(\vec{\theta}) \rangle =\langle\hat{H}\rangle = h_{\text{nuc}} + \sum_{\substack{p \\ \alpha}} h_{p}^{\alpha} \langle\sigma_p^{\alpha}\rangle + \sum_{\substack{p,q \\ \alpha,\beta}} h_{pq}^{\alpha\beta}\langle\sigma_p^{\alpha}\otimes\sigma_{q}^{\beta}\rangle + \sum_{\substack{p,q,r \\ \alpha,\beta,\gamma}}h_{pqr}^{\alpha\beta\gamma}\langle\sigma_p^{\alpha}\otimes\sigma_{q}^{\beta}\otimes\sigma_r^{\gamma}\rangle + \ldots \nonumber
 \]</span></p>
 <p>The computed energy is then input to a classical optimizer in order to find a new set of variational parameters, which are then used to prepare a new state (i.e., a quantum circuit) on the quantum hardware. The process is repeated until convergence. The algorithm is illustrated below.</p>
-<p><img src="img/VQE_overview.png" alt="VQE_overview" width="750"></p>
+<p><img src="../_img/VQE_overview.png" alt="VQE_overview" width="750"></p>
 </section>
 <section id="vqesolver-class" class="level2">
 <h2 class="anchored" data-anchor-id="vqesolver-class">2. VQESolver class<a class="anchor" id="2"></a></h2>
