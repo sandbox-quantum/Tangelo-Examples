@@ -23,16 +23,16 @@ This is the repository that holds the example jupyter notebooks for `Tangelo <ht
 
 This includes tutorial notebooks and research related notebooks. Anyone can contribute a notebook to this repository!
 
-If you are new to Tangelo, we suggest you start with `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/tangelo_basics/1.the_basics.ipynb>`_, and 
+If you are new to Tangelo, we suggest you start with `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb>`_, and 
 `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_. After that, what you are most interested in determines 
 where you go next.
 
 A full list of the example notebooks is
 
-* Tangelo Basics
-    * `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/tangelo_basics/1.the_basics.ipynb>`_
-    * `2. QPU Connection <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/tangelo_basics/2.qpu_connection.ipynb>`_
-    * `3. Noisy Simulation <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/tangelo_basics/3.noisy_simulation.ipynb>`_
+* Workflow Basics
+    * `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb>`_
+    * `2. QPU Connection <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/2.qpu_connection.ipynb>`_
+    * `3. Noisy Simulation <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/3.noisy_simulation.ipynb>`_
 * Chemistry
     * `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_
     * `Excited State methods <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/excited_states.ipynb>`_

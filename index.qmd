@@ -10,16 +10,16 @@ This is the repository that holds the jupyter notebooks for [Tangelo](https://gi
 
 This includes tutorial notebooks and research related notebooks. Anyone can contribute a notebook to this repository!
 
-If you are new to Tangelo, we suggest you start with [1. The basics](examples/tangelo_basics/1.the_basics.html), and 
+If you are new to Tangelo, we suggest you start with [1. The basics](examples/workflow_basics/1.the_basics.html), and 
 [Quantum Chemistry Basics](examples/chemistry/qchem_modelling_basics.html). After that, what you are most interested in determines 
 where you go next.
 
 A full list of the example notebooks is
 
 * Tangelo Basics
-    * [1. The basics](examples/tangelo_basics/1.the_basics.html)
-    * [2. QPU Connection](examples/tangelo_basics/2.qpu_connection.html)
-    * [3. Noisy Simulation](examples/tangelo_basics/3.noisy_simulation.html)
+    * [1. The basics](examples/workflow_basics/1.the_basics.html)
+    * [2. QPU Connection](examples/workflow_basics/2.qpu_connection.html)
+    * [3. Noisy Simulation](examples/workflow_basics/3.noisy_simulation.html)
 * Chemistry
     * [Quantum Chemistry Basics](examples/chemistry/qchem_modelling_basics.html)
     * [Excited State methods](examples/chemistry/excited_states.html)
