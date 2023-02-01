@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>dmet</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="density-matrix-embedding-theory-dmet" class="level1">
+<h1>Density Matrix Embedding Theory (DMET)</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo/blob/develop/examples/dmet.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
+</figure>
+</div>
+<p>This notebook introduces a problem-decomposition technique called DMET (Density-Matrix Embedding Technique), which enables us to break down a molecular systems into a collection of subproblems with lower computational resource requirements.</p>
+<p>Such approaches enable us to study how combining classical and quantum algorithms may play a role in the resolution of problems beyond toy models, and even maybe provide a configurable and scalable path forward in the future, towards much more ambitious molecular systems.</p>
+<p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ModuleNotFoundError:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of contents:</h2>
+<ul>
+<li><a href="#1">1. Introduction</a></li>
+<li><a href="#2">2. Theory of DMET</a></li>
+<li><a href="#3">3. First example: DMET-CCSD on Butane</a></li>
+<li><a href="#4">4. Second example: DMET-VQE on an hydrogen ring</a></li>
+<li><a href="#5">5. DMET features</a></li>
+<li><a href="#6">6. Closing words</a></li>
+</ul>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1. Introduction <a class="anchor" id="1"></a></h2>
+<p>One of the main objectives of quantum chemistry calculations in the area of materials science is to solve the electronic structure problem, <span class="math inline">\(H\Psi=E\Psi\)</span>, as accurately as possible, in order to accelerate the materials design process. In the first example, the butane molecule is shown as an example.</p>
+<p><img src="../img/exact.png" alt="exact" width="200"></p>
+<p>The computational cost for performing accurate calculations of the electronic structure of molecules, however, is usually very expensive. For example, the cost of performing the full CI calculation scales exponentially on a classical computer as the size of the system increases. Therefore, when we target large-sized molecules, those relevant for industry problems, it becomes essential to employ an appropriate strategy for reducing the computational cost. The difficulty is to employ a strategy that consolidate accuracy while reducing computational costs when performing electronic structure calculations. Next, we will developp one of such strategies called Density-Matrix Embedding Theory (DMET).</p>
+</section>
+<section id="theory-of-dmet" class="level2">
+<h2 class="anchored" data-anchor-id="theory-of-dmet">2. Theory of DMET <a class="anchor" id="2"></a></h2>
+<p>The idea is to decompose a molecular system into its constituent fragments and its environment. Each fragment are treated independently and recombined at the end to recover the full molecular energy. This has the advantages of cutting down the maximal computational complexity depending on the biggest fragment and being naturally implemented on parrallel computer. On the other side, the fragmenting comes at the cost of reducing accuraccy of the computation.</p>
+<p>First, the environment is calculated using a less-accurate method than will be used to calculate the electronic structure of a fragment. Then, the electronic structure problem for a given fragment is solved to a high degree of accuracy, which includes the quantum mechanical effects of the environment. The quantum mechanical description is updated (i.e., solved iteratively as shown below) by incorporating the just-performed highly accurate calculation. In the following schematic illustration, the molecule shown above is decomposed into fragments. Each molecular fragment CH<span class="math inline">\(_\mathrm{3}\)</span> and CH<span class="math inline">\(_\text{2}\)</span> are the fragments chosen for the electronic structure calculation, with the rest of the molecular system being the surrounding environment.</p>
+<p><img src="../img/iterations.png" alt="iterations" width="600"></p>
+<p>One successful decomposition approach is the DMET method. The DMET method decomposes a molecule into fragments, and each fragment is treated as an open quantum system that is entangled with each of the other fragments, all taken together to be that fragment’s surrounding environment (or “bath”). In this framework, the electronic structure of a given fragment is obtained by solving the following Hamiltonian, by using a highly accurate quantum chemistry method, such as the full CI method or a coupled-cluster method.</p>
+<p><span class="math display">\[ H_{I}=\sum^{\text{frag}+\text{bath}}_{rs}  \left[ h_{rs} + \sum_{mn} \left[ (rs|mn) - (rn|ms) \right] D^{\text{(mf)env}}_{mn} \right] a_{r}^{\dagger}a_{s} + \sum_{pqrs}^{\text{frag}+\text{bath}} (pq|rs) a_{p}^{\dagger}a_{r}^{\dagger}a_{s}a_{q} - \mu\sum_{r}^{\text{frag}} a_{r}^{\dagger}a_{r} \]</span></p>
+<p>The expression <span class="math inline">\(\sum_{mn} \left[ (rs|mn) - (rn|ms) \right] D^{\text{(mf)env}}_{mn}\)</span> describes the quantum mechanical effects of the environment on the fragment, where <span class="math inline">\(D^{\text{(mf)env}}_{mn}\)</span> is the mean-field electronic density obtained by solving the Hartree–Fock equation. The quantum mechanical effects from the environment are incorporated through the one-particle term of the Hamiltonian. The extra term <span class="math inline">\(\mu\sum_{r}^{\text{frag}} a_{r}^{\dagger}a_{r}\)</span> ensures, through the adjustment of <span class="math inline">\(\mu\)</span>, that the number of electrons in all of the fragments, taken together, becomes equal to the total number of electrons in the entire system.</p>
+</section>
+<section id="first-example-dmet-ccsd-on-butane" class="level2">
+<h2 class="anchored" data-anchor-id="first-example-dmet-ccsd-on-butane">3. First example: DMET-CCSD on Butane <a class="anchor" id="3"></a></h2>
+<p>Before we proceed, let’s import all the relevant data-structures and classes from <code>tangelo</code>:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import for a pretty jupyter notebook.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Molecule definition.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The minimal import for DMET.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> DMETProblemDecomposition</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ability to change localization method.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.dmet <span class="im">import</span> Localization</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Use for VQE ressources estimation vs DMET.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Use for comparison.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The first example will show how to partition the system into fragments. A different method for solving electronic structures can be chosen for each fragment, but here we will stick with CCSD. The first thing to do is building the butane molecule object.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>butane <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">C   2.142   1.395  -8.932</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">H   1.604   0.760  -8.260              </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">H   1.745   2.388  -8.880</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">H   2.043   1.024  -9.930</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">C   3.631   1.416  -8.537</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">H   4.169   2.051  -9.210</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">H   3.731   1.788  -7.539             </span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">C   4.203  -0.012  -8.612</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">H   3.665  -0.647  -7.940</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">H   4.104  -0.384  -9.610</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">C   5.691   0.009  -8.218  </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="st">H   6.088  -0.983  -8.270</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="st">H   5.791   0.381  -7.220</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="st">H   6.230   0.644  -8.890</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Building the molecule object.</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>mol_butane <span class="op">=</span> SecondQuantizedMolecule(butane, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"minao"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The options for the DMET decomposition method are stored in a python dictionary. * <strong>molecule</strong>: The SecondQuantizedMolecule object. * <strong>fragment_atoms</strong>: List for the number of atoms in each fragment. Each atoms are chosen with their order in the coordinates definition (variable <code>butane</code>). Also, the sum of all numbers must be equal to total number of atoms in the molecule. * <strong>fragment_solvers</strong>: A string or a list of string representing the solver for each fragment. The number of items in the list must be equal to the number of fragment. There is one exception: when a single string is defined, the solver is the same for all fragments. * <strong>verbose</strong>: Activate verbose output.</p>
+<p>The next step <code>dmet.build()</code> ensures that the fragments and environment orbitals are defined according to the electron localization scheme.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>options_butane_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_butane,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Fragment definition = CH3, CH2, CH2, CH3</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"fragment_atoms"</span>: [<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>],</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"fragment_solvers"</span>: <span class="st">"ccsd"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"verbose"</span>: <span class="va">True</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                       }</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>dmet_butane <span class="op">=</span> DMETProblemDecomposition(options_butane_dmet)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>dmet_butane.build()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we can call the <code>dmet_butane.simulate()</code> method to get the DMET-CCSD energy.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>energy_butane_dmet <span class="op">=</span> dmet_butane.simulate()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DMET energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_butane_dmet<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Iteration =  1
+    ----------------
+ 
+        Fragment Number : #  1
+        ------------------------
+        Fragment Energy = -72.05405827603914
+        Number of Electrons in Fragment = 9.012005183591981
+        Fragment Number : #  2
+        ------------------------
+        Fragment Energy = -72.40954115391904
+        Number of Electrons in Fragment = 7.989043831475258
+        Fragment Number : #  3
+        ------------------------
+        Fragment Energy = -72.41729771370646
+        Number of Electrons in Fragment = 7.989177971768037
+        Fragment Number : #  4
+        ------------------------
+        Fragment Energy = -72.06317456624696
+        Number of Electrons in Fragment = 9.01200720931663
+    Iteration =  2
+    ----------------
+ 
+        Fragment Number : #  1
+        ------------------------
+        Fragment Energy = -72.05448289161356
+        Number of Electrons in Fragment = 9.012106057456307
+        Fragment Number : #  2
+        ------------------------
+        Fragment Energy = -72.4103731262653
+        Number of Electrons in Fragment = 7.989213886203206
+        Fragment Number : #  3
+        ------------------------
+        Fragment Energy = -72.41812944864117
+        Number of Electrons in Fragment = 7.989347951531629
+        Fragment Number : #  4
+        ------------------------
+        Fragment Energy = -72.06359892187905
+        Number of Electrons in Fragment = 9.012107987424784
+    Iteration =  3
+    ----------------
+ 
+        Fragment Number : #  1
+        ------------------------
+        Fragment Energy = -72.05230694081374
+        Number of Electrons in Fragment = 9.011589139486894
+        Fragment Number : #  2
+        ------------------------
+        Fragment Energy = -72.40610957433793
+        Number of Electrons in Fragment = 7.988342441549417
+        Fragment Number : #  3
+        ------------------------
+        Fragment Energy = -72.41386711306457
+        Number of Electrons in Fragment = 7.988476890962632
+        Fragment Number : #  4
+        ------------------------
+        Fragment Energy = -72.06142430284487
+        Number of Electrons in Fragment = 9.011591560091082
+    Iteration =  4
+    ----------------
+ 
+        Fragment Number : #  1
+        ------------------------
+        Fragment Energy = -72.05230691565814
+        Number of Electrons in Fragment = 9.011589133511112
+        Fragment Number : #  2
+        ------------------------
+        Fragment Energy = -72.40610952503438
+        Number of Electrons in Fragment = 7.988342431471346
+        Fragment Number : #  3
+        ------------------------
+        Fragment Energy = -72.41386706377506
+        Number of Electrons in Fragment = 7.988476880888985
+        Fragment Number : #  4
+        ------------------------
+        Fragment Energy = -72.06142427770467
+        Number of Electrons in Fragment = 9.011591554120972
+    *** DMET Cycle Done *** 
+    DMET Energy ( a.u. ) =   -157.1137415264
+    Chemical Potential   =     -0.0004124578
+DMET energy (hartree):   -157.11374152644183</code></pre>
+</div>
+</div>
+<p>As seen below, the correlation energy <span class="math inline">\(E_{corr} = E_{DMET}-E_{HF}\)</span> retrieved from this calculation is significant.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>energy_butane_hf <span class="op">=</span> dmet_butane.mean_field.e_tot</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>energy_corr_butane <span class="op">=</span> <span class="bu">abs</span>(energy_butane_dmet <span class="op">-</span> energy_butane_hf)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correlation energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_corr_butane<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correlation energy (kcal/mol): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span><span class="fl">627.5</span><span class="op">*</span>energy_corr_butane<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Correlation energy (hartree):    0.2645637234647893
+Correlation energy (kcal/mol):   166.01373647415528</code></pre>
+</div>
+</div>
+</section>
+<section id="second-example-dmet-vqe-on-an-hydrogen-ring" class="level2">
+<h2 class="anchored" data-anchor-id="second-example-dmet-vqe-on-an-hydrogen-ring">4. Second example: DMET-VQE on an hydrogen ring <a class="anchor" id="4"></a></h2>
+<section id="why-not-only-using-vqe" class="level3">
+<h3 class="anchored" data-anchor-id="why-not-only-using-vqe">4.1 Why not only using VQE?</h3>
+<p>We saw in the last section that the computation of DMET fragments is able to get back a significant amount of correlation energy. A valid question that can be asked is: “Why can’t we just directly tackle the initial problem without DMET?”. As stated earlier, DMET breaks the system into its constituent fragments; reducing the initial problem to a collection of subproblems requiring less computational resources. This can be crucial to making the problem tractable with classical simulators or nascent quantum computers.</p>
+<p>We have selected a ring of 10 hydrogen atoms as a simple example of a molecular system. The distance between adjacent hydrogen atoms has been set to 1<span class="math inline">\(~\)</span>Å.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>H10<span class="op">=</span><span class="st">"""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">H          1.6180339887          0.0000000000          0.0000000000</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">H          1.3090169944          0.9510565163          0.0000000000</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">H          0.5000000000          1.5388417686          0.0000000000</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">H         -0.5000000000          1.5388417686          0.0000000000</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">H         -1.3090169944          0.9510565163          0.0000000000</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">H         -1.6180339887          0.0000000000          0.0000000000</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">H         -1.3090169944         -0.9510565163          0.0000000000</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">H         -0.5000000000         -1.5388417686          0.0000000000</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">H          0.5000000000         -1.5388417686          0.0000000000</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">H          1.3090169944         -0.9510565163          0.0000000000</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>mol_h10 <span class="op">=</span> SecondQuantizedMolecule(H10, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"minao"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the example below, we show resource requirements using standard parameters. Please note that other encodings could reduce the required resources, but resources would still be too much for current hardware.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>options_h10_vqe <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h10, <span class="st">"qubit_mapping"</span>: <span class="st">"jw"</span>, <span class="st">"verbose"</span>: <span class="va">False</span>}</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>vqe_h10 <span class="op">=</span> VQESolver(options_h10_vqe)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>vqe_h10.build()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here are some resources estimation that would be needed for a direct VQE calculation on the initial problem, without DMET: for quantum computers in the NISQ era, tackling this head-on is a daunting task.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This can take up to 10 minutes.</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># resources_h10_vqe = vqe_h10.get_resources()</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>resources_h10_vqe <span class="op">=</span> {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"qubit_hamiltonian_terms"</span>: <span class="dv">4039</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_width"</span>: <span class="dv">20</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_depth"</span>: <span class="dv">34696</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_2qubit_gates"</span>: <span class="dv">30784</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_var_gates"</span>: <span class="dv">1900</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vqe_variational_parameters"</span>: <span class="dv">350</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(resources_h10_vqe, indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+  "qubit_hamiltonian_terms": 4039,
+  "circuit_width": 20,
+  "circuit_depth": 34696,
+  "circuit_2qubit_gates": 30784,
+  "circuit_var_gates": 1900,
+  "vqe_variational_parameters": 350
+}</code></pre>
+</div>
+</div>
+</section>
+<section id="dmet-vqe" class="level3">
+<h3 class="anchored" data-anchor-id="dmet-vqe">4.2 DMET-VQE</h3>
+<p>Here, we demonstrate how to perform DMET-VQE calculations using Tangelo package. The aim is to obtain improved results (vs HF energy) when compairing to the Full CI method (without using problem decomposition) and also using a quantum algorithm (VQE).</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>options_h10_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h10,</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">10</span>,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"fragment_solvers"</span>: <span class="st">"vqe"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"verbose"</span>: <span class="va">False</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                    }</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>dmet_h10 <span class="op">=</span> DMETProblemDecomposition(options_h10_dmet)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>dmet_h10.build()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>dmet.build()</code> method creates fragments (10) from the H10 molecule. When we decompose the ring of atoms into fragments including only one hydrogen atom each, the DMET method creates a fragment orbital (left: the single orbital distribution is shown in both pink and blue, with the colours depicting the phases) and the bath orbital (right: the single orbital distribution of the remaining nine hydrogen atoms is shown in both pink and blue, with the colours depicting the phases).</p>
+<p><img src="../img/frag_and_bath.png" alt="fragment_and_bath_orbitals" width="450"></p>
+<p>Resource estimation is done by calling <code>dmet_h10.get_resources()</code>. Here, a list of ten dictionaries is returned and stored in <code>resources_h10_dmet</code>. Each dictionary refers to a fragment. As every fragment is the same in this system (a single hydrogen atom), we only print one.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resources_h10_dmet <span class="op">=</span> dmet_h10.get_resources()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(resources_h10_dmet[<span class="dv">0</span>], indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{
+  "qubit_hamiltonian_terms": 27,
+  "circuit_width": 4,
+  "circuit_depth": 100,
+  "circuit_2qubit_gates": 64,
+  "circuit_var_gates": 12,
+  "vqe_variational_parameters": 2
+}</code></pre>
+</div>
+</div>
+<p>Compared to a direct VQE algorithm, those resources are greatly reduced: from 20 qubits down to only 4 qubits in our case. Below, <code>dmet_h10.simulate()</code> computes the DMET-VQE energy.</p>
+<p>The options currently selected specify that VQE must be run for each fragment, at each iteration of DMET: as such, it may take 2-3 minutes for this cell to finish. The <code>verbose</code> option is turned off to hide the lengthy prints: feel free to turn it back on to track the progress of this cell, if you’d like.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dmet_h10.verbose <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>energy_h10_dmet <span class="op">=</span> dmet_h10.simulate()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DMET energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_h10_dmet<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DMET energy (hartree):   -5.367523592601959</code></pre>
+</div>
+</div>
+<p>A comparison with an FCI calculation is then made.</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fci_h10 <span class="op">=</span> FCISolver(mol_h10)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>energy_h10_fci <span class="op">=</span> fci_h10.simulate()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"FCI energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_h10_fci<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FCI energy (hartree):    -5.380926000730877</code></pre>
+</div>
+</div>
+<p>Lastly, we note that the DMET energy is closer to the FCI energy than the HF energy. DMET-VQE results are an improvement but are still not at the FCI level. This discrepancy is attributable to missing three, four … many body interactions. When dismantling the system into fragments, we get a single hydrogen atom per fragment. Therefore, those fragments cannot propagate higher level (three and more) excitations. DMET user should have in mind this dilemma between fragment sizes and accuracy of the total electronic energy.</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>energy_h10_hf <span class="op">=</span> dmet_h10.mean_field.e_tot</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>delta_h10_fci_hf <span class="op">=</span> <span class="bu">abs</span>(energy_h10_fci <span class="op">-</span> energy_h10_hf)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>delta_h10_fci_dmet <span class="op">=</span> <span class="bu">abs</span>(energy_h10_fci <span class="op">-</span> energy_h10_dmet)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference FCI vs HF energies (hartree): </span><span class="ch">\t\t</span><span class="ss"> </span><span class="sc">{</span>delta_h10_fci_hf<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference FCI vs DMET-VQE energies (hartree): </span><span class="ch">\t\t</span><span class="ss"> </span><span class="sc">{</span>delta_h10_fci_dmet<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference FCI vs HF energies (kcal/mol): </span><span class="ch">\t\t</span><span class="ss"> </span><span class="sc">{</span><span class="fl">627.5</span><span class="op">*</span>delta_h10_fci_hf<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference FCI vs DMET-VQE energies (kcal/mol): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span><span class="fl">627.5</span><span class="op">*</span>delta_h10_fci_dmet<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Difference FCI vs HF energies (hartree):         0.11680533556175376
+Difference FCI vs DMET-VQE energies (hartree):       0.013402408128918353
+Difference FCI vs HF energies (kcal/mol):        73.29534806500048
+Difference FCI vs DMET-VQE energies (kcal/mol):      8.410011100896266</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="dmet-features" class="level2">
+<h2 class="anchored" data-anchor-id="dmet-features">5. DMET features<a class="anchor" id="5"></a></h2>
+<p>In this section, some DMET features are shown. A four hydrogen atoms system is defined for this purpose.</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>H4 <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="st">H 0.7071 0. 0.</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="st">H 0. 0.7071 0.</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="st">H -1.0071 0. 0.</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="st">H 0. -1.0071 0.</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>mol_h4 <span class="op">=</span> SecondQuantizedMolecule(H4, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"3-21g"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="localization-method" class="level3">
+<h3 class="anchored" data-anchor-id="localization-method">5.1 Localization method</h3>
+<p>Electron localization is used to define the bath and the environment orbitals. There are two options available:</p>
+<ul>
+<li><code>Localization.meta_lowdin</code> (default): Described in Q. Sun et al., JCTC 10, 3784-3790 (2014).</li>
+<li><code>Localization.iao</code>: Described in G. Knizia, JCTC 9, 4834-4843 (2013). This algorithm maps the orbitals to an minao set. So, at least a double zeta basis set must be used with this localization method.</li>
+</ul>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"electron_localization"</span>: Localization.iao,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"verbose"</span>: <span class="va">False</span>}</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x12a5dfdf0&gt;,
+ 'electron_localization': &lt;Localization.iao: 1&gt;,
+ 'fragment_atoms': [1, 1, 1, 1],
+ 'fragment_solvers': ['ccsd', 'ccsd', 'ccsd', 'ccsd'],
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x12a5dff10&gt;&gt;,
+ 'initial_chemical_potential': 0.0,
+ 'solvers_options': [{}, {}, {}, {}],
+ 'verbose': False,
+ 'uhf': False,
+ 'mean_field': RHF object of &lt;class 'pyscf.scf.hf.RHF'&gt;,
+ 'chemical_potential': None,
+ 'dmet_energy': None,
+ 'orbitals': None,
+ 'orb_list': None,
+ 'orb_list2': None,
+ 'onerdm_low': None,
+ 'solver_fragment_dict': {},
+ 'n_iter': 0}</code></pre>
+</div>
+</div>
+</section>
+<section id="fragment-solvers" class="level3">
+<h3 class="anchored" data-anchor-id="fragment-solvers">5.2 Fragment solvers</h3>
+<p>A list of solvers can be passed to the <code>DMETProblemDecomposition</code> class. If a single solver is detected, it will be applied to all fragments. Here is an example where the first fragment is solved with VQE, the second one with CCSD, the third one with FCI and the last one with VQE.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_solvers"</span>: [<span class="st">"vqe"</span>, <span class="st">"ccsd"</span>, <span class="st">"fci"</span>, <span class="st">"vqe"</span>],</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"verbose"</span>: <span class="va">False</span>}</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x12a5df160&gt;,
+ 'electron_localization': &lt;Localization.meta_lowdin: 0&gt;,
+ 'fragment_atoms': [1, 1, 1, 1],
+ 'fragment_solvers': ['vqe', 'ccsd', 'fci', 'vqe'],
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x12a5df310&gt;&gt;,
+ 'initial_chemical_potential': 0.0,
+ 'solvers_options': [{'qubit_mapping': 'jw',
+   'initial_var_params': 'ones',
+   'verbose': False},
+  {},
+  {},
+  {'qubit_mapping': 'jw', 'initial_var_params': 'ones', 'verbose': False}],
+ 'verbose': False,
+ 'uhf': False,
+ 'mean_field': RHF object of &lt;class 'pyscf.scf.hf.RHF'&gt;,
+ 'chemical_potential': None,
+ 'dmet_energy': None,
+ 'orbitals': None,
+ 'orb_list': None,
+ 'orb_list2': None,
+ 'onerdm_low': None,
+ 'solver_fragment_dict': {},
+ 'n_iter': 0}</code></pre>
+</div>
+</div>
+</section>
+<section id="initial-chemical-potential" class="level3">
+<h3 class="anchored" data-anchor-id="initial-chemical-potential">5.3 Initial chemical potential</h3>
+<p>The DMET optimizes a parameter <span class="math inline">\(\mu\)</span>, the chemical potential. It ensures that the sum of all fragment electrons is consistent with the total number of electrons. As it is numerically optimized, the initial value can be important. Here is an example where the <code>initial_chemical_potential</code> is set to 0.1.</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"initial_chemical_potential"</span> : <span class="fl">0.1</span>,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"verbose"</span>: <span class="va">False</span>}</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x12a5df400&gt;,
+ 'electron_localization': &lt;Localization.meta_lowdin: 0&gt;,
+ 'fragment_atoms': [1, 1, 1, 1],
+ 'fragment_solvers': ['ccsd', 'ccsd', 'ccsd', 'ccsd'],
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x12a5df7c0&gt;&gt;,
+ 'initial_chemical_potential': 0.1,
+ 'solvers_options': [{}, {}, {}, {}],
+ 'verbose': False,
+ 'uhf': False,
+ 'mean_field': RHF object of &lt;class 'pyscf.scf.hf.RHF'&gt;,
+ 'chemical_potential': None,
+ 'dmet_energy': None,
+ 'orbitals': None,
+ 'orb_list': None,
+ 'orb_list2': None,
+ 'onerdm_low': None,
+ 'solver_fragment_dict': {},
+ 'n_iter': 0}</code></pre>
+</div>
+</div>
+</section>
+<section id="solvers-options" class="level3">
+<h3 class="anchored" data-anchor-id="solvers-options">5.4 Solvers options</h3>
+<p>A list of options can be passed to the solvers. Each element of the list must be consistent with the appropriate value in <code>fragment_solvers</code>. If a single dictionary of options is detected, it is applied to all fragment solvers. Here is an example where one wants to set the qubit mapping to the Bravyi-Kitaev method when performing VQE.</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"qubit_mapping"</span>: <span class="st">"bk"</span>}</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_solvers"</span>: <span class="st">"vqe"</span>,</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"solvers_options"</span>: vqe_options, </span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"verbose"</span>: <span class="va">False</span>}</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x12a5dfa30&gt;,
+ 'electron_localization': &lt;Localization.meta_lowdin: 0&gt;,
+ 'fragment_atoms': [1, 1, 1, 1],
+ 'fragment_solvers': ['vqe', 'vqe', 'vqe', 'vqe'],
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x12a5df040&gt;&gt;,
+ 'initial_chemical_potential': 0.0,
+ 'solvers_options': [{'qubit_mapping': 'bk'},
+  {'qubit_mapping': 'bk'},
+  {'qubit_mapping': 'bk'},
+  {'qubit_mapping': 'bk'}],
+ 'verbose': False,
+ 'uhf': False,
+ 'mean_field': RHF object of &lt;class 'pyscf.scf.hf.RHF'&gt;,
+ 'chemical_potential': None,
+ 'dmet_energy': None,
+ 'orbitals': None,
+ 'orb_list': None,
+ 'orb_list2': None,
+ 'onerdm_low': None,
+ 'solver_fragment_dict': {},
+ 'n_iter': 0}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">6. Closing words<a class="anchor" id="6"></a></h2>
+<p>This concludes our overview of <code>DMETProblemDecomposition</code>. There are many flavors of DMET and only one has been discussed here. Here we refer some papers relevant for the reader who wants more details:</p>
+<ul>
+<li><p>Theory</p>
+<ul>
+<li>S. Wouters, C.A. Jiménez-Hoyos, Q. Sun, and G.K.L. Chan, J. Chem. Theory Comput. 12, 2706 (2016).</li>
+<li>G. Knizia and G.K.L. Chan, J. Chem. Theory Comput. 9, 1428 (2013).</li>
+<li>G. Knizia and G.K.L. Chan, Phys. Rev.&nbsp;Lett. 109, 186404 (2012).</li>
+</ul></li>
+<li><p>Good Chemistry Company papers on the subject</p>
+<ul>
+<li>Y. Kawashima, M.P. Coons, Y. Nam, E. Lloyd, S. Matsuura, A.J. Garza, S. Johri, L. Huntington, V. Senicourt, A.O. Maksymov, J.H. V. Nguyen, J. Kim, N. Alidoust, A. Zaribafiyan, and T. Yamazaki, ArXiv:2102.07045 (2021).</li>
+<li>T. Yamazaki, S. Matsuura, A. Narimani, A. Saidmuradov, and A. Zaribafiyan, ArXiv:1806.01305 (2018).</li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

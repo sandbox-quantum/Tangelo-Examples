@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>classical_shadows</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="classical-shadows" class="level1">
+<h1>Classical Shadows</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo/blob/develop/examples/classical_shadows.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
+</figure>
+</div>
+<p>The output of a quantum computer is a histogram of measurements, corresponding to the different outcomes observed, usually expressed as bitstrings. The cost and duration of a quantum experiment is roughly linear with the number of shots used to build such histograms, which also correlates with the accuracy of the results. This measurement overhead can be prohibitive for state tomography and computation of observables for quantum chemistry applications.</p>
+<p>The emergent method <em>classical shadows</em> (<a href="https://arxiv.org/abs/2002.08953">Nat. Phys. 2020, 16, 1050–1057</a>) has been developed to mitigate the measurement overhead by offloading quantum tasks to the pre- and post-processing steps. This prediction protocol exhibits logarithmic scaling with the number of terms to measure, in order to compute the expectation value of a term within a given accuracy.</p>
+<p>In short, gates representing a unitary operation are appended to the state prepared by a quantum circuit. Upon measurement, the output bitstring (ex: 100101…) is stored in a conventional register. This is repeated <span class="math inline">\(N\)</span> times, where <span class="math inline">\(N\)</span> defines the shadow size and is equivalent to the number of shots run on the quantum hardware. The classical shadow is built from the bitstrings stored in the classical register, and can be used to calculate observables. Different flavours of classical shadow exist, as they each come with a specific protocol for choosing a set of unitaries. The figure below, from <a href="https://arxiv.org/abs/2002.08953">Nat. Phys. 16, 1050–1057 (2020)</a>, illustrates the randomized shadow protocol.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<figure class="figure">
+<img src="../img/classical_shadow_overview.png" title="Classical Shadow" class="img-fluid figure-img">
+</figure>
+<p></p><figcaption class="figure-caption">Classical Shadows overview</figcaption><p></p>
+</figure>
+</div>
+<p>The randomized, derandomized and adaptive shadow protocols using the single-qubit Pauli basis as a set of unitaries are currently available in Tangelo. This introduction will shed light on how to leverage their use in your own investigation, and highlight the main differences between these approaches. At the end of this notebook, a comparison is made between energies predicted with those techniques and the one computed by using a Hamiltonian partitioning approach relying on qubitwise commutativity.</p>
+<p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ModuleNotFoundError:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="system-and-reference-values" class="level2">
+<h2 class="anchored" data-anchor-id="system-and-reference-values">System and Reference Values</h2>
+<p>To demonstrate the classical shadow capabilities, we first define a molecular system composed of two hydrogen atoms in the 3-21G basis. After using the scBK qubit mapping, the Hamiltonian spans 6 qubits.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2_321g</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> count_qubits</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Encoding options.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>encoding <span class="op">=</span> <span class="st">"scBK"</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>up_then_down <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting the fermionic Hamiltonian according to the encoding options.</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>qubit_ham <span class="op">=</span> fermion_to_qubit_mapping(mol_H2_321g.fermionic_hamiltonian, </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                                     encoding, </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                                     n_spinorbitals<span class="op">=</span>mol_H2_321g.n_active_sos, </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                                     n_electrons<span class="op">=</span>mol_H2_321g.n_active_electrons, </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                                     up_then_down<span class="op">=</span>up_then_down)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of qubits to describe the system: </span><span class="sc">{</span>count_qubits(qubit_ham)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of qubits to describe the system: 6</code></pre>
+</div>
+</div>
+<p>For this example, the Qubit Coupled-Cluster (QCC) ansatz has been chosen (<a href="https://pubs.acs.org/doi/10.1021/acs.jctc.8b00932">J. Chem. Theory Comput. 2018, 14(12), 6317–6326</a>). While the circuit depth rapidly increases with the size of the basis (number of spin orbitals), the QCC ansatz admits a low-depth quantum circuit compared to the widely used Unitary Coupled-Cluster Single and Double (UCCSD) ansatz.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.qcc <span class="im">import</span> QCC</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ansatz <span class="op">=</span> QCC(mol_H2_321g, mapping<span class="op">=</span>encoding, up_then_down<span class="op">=</span>up_then_down)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>ansatz.build_circuit()</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of gates in the circuit: </span><span class="sc">{</span>ansatz<span class="sc">.</span>circuit<span class="sc">.</span>size<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of gates in the circuit: 79</code></pre>
+</div>
+</div>
+<p>The Variational Quantum Eigensolver (VQE) has been introduced in another notebook as a hybrid quantum–classical algorithm for simulating quantum systems. In the next cell, we focus on VQE within the context of optimizing the QCC variational parameters to minimize the 3-21G dihydrogen energy.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> VQESolver</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vqe <span class="op">=</span> VQESolver({<span class="st">"qubit_hamiltonian"</span>: qubit_ham, <span class="st">"ansatz"</span>: ansatz.circuit})</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>vqe.build()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>energy_ref <span class="op">=</span> vqe.simulate()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy from statevector simulation: </span><span class="sc">{</span>energy_ref<span class="sc">:.4f}</span><span class="ss"> hartree"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy from statevector simulation: -1.1473 hartree</code></pre>
+</div>
+</div>
+<p>Now, we can get the optimized circuit with the <code>vqe.optimal_circuit</code> attribute, and we also know that with the provided Hamiltonian, the ideal energy is -1.1475 hartree.</p>
+</section>
+<section id="classical-shadows-1" class="level2">
+<h2 class="anchored" data-anchor-id="classical-shadows-1">Classical Shadows</h2>
+<p>In this section, we will revisit the computation of the 3-21G dihydrogen energy using the QCC ansatz and the classical shadow protocols. Three flavours of classical shadows are currently available in Tangelo. Each flavour has a distinct class: <code>RandomizedClassicalShadow</code>, <code>DerandomizedClassicalShadow</code> and <code>AdaptiveClassicalShadow</code>. Common methods <code>build</code> and <code>simulate</code> are defined to respectively construct a set of unitaries and simulate results with a given backend. As a side note, a user who wants to compare noisy simulation can do so by providing the appropriate <code>noise_model</code> to the <code>Simulator</code> object defined in the next cell.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Circuit</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Definition of the shots budget (shadow size) and backend.</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>n_shots_budget <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> get_backend(<span class="st">"cirq"</span>, noise_model<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="randomized-single-qubit-pauli-classical-shadows" class="level3">
+<h3 class="anchored" data-anchor-id="randomized-single-qubit-pauli-classical-shadows">Randomized Single-Qubit Pauli Classical Shadows</h3>
+<p>Randomized classical shadows are the orginal implementation of this algorithm. Random bases are constructed from the tensor product of random single-qubit Pauli gates (<span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span> or <span class="math inline">\(Z\)</span>). The post-processing consists of inverting the samples with the quantum channel <span class="math inline">\(\mathcal{M}^{-1} = \bigotimes_{i=1}^n \mathcal{M}_i^{-1}\)</span>. Observables can then be predicted from the median of means. More details can be found in <a href="https://arxiv.org/abs/2002.08953">Nat. Phys. 16, 1050–1057 (2020)</a>.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> RandomizedClassicalShadow</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>random_cs <span class="op">=</span> RandomizedClassicalShadow(vqe.optimal_circuit)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>random_cs.build(n_shots_budget)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>random_cs.simulate(backend)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>energy_random <span class="op">=</span> random_cs.get_observable(qubit_ham)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy from randomized single-Pauli classical shadow: </span><span class="sc">{</span>energy_random<span class="sc">:.4f}</span><span class="ss"> hartree"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error vs statevector simulation: </span><span class="sc">{</span><span class="bu">abs</span>(energy_ref<span class="op">-</span>energy_random)<span class="sc">:.3f}</span><span class="ss"> hartree"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy from randomized single-Pauli classical shadow: -1.0640 hartree
+Error vs statevector simulation: 0.083 hartree</code></pre>
+</div>
+</div>
+</section>
+<section id="derandomized-single-qubit-pauli-classical-shadows" class="level3">
+<h3 class="anchored" data-anchor-id="derandomized-single-qubit-pauli-classical-shadows">Derandomized Single-Qubit Pauli Classical Shadows</h3>
+<p>The derandomized procedure aims to fix a drawback of the randomized procedure. As the number of qubits increases, the probability of matching random tensor products of single-Pauli bases with terms in a qubit Hamiltonian decreases greatly. Typically, bigger shadows are needed to compute an observable within a reasonable accuracy. The derandomized procedure takes as input a qubit operator to steer the basis choices, thus removing the randomness. This results in bases hitting the relevant operator systematically, improving the accuracy for a given shadow size versus a randomized classical shadow. More details on this algorithm can be found in <a href="https://arxiv.org/abs/2103.07510">Phys. Rev.&nbsp;Lett. 127, 030503</a>.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> DerandomizedClassicalShadow</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>derandom_cs <span class="op">=</span> DerandomizedClassicalShadow(vqe.optimal_circuit)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>derandom_cs.build(n_shots_budget, qubit_ham)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>derandom_cs.simulate(backend)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>energy_derandom <span class="op">=</span> derandom_cs.get_observable(qubit_ham)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy from derandomized single-Pauli classical shadow: </span><span class="sc">{</span>energy_derandom<span class="sc">:.4f}</span><span class="ss"> hartree"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error vs statevector simulation: </span><span class="sc">{</span><span class="bu">abs</span>(energy_ref<span class="op">-</span>energy_derandom)<span class="sc">:.3f}</span><span class="ss"> hartree"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy from derandomized single-Pauli classical shadow: -1.1636 hartree
+Error vs statevector simulation: 0.016 hartree</code></pre>
+</div>
+</div>
+</section>
+<section id="adaptive-single-qubit-pauli-classical-shadows" class="level3">
+<h3 class="anchored" data-anchor-id="adaptive-single-qubit-pauli-classical-shadows">Adaptive Single-Qubit Pauli Classical Shadows</h3>
+<p>Another procedure for choosing single-qubit Pauli bases is an adaptive one. It uses an iterative process to draw a Pauli gate for each qubit, one by one. The probability distributions are built so the next single-qubit Pauli gates drawn will depend on the measurement bases already assigned to previous qubits. This shifts the single-qubit Pauli basis choice towards terms hitting a given operator, while keeping a fair amount of randomness to extent the state characterization coverage. For more details on this algorithm, we refer to <a href="https://arxiv.org/abs/2105.12207">arXiv:2105.12207</a>.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> AdaptiveClassicalShadow</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>adaptive_cs <span class="op">=</span> AdaptiveClassicalShadow(vqe.optimal_circuit)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>adaptive_cs.build(n_shots_budget, qubit_ham)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>adaptive_cs.simulate(backend)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>energy_adaptive <span class="op">=</span> adaptive_cs.get_observable(qubit_ham)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy from adaptive single-Pauli classical shadow: </span><span class="sc">{</span>energy_adaptive<span class="sc">:.4f}</span><span class="ss"> hartree"</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error vs statevector simulation: </span><span class="sc">{</span><span class="bu">abs</span>(energy_ref<span class="op">-</span>energy_adaptive)<span class="sc">:.3f}</span><span class="ss"> hartree"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy from adaptive single-Pauli classical shadow: -1.0768 hartree
+Error vs statevector simulation: 0.071 hartree</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="energy-with-hamiltonian-partitioning" class="level2">
+<h2 class="anchored" data-anchor-id="energy-with-hamiltonian-partitioning">Energy with Hamiltonian Partitioning</h2>
+<p>For a given measurement budget, we compare the accuracy of total energy computation obtained with the Hamiltonian partitioning approach relying on qubitwise commutativity, to the energy predicted by classical shadow protocols. The <code>group_qwc</code> method defines the minimal number of bases to measure by identifying commutating terms. Then, the number of shots can be evenly distributed or according to a heuristic that considers the term coefficients.</p>
+<p>The reference value computed in the next cell only contains statistical errors and no quantum noise, even though it is always present in hardware. This shot-based simulation culminates with an energy containing an error <span class="math inline">\(\epsilon\)</span>, inherent to the finite numbers of measurements. This error <span class="math inline">\(\epsilon\)</span> will be compared to the ones coming from classical shadow protocols.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> group_qwc, exp_value_from_measurement_bases</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers <span class="im">import</span> measurement_basis_gates</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Performing Hamiltonian partitioning.</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>qubitwise_measurements <span class="op">=</span> group_qwc(qubit_ham)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Distributing the available number of shots evenly across identified bases.</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>n_shots_per_basis <span class="op">=</span> <span class="bu">round</span>(n_shots_budget <span class="op">/</span> <span class="bu">len</span>(qubitwise_measurements))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Shot-based backend.</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> get_backend(<span class="st">"cirq"</span>, n_shots<span class="op">=</span>n_shots_per_basis, noise_model<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Computing the histograms for the grouped bases.</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>qubitwise_results <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis <span class="kw">in</span> qubitwise_measurements.keys():</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    basis_circuit <span class="op">=</span> Circuit(measurement_basis_gates(basis))</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    qubitwise_results[basis], _ <span class="op">=</span> backend.simulate(vqe.optimal_circuit <span class="op">+</span> basis_circuit)</span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Computing the energy from the histograms.</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>energy_shots <span class="op">=</span> exp_value_from_measurement_bases(qubitwise_measurements, qubitwise_results)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy with qubitwise commutativity and equally distributed shots: </span><span class="sc">{</span>energy_shots<span class="sc">:.4f}</span><span class="ss"> hartree"</span>)</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Error vs statevector simulation: </span><span class="sc">{</span><span class="bu">abs</span>(energy_ref<span class="op">-</span>energy_shots)<span class="sc">:.3f}</span><span class="ss"> hartree"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy with qubitwise commutativity and equally distributed shots: -1.1619 hartree
+Error vs statevector simulation: 0.015 hartree</code></pre>
+</div>
+</div>
+</section>
+<section id="averages-of-10-runs" class="level2">
+<h2 class="anchored" data-anchor-id="averages-of-10-runs">Averages of 10 runs</h2>
+<p>Due to the nature of the classical shadow processes, there is a random component during prediction of observables. This is why your mileage may vary if you try to rerun all code cells in this notebook. To better portray the situation, we preran 10 simulations of 10 000 shots each for all the above methods, and compared the results to the ideal energy obtained with VQE run with an exact statevector simulator. The data is shown in the boxplot below and the ideal energy is represented by a dashed line.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> np.array([</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.00508</span>,  <span class="fl">0.02309</span>, <span class="op">-</span><span class="fl">0.03742</span>, <span class="op">-</span><span class="fl">0.02013</span>],</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.01601</span>, <span class="op">-</span><span class="fl">0.16360</span>, <span class="op">-</span><span class="fl">0.02321</span>, <span class="op">-</span><span class="fl">0.02002</span>],</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.04252</span>,  <span class="fl">0.03412</span>,  <span class="fl">0.00546</span>, <span class="op">-</span><span class="fl">0.05518</span>],</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.01322</span>,  <span class="fl">0.10274</span>,  <span class="fl">0.00458</span>,  <span class="fl">0.02129</span>],</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.05665</span>, <span class="op">-</span><span class="fl">0.01826</span>, <span class="op">-</span><span class="fl">0.00687</span>, <span class="op">-</span><span class="fl">0.01218</span>],</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.05709</span>, <span class="op">-</span><span class="fl">0.08834</span>, <span class="op">-</span><span class="fl">0.01307</span>,  <span class="fl">0.00555</span>],</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span><span class="fl">0.00185</span>,  <span class="fl">0.07029</span>,  <span class="fl">0.00910</span>, <span class="op">-</span><span class="fl">0.02183</span>],</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.03663</span>,  <span class="fl">0.09825</span>, <span class="op">-</span><span class="fl">0.00555</span>,  <span class="fl">0.00459</span>],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    [<span class="op">-</span><span class="fl">0.00593</span>,  <span class="fl">0.09175</span>, <span class="op">-</span><span class="fl">0.00332</span>, <span class="op">-</span><span class="fl">0.04029</span>],</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    [ <span class="fl">0.00574</span>, <span class="op">-</span><span class="fl">0.03616</span>,  <span class="fl">0.00986</span>, <span class="op">-</span><span class="fl">0.02638</span>]</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>_, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">6</span>))</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>VP <span class="op">=</span> ax.boxplot(data, positions<span class="op">=</span>[<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">8</span>], </span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>                widths<span class="op">=</span><span class="dv">1</span>, patch_artist<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>                showmeans<span class="op">=</span><span class="va">False</span>, showfliers<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>                medianprops<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"white"</span>, <span class="st">"linewidth"</span>: <span class="dv">2</span>},</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>                boxprops<span class="op">=</span>{<span class="st">"facecolor"</span>: <span class="st">"#003262"</span>, <span class="st">"edgecolor"</span>: <span class="st">"white"</span>, <span class="st">"linewidth"</span>: <span class="dv">1</span>},</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>                whiskerprops<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"#003262"</span>, <span class="st">"linewidth"</span>: <span class="dv">2</span>},</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>                capprops<span class="op">=</span>{<span class="st">"color"</span>: <span class="st">"#003262"</span>, <span class="st">"linewidth"</span>: <span class="dv">2</span>})</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(ylim<span class="op">=</span>(<span class="op">-</span><span class="fl">.18</span>, <span class="fl">.15</span>), xlim<span class="op">=</span>(<span class="dv">1</span>, <span class="dv">9</span>))</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>ax.hlines(y<span class="op">=</span><span class="fl">0.</span>, xmin<span class="op">=</span><span class="dv">0</span>, xmax<span class="op">=</span><span class="dv">10</span>, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">"k"</span>, linestyles<span class="op">=</span><span class="st">"dashed"</span>)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(labels<span class="op">=</span>[<span class="st">"Qubitwise commutativity"</span>, <span class="st">"Randomized"</span>, <span class="st">"Derandomized"</span>, <span class="st">"Adaptive"</span>],fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"(Noiseless Energy - Statevector Energy) / Hartree"</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>Text(0, 0.5, '(Noiseless Energy - Statevector Energy) / Hartree')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="classical_shadows_files/figure-html/cell-11-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>For this use case, the plot shows that the derandomized and adaptive single-qubit Pauli classical shadows seem to be more accurate than the other methods. However, it is not clear whether randomized classical shadows are more appealing than qubitwise commutativity. From those results, the scaling advantage is not apparent at first sight, at least for this system (H2 3-21G).</p>
+<p>Classical shadows may show benefits for larger problems, requiring many more qubit terms to be evaluated. Several studies have taken a look at the noise implication of predicting observables with shadows (<a href="https://arxiv.org/abs/2011.09636">arXiv:2011.09636</a> and <a href="https://arxiv.org/abs/2011.11580">arXiv:2011.11580</a>). The authors demonstrate noise resilience inherent to classical shadows, especially when comparing to simpler sampling methods.</p>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing words</h2>
+<p>We demonstrated the use of several classical shadow protocols in this notebook. As their theoretical scaling is logarithmic with the number of linear functions in a qubit operator, they show potential for helping mitigate the measurement problem. Using Tangelo, we showed how straightforward it is to incorporate classical shadows in your own research projects.</p>
+<p>Many avenues have yet to be explored. For example, active research areas include implementation of classical shadows on NISQ devices, and some works report an inherent noise resilience (<a href="https://arxiv.org/abs/2011.11580">arXiv:2011.11580</a>). What will you do with classical shadows and Tangelo ?</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ol type="1">
+<li>Chen, S., Yu, W., Zeng, P. &amp; Flammia, S. T. Robust shadow estimation. arXiv:2011.09636 [quant-ph] (2020).</li>
+<li>Koh, D. E. &amp; Grewal, S. Classical Shadows with Noise. arXiv:2011.11580 [math-ph, physics:quant-ph] (2020).</li>
+<li>Huang, H.-Y., Kueng, R. &amp; Preskill, J. Efficient estimation of Pauli observables by derandomization. arXiv:2103.07510 [quant-ph] (2021).</li>
+<li>Hadfield, C. Adaptive Pauli Shadows for Energy Estimation. arXiv:2105.12207 [quant-ph] (2021).</li>
+<li>Huang, H. Y., Kueng, R. &amp; Preskill, J. Predicting many properties of a quantum system from very few measurements. Nature Physics 16, 1050–1057 (2020).</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

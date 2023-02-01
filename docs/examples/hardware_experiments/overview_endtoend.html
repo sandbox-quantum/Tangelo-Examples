@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>overview_endtoend</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<section id="end-to-end-quantum-chemistry-workflow-on-quantum-hardware-with-tangelo" class="level1">
+<h1>End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo/blob/develop/examples/overview_endtoend.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
+</figure>
+</div>
+<p>Quantum computing is a nascent field, and we have barely started to explore its applications. In order to revolutionize fields such as quantum chemistry, the community has to face challenges in both algorithms design and quantum hardware development. A major undertaking is designing approaches ensuring satisfying accuracy, while keeping computing resource requirements within the capabilities of Noisy Intermediate Scale Quantum (NISQ) devices to solve exciting problems.</p>
+<p>This quantum SDK was designed to support our exploration with this goal in mind, and enables us to build our own end-to-end workflows by providing building-blocks from various toolboxes, and algorithms.</p>
+<p>The present notebook attempts to provide a step-by-step tutorial from starting with an expression of a molecule all the way to post-processing the results coming from the quantum hardware to obtain successful final results. More specifically we cover the following steps:</p>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of contents:</h2>
+<ul>
+<li><a href="#1">1. Setting up your environment</a></li>
+<li><a href="#2">2. Introducing our use case</a></li>
+<li><a href="#3">3. Representing the input molecular data</a></li>
+<li><a href="#4">4. Calculating reference energy with classical solvers</a></li>
+<li><a href="#5">5. Exploring approaches using resource estimation and problem decomposition</a></li>
+<li><a href="#6">6. Validating the desired approach with simulators</a></li>
+<li><a href="#7">7. Minimizing the amount of resources needed for the hardware experiment</a>
+<ul>
+<li><a href="#71">Minimizing the number of measurements needed</a></li>
+<li><a href="#72">Picking the number of shots</a></li>
+<li><a href="#73">Circuit compilation and optimization</a></li>
+</ul></li>
+<li><a href="#8">8. Submitting an experiment to a quantum device</a>
+<ul>
+<li><a href="#81">Using QEMIST Cloud</a></li>
+<li><a href="#82">Using a cloud service API and format conversion</a></li>
+<li><a href="#83">Emulation on a noisy backend</a></li>
+</ul></li>
+<li><a href="#9">9. Post-processing and error-mitigation of raw hardware results</a>
+<ul>
+<li><a href="#91">Error mitigation</a></li>
+<li><a href="#92">Statistical analysis of results</a></li>
+</ul></li>
+<li><a href="#10">10. Closing words</a></li>
+</ul>
+<p>In this notebook, we illustrate how Tangelo can be used to re-enact one of our recent successful quantum chemistry experiments, done in collaboration with Dow and IonQ [<a href="https://arxiv.org/abs/2102.07045">Kawashima et al., 2021</a>]. This experiment features an electronic system that could not be realistically solved with a heads-on approach on an existing quantum computer, yet produced great experimental results by combining the DMET problem decomposition technique [<a href="https://doi.org/10.1103/PhysRevLett.109.186404">Knizia et al., 2013a</a> and <a href="https://doi.org/10.1021/ct301044e">Knizia et al., 2013b</a>] with the VQE algorithm [<a href="https://doi.org/10.1146/annurev-physchem-032210-103512">Kassal et al., 2011</a>, <a href="https://doi.org/10.1038/ncomms5213">Peruzzo et al., 2014</a> and <a href="https://doi.org/10.1021/acs.chemrev.8b00803">Cao et al., 2019</a>] and error-mitigation techniques [<a href="https://arxiv.org/abs/2101.08448">Bharti et al., 2021</a>], running on an ion-trap-based quantum processor.</p>
+</section>
+<section id="setting-up-your-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-your-environment">Setting up your environment <a class="anchor" id="1"></a></h2>
+<p>In order to run this notebook, <code>tangelo</code> needs to be installed in your Python environment, or be found in your PYTHONPATH. Please refer to the installation instructions for any additional information, and how to install optional dependencies such as performant quantum circuit simulators. If Tangelo is not already installed, executing the cell below installs the minimal requirements for this notebook.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pretty printer for more readable outputs</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pprint</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pp <span class="op">=</span> pprint.PrettyPrinter(width<span class="op">=</span><span class="dv">160</span>, compact<span class="op">=</span><span class="va">False</span>, indent<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ModuleNotFoundError:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="introducing-our-use-case-a-ring-of-10-hydrogen-atoms" class="level2">
+<h2 class="anchored" data-anchor-id="introducing-our-use-case-a-ring-of-10-hydrogen-atoms">Introducing our use case: a ring of 10 hydrogen atoms <a class="anchor" id="2"></a></h2>
+<p>In order to cover all the steps of a successful quantum hardware experiment for the purpose of quantum chemistry simulation, we decided to reproduce the results of our recent collaboration with Dow and IonQ on the symmetric stretch of a ring of hydrogen atoms using this package. It includes all of the main steps required for quantum chemistry simulation on quantum hardware. In that collaboration, the ring of 10 hydrogen atoms was chosen to demonstrate the viability of Density Matrix Embedding Theory (DMET) as a problem decomposition technique for the purpose of electronic structure calculations. The DMET pipeline enables us to take into account all electrons in the molecule while greatly reducing the amount of computational resources needed.</p>
+<p>The system studied in this notebook is characterized by a distance of 1.1<span class="math inline">\(\overset{\circ}{A}\)</span> between hydrogen atoms, and is built in the MINAO basis. The emphasis on this pipeline is to retrieve electronic correlation energy while leveraging the power of NISQ devices. A full potential energy curve has been computed in [<a href="https://arxiv.org/abs/2102.07045">Kawashima et al., 2021</a>] to study the repulsive, equilibrium, attractive and dissociative regimes. <img src="../img/DMET_H10.png" class="img-fluid" alt="H10 system"></p>
+</section>
+<section id="representing-the-input-molecular-data" class="level2">
+<h2 class="anchored" data-anchor-id="representing-the-input-molecular-data">Representing the input molecular data <a class="anchor" id="3"></a></h2>
+<p>First, we need to represent the molecular system of interest. Currently, Tangelo accepts some xyz input that specifies individual atoms paired with their corresponding xyz cartesian coordinates. We can pass this information as nested lists containing the atom string and the coordinate tuple (see example below) or as a single string, specifying one atom per line and separating each coordinate with a space.</p>
+<p>The <code>openbabel</code> python package can be used to derive the cartesian coordinates from formats such as mol, mol2, ginp, com, pdb (…), and thus provides us with the ability to support your favorite format in the future, maybe even with your contribution to the codebase.</p>
+<p>Currently, this package works with molecular Hamiltonians represented in second-quantization, which is the formalism almost all proof-of-concept demonstrations of quantum chemistry simulations on quantum hardware have utilized so far. We provide all the necessary functionalities to obtain <code>SecondQuantizedMolecule</code> data and Hamiltonians in order to represent this system adequately from the xyz coordinates. The minimal input for the creation of this object is a nested list of atomic coordinates (a multi-line string can also be thrown at the <code>SecondQuantizedMolecule</code> class).</p>
+<p>This object instantiation includes the computation of the mean-field solutions, provided by a Hartree-Fock (HF) calculation. This is the starting point of post-HF calculations that introduce electronic correlation. Besides general molecular information, the <code>SecondQuantizedMolecule</code> contains data about molecular orbitals and spin-orbitals. One well-known use case for this is to freeze molecular orbitals with the <code>frozen_orbitals</code> argument, in order to reduce problem size, for example.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>xyz <span class="op">=</span> [</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="fl">0.0</span>, <span class="fl">1.780</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="op">-</span><span class="fl">1.046</span>, <span class="fl">1.44</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="op">-</span><span class="fl">1.693</span>, <span class="fl">0.55</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="op">-</span><span class="fl">1.693</span>, <span class="op">-</span><span class="fl">0.55</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="op">-</span><span class="fl">1.046</span>, <span class="op">-</span><span class="fl">1.44</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="fl">0.0</span>, <span class="op">-</span><span class="fl">1.78</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="fl">1.046</span>, <span class="op">-</span><span class="fl">1.44</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="fl">1.693</span>, <span class="op">-</span><span class="fl">0.55</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="fl">1.693</span>, <span class="fl">0.55</span>, <span class="fl">0.0</span>)], </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    [<span class="st">'H'</span>, (<span class="fl">1.046</span>, <span class="fl">1.44</span>, <span class="fl">0.0</span>)]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> SecondQuantizedMolecule(xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"minao"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>pprint(mol.__dict__)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'active_occupied': [0, 1, 2, 3, 4],
+ 'active_virtual': [5, 6, 7, 8, 9],
+ 'basis': 'minao',
+ 'ecp': {},
+ 'frozen_occupied': [],
+ 'frozen_orbitals': None,
+ 'frozen_virtual': [],
+ 'mean_field': RHF object of &lt;class 'pyscf.scf.hf.RHF'&gt;,
+ 'mf_energy': -5.27727228441683,
+ 'mo_energies': array([-0.71250664, -0.63494046, -0.63486503, -0.4162918 , -0.41611742,
+        0.07821244,  0.07835203,  0.50868475,  0.50889667,  0.75894782]),
+ 'mo_occ': array([2., 2., 2., 2., 2., 0., 0., 0., 0., 0.]),
+ 'mo_symm_ids': None,
+ 'mo_symm_labels': None,
+ 'n_atoms': 10,
+ 'n_electrons': 10,
+ 'n_mos': 10,
+ 'n_sos': 20,
+ 'q': 0,
+ 'spin': 0,
+ 'symmetry': False,
+ 'uhf': False,
+ 'xyz': [('H', (0.0, 1.78, 0.0)),
+         ('H', (-1.046, 1.44, 0.0)),
+         ('H', (-1.6929999999999996, 0.55, 0.0)),
+         ('H', (-1.6929999999999996, -0.55, 0.0)),
+         ('H', (-1.046, -1.44, 0.0)),
+         ('H', (0.0, -1.78, 0.0)),
+         ('H', (1.046, -1.44, 0.0)),
+         ('H', (1.6929999999999996, -0.55, 0.0)),
+         ('H', (1.6929999999999996, 0.55, 0.0)),
+         ('H', (1.046, 1.44, 0.0))]}</code></pre>
+</div>
+</div>
+</section>
+<section id="calculating-reference-energy-with-classical-solvers" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-reference-energy-with-classical-solvers">Calculating reference energy with classical solvers <a class="anchor" id="4"></a></h2>
+<p>For convenience, we provide access to several well-known classical solvers, such as FCI or CCSD. They may be helpful in investigating hybrid approaches pairing both classical and quantum solvers, or obtaining reference numerical results. The latter help us quantify the accuracy of the approaches we investigate in the rest of this notebook.</p>
+<p>We find that our use case turns out to be a simple problem for FCI and CCSD, which can both be used in a straightforward way, by passing the molecule at instantiation and then calling the <code>simulate</code> method.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver, CCSDSolver</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>fci_energy <span class="op">=</span> FCISolver(mol).simulate()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"FCI energy: </span><span class="sc">{</span>fci_energy<span class="sc">:.5f}</span><span class="ss">"</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ccsd_energy <span class="op">=</span> CCSDSolver(mol).simulate()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"CCSD energy: </span><span class="sc">{</span>ccsd_energy<span class="sc">:.5f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>FCI energy: -5.41008
+CCSD energy: -5.40627</code></pre>
+</div>
+</div>
+</section>
+<section id="exploring-approaches-using-resource-estimation-and-problem-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-approaches-using-resource-estimation-and-problem-decomposition">Exploring approaches using resource estimation and problem decomposition <a class="anchor" id="5"></a></h2>
+<p>Now that we have the reference energy, we can try to tackle the same problem with a quantum computer. In order to do that we have to choose an appropriate quantum algorithm that is able to calculate the ground state energy of a molecule. In this tutorial we choose the VQE algorithm. Note that all the other steps in this pipeline are compatible with other quantum algorithms that can be used for the same purpose (like the phase estimation algorithm). VQE is a popular algorithm, and due to it producing very shallow circuits, it is often the choice for proof of concept demonstrations on near-term quantum hardware. See our <a href="../../examples/variational_methods/vqe.html">VQE notebook</a> for more details about this algorithm. Each quantum algorithm has requirements, i.e.&nbsp;its own unique building blocks and parameters. One important parameter to choose when working with VQE is the choice of strategy to build the parametric wave function (ansatz). At the beginning, we use the vanilla version of a well-known ansatze inspired by the Unitary Coupled Cluster operators in chemistry (a.k.a the UCC ansatze).</p>
+<p>With this set up in mind, we can leverage Tangelo to estimate the resources required and the cost of this experiment. Later in the document, we show how by leveraging Tangelo and choosing smarter strategies to build an ansazte, one could turn a seemingly intractable problem into one easy to simulate on a quantum hardware. Resource estimation helps us assert the feasibility of an approach with regards to device capabilities (simulator or QPU), or compare it to alternatives, including what is considered state-of-the-art.</p>
+<p>Resource estimation is important, as quantum computing is still a nascent field and the current quantum computers have modest capabilities (limited amount of qubits, low gate fidelity, coherence time, etc. It can be one of the drivers of our exploration, and help us identify the most appropriate approaches in our experiments, as well as their bottlenecks, where impactful breakthroughs could make a difference.</p>
+<p>Let’s see what happens when we attempt to tackle our use case with the well-known “standard” VQE algorithm, paired with the UCCSD ansatz and using the Jordan-Wigner (JW) qubit mapping:</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> BuiltInAnsatze, VQESolver</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># VQE-UCCSD heads-on approach.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"ansatz"</span>: BuiltInAnsatze.UCCSD, <span class="st">"qubit_mapping"</span>: <span class="st">"jw"</span>}</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">VQE-UCCSD JW</span><span class="ch">\n</span><span class="sc">{</span>pp<span class="sc">.</span>pformat(vqe_solver.get_resources())<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+VQE-UCCSD JW
+{'circuit_2qubit_gates': 29184,
+ 'circuit_depth': 32654,
+ 'circuit_var_gates': 1804,
+ 'circuit_width': 20,
+ 'qubit_hamiltonian_terms': 3591,
+ 'vqe_variational_parameters': 350}
+</code></pre>
+</div>
+</div>
+<p>Resource requirements show here a quantum circuit that is way beyond the capabilities of current quantum hardware. Although some devices may easily accommodate 20 qubits, the limited coherence time will cause a circuit like this to return nothing but noise. Therefore, even if these many qubits are accessible, executing such a deep circuit would result in the accumulation of noise and would yield irrelevant numerical results.</p>
+<p>Even worse: emulating such a quantum circuit is already a compute-intensive challenge for our classical computers, and can be time-consuming for even top-notch noiseless classical simulators the community has built so far. The numbers of parameters to optimize would require running this circuit many times over, and the size of that space makes converging to accurate results a daunting task in the first place, if not impossible in practice.</p>
+<section id="problem-decomposition-to-reduce-resource-requirements" class="level3">
+<h3 class="anchored" data-anchor-id="problem-decomposition-to-reduce-resource-requirements">Problem decomposition to reduce resource requirements <a class="anchor" id="51"></a></h3>
+<p>Problem decomposition is an approach that can be investigated in order to reduce resource requirements, attempting to find the solution to the initial problem by solving a collection of smaller subproblems. This packages offers several problem decomposition techniques, such as DMET, which is the one we explore here (see <a href="../../examples/problem_decomposition/dmet.html">DMET</a> and <a href="../../examples/problem_decomposition/oniom.html">ONIOM</a> notebooks for more details).</p>
+<p>We decompose more and more aggressively to show the impact on resource requirements, going down to fragments of size one atom. Since all fragments play a identical role in our case, for symmetry reasons, we only focus on one of them and treat the others with CCSD to simplify output and calculations.</p>
+<p>The <code>get_resources</code> method allows us to peek at some metrics characterizing the fragment circuit, to get a sense of its complexity. What we see is the initial circuit for that particular fragment in our problem instance; we have not yet simulated anything, we merely built the initial objects required for the algorithm.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> DMETProblemDecomposition</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.dmet <span class="im">import</span> Localization</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># DMET-VQE, 5 fragments of size 2 atoms each</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>dmet_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"verbose"</span>: <span class="va">False</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                <span class="st">"fragment_atoms"</span>: [<span class="dv">2</span>]<span class="op">*</span><span class="dv">5</span>, <span class="st">"fragment_solvers"</span>: [<span class="st">"vqe"</span>] <span class="op">+</span> [<span class="st">"ccsd"</span>]<span class="op">*</span><span class="dv">4</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                <span class="st">"solvers_options"</span>: [{<span class="st">"qubit_mapping"</span>: <span class="st">"scBK"</span>, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>, </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"verbose"</span>: <span class="va">False</span>}] <span class="op">+</span> [{}]<span class="op">*</span><span class="dv">4</span>}</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>dmet_solver <span class="op">=</span> DMETProblemDecomposition(dmet_options)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>dmet_solver.build()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DMET-VQE-UCCSD, 5 fragments </span><span class="ch">\n</span><span class="sc">{</span>pp<span class="sc">.</span>pformat(dmet_solver.get_resources()[<span class="dv">0</span>])<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># DMET-VQE, 10 fragments of size 1 atom each</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>dmet_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"verbose"</span>: <span class="va">False</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">10</span>, <span class="st">"fragment_solvers"</span>: [<span class="st">"vqe"</span>] <span class="op">+</span> [<span class="st">"ccsd"</span>]<span class="op">*</span><span class="dv">9</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                <span class="st">"solvers_options"</span>: [{<span class="st">"qubit_mapping"</span>: <span class="st">"scBK"</span>, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>, </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                                     <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"verbose"</span>: <span class="va">False</span>}] <span class="op">+</span> [{}]<span class="op">*</span><span class="dv">9</span>}</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>dmet_solver <span class="op">=</span> DMETProblemDecomposition(dmet_options)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>dmet_solver.build()</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DMET-VQE-UCCSD, 10 fragments </span><span class="ch">\n</span><span class="sc">{</span>pp<span class="sc">.</span>pformat(dmet_solver.get_resources()[<span class="dv">0</span>])<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DMET-VQE-UCCSD, 5 fragments 
+{'circuit_2qubit_gates': 1072,
+ 'circuit_depth': 1461,
+ 'circuit_var_gates': 144,
+ 'circuit_width': 6,
+ 'qubit_hamiltonian_terms': 325,
+ 'vqe_variational_parameters': 14}
+
+DMET-VQE-UCCSD, 10 fragments 
+{'circuit_2qubit_gates': 4, 'circuit_depth': 14, 'circuit_var_gates': 4, 'circuit_width': 2, 'qubit_hamiltonian_terms': 9, 'vqe_variational_parameters': 2}
+</code></pre>
+</div>
+</div>
+<p>The next calculation will be carried out with ten fragments of one atom (one fragment and bath orbitals), as depicted in the figure below. <img src="../img/DMET_H10_fragment.png" class="img-fluid" alt="H10 DMET fragment"></p>
+</section>
+</section>
+<section id="validating-the-desired-approach-with-simulators" class="level2">
+<h2 class="anchored" data-anchor-id="validating-the-desired-approach-with-simulators">Validating the desired approach with simulators <a class="anchor" id="6"></a></h2>
+<p>The idea behind DMET is to decompose a molecular system into its constituent fragments and its environment. Each fragment is treated independently and recombined at the end to recover the full molecular energy. DMET is an iterative process: at each iteration, the chemical potential is used to adjust both the total number of electrons in the system and in the fragment Hamiltonian. Through the adjustment of the chemical potential, we iterate until the number of electrons in all of the fragments, taken together, becomes equal to the total number of electrons in the entire system, within a user-defined threshold.</p>
+<p>The algorithm then stops and the electronic structure is returned. For more information, see the <a href="../../examples/problem_decomposition/dmet.html">DMET notebook</a> on the subject.</p>
+<p>Aggressively decomposing this system into 10 fragments of size 1 atom returns resource requirements that seem much more tractable for existing quantum devices, and seem appealing. But we know nothing about the accuracy we can expect from this approach, which relies on VQE to solve our subproblems. The fragments yield quantum circuits of a size that is very manageable for classical simulators, which can support us in the next steps.</p>
+<section id="classical-simulation-of-a-quantum-circuit" class="level3">
+<h3 class="anchored" data-anchor-id="classical-simulation-of-a-quantum-circuit">Classical simulation of a quantum circuit <a class="anchor" id="61"></a></h3>
+<p>Quantum computers currently have limited access and capability. To study the applications of quantum computing on problem instances of reasonable size, we can use classical simulators and emulators in order to anticipate the behavior of quantum algorithms on real devices, in the presence or absence of noise.</p>
+<p>This package provides a submodule called <code>linq</code>, which supports a collection of open-source quantum circuit simulators delivering different performance and features. We are free to choose the most relevant backend for our use cases, thinking about resource requirements, use of shots, presence or absence of noise, and accuracy of simulation, for example. Our algorithms manipulate circuits in our own intermediary representation, and a variety of functions exist in order to convert these objects into popular formats, compatible with other open-source tools.</p>
+<p>The <code>simulate</code> method below runs the DMET algorithm using a simulator backend. We could specify the desired backend in the variable <code>dmet_options</code> described above when creating the <code>DMETProblemDecomposition</code> object. We however did not, and the current default choice is to go for a noiseless simulator: since our package relies on <a href="https://quantumai.google/openfermion">openfermion</a>, which installs <a href="https://quantumai.google/cirq">cirq</a> as a dependency, <code>cirq</code> will be the default backend unless <a href="https://github.com/qulacs/qulacs">qulacs</a> is found in your environment. Currently other supported local backends include <a href="https://qiskit.org/">qiskit</a> and <a href="https://azure.microsoft.com/en-us/resources/development-kit/quantum-computing/">QDK</a>.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>dmet_energy <span class="op">=</span> dmet_solver.simulate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE 10 fragments: </span><span class="sc">{</span>dmet_energy<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(dmet_energy<span class="op">-</span>fci_energy)<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> DMET-VQE 10 fragments: -5.40161
+ Difference with FCI: 8.464849E-03</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="minimizing-the-amount-of-resources-needed-for-the-hardware-experiment" class="level2">
+<h2 class="anchored" data-anchor-id="minimizing-the-amount-of-resources-needed-for-the-hardware-experiment">Minimizing the amount of resources needed for the hardware experiment <a class="anchor" id="7"></a></h2>
+<p>Both DMET and VQE are iterative methods: running all the quantum circuits arising in this algorithm with high accuracy on a quantum device would require a number of measurements and runtime beyond what is reasonable on the few quantum processors available today. A more reasonable experiment in the meantime may consist of looking at a single step, and reflect on whether or not this suggests that with more time and resources we could successfully run the whole algorithm on a quantum device, in theory.</p>
+<p>In the following section, we decide to have a look at the very last step of the DMET-VQE process, for a single fragment: it resulted in a quantum circuit obtained through classical optimization, which can be used to compute the total energy of the system. Because of the symmetry in our use case, the total energy can be calculated by multiplying the fragment energy by the number of fragments. Thanks to the previous section, we know that we can be critical of these results and compare them to the ones obtained with DMET-VQE with a noiseless simulator, or even the FCI results.</p>
+<p>The <code>quantum_fragments_data</code> attribute of our DMET solver object allows us to retrieve fragment information for those who were mapped to a quantum solver. In the case of VQE, this allows us to access the qubit Hamiltonian and quantum circuit obtained after running <code>simulate</code>.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieving the DMET fragment information computed with VQE.</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fragment, fragment_qb_ham, fragment_circuit <span class="op">=</span> dmet_solver.quantum_fragments_data[<span class="dv">0</span>]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fragment_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Circuit object. Size 22 
+
+X         target : [0]   
+X         target : [1]   
+RX        target : [0]   parameter : 1.5707963267948966
+RZ        target : [0]   parameter : 3.1415958072753933  (variational)
+RX        target : [0]   parameter : -1.5707963267948966
+RX        target : [1]   parameter : 1.5707963267948966
+RZ        target : [1]   parameter : 3.1415958072753933  (variational)
+RX        target : [1]   parameter : -1.5707963267948966
+RX        target : [0]   parameter : 1.5707963267948966
+H         target : [1]   
+CNOT      target : [1]   control : [0]   
+RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+CNOT      target : [1]   control : [0]   
+H         target : [1]   
+RX        target : [0]   parameter : -1.5707963267948966
+H         target : [0]   
+RX        target : [1]   parameter : 1.5707963267948966
+CNOT      target : [1]   control : [0]   
+RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+CNOT      target : [1]   control : [0]   
+RX        target : [1]   parameter : -1.5707963267948966
+H         target : [0]   
+</code></pre>
+</div>
+</div>
+<section id="minimizing-the-number-of-measurements-needed" class="level3">
+<h3 class="anchored" data-anchor-id="minimizing-the-number-of-measurements-needed">Minimizing the number of measurements needed <a class="anchor" id="71"></a></h3>
+<p>The computation of the total energy with DMET requires us to compute the 1- and 2-electron Reduced Density Matrices (1- and 2-RDM). Computing the entries of these matrices requires us to have a look at each term present in the fermionic Hamiltonian of our fragment, apply the same qubit mapping as used in the rest of the DMET algorithm, and compute the expectation value of the resulting qubit operator with regards to our <code>fragment_circuit</code>.</p>
+<p>It turns out that different entries sometimes require running the <code>fragment_circuit</code> and measuring the qubits in the same computational bases. Since the DMET energy of a molecular system is a real number, it also means that qubit terms with imaginary coefficients are not relevant. Using this information, we scan the RDMs to find what terms/computational bases actually contribute to the calculation, in order to minimize computation.</p>
+<p>Instead of returning them as a list, we agglomerate these terms into a <code>QubitOperator</code> object (a subclass of <a href="https://quantumai.google/openfermion">Openfermion</a>’s <code>QubitOperator</code>), which also keeps track of their prefactor.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> FermionOperator, QubitOperator</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Find all the measurement bases that are needed to compute the RDMs.</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Accumulate them in a QubitOperator object to manipulate them afterwards.</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>qubit_op_rdm <span class="op">=</span> QubitOperator()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>bases_to_measure <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term <span class="kw">in</span> fragment.fermionic_hamiltonian.terms:</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fermionic term with a prefactor of 1.0.</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    fermionic_term <span class="op">=</span> FermionOperator(term, <span class="fl">1.0</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    qubit_term <span class="op">=</span> fermion_to_qubit_mapping(fermion_operator<span class="op">=</span>fermionic_term, mapping<span class="op">=</span><span class="st">"scBK"</span>,</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>                                          n_spinorbitals<span class="op">=</span>fragment.n_active_sos,</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>                                          n_electrons<span class="op">=</span>fragment.n_active_electrons,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>                                          up_then_down<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    qubit_term.compress()</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Loop to go through all qubit terms. Keep new non-empty ones, with non-imaginary coefficient</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> basis, coeff <span class="kw">in</span> qubit_term.terms.items():</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> coeff.real <span class="op">!=</span> <span class="dv">0</span> <span class="kw">and</span> basis:</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>            bases_to_measure.add(basis)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>            qubit_op_rdm.terms[basis] <span class="op">=</span> coeff</span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>pprint(qubit_op_rdm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.25 [X0] +
+0.25 [X0 X1] +
+0.25 [X0 Z1] +
+-0.25 [Y0 Y1] +
+0.25 [Z0] +
+0.25 [Z0 X1] +
+0.25 [Z0 Z1] +
+0.25 [X1] +
+0.25 [Z1]</code></pre>
+</div>
+</div>
+<p>At first glance, 9 computational bases seem necessary, one per qubit term. However we notice that sometimes a single computational basis can be used to compute the expectation value of several of these qubit terms. For instance, the basis required for <code>Z0Z1</code> could also be used for <code>Z0</code> and <code>Z1</code>.</p>
+<p>Identifying these computational bases and mapping them to these qubit operators is equivalent to “grouping” Hamiltonian terms, and allows us to narrow it down further. This is not a trivial problem in general, and several algorithms exist in order to attempt this. Groups are not unique, some may be better than others for different reasons (accuracy, or reducing the number of measurements), and the scaling of these algorithms is of utmost importance on more ambitious problem instances.</p>
+<p>One of them relies on qubit-wise commutativity, and is shown below. If you would like to know more about this topic, you can have a look at the following references [<a href="https://iopscience.iop.org/article/10.1088/1367-2630/18/2/023023">McClean, J. et al.&nbsp;2016</a> and <a href="https://doi.org/10.1038/nature23879">Kandala, A. et al.&nbsp;2017</a>].</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> group_qwc</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>qwc_map <span class="op">=</span> group_qwc(qubit_op_rdm, seed<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Only execute </span><span class="sc">{</span><span class="bu">len</span>(qwc_map)<span class="sc">}</span><span class="ss"> circuits, instead of </span><span class="sc">{</span><span class="bu">len</span>(qubit_op_rdm.terms)<span class="sc">}</span><span class="ss">.</span><span class="ch">\n</span><span class="ss">"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>pprint(qwc_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Only execute 5 circuits, instead of 9.
+
+{((0, 'X'), (1, 'X')): 0.25 [X0 X1],
+ ((0, 'X'), (1, 'Z')): 0.25 [X0] +
+0.25 [X0 Z1] +
+0.25 [Z1],
+ ((0, 'Y'), (1, 'Y')): -0.25 [Y0 Y1],
+ ((0, 'Z'), (1, 'X')): 0.25 [Z0] +
+0.25 [Z0 X1] +
+0.25 [X1],
+ ((0, 'Z'), (1, 'Z')): 0.25 [Z0 Z1]}</code></pre>
+</div>
+</div>
+<p>Each of the measurement bases here allows us to compute the expectation values of all of the terms it’s mapped to, by running a single quantum circuit. We only need to run 5 circuits on a quantum computer in order to compute everything we need. Let’s put them together quickly: each measurement basis simply adds a few extra “change-of-basis gates”, one per qubit at most, at the end of our fragment quantum circuit.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits.measurement_basis <span class="im">import</span> measurement_basis_gates</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creation of XX, XZ, ZX, ZZ and YY circuits.</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># This is done by appending relevant gates to the quantum circuit representing the quantum state.</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>quantum_circuit <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis <span class="kw">in</span> bases_to_measure:</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    quantum_circuit[basis] <span class="op">=</span> fragment_circuit <span class="op">+</span> Circuit(measurement_basis_gates(basis))</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(quantum_circuit[((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Circuit object. Size 24 
+
+X         target : [0]   
+X         target : [1]   
+RX        target : [0]   parameter : 1.5707963267948966
+RZ        target : [0]   parameter : 3.1415958072753933  (variational)
+RX        target : [0]   parameter : -1.5707963267948966
+RX        target : [1]   parameter : 1.5707963267948966
+RZ        target : [1]   parameter : 3.1415958072753933  (variational)
+RX        target : [1]   parameter : -1.5707963267948966
+RX        target : [0]   parameter : 1.5707963267948966
+H         target : [1]   
+CNOT      target : [1]   control : [0]   
+RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+CNOT      target : [1]   control : [0]   
+H         target : [1]   
+RX        target : [0]   parameter : -1.5707963267948966
+H         target : [0]   
+RX        target : [1]   parameter : 1.5707963267948966
+CNOT      target : [1]   control : [0]   
+RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+CNOT      target : [1]   control : [0]   
+RX        target : [1]   parameter : -1.5707963267948966
+H         target : [0]   
+RX        target : [0]   parameter : 1.5707963267948966
+RX        target : [1]   parameter : 1.5707963267948966
+</code></pre>
+</div>
+</div>
+</section>
+<section id="picking-the-number-of-measurements" class="level3">
+<h3 class="anchored" data-anchor-id="picking-the-number-of-measurements">Picking the number of measurements <a class="anchor" id="72"></a></h3>
+<p>The more shots (measurements) we take, the more accurate the depiction of our prepared quantum state, which is then used to compute expectation values. On one hand, we would like to take as many as possible for the sake of accuracy. On the other hand, the number of shots is directly related to cost in time and resources of our experiment, which we need to keep within the acceptable budget for the experiment.</p>
+<p>It makes sense for expectation values of terms with larger coefficients to be computed with higher accuracy (i.e more shots), as the coefficient may amplify any error committed by the quantum computer during its approximation. Conversely, terms with coefficients that are close to zero may individually contribute less, or even not matter, depending on the desired accuracy of the final results. If the expectation values of several qubit terms can be computed using a single computational basis, it would then make sense to pick the number of shots by looking at the one with the biggest coefficient.</p>
+<p>The community is actively researching ways to provide good estimates, from simple heuristics to more advanced approaches that take into account the problem’s specifics and underlying principles. We look forward to supporting more of them in this package, hopefully with your help!</p>
+<p>Below, we show you what the numbers would be for a simple heuristic stating that “when we multiply the number of shots by 100, we gain an extra digit of accuracy”, coming from binomial sampling. We use that heuristic on each of our 5 measurement bases, requesting 2 digits of accuracy. In our case, since all qubit terms have a coefficient with absolute value of 0.25, the number of measurements this method returns is identical for all 5 circuits.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements.estimate_measurements <span class="im">import</span> get_measurement_estimate</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>measurements <span class="op">=</span> {k: get_measurement_estimate(v, digits<span class="op">=</span><span class="dv">2</span>) <span class="cf">for</span> k,v <span class="kw">in</span> qwc_map.items()}</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>pprint(measurements)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{((0, 'X'), (1, 'X')): {((0, 'X'), (1, 'X')): 62500},
+ ((0, 'X'), (1, 'Z')): {((0, 'X'),): 62500,
+                        ((0, 'X'), (1, 'Z')): 62500,
+                        ((1, 'Z'),): 62500},
+ ((0, 'Y'), (1, 'Y')): {((0, 'Y'), (1, 'Y')): 62500},
+ ((0, 'Z'), (1, 'X')): {((0, 'Z'),): 62500,
+                        ((0, 'Z'), (1, 'X')): 62500,
+                        ((1, 'X'),): 62500},
+ ((0, 'Z'), (1, 'Z')): {((0, 'Z'), (1, 'Z')): 62500}}</code></pre>
+</div>
+</div>
+<p>We decided to go with 10,000 shots per circuit, as we deemed it to be within acceptable accuracy and mesurement budget constraints. This further emphasizes the need to come up with approaches that reduce the number of measurements needed, and algorithms that can make the most of each measurement, in terms of information and accuracy.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>n_shots <span class="op">=</span> <span class="dv">10000</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="circuit-compilation-and-optimization" class="level3">
+<h3 class="anchored" data-anchor-id="circuit-compilation-and-optimization">Circuit compilation and optimization <a class="anchor" id="73"></a></h3>
+<p>The gate set we use to express our circuits so far contains widely-used generic gates such as H, CNOT and RX, RY, RZ gates. But these are not necessarily part of the native gate set supported by the quantum device this circuit will run on. That is, our circuits must be first expressed in an equivalent sequence of native gates supported by the device. Furthermore, applying gate identities to these circuits may yield simpler equivalent ones requiring a lower amount of gates (or even qubits), which may lead to better accuracy.</p>
+<p>This overall process of compilation to a native gate set and further optimization of the circuit is challenging, and is usually handled by hardware manufacturers at runtime. Some document and expose these low-level functionalities through their API. In addition to that, there are several open-source projects that specifically target the issue of compilation and circuit optimization for diverse architectures or gate sets: we look towards supporting some of them in the future.</p>
+</section>
+</section>
+<section id="submitting-an-experiment-to-a-quantum-device" class="level2">
+<h2 class="anchored" data-anchor-id="submitting-an-experiment-to-a-quantum-device">Submitting an experiment to a quantum device<a class="anchor" id="8"></a></h2>
+<p>This package offers several ways to submit experiments on quantum devices. Below, a few examples of how it is possible to do so through quantum cloud services, and converting your circuit in the relevant formats.</p>
+<section id="using-qemist-cloud" class="level3">
+<h3 class="anchored" data-anchor-id="using-qemist-cloud">Using QEMIST Cloud <a class="anchor" id="81"></a></h3>
+<p>The simplest way to submit an experiment to any device available in the supported quantum cloud services is through QEMIST Cloud’s client library, allowing users to run quantum hardware experiments using their QEMIST Cloud account credentials and credits. This is possible if you have access to QEMIST Cloud, and have installed <code>qemist-client</code> Python package. For more details about this feature, please don’t hesitate to refer to our <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html">dedicated notebook</a>, and reach out to us about QEMIST Cloud.</p>
+<p>Below, a simple code snippet illustrating how to run 10,000 shots of the <code>YY</code> circuit on IonQ’s hardware, through Amazon’s Braket quantum cloud services:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve both these values from your QEMIST Cloud dashboard</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_PROJECT_ID'</span>] <span class="op">=</span> <span class="st">"your_project_id_string"</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_AUTH_TOKEN'</span>] <span class="op">=</span> <span class="st">"your_qemist_authentication_token"</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimate, submit and get the results of your job / quantum task through our wrappers</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> QEMISTCloudConnection</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>qcloud_connection <span class="op">=</span> QEMISTCloudConnection()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>circuit_YY <span class="op">=</span> quantum_circuit[((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>price_estimates <span class="op">=</span> qcloud_connection.job_estimate(circuit_YY, n_shots<span class="op">=</span>n_shots)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(price_estimates)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> <span class="st">'arn:aws:braket:::device/qpu/ionq/ionQdevice'</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This two commands would respecfully submit the job to the quantum device and make a blocking call</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># to retrieve the results, through a job ID returned by QEMIST Cloud</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> qcloud_connection.job_submit(circuit_YY, n_shots<span class="op">=</span>n_shots, backend<span class="op">=</span>backend)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>freqs, raw_data <span class="op">=</span> qcloud_connection.job_results(job_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Output:</p>
+<pre class="output"><code>{'arn:aws:braket:::device/qpu/ionq/ionQdevice': 100.3, 'arn:aws:braket:::device/quantum-simulator/amazon/sv1': 3.8, 'arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-1': 3.8}</code></pre>
+</section>
+<section id="using-a-cloud-api-and-format-conversion" class="level3">
+<h3 class="anchored" data-anchor-id="using-a-cloud-api-and-format-conversion">Using a cloud API and format conversion <a class="anchor" id="82"></a></h3>
+<p>The utility functions in <code>tangelo.linq</code> allow us to convert our generic <code>Circuit</code> objects into a variety of formats supported by other open-source packages and services, such as Amazon’s Braket and Microsoft’s Azure Quantum.</p>
+<p>You can thus convert a <code>Circuit</code> object into the desired format and use the API of those services directly in order to reach a QPU or an online simulator if you wish to do so. The example below shows how to convert a <code>Circuit</code> object into the Braket format. Provided that you have a Braket account, the submission process is pretty straightforward, as demonstrated by the <a href="https://github.com/aws/amazon-braket-sdk-python#usage">documentation</a></p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_braket</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>braket_circuit <span class="op">=</span> translate_braket(circuit_YY)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(braket_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|   11   |12|   13    |   14   |
+                                                                                                               
+q0 : -X-Rx(1.57)-Rz(3.14)-Rx(-1.57)-Rx(1.57)-C----------C-Rx(-1.57)-H--------C-----------C--H---------Rx(1.57)-
+                                             |          |                    |           |                     
+q1 : -X-Rx(1.57)-Rz(3.14)-Rx(-1.57)-H--------X-Rz(1.66)-X-H---------Rx(1.57)-X--Rz(1.66)-X--Rx(-1.57)-Rx(1.57)-
+
+T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|   11   |12|   13    |   14   |</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/dg/qjq47mdj0rg7svj15wzvmnhr0000gp/T/ipykernel_97900/3332960052.py:3: DeprecationWarning: Function translate_braket will be deprecated in a future release. Please use the translate_circuit function.
+  braket_circuit = translate_braket(circuit_YY)</code></pre>
+</div>
+</div>
+<p>Likewise, Azure Quantum supports a <a href="https://cloudblogs.microsoft.com/quantum/2021/10/07/the-azure-quantum-ecosystem-expands-to-welcome-qiskit-and-cirq-developer-community/">number of formats</a>. Our package provides similar “translation” functions allowing us to produce a <code>Circuit</code> object into a Q#, qiskit or a cirq format, for example (see cell below) . Provided we have a working Azure Quantum environment, our circuits can be submitted using their API as detailed in the previous link.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_cirq</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>cirq_circuit <span class="op">=</span> translate_cirq(circuit_YY)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cirq_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0: ───I───X───Rx(0.5π)───Rz(π)───Rx(-0.5π)───Rx(0.5π)───@────────────────@───Rx(-0.5π)───H──────────@────────────────@───H───────────Rx(0.5π)───
+                                                        │                │                          │                │
+1: ───I───X───Rx(0.5π)───Rz(π)───Rx(-0.5π)───H──────────X───Rz(0.528π)───X───H───────────Rx(0.5π)───X───Rz(0.528π)───X───Rx(-0.5π)───Rx(0.5π)───</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/var/folders/dg/qjq47mdj0rg7svj15wzvmnhr0000gp/T/ipykernel_97900/1077618134.py:3: DeprecationWarning: Function translate_cirq will be deprecated in a future release. Please use the translate_circuit function.
+  cirq_circuit = translate_cirq(circuit_YY)</code></pre>
+</div>
+</div>
+</section>
+<section id="emulation-on-a-noisy-backend" class="level3">
+<h3 class="anchored" data-anchor-id="emulation-on-a-noisy-backend">Emulation on a noisy backend <a class="anchor" id="83"></a></h3>
+<p>Since many open-source packages support noisy simulation and hardware providers put out some information about their devices, you could be interested in performing the noisy simulation of your quantum circuits. In particular, this could help you get an idea of the performance of your algorithm on a target device or get a sense of the performance a device would require for your algorithm to return an answer within the desired accuracy, without requiring access to a QPU.</p>
+<p>We provide a general interface giving you access to several simulator backends in order to facilitate the simulation of such circuits. You are free to use the “translate” functions of <code>tangelo</code> in order to use the API provided by your favorite open-source package directly if you’d like, as this offers finer control and maybe more features.</p>
+<p>Below, an example using our generic <code>NoiseModel</code> object and specifying the backend when calling <code>simulate</code>. Here we show an example applying a depolarization channel to specific gates, each with a given probability.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>nmp <span class="op">=</span> NoiseModel()</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">"depol"</span>, <span class="fl">0.01</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"RZ"</span>, <span class="st">"depol"</span>, <span class="fl">0.005</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"H"</span>, <span class="st">"depol"</span>, <span class="fl">0.005</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"cirq"</span>, n_shots<span class="op">=</span>n_shots, noise_model<span class="op">=</span>nmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Getting frequencies for each circuits.</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>freq_dict <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term, circuit <span class="kw">in</span> quantum_circuit.items():</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    freq_dict[term], _ <span class="op">=</span>  backend.simulate(circuit)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>pp.pprint(freq_dict[((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'00': 0.281, '01': 0.2089, '10': 0.2205, '11': 0.2896}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="post-processing" class="level2">
+<h2 class="anchored" data-anchor-id="post-processing">Post-processing <a class="anchor" id="9"></a></h2>
+<p>In our publication, we used the DMET-VQE approach paired with the Qubit Coupled-Cluster (QCC) ansatz, in order to generate our fragment circuits. Although IonQ have their own automated tools to perform quantum circuit compilation and optimization for their device, they had a very close look with us at these circuits, in an attempt to help the quantum device get results as accurate as possible. For further details, you can have a look at figure 1c in our publication.</p>
+<p>In particular, the compilation and optimization process in that native gate set allowed us to realize that the circuits corresponding to the <code>XZ</code> and <code>ZX</code> bases were identical, up to a reordering of the qubits. This meant that only one of these two circuits was really necessary to run on the device, in order to derive the frequencies for both bases. This anecdote reinforces the need for our community to develop tools to facilitate gaining such insights, as part of larger workflows and more complex problems.</p>
+<p>For the purpose of our experiments, we thus executed 4 circuits with 10,000 shots each on the device. Using the results, we derived all other quantities relevant to us. In order to reproduce the results studied in our article, we use in the following the values that were obtained from running the circuits run on the device. We use these values to compute one of the data-points presented in our work.</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DMET-QCC experimental frequencies.</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>freq_dict <span class="op">=</span> {((<span class="dv">0</span>, <span class="st">"Z"</span>), (<span class="dv">1</span>, <span class="st">"Z"</span>)): {<span class="st">"00"</span>: <span class="fl">0.0093</span>, <span class="st">"10"</span>: <span class="fl">0.0000</span>, <span class="st">"01"</span>: <span class="fl">0.0000</span>, <span class="st">"11"</span>: <span class="fl">0.9907</span>},</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"X"</span>), (<span class="dv">1</span>, <span class="st">"Z"</span>)): {<span class="st">"00"</span>: <span class="fl">0.0047</span>, <span class="st">"10"</span>: <span class="fl">0.0047</span>, <span class="st">"01"</span>: <span class="fl">0.4959</span>, <span class="st">"11"</span>: <span class="fl">0.4947</span>},</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"X"</span>), (<span class="dv">1</span>, <span class="st">"X"</span>)): {<span class="st">"00"</span>: <span class="fl">0.2059</span>, <span class="st">"10"</span>: <span class="fl">0.2940</span>, <span class="st">"01"</span>: <span class="fl">0.2947</span>, <span class="st">"11"</span>: <span class="fl">0.2054</span>},</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>)): {<span class="st">"00"</span>: <span class="fl">0.2854</span>, <span class="st">"10"</span>: <span class="fl">0.2114</span>, <span class="st">"01"</span>: <span class="fl">0.2017</span>, <span class="st">"11"</span>: <span class="fl">0.3015</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Derived thanks to observations after compilation and optimization: similar to XZ</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>freq_dict[((<span class="dv">0</span>, <span class="st">"Z"</span>), (<span class="dv">1</span>, <span class="st">"X"</span>))] <span class="op">=</span> {<span class="st">"00"</span>: <span class="fl">0.0047</span>, <span class="st">"10"</span>: <span class="fl">0.4959</span>, <span class="st">"01"</span>: <span class="fl">0.0047</span>, <span class="st">"11"</span>: <span class="fl">0.4947</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then compute the expectation values of the different qubit operators of interest by using these frequencies. For simplicity, we manually compute all 9 of them, from the 5 histograms. Note that because the term grouping based on qubit-wise commutativity is not unique, several of these circuits could be used to compute the output of a different computational basis: in our case, it means that we overall have 20,000 shots worth of data by aggregating the two relevant histograms for certain entries,</p>
+<p>We provide a <code>Histogram</code> helper class and the <code>aggregate_histogram</code> function to facilitate this kind of operation. This data-structure encapsulates the dictionary of frequencies and the number of shots used to build it, which is used as a "weight" when aggregating with other histograms. If we keep track of the number of shots used for each computational basis (with a dictionary for example) then it is pretty straightforward to leverage that helper class. In our case it is even easier: all jobs used the name number of shots.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn dictionary of frequencies into Histogram objects</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>freq_hists <span class="op">=</span> {k: Histogram(freqs, n_shots) <span class="cf">for</span> k, freqs <span class="kw">in</span> freq_dict.items()}</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the other Histogram objects by aggregating the ones obtained in the experiment</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">1</span>, <span class="st">'Z'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))])</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">1</span>, <span class="st">'X'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>expectation_values <span class="op">=</span> {term: hist.get_expectation_value(term) <span class="cf">for</span> term, hist <span class="kw">in</span> freq_hists.items()}</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>pprint(expectation_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{((0, 'X'),): 0.0011999999999999789,
+ ((0, 'X'), (1, 'X')): -0.17740000000000003,
+ ((0, 'X'), (1, 'Z')): -0.0012000000000000344,
+ ((0, 'Y'), (1, 'Y')): 0.17379999999999998,
+ ((0, 'Z'),): -0.9813000000000001,
+ ((0, 'Z'), (1, 'X')): -0.0012000000000000344,
+ ((0, 'Z'), (1, 'Z')): 1.0,
+ ((1, 'X'),): 0.0005000000000001115,
+ ((1, 'Z'),): -0.9813000000000001}</code></pre>
+</div>
+</div>
+<p>For a more systematic approach on larger problem instances, it would however be better to reuse the map used for grouping qubit terms earlier, and “reverse” it: that is, associate each desired basis with the set of bases for which a circuit was actually run. Assuming we kept track of shots for each circuit, we could then use a function to compute all entries of <code>freq_dict</code> as weighted average of the frequencies obtained from the device.</p>
+<p>From the expectation values, we can then compute the one- and two-electron reduced density matrices:</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_rdms(fragment, expectation_values):</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    onerdm <span class="op">=</span> np.zeros((fragment.n_active_sos,) <span class="op">*</span> <span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.zeros((fragment.n_active_sos,) <span class="op">*</span> <span class="dv">4</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> term <span class="kw">in</span> fragment.fermionic_hamiltonian.terms:</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>        length <span class="op">=</span> <span class="bu">len</span>(term)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fermionic term with a prefactor of 1.0.</span></span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>        fermionic_term <span class="op">=</span> FermionOperator(term, <span class="fl">1.0</span>)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>        qubit_term <span class="op">=</span> fermion_to_qubit_mapping(fermion_operator<span class="op">=</span>fermionic_term, mapping<span class="op">=</span><span class="st">"scBK"</span>,</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>                                              n_spinorbitals<span class="op">=</span>fragment.n_active_sos,</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>                                              n_electrons<span class="op">=</span>fragment.n_active_electrons,</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>                                              up_then_down<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>        qubit_term.compress()</span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Loop to go through all qubit terms.</span></span>
+<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>        eigenvalue <span class="op">=</span> <span class="fl">0.</span></span>
+<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> qubit_term, coeff <span class="kw">in</span> qubit_term.terms.items():          </span>
+<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> coeff.real <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>                exp_val <span class="op">=</span> expectation_values[qubit_term] <span class="cf">if</span> qubit_term <span class="cf">else</span> <span class="fl">1.</span></span>
+<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>                eigenvalue <span class="op">+=</span> coeff <span class="op">*</span> exp_val</span>
+<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Put the values in np arrays (differentiate 1- and 2-RDM)</span></span>
+<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> length <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>            iele, jele <span class="op">=</span> (<span class="bu">int</span>(ele[<span class="dv">0</span>]) <span class="cf">for</span> ele <span class="kw">in</span> <span class="bu">tuple</span>(term[<span class="dv">0</span>:<span class="dv">2</span>]))</span>
+<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>            onerdm[iele, jele] <span class="op">+=</span> eigenvalue</span>
+<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> length <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>            iele, jele, kele, lele <span class="op">=</span> (<span class="bu">int</span>(ele[<span class="dv">0</span>]) <span class="cf">for</span> ele <span class="kw">in</span> <span class="bu">tuple</span>(term[<span class="dv">0</span>:<span class="dv">4</span>]))</span>
+<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>            twordm[iele, lele, jele, kele] <span class="op">+=</span> eigenvalue</span>
+<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>        onerdm_spinsum <span class="op">=</span> np.zeros((fragment.n_active_mos,)<span class="op">*</span><span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>        twordm_spinsum <span class="op">=</span> np.zeros((fragment.n_active_mos,)<span class="op">*</span><span class="dv">4</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct spin-summed 1-RDM.</span></span>
+<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, j <span class="kw">in</span> itertools.product(<span class="bu">range</span>(fragment.n_active_sos), repeat<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>            onerdm_spinsum[i<span class="op">//</span><span class="dv">2</span>, j<span class="op">//</span><span class="dv">2</span>] <span class="op">+=</span> onerdm[i, j]</span>
+<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct spin-summed 2-RDM.</span></span>
+<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, j, k, l <span class="kw">in</span> itertools.product(<span class="bu">range</span>(fragment.n_active_sos), repeat<span class="op">=</span><span class="dv">4</span>):</span>
+<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>            twordm_spinsum[i<span class="op">//</span><span class="dv">2</span>, j<span class="op">//</span><span class="dv">2</span>, k<span class="op">//</span><span class="dv">2</span>, l<span class="op">//</span><span class="dv">2</span>] <span class="op">+=</span> twordm[i, j, k, l]</span>
+<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> onerdm, twordm, onerdm_spinsum, twordm_spinsum</span>
+<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>onerdm, twordm, onerdm_spinsum, twordm_spinsum <span class="op">=</span> compute_rdms(fragment, expectation_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we compute the fragment energy from the 1- and 2-RDMs:</p>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_electronic_fragment_energy(fragment, onerdm, twordm):</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate the fragment energy."""</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    norb <span class="op">=</span> fragment.t_list[<span class="dv">0</span>]</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    mo_coeff <span class="op">=</span> fragment.mean_field.mo_coeff</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    fock <span class="op">=</span> fragment.fock</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    oneint <span class="op">=</span> fragment.one_ele</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    twoint <span class="op">=</span> fragment.two_ele</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the one- and two- RDMs for DMET energy calculation (Transform to AO basis).</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    one_rdm <span class="op">=</span> mo_coeff <span class="op">@</span> onerdm <span class="op">@</span> mo_coeff.T</span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"pi,ijkl-&gt;pjkl"</span>, mo_coeff, twordm)</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"qj,pjkl-&gt;pqkl"</span>, mo_coeff, twordm)</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"rk,pqkl-&gt;pqrl"</span>, mo_coeff, twordm)</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"sl,pqrl-&gt;pqrs"</span>, mo_coeff, twordm)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate fragment expectation value.</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>    fragment_energy_one_rdm <span class="op">=</span> <span class="fl">0.25</span> <span class="op">*</span> np.einsum(<span class="st">"ij,ij-&gt;"</span>, one_rdm[: norb, :], fock[: norb, :] <span class="op">+</span> oneint[: norb, :]) <span class="op">\</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.25</span> <span class="op">*</span> np.einsum(<span class="st">"ij,ij-&gt;"</span>, one_rdm[:, : norb], fock[:, : norb] <span class="op">+</span> oneint[:, : norb])</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    fragment_energy_twordm <span class="op">=</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[: norb, :, :, :], twoint[: norb, :, :, :]) <span class="op">\</span></span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, : norb, :, :], twoint[:, : norb, :, :]) <span class="op">\</span></span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, :, : norb, :], twoint[:, :, : norb, :]) <span class="op">\</span></span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, :, :, : norb], twoint[:, :, :, : norb])</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>    fragment_energy <span class="op">=</span> fragment_energy_one_rdm <span class="op">+</span> fragment_energy_twordm</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fragment_energy.real</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute fragment energy as core repulsion fragment energy plus electron-correlation energy</span></span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>core_constant <span class="op">=</span> dmet_solver.orbitals.core_constant_energy <span class="op">/</span> <span class="dv">10</span></span>
+<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>e_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
+<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE QCC 1 fragment: </span><span class="sc">{</span>e_fragment<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(e_fragment<span class="op">-</span>(fci_energy<span class="op">/</span><span class="dv">10</span>))<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> DMET-VQE QCC 1 fragment: -0.53820
+ Difference with FCI: 2.808912E-03</code></pre>
+</div>
+</div>
+<section id="error-mitigation" class="level3">
+<h3 class="anchored" data-anchor-id="error-mitigation">Error mitigation <a class="anchor" id="91"></a></h3>
+<p>The next step in our post-processing is focused on error mitigation. Due to noise, the hardware produces a mixed state, which reduces the accuracy of our observables. The ultimate tool against noise is error correction. However, employing error correction is prohibitively expensive in terms of the quantum resources required and out of reach of near-term quantum hardware (hence the “Noisy” in NISQ). Although error correction is not currently available, we can still utilize clever ideas and leverage the known symmetries of the input problem to post-process the raw results coming form the hardware to mitigate the noise to some extent. Tangelo aims to provide a collection of noise mitigation techniques.</p>
+<p>As an error-mitigation strategy in our DMET experiment, we use a density matrix purification technique based on McWeeny’s purification method [<a href="https://doi.org/10.1063/1.4943213">Truflandier et al., 2016</a>] to purify our noisy state to the dominant eigenvector. This is an iterative method which imposes the idempotency condition according to:</p>
+<p><span class="math display">\[ P^{\text{new}}_{pqrs}=3(P^{\text{old}}_{pqrs})^{2}-2(P^{\text{old}}_{pqrs})^{3}\]</span></p>
+<p>For our particular experiment, we can use this method for the 2-RDM since our fragments consist of two electrons – thus the 2-RDM is the full density matrix, and idempotency can be imposed. In general, applying the technique to 2-RDMs of higher electron systems would require the more sophisticated N-representability conditions [<a href="https://doi.org/10.1088/1367-2630/aab919">Rubin et al., 2018</a>].</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.mc_weeny_rdm_purification <span class="im">import</span> mcweeny_purify_2rdm</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>onerdm_spinsum, twordm_spinsum <span class="op">=</span> mcweeny_purify_2rdm(twordm, conv<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>e_pure_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE QCC 1 fragment: </span><span class="sc">{</span>e_pure_fragment<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(e_pure_fragment<span class="op">-</span>(fci_energy<span class="op">/</span><span class="dv">10</span>))<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> DMET-VQE QCC 1 fragment: -0.53885
+ Difference with FCI: 2.153904E-03</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/jamesbrown/Documents/Coding/environments/qsdkmain/lib/python3.9/site-packages/tangelo/toolboxes/post_processing/mc_weeny_rdm_purification.py:68: ComplexWarning: Casting complex values to real discards the imaginary part
+  rdm1_np_temp[i, j] += D_matrix2_final[i, j, k, k]
+/Users/jamesbrown/Documents/Coding/environments/qsdkmain/lib/python3.9/site-packages/tangelo/toolboxes/post_processing/mc_weeny_rdm_purification.py:74: ComplexWarning: Casting complex values to real discards the imaginary part
+  rdm2_np[i//2, j//2, k//2, l//2] += D_matrix2_final[i, j, k, l]</code></pre>
+</div>
+</div>
+</section>
+<section id="statistical-analysis-of-results" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-analysis-of-results">Statistical analysis of results <a class="anchor" id="92"></a></h3>
+<p>Experimental data requires a measure of its uncertainty. As it is often prohibitively expensive to collect large amount of data on quantum computers for the purpose of estimating uncertainty, we generate statistics from our dataset using an established method called bootstrapping [<a href="https://books.google.ca/books/about/An_Introduction_to_the_Bootstrap.html?id=gLlpIUxRntoC&amp;redir_esc=y">Efron, B. et al., 1994</a>]. For each histogram obtained from our experiment, we resample with replacement from that distribution to generate new histograms of the same sample size. We then use these histograms to calculate a new set of expectation values, RDMs, and total energies. This process is repeated many times, and from those outcomes we calculate the average energy and standard deviation of our experiment.</p>
+<p>In our publication, this process was repeated 10,000 times and led to a result of -0.540 ±0.007 Hartree.</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap method.</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>fragment_energies <span class="op">=</span> <span class="bu">list</span>()</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>): <span class="co"># Was 10000 in our publication</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1-2: draw random bootstrap sample and construct new histograms.</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    resample_freq <span class="op">=</span> {term: hist.resample(n_shots) <span class="cf">for</span> term, hist <span class="kw">in</span> freq_hists.items()}</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3-4: compute expectation values.</span></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    expectation_values <span class="op">=</span> {term: hist.get_expectation_value(term) <span class="cf">for</span> term, hist <span class="kw">in</span> resample_freq.items()}</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 5: construct 1- and 2-RDMs.</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    onerdm, twordm, _, _ <span class="op">=</span> compute_rdms(fragment, expectation_values)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    onerdm_spinsum, twordm_spinsum <span class="op">=</span> mcweeny_purify_2rdm(twordm, conv<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 6: calculate the total energy.</span></span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>    e_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>    fragment_energies.append(e_fragment)</span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 7: Repeat steps 1-6.</span></span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 8: calculate the mean and standard deviation.</span></span>
+<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.mean(fragment_energies)</span>
+<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>stdev <span class="op">=</span> np.std(fragment_energies, ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" Bootstrap DMET-VQE QCC energy </span><span class="sc">{</span>mean<span class="sc">:.4f}</span><span class="ss">±</span><span class="sc">{</span>stdev<span class="sc">:.4f}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> Bootstrap DMET-VQE QCC energy -0.5393±0.0062.</code></pre>
+</div>
+</div>
+<p>This is in agreement with the published results [<a href="https://arxiv.org/abs/2102.07045">Kawashima et al., 2021</a>], which repeats this overall workflow for various H-H distances and thoroughly analyzes repulsive, equilibrium, attractive and dissociative regimes.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/DMET_published_H10_results.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">DMET published H10 results</figcaption><p></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing words <a class="anchor" id="10"></a></h2>
+<p>This notebook showed how Tangelo can assist us in implementing end-to-end workflows, which can lead to successful hardware experiments and peer-reviewed publications in the field.</p>
+<p>On the one hand, it highlights how problem decomposition can make larger molecular systems amenable to NISQ devices, in combination with pre- and post-processing methods aiming at reducing resource requirements or improving accuracy. Such approaches may play an essential role in applying quantum computers to the study of larger, industrially relevant, chemical systems.</p>
+<p>On the other hand, it illustrates the complexity of such experiments and the necessity for the community to keep developing tools that can be articulated together to cover elaborate end-to-end workflows. From a molecule, we have built a quantum computing experiment which involved numerous steps, some related to quantum chemistry algorithms, some tackling the challenges of practical experiments on quantum computers.</p>
+<p>We look forward to further developing these tools with the help of the community, in order to both take us a step closer to making quantum computing applicable to real-world problems, but also simply to give you the satisfaction of running a successful experiment yourself soon.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ol type="1">
+<li>Efron, B. &amp; Tibshirani, R. J. An Introduction to the Bootstrap (CRC press, 1994))</li>
+<li>Kassal, I., Whitfield, J. D., Perdomo-Ortiz, A., Yung, M.-H. &amp; Aspuru-Guzik, A. Simulating Chemistry Using Quantum Computers. Annual Review of Physical Chemistry 62, 185–207 (2011).</li>
+<li>Knizia, G. &amp; Chan, G. K. L. Density matrix embedding: A simple alternative to dynamical mean-field theory. Physical Review Letters 109, 186404–186404 (2012).</li>
+<li>Knizia, G. &amp; Chan, G. K. L. Density matrix embedding: A strong-coupling quantum embedding theory. Journal of Chemical Theory and Computation 9, 1428–1432 (2013).</li>
+<li>Peruzzo, A. et al.&nbsp;A variational eigenvalue solver on a quantum processor. Nature Communications 5, 4213–4213 (2013).</li>
+<li>L. A. Truflandier, R. M. Dianzinga, and D. R. Bowler,Generalized canonical purification for density matrixminimization, J. Chem. Phys. 144, 091102 (2016).</li>
+<li>McClean, J., Romero, J., Babbush, R. &amp; Aspuru-Guzik, A.. The theory of variational hybrid quantum-classical algorithms. New J. Phys. 18 023023 (2016).</li>
+<li>McClean, J., Romero, J., Babbush, R. &amp; Aspuru-Guzik, A.. The theory of variational hybrid quantum-classical algorithms. New J. Phys. 18 023023 (2016).</li>
+<li>N. C. Rubin, R. Babbush, and J. McClean, Application of fermionic marginal constraints to hybrid quantum algorithms, New Journal of Physics 20, 053020 (2018).</li>
+<li>Cao, Y. et al.&nbsp;Quantum Chemistry in the Age of Quantum Computing. Chemical Reviews 119, 10856–10915 (2019).</li>
+<li>Y. Nam, J.-S. Chen, N. C. Pisenti, K. Wright, C. Delaney, D. Maslov, K. R. Brown, S. Allen, J. M. Amini, J. Apisdorf, K. M. Beck, A. Blinov, V. Chaplin, M. Chmielewski, C. Collins, S. Debnath, A. M. Ducore, K. M. Hudek, M. Keesan, S. M. Kreikemeier, J. Mizrahi, P. Solomon, M. Williams, J. D. Wong-Campos, C. Monroe, and J. Kim, Ground-state energy estimation of the water molecule on a trapped ion quantum computer, npj Quantum Information 6, 33 (2019).</li>
+<li>Kawashima, Y. et al.&nbsp;Efficient and Accurate Electronic Structure Simulation Demonstrated on a Trapped-Ion Quantum Computer. arXiv:2102.07045 [quant-ph] (2021).</li>
+<li>Bharti, K. et al.&nbsp;Noisy intermediate-scale quantum (NISQ) algorithms. arXiv:2101.08448 [quant-ph] (2021).</li>
+</ol>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
