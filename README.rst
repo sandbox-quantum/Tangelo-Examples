@@ -4,7 +4,7 @@
    :width: 600
    :alt: tangelo_logo
 
-|maintainer| |licence| |systems| |dev_branch|
+|maintainer| |licence| |systems|
 
 ..
     |build|
