@@ -2,3 +2,13 @@ project:
   type: website
   output-dir: docs
 
+website:
+  navbar:
+    background: none
+    search: true
+    left:
+      - text: "Home"
+        file: index.qmd
+  sidebar:
+    style: "docked"
+    contents: auto

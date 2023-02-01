@@ -28,10 +28,10 @@ class TestNotebooks(unittest.TestCase):
     """ Turn target Python notebooks into script, run them as unittests (pass = no errors at runtime) """
 
     def test_linq_basics_notebook(self):
-        run_notebook_as_test('tangelo_basics/1.the_basics.ipynb')
+        run_notebook_as_test('workflow_basics/1.the_basics.ipynb')
 
     def test_linq_noisy_simulation_notebook(self):
-        run_notebook_as_test('tangelo_basics/3.noisy_simulation.ipynb')
+        run_notebook_as_test('workflow_basics/3.noisy_simulation.ipynb')
 
     @unittest.skip("Takes too long for get_resources")
     def test_dmet_notebook(self):
