@@ -2,7 +2,7 @@
 title: ""
 ---
 
-![](examples/img/tangelo_logo_gradient.png)
+![](./examples/img/tangelo_logo_gradient.png)
 
 Welcome !
 
