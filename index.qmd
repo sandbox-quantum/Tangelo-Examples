@@ -1,0 +1,39 @@
+---
+title: ""
+---
+
+![](docs/source/_static/img/tangelo_logo_gradient.png)
+
+Welcome !
+
+This is the repository that holds the jupyter notebooks for [Tangelo](https://github.com/goodchemistryco/Tangelo).
+
+This includes tutorial notebooks and research related notebooks. Anyone can contribute a notebook to this repository!
+
+If you are new to Tangelo, we suggest you start with [1. The basics](examples/tangelo_basics/1.the_basics.html), and 
+[Quantum Chemistry Basics](examples/chemistry/qchem_modelling_basics.html). After that, what you are most interested in determines 
+where you go next.
+
+A full list of the example notebooks is
+
+* Tangelo Basics
+    * [1. The basics](examples/tangelo_basics/1.the_basics.html)
+    * [2. QPU Connection](examples/tangelo_basics/2.qpu_connection.html)
+    * [3. Noisy Simulation](examples/tangelo_basics/3.noisy_simulation.html)
+* Chemistry
+    * [Quantum Chemistry Basics](examples/chemistry/qchem_modelling_basics.html)
+    * [Excited State methods](examples/chemistry/excited_states.html)
+* Variational Methods
+    * [Adapt VQE Solver](examples/variational_methods/adapt.html)
+    * [VQE](examples/variational_methods/vqe.html)
+    * [VQE with user defined ansatz](examples/variational_methods/vqe_custom_ansatz_hamiltonian.html)
+    * [Iterative Qubit Coupled Cluster using only Clifford Circuits](examples/variational_methods/iqcc_using_clifford.html)
+* Measurement Reduction
+    * [Classical Shadows](examples/measurement_reduction/classical_shadows.html)
+* Problem Decomposition
+    * [Density Matrix Embedding Theory](examples/problem_decomposition/dmet.html)
+    * [MIFNO](examples/problem_decomposition/mifno.html)
+    * [ONIOM](examples/problem_decomposition/oniom.html)
+* Hardware Experiments
+    * [End-to-End hardware experiment](examples/hardware_experiments/overview_endtoend.html)
+    * [Hardware Experiment using QEMIST Cloud](examples/hardware_experiments/qemist_cloud_hardware_experiment.html)

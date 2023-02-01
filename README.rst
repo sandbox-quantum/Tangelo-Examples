@@ -14,7 +14,6 @@
 .. |licence| image:: https://img.shields.io/badge/License-Apache_2.0-green
    :target: https://github.com/goodchemistryco/Tangelo/blob/main/LICENSE
 .. |systems| image:: https://img.shields.io/badge/OS-Linux%20MacOS%20Windows-7373e3
-.. |dev_branch| image:: https://img.shields.io/badge/DevBranch-develop-yellow
 .. |build| image:: https://github.com/goodchemistryco/Tangelo/actions/workflows/continuous_integration.yml/badge.svg
    :target: https://github.com/goodchemistryco/Tangelo/actions/workflows/continuous_integration.yml
 
@@ -22,7 +21,13 @@ Welcome !
 
 This is the repository that holds the example jupyter notebooks for `Tangelo <https://github.com/goodchemistryco/Tangelo>`_.
 
-A list of the example notebooks is
+This includes tutorial notebooks and research related notebooks. Anyone can contribute a notebook to this repository!
+
+If you are new to Tangelo, we suggest you start with `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/tangelo_basics/1.the_basics.ipynb>`_, and 
+`Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_. After that, what you are most interested in determines 
+where you go next.
+
+A full list of the example notebooks is
 
 * Tangelo Basics
     * `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/tangelo_basics/1.the_basics.ipynb>`_
