@@ -185,7 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <figure class="figure">
-<img src="../img/solvation_problems.png" title="Solvation problems" class="img-fluid figure-img">
+<img src="../_img/solvation_problems.png" title="Solvation problems" class="img-fluid figure-img">
 </figure>
 <p></p><figcaption class="figure-caption">Solvation problems</figcaption><p></p>
 </figure>
@@ -200,7 +200,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="how-is-it-done" class="level3">
 <h3 class="anchored" data-anchor-id="how-is-it-done">2.3 How is it done? <a class="anchor" id="23"></a></h3>
 <p>For the remaining part of this section, we will see how to combine the Variational Quantum Eigensolver (VQE) with Hartree-Fock (HF) to compute the ground state energy of a water/carboxylic acid system. We will focus our attention on the hydrogen bond between the COOH group and a water molecule, as seen in the figure below. The numbers on the right correspond to the selected atoms via their indices in the coordinates file. Internally, the <code>ONIOMProblemDecomposition</code> solver adds a hydrogen atom between atoms 0 and 1 to preserve the valence bond completeness.</p>
-<p><img src="img/ONIOM_example.png" width="700"></p>
+<p><img src="../_img/ONIOM_example.png" width="700"></p>
 <p>We want to specifically target the H2O-COOH interaction. We will use the Variational Quantum Eigensolver (VQE) with a Unitary Coupled-Cluster Single and Double excitation (UCCSD) ansatz. The basis set for this fragment is 6-31G(d,p). The rest of the system is simulated using Hartree-Fock (HF) with a minimal basis set (STO-3G).</p>
 <p>First, we import the relevant dependencies:</p>
 <div class="cell" data-execution_count="2">
