@@ -1,4 +1,4 @@
 project:
   type: website
-  output-dir: html_docs
+  output-dir: docs
 
