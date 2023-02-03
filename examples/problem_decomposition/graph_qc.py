@@ -1,6 +1,16 @@
 
 from itertools import combinations
 
+"""Script to perform the graph-|q><c| problem decomposition method on dihydrogen
+clusters.
+
+Ref:
+Zhang, J. H. & Iyengar, S. S.
+Graph-|Q⟩⟨C|, a Graph-Based Quantum/Classical Algorithm for Efficient Electronic
+Structure on Hybrid Quantum/Classical Hardware Systems: Improved Quantum Circuit
+Depth Performance. J. Chem. Theory Comput. (2022) DOI:10/gqk8xq.
+"""
+
 import numpy as np
 from scipy.spatial.distance import pdist
 import networkx as nx
@@ -10,18 +20,6 @@ from tangelo.algorithms.classical import CCSDSolver
 from tangelo.algorithms.variational import BuiltInAnsatze
 from tangelo.problem_decomposition import ONIOMProblemDecomposition
 from tangelo.problem_decomposition.oniom import Fragment
-from tangelo.algorithms.classical import CCSDSolver
-
-"""Script to perform the graph-|q><c| problem decomposition method on dihydrogen
-clusters.
-
-Ref:
-Zhang, J.H., Iyengar, S.S., 2022.
-Graph-|Q⟩⟨C|, a Graph-Based Quantum/Classical Algorithm for Efficient Electronic
-Structure on Hybrid Quantum/Classical Hardware Systems: Improved Quantum Circuit
-Depth Performance.
-J. Chem. Theory Comput. https://doi.org/10/gqk8xq
-"""
 
 
 # Drawn with Avogadro.
