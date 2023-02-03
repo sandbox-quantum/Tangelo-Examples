@@ -1,6 +1,3 @@
-
-from itertools import combinations
-
 """Script to perform the graph-|q><c| problem decomposition method on dihydrogen
 clusters.
 
@@ -10,6 +7,8 @@ Graph-|Q⟩⟨C|, a Graph-Based Quantum/Classical Algorithm for Efficient Electr
 Structure on Hybrid Quantum/Classical Hardware Systems: Improved Quantum Circuit
 Depth Performance. J. Chem. Theory Comput. (2022) DOI:10/gqk8xq.
 """
+
+from itertools import combinations
 
 import numpy as np
 from scipy.spatial.distance import pdist
