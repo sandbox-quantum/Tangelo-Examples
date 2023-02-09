@@ -325,7 +325,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1>Excited States in Tangelo</h1>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo/blob/develop/examples/excited_states.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/excited_states.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
 <p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
 </figure>
 </div>
@@ -335,7 +335,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>To be more concrete, a colorant must emit light in a narrow region in the visible spectrum to be appropriate for the purpose, that is to say it must exhibit a specific wavelength. Another example is solar panels, where the absorption spectrum of a molecule is tuned via chemical functionalization to fit the solar emission spectrum to optimize the energy output efficiency. Here we show an example of a spectrum for the BODIPY molecule, a molecule widely used for fluorescent dyes. BODIPY absorbs light at a lower wavelength (higher energy) and emits light at a higher wavelength (lower energy). To compute this spectrum, one needs to calculate the ground and excited state energies and calculate their intensities. The absorption spectrum for the simplest BODIPY is shown below. Different absorption and emission wavelengths can be targeted by substituting the hydrogen atoms with different functional groups <a href="https://aip.scitation.org/doi/10.1063/5.0076787">J. Chem. Phys. 155, 244102 (2021)</a>.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../_img/bodipy_absorption.png" class="img-fluid figure-img"></p>
+<p><img src="../img/bodipy_absorption.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">BODIPY</figcaption><p></p>
 </figure>
 </div>
@@ -352,11 +352,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> ModuleNotFoundError:</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the data folder at https://github.com/goodchemistryco/Tangelo/tree/develop/examples/data</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Download the data folder at https://github.com/goodchemistryco/Tangelo-Examples/tree/main/examples/chemistry/data</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.isdir(<span class="st">"data"</span>):</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>sudo apt install subversion</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>svn checkout https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo<span class="op">/</span>branches<span class="op">/</span>develop<span class="op">/</span>examples<span class="op">/</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>svn checkout https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo<span class="op">-</span>Examples<span class="op">/</span>branches<span class="op">/</span>main<span class="op">/</span>examples<span class="op">/</span>chemistry<span class="op">/</span>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="table-of-contents" class="level2">
@@ -1048,7 +1048,7 @@ The f(H)V=SVf(E) energies are [-14.86962029 -14.680196   -14.83876634 -14.784038
 </div>
 </div>
 <p>The above plot shows promise that the correct energies indeed align with peaks in the success probability, despite our small number of iterations. To save time, below is the result after running the above code for 1000 iterations. The peaks are centered on the exact energies, represented by the vertical red dashed lines.</p>
-<p><a class="anchor" id="rodeo"></a> <img align="left" width="400" src="../_img/rodeo_1000.png"></p>
+<p><a class="anchor" id="rodeo"></a> <img align="left" width="400" src="../img/rodeo_1000.png"></p>
 </section>
 </section>
 <section id="closing-words" class="level2">
