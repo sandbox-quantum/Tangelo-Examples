@@ -356,7 +356,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Tangelo needs to be installed in your environment. The cell below does this installation for you if it is not found.</li>
 <li>Ensure you have valid ID tokens and logins for the services of your choice (IonQ, Braket…), and that your environment is ready to use them (e.g install their SDK and dependencies according to the instructions they provide)</li>
 </ul>
-<div class="cell">
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -378,7 +378,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>or, in your Python script (<code>os.environ['IONQ_APIKEY'] = &lt;value&gt;</code>)</li>
 </ul>
 <p>Here’s an example of what it could look like for you (make sure you use a valid key, or you’ll get an “unauthorized” error :) )</p>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"IONQ_APIKEY"</span>] <span class="op">=</span> <span class="st">'2T14z1YQEzMLCwuYM110oXPDT2h850E4'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -387,14 +387,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3 class="anchored" data-anchor-id="quantum-circuit">1.3 Quantum circuit <a class="anchor" id="1.3"></a></h3>
 <p>IonQ uses a JSON representation for quantum circuits, which <code>tangelo.linq</code> can generate from an abstract circuit, using the <code>translator</code> module. IonQ also offers partial support for other common formats (OpenQASM, …). For this example, we’ll work with their JSON format, which is pretty much nested lists and dictionaries. For more detailed and up-to-date information, check out their <a href="https://docs.ionq.com/#tag/quantum_programs">documentation</a>.</p>
 <p>Below, we show how users can produce a simple quantum circuit in the JSON format:</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, translate_json_ionq</span>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, translate_circuit</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>circ1 <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">1</span>)])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>json_circ1 <span class="op">=</span> translate_json_ionq(circ1)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>json_circ1 <span class="op">=</span> translate_circuit(circ1, target<span class="op">=</span><span class="st">"ionq"</span>)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json_circ1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'qubits': 2, 'circuit': [{'gate': 'h', 'target': 0}, {'gate': 'x', 'target': 1}]}</code></pre>
+<pre><code>{'qubits': 2, 'circuit': [{'gate': 'h', 'targets': [0]}, {'gate': 'x', 'targets': [1]}]}</code></pre>
 </div>
 </div>
 <p>Our convenience wrappers below do not require users to translate their circuit into the IonQ format: providing a circuit in the Tangelo format is enough.</p>

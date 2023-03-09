@@ -346,7 +346,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <section id="requirements" class="level2">
 <h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
 <p>In order to run the contents of this notebook, I simply recommend that you install <code>tangelo</code> as per the installation instructions, as well as one or several backends supporting noisy simulation (cirq, qiskit, qulacs…). You can install them with <code>pip</code>. Executing the cell below provides a quick way of installing Tangelo, as well as the minimal set of backends to execute code cells in this notebook.</p>
-<div class="cell">
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -361,7 +361,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>A <code>NoiseModel</code> object contains a dictionary that maps abstract gates to a list of noises and their parameters, which are usually probabilities. The type of noise currently available can be reached using the <code>SUPPORTED_NOISE_MODELS</code> variable, and the documentation of the <code>NoiseModel</code> class explains what parameters are valid for each of them. The <code>noisy_gates</code> method allows users to quickly check the set of gates included in the noise model.</p>
 <p>This representation tells the simulation backend that whenever one of the gates listed in this dictionary is encountered at runtime, the corresponding additional noise(s) should be applied to the quantum state afterwards.</p>
 <p>Below, we show the available noise models as well as how users can instantiate a <code>NoiseModel</code> object and then specify noise for any gate relevant to them (here, a Pauli noise with uniform probability distribution over X, Y and Z) using the <code>add_quantum_error</code> method.</p>
-<div class="cell" data-execution_count="1">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel, SUPPORTED_NOISE_MODELS</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Supported noise models: </span><span class="sc">{</span>SUPPORTED_NOISE_MODELS<span class="sc">}</span><span class="ch">\n</span><span class="ss">'</span>)</span>
@@ -380,7 +380,7 @@ Noisy gates: {'CNOT', 'X'}
 </div>
 <p>As you can see above, attempting to print a <code>NoiseModel</code> object prints the underlying dictionary. Each noisy gate is associated with a list of 2-tuples, corresponding to the noise model and its parameters.</p>
 <p>Using <code>add_quantum_error</code> several times on the same gate allows users to specify potentially complex noise models, cumulating <strong>different</strong> types of error channels. Combined with variables spanning sets of gates and the Python syntax, we can quickly express rather complete noise models, such as the arbitrary one below:</p>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> ONE_QUBIT_GATES, TWO_QUBIT_GATES</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>nm <span class="op">=</span> NoiseModel()</span>
@@ -391,7 +391,7 @@ Noisy gates: {'CNOT', 'X'}
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'CNOT'</span>, <span class="st">'depol'</span>, <span class="fl">0.72</span>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'RZ': [('pauli', [0.25, 0.25, 0.25])], 'S': [('pauli', [0.25, 0.25, 0.25])], 'H': [('pauli', [0.25, 0.25, 0.25])], 'RY': [('pauli', [0.25, 0.25, 0.25])], 'Z': [('pauli', [0.25, 0.25, 0.25])], 'RX': [('pauli', [0.25, 0.25, 0.25])], 'Y': [('pauli', [0.25, 0.25, 0.25])], 'T': [('pauli', [0.25, 0.25, 0.25])], 'X': [('pauli', [0.25, 0.25, 0.25])], 'CNOT': [('pauli', [1.0, 0.0, 0.0]), ('depol', 0.72)]}</code></pre>
+<pre><code>{'PHASE': [('pauli', [0.25, 0.25, 0.25])], 'T': [('pauli', [0.25, 0.25, 0.25])], 'RX': [('pauli', [0.25, 0.25, 0.25])], 'S': [('pauli', [0.25, 0.25, 0.25])], 'Z': [('pauli', [0.25, 0.25, 0.25])], 'Y': [('pauli', [0.25, 0.25, 0.25])], 'RY': [('pauli', [0.25, 0.25, 0.25])], 'H': [('pauli', [0.25, 0.25, 0.25])], 'X': [('pauli', [0.25, 0.25, 0.25])], 'RZ': [('pauli', [0.25, 0.25, 0.25])], 'CNOT': [('pauli', [1.0, 0.0, 0.0]), ('depol', 0.72)]}</code></pre>
 </div>
 </div>
 <p><strong>Note</strong>: You can directly access the underlying dictionary of the <code>NoiseModel</code> object through its private member <code>_quantum_errors</code> if you wish to perform some “surgery” on it directly, in order to modify an existing object. We however recommend to use the <code>add_quantum_error</code> whenever possible to avoid bad surprises and subtle bugs.</p>
@@ -400,7 +400,7 @@ Noisy gates: {'CNOT', 'X'}
 <section id="noisy-simulation" class="level2">
 <h2 class="anchored" data-anchor-id="noisy-simulation">2. Noisy Simulation <a class="anchor" id="2"></a></h2>
 <p>Once a noise model has been created, it can be passed to a simulator (preferably at instantiation). Not all simulators can perform noisy simulation: check out the <code>backend_info</code> dictionary to see which targets shows <code>noisy_simulation</code> set to <code>True</code>. Qiskit and qulacs should be among the available options.</p>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> backend_info</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -422,7 +422,7 @@ Noisy gates: {'CNOT', 'X'}
 </div>
 <p>You can then instantiate a <code>Simulator</code> object for the target of your choice, and provide both the number of shots and noise model required. We recommend to set these parameters at instantiation and avoid modifying them later.</p>
 <p>Assuming you have defined an abstract circuit (e.g an object of the <code>Circuit</code> class), the <code>simulate</code> method can then be used to perform the noisy simulation for the desired target and number of shots. It returns a 2-tuple whose second entry is <code>None</code>, which we will disregard as a noisy simulation does not return a statevector.</p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a noise model</span></span>
@@ -439,7 +439,7 @@ Noisy gates: {'CNOT', 'X'}
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>res_pauli1, _ <span class="op">=</span> s_nmp.simulate(c1)</span>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_pauli1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'1': 0.333408, '0': 0.666592}</code></pre>
+<pre><code>{'0': 0.665706, '1': 0.334294}</code></pre>
 </div>
 </div>
 <section id="pauli-error" class="level3">
@@ -470,7 +470,7 @@ Noisy gates: {'CNOT', 'X'}
 <li>If <span class="math inline">\(\lambda=\frac{4^n}{4^n-1}\)</span>, <span class="math inline">\(E\)</span> is a uniform Pauli error channel</li>
 </ul>
 <p>The cell below shows that calculations for our “X-gate circuit” align with this formula. In particular, the case where <span class="math inline">\(\lambda=\frac{4}{3}\)</span> yields the same error channel than the Pauli error channel introduced in the previous section.</p>
-<div class="cell" data-execution_count="5">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> [<span class="fl">0.</span>, <span class="fl">1.</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">3</span>]:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    nmd <span class="op">=</span> NoiseModel()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    nmd.add_quantum_error(<span class="st">"X"</span>, <span class="st">'depol'</span>, l)</span>
@@ -479,12 +479,12 @@ Noisy gates: {'CNOT', 'X'}
 <span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'lambda = </span><span class="sc">{</span>l<span class="sc">:.2f}</span><span class="ss"> :: </span><span class="sc">{</span>res_depol1<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lambda = 0.00 :: {'1': 1.0}
-lambda = 1.00 :: {'0': 0.499606, '1': 0.500394}
-lambda = 1.33 :: {'0': 0.667059, '1': 0.332941}</code></pre>
+lambda = 1.00 :: {'0': 0.500183, '1': 0.499817}
+lambda = 1.33 :: {'0': 0.666488, '1': 0.333512}</code></pre>
 </div>
 </div>
 <p>Similarly, we verify that in the example below, the results coincide with the mathematical formula above, and yield <span class="math inline">\(\frac{1}{2}\rho + \frac{1}{8}I\)</span>, <span class="math inline">\(\rho\)</span> being the density matrix of the system, still left in state <span class="math inline">\(|00\rangle\)</span> after the CNOT gate has been applied.</p>
-<div class="cell" data-execution_count="6">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A circuit with a single CNOT gate</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> Circuit([Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span><span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>)])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -494,7 +494,7 @@ lambda = 1.33 :: {'0': 0.667059, '1': 0.332941}</code></pre>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>res_depol1, _ <span class="op">=</span> s_nmd.simulate(c2)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_depol1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'11': 0.124937, '00': 0.625801, '10': 0.125049, '01': 0.124213}</code></pre>
+<pre><code>{'11': 0.124993, '00': 0.624951, '01': 0.125071, '10': 0.124985}</code></pre>
 </div>
 </div>
 </section>
@@ -511,7 +511,7 @@ lambda = 1.33 :: {'0': 0.667059, '1': 0.332941}</code></pre>
 <li><p>Users may not “get what they ask for”: there is a loss of transparency due to what’s going on under the hood, with the transpiling step.</p></li>
 <li><p>In particular all rotations gates may map into <code>u3</code> gates ar runtime, since it can apply any single-qubit unitary with the right parameters. This means that specifying different noise channel for the different rotation gates (which may make sense according to some researchers) is ill-defined: what noise should then be applied to <code>u3</code> ? Our package limits cumulating quantum error channels of different natures only to avoid stacking redundant noise to mitigate the issue, but it is better to probably switch to another backend to stay true to your research.</p></li>
 </ul>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> get_qiskit_noise_model</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>nm <span class="op">=</span> NoiseModel()</span>
@@ -531,7 +531,7 @@ WARNING: all-qubit error already exists for instruction "u3", composing with add
 <div class="cell-output cell-output-stdout">
 <pre><code>NoiseModel:
   Basis gates: ['cx', 'id', 'rz', 'sx', 'u1', 'u2', 'u3']
-  Instructions with noise: ['u3', 'u2', 'u1']
+  Instructions with noise: ['u2', 'u1', 'u3']
   All-qubits errors: ['u1', 'u2', 'u3']</code></pre>
 </div>
 </div>
@@ -539,12 +539,12 @@ WARNING: all-qubit error already exists for instruction "u3", composing with add
 <section id="qulacs" class="level3">
 <h3 class="anchored" data-anchor-id="qulacs">Qulacs</h3>
 <p><code>qulacs</code> does not have built-in noise model objects, but has noisy gates instead, which means users can build their own noisy circuit by adding these noisy gates when relevant. That noisy circuit is then simulated by the <code>qulacs</code> C++ engine. This very flexible approach, coupled to the fact the qulacs simulator does not enforce any specific basis gate set (it even supports the IBM <code>u</code> gates), lets you do pretty much whatever you want when it comes to noise.</p>
-<p>The <code>translate_qulacs</code> function, taking in an abstract circuit and returning a qulacs circuit thus supports an extra arguments compared to the other one: it can take in a <code>NoiseModel</code> object, and will return the noisy circuit. The <code>Simulator</code> is tasked with calling this translation function with the noise model, under the hood. The noisy circuit is however of limited interest to the user to have access to this circuit, as the noisy gates show up as “generic gates” and very little information is available through Python (the underlying <code>qulacs</code> code being written in C++): all you know is basically where noisy gates have been added.</p>
+<p>The <code>translate_circuit</code> function, taking in an abstract circuit and returning a qulacs circuit thus supports an extra arguments compared to the other one: it can take in a <code>NoiseModel</code> object, and will return the noisy circuit. The <code>Simulator</code> is tasked with calling this translation function with the noise model, under the hood. The noisy circuit is however of limited interest to the user to have access to this circuit, as the noisy gates show up as “generic gates” and very little information is available through Python (the underlying <code>qulacs</code> code being written in C++): all you know is basically where noisy gates have been added.</p>
 <p>If you’d like to know more about what these noisy gates are, please have a look at the following: - <a href="http://docs.qulacs.org/en/latest/intro/4.1_python_tutorial.html#Stochastic-unitary-operations">Brief look at Probabilistic gates</a> - <a href="http://docs.qulacs.org/ja/latest/api/program_listing_file__home_docs_checkouts_readthedocs.org_user_builds_qulacs-rtd-ja_checkouts_latest_qulacs-src_cppsim_gate_factory.cpp.html">Code listing: Noise functions</a></p>
 </section>
 <section id="cirq" class="level3">
 <h3 class="anchored" data-anchor-id="cirq">cirq</h3>
-<p>Much like <code>qulacs</code>, <code>cirq</code> does not have built-in noise model objects, but has noisy gates instead, which means users can build their own noisy circuit by adding these noisy gates when relevant. That noisy circuit is then simulated by <code>cirq</code>. The <code>translate_cirq</code> function takes a <code>NoiseModel</code> object to implement this approach, returning the noisy circuit.</p>
+<p>Much like <code>qulacs</code>, <code>cirq</code> does not have built-in noise model objects, but has noisy gates instead, which means users can build their own noisy circuit by adding these noisy gates when relevant. That noisy circuit is then simulated by <code>cirq</code>. The <code>translate_circuit</code> function takes a <code>NoiseModel</code> object to implement this approach, returning the noisy circuit.</p>
 <p>One further note, the <a href="https://quantumai.google/reference/python/cirq/sim/DensityMatrixSimulator">DensityMatrixSimulator</a> is used for cirq simulation of noisy or mixed state circuits.</p>
 <p>If you’d like to know more about what these noisy gates are, please have a look at the following: - <a href="https://quantumai.google/cirq/noise">Guide: Noise</a> - <a href="https://quantumai.google/reference/python/cirq/ops">Code listing: All Gates</a></p>
 </section>
@@ -557,7 +557,7 @@ WARNING: all-qubit error already exists for instruction "u3", composing with add
 </ul>
 <p>We recommend proceeding on a case-by-case basis. Below, a quick example on our both of them perform on a circuit repeating <code>CNOT</code> ladders a few times. Feel free to change some parameters.</p>
 <p><strong>Note</strong>: Jupyter notebooks may be considerably slower than running Python scripts directly, depending on your environment. They may not be the most reliable when it comes to making a choice. In the future, there may be a <strong>benchmark</strong> folder available in this package, which could help you figure out quickly what is best in your environment and how fast things can go.</p>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -591,56 +591,56 @@ WARNING: all-qubit error already exists for instruction "u3", composing with add
 <div class="cell-output cell-output-stdout">
 <pre><code>Circuit object. Size 42 
 
-H         target : 0   
-H         target : 1   
-H         target : 2   
-H         target : 3   
-H         target : 4   
-CNOT      target : 1   control : 0   
-CNOT      target : 2   control : 1   
-CNOT      target : 3   control : 2   
-CNOT      target : 4   control : 3   
-RY        target : 4   parameter : 2.1
-CNOT      target : 4   control : 3   
-CNOT      target : 3   control : 2   
-CNOT      target : 2   control : 1   
-CNOT      target : 1   control : 0   
-H         target : 0   
-H         target : 1   
-H         target : 2   
-H         target : 3   
-H         target : 4   
-CNOT      target : 1   control : 0   
-CNOT      target : 2   control : 1   
-CNOT      target : 3   control : 2   
-CNOT      target : 4   control : 3   
-RY        target : 4   parameter : 2.1
-CNOT      target : 4   control : 3   
-CNOT      target : 3   control : 2   
-CNOT      target : 2   control : 1   
-CNOT      target : 1   control : 0   
-H         target : 0   
-H         target : 1   
-H         target : 2   
-H         target : 3   
-H         target : 4   
-CNOT      target : 1   control : 0   
-CNOT      target : 2   control : 1   
-CNOT      target : 3   control : 2   
-CNOT      target : 4   control : 3   
-RY        target : 4   parameter : 2.1
-CNOT      target : 4   control : 3   
-CNOT      target : 3   control : 2   
-CNOT      target : 2   control : 1   
-CNOT      target : 1   control : 0   
+H         target : [0]   
+H         target : [1]   
+H         target : [2]   
+H         target : [3]   
+H         target : [4]   
+CNOT      target : [1]   control : [0]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [4]   control : [3]   
+RY        target : [4]   parameter : 2.1
+CNOT      target : [4]   control : [3]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [1]   control : [0]   
+H         target : [0]   
+H         target : [1]   
+H         target : [2]   
+H         target : [3]   
+H         target : [4]   
+CNOT      target : [1]   control : [0]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [4]   control : [3]   
+RY        target : [4]   parameter : 2.1
+CNOT      target : [4]   control : [3]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [1]   control : [0]   
+H         target : [0]   
+H         target : [1]   
+H         target : [2]   
+H         target : [3]   
+H         target : [4]   
+CNOT      target : [1]   control : [0]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [4]   control : [3]   
+RY        target : [4]   parameter : 2.1
+CNOT      target : [4]   control : [3]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [1]   control : [0]   
 
 {'RY': [('pauli', [0.5, 0.5, 0.0])], 'CNOT': [('depol', 0.2)]} 
 
-qulacs:: {'01001': 0.030883, '00001': 0.031351, '10011': 0.03107, '01100': 0.031351, '00000': 0.031517, '11111': 0.03082, '01010': 0.031476, '10001': 0.031431, '01110': 0.031532, '00011': 0.030792, '10100': 0.031409, '01101': 0.030943, '11100': 0.03157, '01111': 0.030823, '00101': 0.031023, '10111': 0.031255, '10000': 0.031422, '01000': 0.031518, '00111': 0.031402, '00110': 0.031463, '11101': 0.031031, '10010': 0.031514, '11000': 0.031096, '11010': 0.031316, '11001': 0.031189, '10110': 0.031518, '00010': 0.03152, '00100': 0.031395, '11110': 0.0313, '01011': 0.030954, '10101': 0.031207, '11011': 0.030909}      (elapsed: 9.4 s)
+cirq:: {'10110': 0.031467, '11001': 0.03113, '00000': 0.031401, '01100': 0.031785, '10100': 0.031793, '11111': 0.030839, '01111': 0.031061, '10101': 0.03082, '00001': 0.031185, '11100': 0.03136, '11010': 0.031607, '01010': 0.031367, '01001': 0.031188, '00011': 0.030849, '00101': 0.03113, '11110': 0.031378, '00010': 0.031566, '10000': 0.03142, '11000': 0.031563, '00111': 0.030893, '10001': 0.031271, '00100': 0.031254, '01101': 0.030801, '11011': 0.03114, '01011': 0.03132, '01000': 0.031301, '10011': 0.031099, '10111': 0.031005, '01110': 0.031418, '11101': 0.030834, '10010': 0.031388, '00110': 0.031367}     (elapsed: 5.5 s)
 
-cirq:: {'01100': 0.031442, '10101': 0.030877, '10110': 0.031383, '10000': 0.031426, '10011': 0.031152, '00111': 0.031193, '01010': 0.031376, '11101': 0.031116, '00001': 0.0312, '11110': 0.030925, '11100': 0.031305, '10100': 0.031389, '11111': 0.031429, '00011': 0.031252, '01000': 0.031271, '11001': 0.030979, '00101': 0.030792, '00010': 0.031526, '00100': 0.031328, '01111': 0.031311, '11010': 0.031594, '01101': 0.031214, '10111': 0.031073, '00000': 0.031246, '11000': 0.031408, '10001': 0.0313, '01110': 0.031336, '11011': 0.031211, '01001': 0.030981, '00110': 0.03122, '01011': 0.031223, '10010': 0.031522}   (elapsed: 6.1 s)
+qiskit:: {'10111': 0.029946, '01100': 0.030131, '00000': 0.030416, '11110': 0.030231, '01011': 0.032338, '10000': 0.032232, '11000': 0.030366, '01001': 0.030344, '11010': 0.032555, '10011': 0.032224, '00001': 0.031977, '10101': 0.032195, '10100': 0.030172, '11001': 0.032078, '01110': 0.032224, '00011': 0.030167, '10110': 0.032283, '11101': 0.030029, '00111': 0.032251, '01010': 0.030193, '01101': 0.032227, '11111': 0.032376, '01000': 0.032486, '11011': 0.030211, '10010': 0.030649, '00100': 0.032344, '00110': 0.030454, '10001': 0.030305, '00010': 0.032109, '01111': 0.03028, '00101': 0.030018, '11100': 0.032189}     (elapsed: 2.1 s)
 
-qiskit:: {'11100': 0.032322, '00110': 0.030357, '01100': 0.030185, '10001': 0.030262, '01010': 0.030534, '01000': 0.032281, '10010': 0.030161, '10100': 0.030477, '00101': 0.030286, '10111': 0.030431, '11101': 0.030195, '00011': 0.030194, '00001': 0.03232, '10101': 0.032074, '11110': 0.030387, '10000': 0.03244, '10110': 0.03223, '01011': 0.032069, '01110': 0.032114, '01111': 0.030611, '00111': 0.03217, '00000': 0.030154, '11010': 0.032244, '11001': 0.031909, '11011': 0.030249, '00010': 0.03198, '10011': 0.032057, '00100': 0.032304, '11000': 0.03024, '01101': 0.032048, '01001': 0.030228, '11111': 0.032487}      (elapsed: 2.1 s)
+qulacs:: {'10110': 0.031455, '00100': 0.031153, '11111': 0.030975, '10001': 0.031072, '11100': 0.031301, '01110': 0.03146, '00111': 0.031039, '01001': 0.030899, '01011': 0.030996, '11101': 0.03128, '11010': 0.03132, '00110': 0.031647, '11110': 0.031263, '10010': 0.03098, '10101': 0.031471, '01010': 0.031262, '11011': 0.031197, '11000': 0.031448, '00011': 0.03094, '10011': 0.031287, '00010': 0.031363, '01111': 0.031272, '00001': 0.03129, '10100': 0.03135, '01100': 0.031506, '01101': 0.031216, '01000': 0.031404, '00101': 0.030979, '00000': 0.031368, '10111': 0.03109, '11001': 0.031172, '10000': 0.031545}    (elapsed: 7.5 s)
 </code></pre>
 </div>
 </div>
