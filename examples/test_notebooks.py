@@ -33,7 +33,6 @@ class TestNotebooks(unittest.TestCase):
     def test_linq_noisy_simulation_notebook(self):
         run_notebook_as_test('workflow_basics/3.noisy_simulation.ipynb')
 
-    @unittest.skip("Takes too long for get_resources")
     def test_dmet_notebook(self):
         run_notebook_as_test('problem_decomposition/dmet.ipynb')
 
