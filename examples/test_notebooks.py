@@ -64,7 +64,6 @@ class TestNotebooks(unittest.TestCase):
     def test_iQCC_clifford_notebook(self):
         run_notebook_as_test('variational_methods/iqcc_using_clifford.ipynb')
 
-    @unittest.skip("Takes too long with get_resources")
     def test_overview_end_to_end_notebook(self):
         run_notebook_as_test('hardware_experiments/overview_endtoend.ipynb')
 
