@@ -416,7 +416,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  'frozen_orbitals': None,
  'frozen_virtual': [],
  'mean_field': RHF object of &lt;class 'pyscf.scf.hf.RHF'&gt;,
- 'mf_energy': -5.27727228441683,
+ 'mf_energy': -5.2772722844168225,
  'mo_energies': array([-0.71250664, -0.63494046, -0.63486503, -0.4162918 , -0.41611742,
         0.07821244,  0.07835203,  0.50868475,  0.50889667,  0.75894782]),
  'mo_occ': array([2., 2., 2., 2., 2., 0., 0., 0., 0., 0.]),
@@ -576,22 +576,22 @@ DMET-VQE-UCCSD, 10 fragments
 X         target : [0]   
 X         target : [1]   
 RX        target : [0]   parameter : 1.5707963267948966
-RZ        target : [0]   parameter : 3.1415958072753933  (variational)
+RZ        target : [0]   parameter : 3.1415958073076995  (variational)
 RX        target : [0]   parameter : -1.5707963267948966
 RX        target : [1]   parameter : 1.5707963267948966
-RZ        target : [1]   parameter : 3.1415958072753933  (variational)
+RZ        target : [1]   parameter : 3.1415958073076995  (variational)
 RX        target : [1]   parameter : -1.5707963267948966
 RX        target : [0]   parameter : 1.5707963267948966
 H         target : [1]   
 CNOT      target : [1]   control : [0]   
-RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+RZ        target : [1]   parameter : 1.658627529909104   (variational)
 CNOT      target : [1]   control : [0]   
 H         target : [1]   
 RX        target : [0]   parameter : -1.5707963267948966
 H         target : [0]   
 RX        target : [1]   parameter : 1.5707963267948966
 CNOT      target : [1]   control : [0]   
-RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+RZ        target : [1]   parameter : 1.658627529909104   (variational)
 CNOT      target : [1]   control : [0]   
 RX        target : [1]   parameter : -1.5707963267948966
 H         target : [0]   
@@ -683,22 +683,22 @@ H         target : [0]
 X         target : [0]   
 X         target : [1]   
 RX        target : [0]   parameter : 1.5707963267948966
-RZ        target : [0]   parameter : 3.1415958072753933  (variational)
+RZ        target : [0]   parameter : 3.1415958073076995  (variational)
 RX        target : [0]   parameter : -1.5707963267948966
 RX        target : [1]   parameter : 1.5707963267948966
-RZ        target : [1]   parameter : 3.1415958072753933  (variational)
+RZ        target : [1]   parameter : 3.1415958073076995  (variational)
 RX        target : [1]   parameter : -1.5707963267948966
 RX        target : [0]   parameter : 1.5707963267948966
 H         target : [1]   
 CNOT      target : [1]   control : [0]   
-RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+RZ        target : [1]   parameter : 1.658627529909104   (variational)
 CNOT      target : [1]   control : [0]   
 H         target : [1]   
 RX        target : [0]   parameter : -1.5707963267948966
 H         target : [0]   
 RX        target : [1]   parameter : 1.5707963267948966
 CNOT      target : [1]   control : [0]   
-RZ        target : [1]   parameter : 1.6586275298890196  (variational)
+RZ        target : [1]   parameter : 1.658627529909104   (variational)
 CNOT      target : [1]   control : [0]   
 RX        target : [1]   parameter : -1.5707963267948966
 H         target : [0]   
@@ -778,9 +778,9 @@ RX        target : [1]   parameter : 1.5707963267948966
 <p>The utility functions in <code>tangelo.linq</code> allow us to convert our generic <code>Circuit</code> objects into a variety of formats supported by other open-source packages and services, such as Amazon’s Braket and Microsoft’s Azure Quantum.</p>
 <p>You can thus convert a <code>Circuit</code> object into the desired format and use the API of those services directly in order to reach a QPU or an online simulator if you wish to do so. The example below shows how to convert a <code>Circuit</code> object into the Braket format. Provided that you have a Braket account, the submission process is pretty straightforward, as demonstrated by the <a href="https://github.com/aws/amazon-braket-sdk-python#usage">documentation</a></p>
 <div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_braket</span>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_circuit</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>braket_circuit <span class="op">=</span> translate_braket(circuit_YY)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>braket_circuit <span class="op">=</span> translate_circuit(circuit_YY, target<span class="op">=</span><span class="st">"braket"</span>)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(braket_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|   11   |12|   13    |   14   |
@@ -791,25 +791,17 @@ q1 : -X-Rx(1.57)-Rz(3.14)-Rx(-1.57)-H--------X-Rz(1.66)-X-H---------Rx(1.57)-X--
 
 T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|   11   |12|   13    |   14   |</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/dg/qjq47mdj0rg7svj15wzvmnhr0000gp/T/ipykernel_97900/3332960052.py:3: DeprecationWarning: Function translate_braket will be deprecated in a future release. Please use the translate_circuit function.
-  braket_circuit = translate_braket(circuit_YY)</code></pre>
-</div>
 </div>
 <p>Likewise, Azure Quantum supports a <a href="https://cloudblogs.microsoft.com/quantum/2021/10/07/the-azure-quantum-ecosystem-expands-to-welcome-qiskit-and-cirq-developer-community/">number of formats</a>. Our package provides similar “translation” functions allowing us to produce a <code>Circuit</code> object into a Q#, qiskit or a cirq format, for example (see cell below) . Provided we have a working Azure Quantum environment, our circuits can be submitted using their API as detailed in the previous link.</p>
 <div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_cirq</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>cirq_circuit <span class="op">=</span> translate_cirq(circuit_YY)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cirq_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_circuit</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>cirq_circuit <span class="op">=</span> translate_circuit(circuit_YY, target<span class="op">=</span><span class="st">"cirq"</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cirq_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0: ───I───X───Rx(0.5π)───Rz(π)───Rx(-0.5π)───Rx(0.5π)───@────────────────@───Rx(-0.5π)───H──────────@────────────────@───H───────────Rx(0.5π)───
                                                         │                │                          │                │
 1: ───I───X───Rx(0.5π)───Rz(π)───Rx(-0.5π)───H──────────X───Rz(0.528π)───X───H───────────Rx(0.5π)───X───Rz(0.528π)───X───Rx(-0.5π)───Rx(0.5π)───</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/var/folders/dg/qjq47mdj0rg7svj15wzvmnhr0000gp/T/ipykernel_97900/1077618134.py:3: DeprecationWarning: Function translate_cirq will be deprecated in a future release. Please use the translate_circuit function.
-  cirq_circuit = translate_cirq(circuit_YY)</code></pre>
 </div>
 </div>
 </section>
@@ -819,25 +811,25 @@ T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|
 <p>We provide a general interface giving you access to several simulator backends in order to facilitate the simulation of such circuits. You are free to use the “translate” functions of <code>tangelo</code> in order to use the API provided by your favorite open-source package directly if you’d like, as this offers finer control and maybe more features.</p>
 <p>Below, an example using our generic <code>NoiseModel</code> object and specifying the backend when calling <code>simulate</code>. Here we show an example applying a depolarization channel to specific gates, each with a given probability.</p>
 <div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>nmp <span class="op">=</span> NoiseModel()</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">"depol"</span>, <span class="fl">0.01</span>)</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"RZ"</span>, <span class="st">"depol"</span>, <span class="fl">0.005</span>)</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"H"</span>, <span class="st">"depol"</span>, <span class="fl">0.005</span>)</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"cirq"</span>, n_shots<span class="op">=</span>n_shots, noise_model<span class="op">=</span>nmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>nmp <span class="op">=</span> NoiseModel()</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">"depol"</span>, <span class="fl">0.01</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"RZ"</span>, <span class="st">"depol"</span>, <span class="fl">0.005</span>)</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"H"</span>, <span class="st">"depol"</span>, <span class="fl">0.005</span>)</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"cirq"</span>, n_shots<span class="op">=</span>n_shots, noise_model<span class="op">=</span>nmp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Getting frequencies for each circuits.</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>freq_dict <span class="op">=</span> <span class="bu">dict</span>()</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term, circuit <span class="kw">in</span> quantum_circuit.items():</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    freq_dict[term], _ <span class="op">=</span>  backend.simulate(circuit)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>pp.pprint(freq_dict[((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Getting frequencies for each circuits.</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>freq_dict <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> term, circuit <span class="kw">in</span> quantum_circuit.items():</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    freq_dict[term], _ <span class="op">=</span>  backend.simulate(circuit)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>pp.pprint(freq_dict[((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>))])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'00': 0.281, '01': 0.2089, '10': 0.2205, '11': 0.2896}</code></pre>
+<pre><code>{'00': 0.3003, '01': 0.2004, '10': 0.2071, '11': 0.2922}</code></pre>
 </div>
 </div>
 </section>
@@ -848,32 +840,32 @@ T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|
 <p>In particular, the compilation and optimization process in that native gate set allowed us to realize that the circuits corresponding to the <code>XZ</code> and <code>ZX</code> bases were identical, up to a reordering of the qubits. This meant that only one of these two circuits was really necessary to run on the device, in order to derive the frequencies for both bases. This anecdote reinforces the need for our community to develop tools to facilitate gaining such insights, as part of larger workflows and more complex problems.</p>
 <p>For the purpose of our experiments, we thus executed 4 circuits with 10,000 shots each on the device. Using the results, we derived all other quantities relevant to us. In order to reproduce the results studied in our article, we use in the following the values that were obtained from running the circuits run on the device. We use these values to compute one of the data-points presented in our work.</p>
 <div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DMET-QCC experimental frequencies.</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>freq_dict <span class="op">=</span> {((<span class="dv">0</span>, <span class="st">"Z"</span>), (<span class="dv">1</span>, <span class="st">"Z"</span>)): {<span class="st">"00"</span>: <span class="fl">0.0093</span>, <span class="st">"10"</span>: <span class="fl">0.0000</span>, <span class="st">"01"</span>: <span class="fl">0.0000</span>, <span class="st">"11"</span>: <span class="fl">0.9907</span>},</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"X"</span>), (<span class="dv">1</span>, <span class="st">"Z"</span>)): {<span class="st">"00"</span>: <span class="fl">0.0047</span>, <span class="st">"10"</span>: <span class="fl">0.0047</span>, <span class="st">"01"</span>: <span class="fl">0.4959</span>, <span class="st">"11"</span>: <span class="fl">0.4947</span>},</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"X"</span>), (<span class="dv">1</span>, <span class="st">"X"</span>)): {<span class="st">"00"</span>: <span class="fl">0.2059</span>, <span class="st">"10"</span>: <span class="fl">0.2940</span>, <span class="st">"01"</span>: <span class="fl">0.2947</span>, <span class="st">"11"</span>: <span class="fl">0.2054</span>},</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>)): {<span class="st">"00"</span>: <span class="fl">0.2854</span>, <span class="st">"10"</span>: <span class="fl">0.2114</span>, <span class="st">"01"</span>: <span class="fl">0.2017</span>, <span class="st">"11"</span>: <span class="fl">0.3015</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># DMET-QCC experimental frequencies.</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>freq_dict <span class="op">=</span> {((<span class="dv">0</span>, <span class="st">"Z"</span>), (<span class="dv">1</span>, <span class="st">"Z"</span>)): {<span class="st">"00"</span>: <span class="fl">0.0093</span>, <span class="st">"10"</span>: <span class="fl">0.0000</span>, <span class="st">"01"</span>: <span class="fl">0.0000</span>, <span class="st">"11"</span>: <span class="fl">0.9907</span>},</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"X"</span>), (<span class="dv">1</span>, <span class="st">"Z"</span>)): {<span class="st">"00"</span>: <span class="fl">0.0047</span>, <span class="st">"10"</span>: <span class="fl">0.0047</span>, <span class="st">"01"</span>: <span class="fl">0.4959</span>, <span class="st">"11"</span>: <span class="fl">0.4947</span>},</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"X"</span>), (<span class="dv">1</span>, <span class="st">"X"</span>)): {<span class="st">"00"</span>: <span class="fl">0.2059</span>, <span class="st">"10"</span>: <span class="fl">0.2940</span>, <span class="st">"01"</span>: <span class="fl">0.2947</span>, <span class="st">"11"</span>: <span class="fl">0.2054</span>},</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>             ((<span class="dv">0</span>, <span class="st">"Y"</span>), (<span class="dv">1</span>, <span class="st">"Y"</span>)): {<span class="st">"00"</span>: <span class="fl">0.2854</span>, <span class="st">"10"</span>: <span class="fl">0.2114</span>, <span class="st">"01"</span>: <span class="fl">0.2017</span>, <span class="st">"11"</span>: <span class="fl">0.3015</span>}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Derived thanks to observations after compilation and optimization: similar to XZ</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>freq_dict[((<span class="dv">0</span>, <span class="st">"Z"</span>), (<span class="dv">1</span>, <span class="st">"X"</span>))] <span class="op">=</span> {<span class="st">"00"</span>: <span class="fl">0.0047</span>, <span class="st">"10"</span>: <span class="fl">0.4959</span>, <span class="st">"01"</span>: <span class="fl">0.0047</span>, <span class="st">"11"</span>: <span class="fl">0.4947</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Derived thanks to observations after compilation and optimization: similar to XZ</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>freq_dict[((<span class="dv">0</span>, <span class="st">"Z"</span>), (<span class="dv">1</span>, <span class="st">"X"</span>))] <span class="op">=</span> {<span class="st">"00"</span>: <span class="fl">0.0047</span>, <span class="st">"10"</span>: <span class="fl">0.4959</span>, <span class="st">"01"</span>: <span class="fl">0.0047</span>, <span class="st">"11"</span>: <span class="fl">0.4947</span>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can then compute the expectation values of the different qubit operators of interest by using these frequencies. For simplicity, we manually compute all 9 of them, from the 5 histograms. Note that because the term grouping based on qubit-wise commutativity is not unique, several of these circuits could be used to compute the output of a different computational basis: in our case, it means that we overall have 20,000 shots worth of data by aggregating the two relevant histograms for certain entries,</p>
 <p>We provide a <code>Histogram</code> helper class and the <code>aggregate_histogram</code> function to facilitate this kind of operation. This data-structure encapsulates the dictionary of frequencies and the number of shots used to build it, which is used as a "weight" when aggregating with other histograms. If we keep track of the number of shots used for each computational basis (with a dictionary for example) then it is pretty straightforward to leverage that helper class. In our case it is even easier: all jobs used the name number of shots.</p>
 <div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn dictionary of frequencies into Histogram objects</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>freq_hists <span class="op">=</span> {k: Histogram(freqs, n_shots) <span class="cf">for</span> k, freqs <span class="kw">in</span> freq_dict.items()}</span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the other Histogram objects by aggregating the ones obtained in the experiment</span></span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">1</span>, <span class="st">'Z'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))])</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">1</span>, <span class="st">'X'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>expectation_values <span class="op">=</span> {term: hist.get_expectation_value(term) <span class="cf">for</span> term, hist <span class="kw">in</span> freq_hists.items()}</span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>pprint(expectation_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn dictionary of frequencies into Histogram objects</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>freq_hists <span class="op">=</span> {k: Histogram(freqs, n_shots) <span class="cf">for</span> k, freqs <span class="kw">in</span> freq_dict.items()}</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the other Histogram objects by aggregating the ones obtained in the experiment</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">1</span>, <span class="st">'Z'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))])</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Z'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>freq_hists[((<span class="dv">1</span>, <span class="st">'X'</span>),)] <span class="op">=</span> aggregate_histograms(freq_hists[((<span class="dv">0</span>, <span class="st">'Z'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))], freq_hists[((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>))])</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>expectation_values <span class="op">=</span> {term: hist.get_expectation_value(term) <span class="cf">for</span> term, hist <span class="kw">in</span> freq_hists.items()}</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>pprint(expectation_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{((0, 'X'),): 0.0011999999999999789,
  ((0, 'X'), (1, 'X')): -0.17740000000000003,
@@ -888,96 +880,96 @@ T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|
 </div>
 <p>For a more systematic approach on larger problem instances, it would however be better to reuse the map used for grouping qubit terms earlier, and “reverse” it: that is, associate each desired basis with the set of bases for which a circuit was actually run. Assuming we kept track of shots for each circuit, we could then use a function to compute all entries of <code>freq_dict</code> as weighted average of the frequencies obtained from the device.</p>
 <p>From the expectation values, we can then compute the one- and two-electron reduced density matrices:</p>
-<div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_rdms(fragment, expectation_values):</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    onerdm <span class="op">=</span> np.zeros((fragment.n_active_sos,) <span class="op">*</span> <span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.zeros((fragment.n_active_sos,) <span class="op">*</span> <span class="dv">4</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> term <span class="kw">in</span> fragment.fermionic_hamiltonian.terms:</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>        length <span class="op">=</span> <span class="bu">len</span>(term)</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fermionic term with a prefactor of 1.0.</span></span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>        fermionic_term <span class="op">=</span> FermionOperator(term, <span class="fl">1.0</span>)</span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>        qubit_term <span class="op">=</span> fermion_to_qubit_mapping(fermion_operator<span class="op">=</span>fermionic_term, mapping<span class="op">=</span><span class="st">"scBK"</span>,</span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>                                              n_spinorbitals<span class="op">=</span>fragment.n_active_sos,</span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>                                              n_electrons<span class="op">=</span>fragment.n_active_electrons,</span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>                                              up_then_down<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>        qubit_term.compress()</span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Loop to go through all qubit terms.</span></span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>        eigenvalue <span class="op">=</span> <span class="fl">0.</span></span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> qubit_term, coeff <span class="kw">in</span> qubit_term.terms.items():          </span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> coeff.real <span class="op">!=</span> <span class="dv">0</span>:</span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>                exp_val <span class="op">=</span> expectation_values[qubit_term] <span class="cf">if</span> qubit_term <span class="cf">else</span> <span class="fl">1.</span></span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>                eigenvalue <span class="op">+=</span> coeff <span class="op">*</span> exp_val</span>
-<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Put the values in np arrays (differentiate 1- and 2-RDM)</span></span>
-<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> length <span class="op">==</span> <span class="dv">2</span>:</span>
-<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>            iele, jele <span class="op">=</span> (<span class="bu">int</span>(ele[<span class="dv">0</span>]) <span class="cf">for</span> ele <span class="kw">in</span> <span class="bu">tuple</span>(term[<span class="dv">0</span>:<span class="dv">2</span>]))</span>
-<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>            onerdm[iele, jele] <span class="op">+=</span> eigenvalue</span>
-<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> length <span class="op">==</span> <span class="dv">4</span>:</span>
-<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>            iele, jele, kele, lele <span class="op">=</span> (<span class="bu">int</span>(ele[<span class="dv">0</span>]) <span class="cf">for</span> ele <span class="kw">in</span> <span class="bu">tuple</span>(term[<span class="dv">0</span>:<span class="dv">4</span>]))</span>
-<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>            twordm[iele, lele, jele, kele] <span class="op">+=</span> eigenvalue</span>
-<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>        onerdm_spinsum <span class="op">=</span> np.zeros((fragment.n_active_mos,)<span class="op">*</span><span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
-<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>        twordm_spinsum <span class="op">=</span> np.zeros((fragment.n_active_mos,)<span class="op">*</span><span class="dv">4</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
-<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct spin-summed 1-RDM.</span></span>
-<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, j <span class="kw">in</span> itertools.product(<span class="bu">range</span>(fragment.n_active_sos), repeat<span class="op">=</span><span class="dv">2</span>):</span>
-<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a>            onerdm_spinsum[i<span class="op">//</span><span class="dv">2</span>, j<span class="op">//</span><span class="dv">2</span>] <span class="op">+=</span> onerdm[i, j]</span>
-<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct spin-summed 2-RDM.</span></span>
-<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, j, k, l <span class="kw">in</span> itertools.product(<span class="bu">range</span>(fragment.n_active_sos), repeat<span class="op">=</span><span class="dv">4</span>):</span>
-<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a>            twordm_spinsum[i<span class="op">//</span><span class="dv">2</span>, j<span class="op">//</span><span class="dv">2</span>, k<span class="op">//</span><span class="dv">2</span>, l<span class="op">//</span><span class="dv">2</span>] <span class="op">+=</span> twordm[i, j, k, l]</span>
-<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> onerdm, twordm, onerdm_spinsum, twordm_spinsum</span>
-<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>onerdm, twordm, onerdm_spinsum, twordm_spinsum <span class="op">=</span> compute_rdms(fragment, expectation_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_rdms(fragment, expectation_values):</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>    onerdm <span class="op">=</span> np.zeros((fragment.n_active_sos,) <span class="op">*</span> <span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.zeros((fragment.n_active_sos,) <span class="op">*</span> <span class="dv">4</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> term <span class="kw">in</span> fragment.fermionic_hamiltonian.terms:</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>        length <span class="op">=</span> <span class="bu">len</span>(term)</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Fermionic term with a prefactor of 1.0.</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>        fermionic_term <span class="op">=</span> FermionOperator(term, <span class="fl">1.0</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>        qubit_term <span class="op">=</span> fermion_to_qubit_mapping(fermion_operator<span class="op">=</span>fermionic_term, mapping<span class="op">=</span><span class="st">"scBK"</span>,</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a>                                              n_spinorbitals<span class="op">=</span>fragment.n_active_sos,</span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>                                              n_electrons<span class="op">=</span>fragment.n_active_electrons,</span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a>                                              up_then_down<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a>        qubit_term.compress()</span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Loop to go through all qubit terms.</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>        eigenvalue <span class="op">=</span> <span class="fl">0.</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> qubit_term, coeff <span class="kw">in</span> qubit_term.terms.items():          </span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> coeff.real <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a>                exp_val <span class="op">=</span> expectation_values[qubit_term] <span class="cf">if</span> qubit_term <span class="cf">else</span> <span class="fl">1.</span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>                eigenvalue <span class="op">+=</span> coeff <span class="op">*</span> exp_val</span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Put the values in np arrays (differentiate 1- and 2-RDM)</span></span>
+<span id="cb39-28"><a href="#cb39-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> length <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb39-29"><a href="#cb39-29" aria-hidden="true" tabindex="-1"></a>            iele, jele <span class="op">=</span> (<span class="bu">int</span>(ele[<span class="dv">0</span>]) <span class="cf">for</span> ele <span class="kw">in</span> <span class="bu">tuple</span>(term[<span class="dv">0</span>:<span class="dv">2</span>]))</span>
+<span id="cb39-30"><a href="#cb39-30" aria-hidden="true" tabindex="-1"></a>            onerdm[iele, jele] <span class="op">+=</span> eigenvalue</span>
+<span id="cb39-31"><a href="#cb39-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> length <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb39-32"><a href="#cb39-32" aria-hidden="true" tabindex="-1"></a>            iele, jele, kele, lele <span class="op">=</span> (<span class="bu">int</span>(ele[<span class="dv">0</span>]) <span class="cf">for</span> ele <span class="kw">in</span> <span class="bu">tuple</span>(term[<span class="dv">0</span>:<span class="dv">4</span>]))</span>
+<span id="cb39-33"><a href="#cb39-33" aria-hidden="true" tabindex="-1"></a>            twordm[iele, lele, jele, kele] <span class="op">+=</span> eigenvalue</span>
+<span id="cb39-34"><a href="#cb39-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-35"><a href="#cb39-35" aria-hidden="true" tabindex="-1"></a>        onerdm_spinsum <span class="op">=</span> np.zeros((fragment.n_active_mos,)<span class="op">*</span><span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb39-36"><a href="#cb39-36" aria-hidden="true" tabindex="-1"></a>        twordm_spinsum <span class="op">=</span> np.zeros((fragment.n_active_mos,)<span class="op">*</span><span class="dv">4</span>, dtype<span class="op">=</span><span class="bu">complex</span>)</span>
+<span id="cb39-37"><a href="#cb39-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-38"><a href="#cb39-38" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct spin-summed 1-RDM.</span></span>
+<span id="cb39-39"><a href="#cb39-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, j <span class="kw">in</span> itertools.product(<span class="bu">range</span>(fragment.n_active_sos), repeat<span class="op">=</span><span class="dv">2</span>):</span>
+<span id="cb39-40"><a href="#cb39-40" aria-hidden="true" tabindex="-1"></a>            onerdm_spinsum[i<span class="op">//</span><span class="dv">2</span>, j<span class="op">//</span><span class="dv">2</span>] <span class="op">+=</span> onerdm[i, j]</span>
+<span id="cb39-41"><a href="#cb39-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-42"><a href="#cb39-42" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Construct spin-summed 2-RDM.</span></span>
+<span id="cb39-43"><a href="#cb39-43" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, j, k, l <span class="kw">in</span> itertools.product(<span class="bu">range</span>(fragment.n_active_sos), repeat<span class="op">=</span><span class="dv">4</span>):</span>
+<span id="cb39-44"><a href="#cb39-44" aria-hidden="true" tabindex="-1"></a>            twordm_spinsum[i<span class="op">//</span><span class="dv">2</span>, j<span class="op">//</span><span class="dv">2</span>, k<span class="op">//</span><span class="dv">2</span>, l<span class="op">//</span><span class="dv">2</span>] <span class="op">+=</span> twordm[i, j, k, l]</span>
+<span id="cb39-45"><a href="#cb39-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-46"><a href="#cb39-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> onerdm, twordm, onerdm_spinsum, twordm_spinsum</span>
+<span id="cb39-47"><a href="#cb39-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-48"><a href="#cb39-48" aria-hidden="true" tabindex="-1"></a>onerdm, twordm, onerdm_spinsum, twordm_spinsum <span class="op">=</span> compute_rdms(fragment, expectation_values)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we compute the fragment energy from the 1- and 2-RDMs:</p>
-<div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_electronic_fragment_energy(fragment, onerdm, twordm):</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate the fragment energy."""</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    norb <span class="op">=</span> fragment.t_list[<span class="dv">0</span>]</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    mo_coeff <span class="op">=</span> fragment.mean_field.mo_coeff</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    fock <span class="op">=</span> fragment.fock</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    oneint <span class="op">=</span> fragment.one_ele</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    twoint <span class="op">=</span> fragment.two_ele</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the one- and two- RDMs for DMET energy calculation (Transform to AO basis).</span></span>
-<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    one_rdm <span class="op">=</span> mo_coeff <span class="op">@</span> onerdm <span class="op">@</span> mo_coeff.T</span>
-<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"pi,ijkl-&gt;pjkl"</span>, mo_coeff, twordm)</span>
-<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"qj,pjkl-&gt;pqkl"</span>, mo_coeff, twordm)</span>
-<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"rk,pqkl-&gt;pqrl"</span>, mo_coeff, twordm)</span>
-<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"sl,pqrl-&gt;pqrs"</span>, mo_coeff, twordm)</span>
-<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate fragment expectation value.</span></span>
-<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>    fragment_energy_one_rdm <span class="op">=</span> <span class="fl">0.25</span> <span class="op">*</span> np.einsum(<span class="st">"ij,ij-&gt;"</span>, one_rdm[: norb, :], fock[: norb, :] <span class="op">+</span> oneint[: norb, :]) <span class="op">\</span></span>
-<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.25</span> <span class="op">*</span> np.einsum(<span class="st">"ij,ij-&gt;"</span>, one_rdm[:, : norb], fock[:, : norb] <span class="op">+</span> oneint[:, : norb])</span>
-<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a>    fragment_energy_twordm <span class="op">=</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[: norb, :, :, :], twoint[: norb, :, :, :]) <span class="op">\</span></span>
-<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, : norb, :, :], twoint[:, : norb, :, :]) <span class="op">\</span></span>
-<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, :, : norb, :], twoint[:, :, : norb, :]) <span class="op">\</span></span>
-<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, :, :, : norb], twoint[:, :, :, : norb])</span>
-<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>    fragment_energy <span class="op">=</span> fragment_energy_one_rdm <span class="op">+</span> fragment_energy_twordm</span>
-<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fragment_energy.real</span>
-<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute fragment energy as core repulsion fragment energy plus electron-correlation energy</span></span>
-<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>core_constant <span class="op">=</span> dmet_solver.orbitals.core_constant_energy <span class="op">/</span> <span class="dv">10</span></span>
-<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>e_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
-<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE QCC 1 fragment: </span><span class="sc">{</span>e_fragment<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(e_fragment<span class="op">-</span>(fci_energy<span class="op">/</span><span class="dv">10</span>))<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_electronic_fragment_energy(fragment, onerdm, twordm):</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate the fragment energy."""</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    norb <span class="op">=</span> fragment.t_list[<span class="dv">0</span>]</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    mo_coeff <span class="op">=</span> fragment.mean_field.mo_coeff</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    fock <span class="op">=</span> fragment.fock</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    oneint <span class="op">=</span> fragment.one_ele</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    twoint <span class="op">=</span> fragment.two_ele</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate the one- and two- RDMs for DMET energy calculation (Transform to AO basis).</span></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    one_rdm <span class="op">=</span> mo_coeff <span class="op">@</span> onerdm <span class="op">@</span> mo_coeff.T</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"pi,ijkl-&gt;pjkl"</span>, mo_coeff, twordm)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"qj,pjkl-&gt;pqkl"</span>, mo_coeff, twordm)</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"rk,pqkl-&gt;pqrl"</span>, mo_coeff, twordm)</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>    twordm <span class="op">=</span> np.einsum(<span class="st">"sl,pqrl-&gt;pqrs"</span>, mo_coeff, twordm)</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate fragment expectation value.</span></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>    fragment_energy_one_rdm <span class="op">=</span> <span class="fl">0.25</span> <span class="op">*</span> np.einsum(<span class="st">"ij,ij-&gt;"</span>, one_rdm[: norb, :], fock[: norb, :] <span class="op">+</span> oneint[: norb, :]) <span class="op">\</span></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.25</span> <span class="op">*</span> np.einsum(<span class="st">"ij,ij-&gt;"</span>, one_rdm[:, : norb], fock[:, : norb] <span class="op">+</span> oneint[:, : norb])</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>    fragment_energy_twordm <span class="op">=</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[: norb, :, :, :], twoint[: norb, :, :, :]) <span class="op">\</span></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, : norb, :, :], twoint[:, : norb, :, :]) <span class="op">\</span></span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, :, : norb, :], twoint[:, :, : norb, :]) <span class="op">\</span></span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>        <span class="op">+</span> <span class="fl">0.125</span> <span class="op">*</span> np.einsum(<span class="st">"ijkl,ijkl-&gt;"</span>, twordm[:, :, :, : norb], twoint[:, :, :, : norb])</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>    fragment_energy <span class="op">=</span> fragment_energy_one_rdm <span class="op">+</span> fragment_energy_twordm</span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fragment_energy.real</span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute fragment energy as core repulsion fragment energy plus electron-correlation energy</span></span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>core_constant <span class="op">=</span> dmet_solver.orbitals.core_constant_energy <span class="op">/</span> <span class="dv">10</span></span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a>e_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE QCC 1 fragment: </span><span class="sc">{</span>e_fragment<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(e_fragment<span class="op">-</span>(fci_energy<span class="op">/</span><span class="dv">10</span>))<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> DMET-VQE QCC 1 fragment: -0.53820
- Difference with FCI: 2.808912E-03</code></pre>
+<pre><code> DMET-VQE QCC 1 fragment: -0.55205
+ Difference with FCI: 1.104160E-02</code></pre>
 </div>
 </div>
 <section id="error-mitigation" class="level3">
@@ -986,21 +978,15 @@ T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|
 <p>As an error-mitigation strategy in our DMET experiment, we use a density matrix purification technique based on McWeeny’s purification method [<a href="https://doi.org/10.1063/1.4943213">Truflandier et al., 2016</a>] to purify our noisy state to the dominant eigenvector. This is an iterative method which imposes the idempotency condition according to:</p>
 <p><span class="math display">\[ P^{\text{new}}_{pqrs}=3(P^{\text{old}}_{pqrs})^{2}-2(P^{\text{old}}_{pqrs})^{3}\]</span></p>
 <p>For our particular experiment, we can use this method for the 2-RDM since our fragments consist of two electrons – thus the 2-RDM is the full density matrix, and idempotency can be imposed. In general, applying the technique to 2-RDMs of higher electron systems would require the more sophisticated N-representability conditions [<a href="https://doi.org/10.1088/1367-2630/aab919">Rubin et al., 2018</a>].</p>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.mc_weeny_rdm_purification <span class="im">import</span> mcweeny_purify_2rdm</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>onerdm_spinsum, twordm_spinsum <span class="op">=</span> mcweeny_purify_2rdm(twordm, conv<span class="op">=</span><span class="fl">1e-2</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>e_pure_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE QCC 1 fragment: </span><span class="sc">{</span>e_pure_fragment<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(e_pure_fragment<span class="op">-</span>(fci_energy<span class="op">/</span><span class="dv">10</span>))<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.mc_weeny_rdm_purification <span class="im">import</span> mcweeny_purify_2rdm</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>onerdm_spinsum, twordm_spinsum <span class="op">=</span> mcweeny_purify_2rdm(twordm.real, conv<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>e_pure_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" DMET-VQE QCC 1 fragment: </span><span class="sc">{</span>e_pure_fragment<span class="sc">:.5f}</span><span class="ch">\n</span><span class="ss"> Difference with FCI: </span><span class="sc">{</span><span class="bu">abs</span>(e_pure_fragment<span class="op">-</span>(fci_energy<span class="op">/</span><span class="dv">10</span>))<span class="sc">:E}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> DMET-VQE QCC 1 fragment: -0.53885
- Difference with FCI: 2.153904E-03</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/Users/jamesbrown/Documents/Coding/environments/qsdkmain/lib/python3.9/site-packages/tangelo/toolboxes/post_processing/mc_weeny_rdm_purification.py:68: ComplexWarning: Casting complex values to real discards the imaginary part
-  rdm1_np_temp[i, j] += D_matrix2_final[i, j, k, k]
-/Users/jamesbrown/Documents/Coding/environments/qsdkmain/lib/python3.9/site-packages/tangelo/toolboxes/post_processing/mc_weeny_rdm_purification.py:74: ComplexWarning: Casting complex values to real discards the imaginary part
-  rdm2_np[i//2, j//2, k//2, l//2] += D_matrix2_final[i, j, k, l]</code></pre>
+<pre><code> DMET-VQE QCC 1 fragment: -0.54020
+ Difference with FCI: 8.035695E-04</code></pre>
 </div>
 </div>
 </section>
@@ -1008,34 +994,34 @@ T  : |0|   1    |   2    |    3    |   4    |5|   6    |7|    8    |   9    |10|
 <h3 class="anchored" data-anchor-id="statistical-analysis-of-results">Statistical analysis of results <a class="anchor" id="92"></a></h3>
 <p>Experimental data requires a measure of its uncertainty. As it is often prohibitively expensive to collect large amount of data on quantum computers for the purpose of estimating uncertainty, we generate statistics from our dataset using an established method called bootstrapping [<a href="https://books.google.ca/books/about/An_Introduction_to_the_Bootstrap.html?id=gLlpIUxRntoC&amp;redir_esc=y">Efron, B. et al., 1994</a>]. For each histogram obtained from our experiment, we resample with replacement from that distribution to generate new histograms of the same sample size. We then use these histograms to calculate a new set of expectation values, RDMs, and total energies. This process is repeated many times, and from those outcomes we calculate the average energy and standard deviation of our experiment.</p>
 <p>In our publication, this process was repeated 10,000 times and led to a result of -0.540 ±0.007 Hartree.</p>
-<div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap method.</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>fragment_energies <span class="op">=</span> <span class="bu">list</span>()</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>): <span class="co"># Was 10000 in our publication</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1-2: draw random bootstrap sample and construct new histograms.</span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    resample_freq <span class="op">=</span> {term: hist.resample(n_shots) <span class="cf">for</span> term, hist <span class="kw">in</span> freq_hists.items()}</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3-4: compute expectation values.</span></span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    expectation_values <span class="op">=</span> {term: hist.get_expectation_value(term) <span class="cf">for</span> term, hist <span class="kw">in</span> resample_freq.items()}</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 5: construct 1- and 2-RDMs.</span></span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    onerdm, twordm, _, _ <span class="op">=</span> compute_rdms(fragment, expectation_values)</span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>    onerdm_spinsum, twordm_spinsum <span class="op">=</span> mcweeny_purify_2rdm(twordm, conv<span class="op">=</span><span class="fl">1e-2</span>)</span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 6: calculate the total energy.</span></span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>    e_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>    fragment_energies.append(e_fragment)</span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 7: Repeat steps 1-6.</span></span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 8: calculate the mean and standard deviation.</span></span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.mean(fragment_energies)</span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a>stdev <span class="op">=</span> np.std(fragment_energies, ddof<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" Bootstrap DMET-VQE QCC energy </span><span class="sc">{</span>mean<span class="sc">:.4f}</span><span class="ss">±</span><span class="sc">{</span>stdev<span class="sc">:.4f}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Bootstrap method.</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>fragment_energies <span class="op">=</span> <span class="bu">list</span>()</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>): <span class="co"># Was 10000 in our publication</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 1-2: draw random bootstrap sample and construct new histograms.</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>    resample_freq <span class="op">=</span> {term: hist.resample(n_shots) <span class="cf">for</span> term, hist <span class="kw">in</span> freq_hists.items()}</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 3-4: compute expectation values.</span></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>    expectation_values <span class="op">=</span> {term: hist.get_expectation_value(term) <span class="cf">for</span> term, hist <span class="kw">in</span> resample_freq.items()}</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 5: construct 1- and 2-RDMs.</span></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>    onerdm, twordm, _, _ <span class="op">=</span> compute_rdms(fragment, expectation_values)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    onerdm_spinsum, twordm_spinsum <span class="op">=</span> mcweeny_purify_2rdm(twordm.real, conv<span class="op">=</span><span class="fl">1e-2</span>)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 6: calculate the total energy.</span></span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    e_fragment <span class="op">=</span> compute_electronic_fragment_energy(fragment, onerdm_spinsum, twordm_spinsum) <span class="op">+</span> core_constant</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    fragment_energies.append(e_fragment)</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Step 7: Repeat steps 1-6.</span></span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 8: calculate the mean and standard deviation.</span></span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> np.mean(fragment_energies)</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>stdev <span class="op">=</span> np.std(fragment_energies, ddof<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f" Bootstrap DMET-VQE QCC energy </span><span class="sc">{</span>mean<span class="sc">:.4f}</span><span class="ss">±</span><span class="sc">{</span>stdev<span class="sc">:.4f}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> Bootstrap DMET-VQE QCC energy -0.5393±0.0062.</code></pre>
+<pre><code> Bootstrap DMET-VQE QCC energy -0.5394±0.0059.</code></pre>
 </div>
 </div>
 <p>This is in agreement with the published results [<a href="https://arxiv.org/abs/2102.07045">Kawashima et al., 2021</a>], which repeats this overall workflow for various H-H distances and thoroughly analyzes repulsive, equilibrium, attractive and dissociative regimes.</p>
