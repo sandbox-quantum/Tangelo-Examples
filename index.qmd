@@ -38,4 +38,4 @@ A full list of the notebooks are
     * [Hardware Experiment using QEMIST Cloud](examples/hardware_experiments/qemist_cloud_hardware_experiment.html)
     * [Berylium IBM quantum experiment](examples/hardware_experiments/berylium_ibm_quantum.html)
 * Fault Tolerant
-    * [State Preparation using Quantum Signal Processing](exampls/fault_tolerant/qsp_state_prep.html)
+    * [State Preparation using Quantum Signal Processing](examples/fault_tolerant/qsp_state_prep.html)
