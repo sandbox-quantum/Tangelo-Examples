@@ -67,6 +67,9 @@ class TestNotebooks(unittest.TestCase):
     def test_overview_end_to_end_notebook(self):
         run_notebook_as_test('hardware_experiments/overview_endtoend.ipynb')
 
+    def test_qsp_state_prep_notebook(self):
+        run_notebook_as_test('fault_tolerant/qsp_state_prep.ipynb')
+
 
 if __name__ == "__main__":
     unittest.main()

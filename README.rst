@@ -51,3 +51,5 @@ A full list of the example notebooks is
     * `End-to-End hardware experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb>`_
     * `Hardware Experiment using QEMIST Cloud <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/qemist_cloud_hardware_experiment.ipynb>`_
     * `Berylium IBM Quantum experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/berylium_ibm_quantum.ipynb>`_
+* Fault Tolerant Algorithms
+    * `State Preparation with Quantum Signal Processing <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/fault_tolerant/qsp_state_prep.ipynb>`_
