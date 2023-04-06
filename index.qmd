@@ -37,3 +37,4 @@ A full list of the notebooks are
     * [End-to-End hardware experiment](examples/hardware_experiments/overview_endtoend.html)
     * [Hardware Experiment using QEMIST Cloud](examples/hardware_experiments/qemist_cloud_hardware_experiment.html)
     * [Berylium IBM quantum experiment](examples/hardware_experiments/berylium_ibm_quantum.html)
+    * [Umbrella inversion Braket](examples/hardware_experiments/umbrella_inversion.html)
