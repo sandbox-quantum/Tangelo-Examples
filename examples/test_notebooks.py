@@ -2,6 +2,7 @@ import unittest
 import subprocess
 import os
 
+from IPython import get_ipython
 
 def run_notebook_as_test(notebook_path):
     """ Convert python notebook into equivalent script, and run it. Return error if any. """
