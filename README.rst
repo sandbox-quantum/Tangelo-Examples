@@ -6,16 +6,17 @@
 
 |maintainer| |licence| |systems|
 
-..
-    |build|
+Launch this repository on Binder: |binder|
 
 .. |maintainer| image:: https://img.shields.io/badge/Maintainer-GoodChemistry-blue
    :target: https://goodchemistry.com
 .. |licence| image:: https://img.shields.io/badge/License-Apache_2.0-green
    :target: https://github.com/goodchemistryco/Tangelo/blob/main/LICENSE
 .. |systems| image:: https://img.shields.io/badge/OS-Linux%20MacOS%20Windows-7373e3
-.. |build| image:: https://github.com/goodchemistryco/Tangelo/actions/workflows/continuous_integration.yml/badge.svg
-   :target: https://github.com/goodchemistryco/Tangelo/actions/workflows/continuous_integration.yml
+.. |binder| image:: https://mybinder.org/badge_logo.svg
+ :target: https://mybinder.org/v2/gh/goodchemistryco/Tangelo-Examples/main
+
+----
 
 Welcome !
 
@@ -51,5 +52,7 @@ A full list of the example notebooks is
     * `End-to-End hardware experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb>`_
     * `Hardware Experiment using QEMIST Cloud <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/qemist_cloud_hardware_experiment.ipynb>`_
     * `Berylium IBM Quantum experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/berylium_ibm_quantum.ipynb>`_
+    * `Umbrella inversion Braket <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/umbrella_inversion.ipynb>`_
+
 * Fault Tolerant Algorithms
     * `State Preparation with Quantum Signal Processing <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/fault_tolerant/qsp_state_prep.ipynb>`_

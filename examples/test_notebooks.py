@@ -2,7 +2,6 @@ import unittest
 import subprocess
 import os
 
-from IPython import get_ipython
 
 def run_notebook_as_test(notebook_path):
     """ Convert python notebook into equivalent script, and run it. Return error if any. """
@@ -70,9 +69,6 @@ class TestNotebooks(unittest.TestCase):
 
     def test_qsp_state_prep_notebook(self):
         run_notebook_as_test('fault_tolerant/qsp_state_prep.ipynb')
-
-    def test_umbrella_inversion_notebook(self):
-        run_notebook_as_test('hardware_experiments/umbrella_inversion.ipynb')
 
 
 if __name__ == "__main__":

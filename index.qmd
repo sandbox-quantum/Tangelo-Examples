@@ -23,9 +23,9 @@ A full list of the notebooks are
     * [Quantum Chemistry Basics](examples/chemistry/qchem_modelling_basics.html)
     * [Excited State methods](examples/chemistry/excited_states.html)
 * Variational Methods
-    * [Adapt VQE Solver](examples/variational_methods/adapt.html)
     * [VQE](examples/variational_methods/vqe.html)
     * [VQE with user defined ansatz](examples/variational_methods/vqe_custom_ansatz_hamiltonian.html)
+    * [Adapt VQE Solver](examples/variational_methods/adapt.html)
     * [Iterative Qubit Coupled Cluster using only Clifford Circuits](examples/variational_methods/iqcc_using_clifford.html)
 * Measurement Reduction
     * [Classical Shadows](examples/measurement_reduction/classical_shadows.html)
@@ -37,6 +37,6 @@ A full list of the notebooks are
     * [End-to-End hardware experiment](examples/hardware_experiments/overview_endtoend.html)
     * [Hardware Experiment using QEMIST Cloud](examples/hardware_experiments/qemist_cloud_hardware_experiment.html)
     * [Berylium IBM quantum experiment](examples/hardware_experiments/berylium_ibm_quantum.html)
-    * [Umbrella inversion Braket](examples/hardware_experiments/umbrella_inversion.html
+    * [Umbrella inversion Braket](examples/hardware_experiments/umbrella_inversion.html)
 * Fault Tolerant
     * [State Preparation using Quantum Signal Processing](examples/fault_tolerant/qsp_state_prep.html)
