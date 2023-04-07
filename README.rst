@@ -38,9 +38,9 @@ A full list of the example notebooks is
     * `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_
     * `Excited State methods <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/excited_states.ipynb>`_
 * Variational Methods
-    * `Adapt VQE Solver <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/adapt.ipynb>`_
     * `VQE <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe.ipynb>`_
     * `VQE with user defined ansatz <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe_custom_ansatz_hamiltonian.ipynb>`_
+    * `Adapt VQE Solver <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/adapt.ipynb>`_
     * `Iterative Qubit Coupled Cluster using only Clifford Circuits <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/iqcc_using_clifford.ipynb>`_
 * Measurement Reduction
     * `Classical Shadows <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/measurement_reduction/classical_shadows.ipynb>`_
