@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.306">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Exploring the umbrella inversion with quantum computers</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/hardware_experiments/berylium_ibm_quantum.html">Hardware Experiments</a></li><li class="breadcrumb-item"><a href="../../examples/hardware_experiments/umbrella_inversion.html">Exploring the umbrella inversion with quantum computers</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using quantum cloud services API with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exploring the umbrella inversion with quantum computers</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download data files and images for this notebook</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo<span class="op">-</span>Examples<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>examples<span class="op">/</span>img<span class="op">/</span>umbrella_inversion_H3Op.png <span class="op">--</span>quiet</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo<span class="op">-</span>Examples<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>examples<span class="op">/</span>hardware_experiments<span class="op">/</span>data<span class="op">/</span>umbrella_inversion.<span class="bu">zip</span> <span class="op">--</span>quiet</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip <span class="op">-</span>qq umbrella_inversion.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Tangelo with pip, from the develop branch on Github</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install an optional simulator backend (ex: Qulacs)</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qulacs <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of contents:</h2>
+<ul>
+<li><a href="#1">1 Introduction</a></li>
+<li><a href="#2">2 The umbrella inversion</a></li>
+<li><a href="#3">3 Reduce problem size with MI-FNO</a></li>
+<li><a href="#31">3.1 Generate the MIFNO fragments</a></li>
+<li><a href="#32">3.2 Import fragment data</a></li>
+<li><a href="#4">4 Explore quantum workflows with Tangelo</a></li>
+<li><a href="#41">4.1 ADAPT VQE circuit</a></li>
+<li><a href="#42">4.2 Simulate the noisy quantum device</a></li>
+<li><a href="#51">5.1 Preparing and running a quantum experiment on Amazon Braket</a></li>
+<li><a href="#52">5.2 Construct classical shadow and purify</a></li>
+<li><a href="#53">5.3 Energy resummation and plot</a></li>
+<li><a href="#60">6 Bonus: Nuclear Dynamics Simulation</a></li>
+</ul>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1 Introduction <a class="anchor" id="1"></a></h2>
+<p>In this notebook we present an experimental study of the umbrella inversion on a quantum computer using <a href="https://github.com/goodchemistryco/Tangelo">Tangelo</a>, <a href="https://aws.amazon.com/braket/">Amazon Braket</a>, and <a href="https://goodchemistry.com">QEMIST Cloud</a>. A blog post about this study is available on <a href="url">Amazon’s Quantum Blog</a>.</p>
+<p>The umbrella inversion is a quantum effect related to tunnelling, that can be that can be observed in many organic molecules with a free electron pair residing on a trivalent atom. These include amines containing a nitrogen centre but it can also be observed in hydronium H<span class="math inline">\(_3\)</span>O<span class="math inline">\(^+\)</span>, in which the central atom is oxygen. We start our experiment setup by defining the hydronium molecule, and choosing a the chemical basis cc-pVDZ for our calculation.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>atoms <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">O    -0.63100    1.21783    0.07611</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">H     0.34564    1.31652   -0.02093</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">H    -0.97483    1.78491    0.80631</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">H    -0.88121    0.27338    0.21147</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>charge <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>spin <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> <span class="st">"cc-pVDZ"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="the-umbrella-inversion" class="level2">
+<h2 class="anchored" data-anchor-id="the-umbrella-inversion">2 The umbrella inversion <a class="anchor" id="2"></a></h2>
+<p>Let’s illustrate the umbrella inversion using the hydronium molecule. We first define a function that can vary the molecular geometry as the positions of the hydrogen atoms change around the oxygen centre. This can be parameterized in terms of a single angle between the H-O bond and the molecule’s main rotational axis. To simplify the problem, we assume the bond length does not depend on the angle, and is equal to 0.986<span class="math inline">\(\overset{\circ}{A}\)</span>.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> H3O_angle(theta):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> <span class="fl">0.986</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> theta<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    C, S <span class="op">=</span> np.cos(theta), np.sin(theta)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    c, s <span class="op">=</span> np.cos(np.pi<span class="op">/</span><span class="dv">3</span>), np.sin(np.pi<span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    H_pos <span class="op">=</span> d<span class="op">*</span>np.array([[   S,    <span class="dv">0</span>, C],</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c,  S<span class="op">*</span>s, C],</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c, <span class="op">-</span>S<span class="op">*</span>s, C]])</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [[<span class="st">"O"</span>, (<span class="fl">0.</span>,<span class="fl">0.</span>,<span class="fl">0.</span>)], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">0</span>])], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">1</span>])], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">2</span>])]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We calculate the energy of the molecule for a range of angles. Here, we limit ourselves to the Hartree-Fock solution. We build the system as a <code>SecondQuantizedMolecule</code> object, which automatically calculates the mean-field energy.</p>
+<div class="cell" data-scrolled="true" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="dv">60</span>, <span class="dv">120</span>, <span class="dv">31</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>rhf <span class="op">=</span> []</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> theta:</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    mol_theta <span class="op">=</span> SecondQuantizedMolecule(H3O_angle(t), q<span class="op">=</span>charge, spin<span class="op">=</span>spin, basis<span class="op">=</span>basis)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rhf.append(mol_theta.mean_field.e_tot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Plotting the results below we see the double well potential of the umbrella curve, showing two geometries with optimal ground state energies the system may tunnel between. This tunelling corresponds to the electron pair flipping from one side of the oxygen atom to the other - or equivalenty, the hydrogen atoms moving from one side to the other.</p>
+<div class="cell" data-scrolled="true" data-outputid="9eef1c37-6afd-4ba2-c7c2-159dca96ed98" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pylab <span class="im">as</span> plt</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, rhf)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Angle [deg]"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Energy [Ha]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>Text(0, 0.5, 'Energy [Ha]')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="umbrella_inversion_files/figure-html/cell-7-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="reduce-problem-size-with-mi-fno" class="level2">
+<h2 class="anchored" data-anchor-id="reduce-problem-size-with-mi-fno">3 Reduce problem size with MI-FNO <a class="anchor" id="3"></a></h2>
+<p>Studying the umbrella inversion by tackling this chemical system head-on is well beyond the capabilities of current quantum computers. For instance, a straightforward approach using the Variational Quantum Eigensolver (VQE) algorithm with the UCCSD ansatz would yield circuits requiring over 50 qubits, millions of gates, and hundreds of thousands variational parameters. Numerical results would be drown in noise. In order to explore this problem with quantum computing, a more sophisticated workflow is necessary.</p>
+<p>This section describes how tools such as QEMIST Cloud and Tangelo can be combined to extend the range of chemical systems that can be explored with nascent quantum devices. The MI-FNO method available in QEMIST cloud can be employed to decompose the initial problem into a collection of smaller subproblems (“fragments”), whose resolution requires less computational resources. These approaches are also commonly referred to as “fragmentation” or “embedding” techniques.</p>
+<p>For our quantum experiment, we attempt to solve one of these subproblems using a quantum workflow. We then analyze the results and assess the difference in total energy between our quantum experiment and the fully classical calculations.</p>
+<p>In the first part, we show how to apply MI-FNO to the system of interest and compute classical reference values. We then show how to import them into Tangelo, to enable our quantum exploration.</p>
+</section>
+<section id="generate-the-mi-fno-fragments" class="level2">
+<h2 class="anchored" data-anchor-id="generate-the-mi-fno-fragments">3.1 Generate the MI-FNO fragments <a class="anchor" id="31"></a></h2>
+<p>The following code excerpt illustrates how QEMIST Cloud users can perform a MI-FNO decomposition using our client library, and obtain reference results computed with our classical solvers.</p>
+<p>Here we define a molecule object, and then our approach, based on combining the Heat-Bath Configuration interaction (HBCI) classical solver, the Method of Increments (MI) and the Frozen Natural Orbitals (FNO) method for the virtual space cutoff. We request an estimate of the cost of the simulation and then perform it.</p>
+<p>To simplify this notebook, the results of this simulation have been precomputed and provided. The code snippets are available below, but were not designed to be run in this notebook as QEMIST Cloud is not yet publically available at the time of writing.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_PROJECT_ID'</span>] <span class="op">=</span> <span class="st">"your-project-ID"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_AUTH_TOKEN'</span>] <span class="op">=</span> <span class="st">"your-authentication-token"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.molecule <span class="im">import</span> Molecule</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.problem_decomposition <span class="im">import</span> IncrementalDecomposition</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.problem_reduction <span class="im">import</span> FNO</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.electronic_structure_solvers <span class="im">import</span> HBCI</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.util <span class="im">import</span> get_results, check_problem_cost</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>qemist_mol <span class="op">=</span> Molecule(atoms, basis<span class="op">=</span>basis, charge<span class="op">=</span>charge, spin<span class="op">=</span>spin)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>hbci_solver <span class="op">=</span> HBCI()</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>fno <span class="op">=</span> FNO(hbci_solver, export_fragment_data<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>mi_solver <span class="op">=</span> IncrementalDecomposition(electronic_structure_solver<span class="op">=</span>fno, </span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                                     truncation_order<span class="op">=</span><span class="dv">3</span>, </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                                     method_of_truncation_threshold<span class="op">=</span><span class="fl">5e-3</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Request a cost estimate of the simulation beforehand</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>cost <span class="op">=</span> check_problem_cost(qemist_mol, mi_solver)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit the problem to QEMIST Cloud</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>handle <span class="op">=</span> mi_solver.simulate(system<span class="op">=</span>qemist_mol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The following code exports the fragment data resulting from the QEMIST Cloud simulation, later to be imported into Tangelo.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data_H3O_ccpvdz_mifno_hbci/"</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>jfile <span class="op">=</span> <span class="st">"H3O_CCPVDZ_MIFNO_HBCI.json"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results using handle</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>qemist_res <span class="op">=</span> get_results(handle)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Export subproblem data to individual files</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path <span class="op">+</span> jfile, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    json.dump(qemist_res, f)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_trunc, frags <span class="kw">in</span> qemist_res[<span class="st">"subproblem_data"</span>].items():</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> frag_id, frag <span class="kw">in</span> frags.items():</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        prob_handle <span class="op">=</span> frag[<span class="st">"problem_handle"</span>]</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> prob_handle:</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            frag_res <span class="op">=</span> get_results(prob_handle)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> <span class="bu">open</span>(path <span class="op">+</span> <span class="ss">f"/</span><span class="sc">{</span>prob_handle<span class="sc">}</span><span class="ss">.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                json.dump(frag_res, f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="import-fragment-data" class="level2">
+<h2 class="anchored" data-anchor-id="import-fragment-data">3.2 Import fragment data <a class="anchor" id="32"></a></h2>
+<p>We import the data resulting from the simulation run by QEMIST Cloud into Tangelo and prepare the quantum experiment using the fragment data. The <code>MIFNOHelper</code> class provided by Tangelo handles most of the work.</p>
+<p>Printing the resulting object displays reference energies computed by QEMIST Cloud, as well as the breakdown of the fragments and how they contribute to the energy the system. We find out that the initial problem was broken into: - 4 1-body fragments - 6 2-body fragments - 4 3-body fragments</p>
+<p>These subproblems contribute differently to the total energy of the system and their computational complexity vary. This information can guide us in selecting subproblems that are relevant to current quantum devices or quantum algorithms.</p>
+<p>This exploration is currently done manually, with the purpose of research in mind. As advances in quantum hardware and algorithms are made, automated scheduling and streamlined execution of relevant subproblems on quantum devices through QEMIST Cloud could become a reality.</p>
+<div class="cell" data-outputid="29cf70bd-d5be-487d-8a2a-cf49389308ea" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> MIFNOHelper</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the results from the json files</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fno_fragments <span class="op">=</span> MIFNOHelper(mi_json_file<span class="op">=</span>path<span class="op">+</span>jfile, fno_json_folder<span class="op">=</span>path)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fno_fragments)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Import MO coeffs</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>fno_fragments.retrieve_mo_coeff(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(All the energy values are in hartree)
+Total MI-FNO energy = -76.52019103159677
+Correlation energy = -0.2093647955082076
+Mean-field energy = -76.31082623608856
+            epsilon  energy_total  correction  energy_correlation
+(1,)      -0.027343    -76.338169   -0.009120           -0.027343
+(2,)      -0.027344    -76.338170   -0.009120           -0.027344
+(3,)      -0.027344    -76.338170   -0.009120           -0.027344
+(4,)      -0.017714    -76.328540   -0.017714           -0.017714
+(1, 2)    -0.016601    -76.382115   -0.026852           -0.071288
+(1, 3)    -0.016601    -76.382115   -0.026852           -0.071288
+(1, 4)    -0.024389    -76.380272   -0.029541           -0.069446
+(2, 3)    -0.016602    -76.382116   -0.026852           -0.071290
+(2, 4)    -0.024390    -76.380274   -0.029541           -0.069448
+(3, 4)    -0.024390    -76.380274   -0.029541           -0.069448
+(1, 2, 3)  0.000446    -76.442216   -0.052484           -0.131389
+(1, 2, 4)  0.004302    -76.444305   -0.057833           -0.133479
+(1, 3, 4)  0.004302    -76.444305   -0.057833           -0.133479
+(2, 3, 4)  0.004302    -76.444307   -0.057833           -0.133481</code></pre>
+</div>
+</div>
+<p>We choose fragment <code>(2,)</code>, one of the one-body fragments listed above, as the focus of our quantum experiment. The code cell below constructs its Hamiltonian and maps it into qubit form using the scBK mapping. This yields a two-qubit problem which can be easily fitted on any quantum device. The Hamiltonian only involves X and Z Pauli operators, which means we only need to run simulations in a handful of measurement bases, as shown below.</p>
+<p>You can try selecting a different fragment and see what qubit Hamiltonian comes out of it. For instance, some 3-body fragments yield Hamiltonians mapped to 12 qubits (10 if using scBK for the mapping).</p>
+<div class="cell" data-outputid="92e08618-3e5f-4eed-8521-6823d82c158e" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Select fragment of interest.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>selected_fragment <span class="op">=</span> <span class="st">"(2,)"</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>frozen_orbitals <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"frozen_orbitals_truncated"</span>]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>correction <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"correction"</span>]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>e_tot_frag <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"energy_total"</span>]</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create molecule object for fragment, and compute the molecular integrals.</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> SecondQuantizedMolecule(atoms, q<span class="op">=</span>charge, spin<span class="op">=</span>spin, basis<span class="op">=</span>basis, frozen_orbitals<span class="op">=</span>frozen_orbitals)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Selection of a fragment and computing the related FermionOperator.</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>ferm_op <span class="op">=</span> fno_fragments.compute_fermionoperator(mol, selected_fragment)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>ferm_op.n_electrons, ferm_op.n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(selected_fragment)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>ferm_op.spin <span class="op">=</span> spin</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Map FermionOperator to QubitOperator.</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>n_electrons, n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(selected_fragment)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>qu_op <span class="op">=</span> fermion_to_qubit_mapping(ferm_op, mapping<span class="op">=</span><span class="st">"scbk"</span>, n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons)</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qu_op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-75.03707306024805 [] +
+0.025894296540557086 [X0] +
+0.21772992233328325 [X0 X1] +
+0.025894165002379746 [X0 Z1] +
+0.6466599564486686 [Z0] +
+0.025894165002379746 [Z0 X1] +
+0.0195667370570633 [Z0 Z1] +
+0.02589429654055709 [X1] +
+0.6466599564486686 [Z1]</code></pre>
+</div>
+</div>
+</section>
+<section id="explore-quantum-workflows-with-tangelo" class="level2">
+<h2 class="anchored" data-anchor-id="explore-quantum-workflows-with-tangelo">4 Explore quantum workflows with Tangelo <a class="anchor" id="4"></a></h2>
+<p>A number of quantum solvers are available in Tangelo. In order to design an interesting quantum experiment, we need to do some exploration and try to find an approach with reasonable compute requirements (number of qubits, number of gate operations, number of measurements, etc). This section first shows how we investigated an approach based on ADAPT-VQE using an exact simulator, and then attempted to account for the presence of noise for the target quantum device.</p>
+</section>
+<section id="adapt-vqe-circuit" class="level2">
+<h2 class="anchored" data-anchor-id="adapt-vqe-circuit">4.1 ADAPT VQE circuit <a class="anchor" id="41"></a></h2>
+<p>Here we use the <a href="https://doi.org/10.1038/s41467-019-10988-2">ADAPT</a> ansatz with a pool of operators defined using Qubit Coupled Cluster (<a href="https://arxiv.org/pdf/1906.11192.pdf">QCC</a>) by constructing a Direct Inversion Set (DIS) from a qubit Hamiltonian. For our use case, this approach results in a shallow circuit that is within current quantum devices capabilities.</p>
+<p>More algorithms are available in Tangelo, each supporting a number of built-in options and user customization: we invite you to explore them.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_cc <span class="im">import</span> construct_dis</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_mf <span class="im">import</span> init_qmf_from_hf</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qcc_pool(mol: SecondQuantizedMolecule, mapping, up_then_down, qubit_hamiltonian):</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    qmf_var_params <span class="op">=</span> init_qmf_from_hf(mol.n_active_sos, mol.n_active_electrons, </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                      mapping, up_then_down, mol.spin)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    dis <span class="op">=</span> construct_dis(qubit_hamiltonian, qmf_var_params, <span class="fl">0.</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    dis_flat <span class="op">=</span> [item <span class="cf">for</span> sublist <span class="kw">in</span> dis <span class="cf">for</span> item <span class="kw">in</span> sublist]</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dis_flat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="8298e8ff-04c1-461c-a750-a3fdb2169c35" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> ADAPTSolver</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>pool_args <span class="op">=</span> {<span class="st">"mol"</span>: mol, <span class="st">"mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"qubit_hamiltonian"</span>: qu_op}</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>opt_dict <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qu_op, <span class="st">"tol"</span>: <span class="fl">0.01</span>, <span class="st">"max_cycles"</span>: <span class="dv">5</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"qubit_mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"n_spinorbitals"</span>: n_spinorbitals, <span class="st">"n_electrons"</span>: n_electrons, </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"spin"</span>: spin, <span class="st">"pool"</span>: qcc_pool, <span class="st">"pool_args"</span>: pool_args}</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>adapt_solver <span class="op">=</span> ADAPTSolver(opt_dict)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>adapt_solver.build()</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>adapt_solver.simulate()</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>adapt_circ <span class="op">=</span> adapt_solver.vqe_solver.optimal_circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/usr/local/lib/python3.9/dist-packages/tangelo/toolboxes/qubit_mappings/statevector_mapping.py:149: RuntimeWarning: Symmetry-conserving Bravyi-Kitaev enforces all spin-up followed by all spin-down ordering.
+  warnings.warn("Symmetry-conserving Bravyi-Kitaev enforces all spin-up followed by all spin-down ordering.", RuntimeWarning)</code></pre>
+</div>
+</div>
+<p>A quick look at the ADAPT circuit resulting from the code above. It is shallow enough for the current quantum devices.</p>
+<div class="cell" data-scrolled="true" data-outputid="62255182-3c4c-4bcc-a726-ebe98dc00147" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>adapt_circ.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<p><img src="umbrella_inversion_files/figure-html/cell-13-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="optional-simulate-the-noisy-quantum-device" class="level2">
+<h2 class="anchored" data-anchor-id="optional-simulate-the-noisy-quantum-device">4.2 Optional: Simulate the noisy quantum device <a class="anchor" id="42"></a></h2>
+<p>We can run the circuit on a noisy simulator and recompute the fragment energy to get some idea of what to expect before we commit to running a full experiment, which costs money and time.</p>
+<p>Below we define a noise model based on specifications of the IonQ Harmony device, which is the machine we considered for running our experiment. The data used came from the Amazon Braket device page, during summer 2022.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define 1- and 2-qubit gate error  (Based on Braket dashboard)</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>n1q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="fl">0.9953</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>n2q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="fl">0.9394</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a simple depolarization model using the gates in our circuit</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>nmd <span class="op">=</span> NoiseModel()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>nmd.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">"depol"</span>, n2q)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gate <span class="kw">in</span> [<span class="st">"RX"</span>, <span class="st">"RZ"</span>, <span class="st">"X"</span>, <span class="st">"H"</span>]:</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    nmd.add_quantum_error(gate, <span class="st">"depol"</span>, n1q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>As with quantum hardware, we need to append the circuit with measurement basis gates before submitting them to a device or simulator. In the case of the selected 1-body fragment, we would need to acquire measurements in the four bases specified below, as the terms in the Hamiltonian only commute with these.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> measurement_basis_gates, pauli_string_to_of</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>circs <span class="op">=</span> []</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>basis_list <span class="op">=</span> [<span class="st">"ZZ"</span>, <span class="st">"XZ"</span>, <span class="st">"ZX"</span>, <span class="st">"XX"</span>]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> basis_list:</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> adapt_circ.copy()</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    c <span class="op">+=</span> Circuit(measurement_basis_gates(pauli_string_to_of(b)))</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    circs.append(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We perform a noisy simulation of the four circuits and obtain the corresponding frequency histograms, here using Cirq as a backend.</p>
+<div class="cell" data-scrolled="true" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend(<span class="st">"cirq"</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>hists <span class="op">=</span> [sim.simulate(c)[<span class="dv">0</span>] <span class="cf">for</span> c <span class="kw">in</span> circs]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We can then use them to compute the expectation value for the energy of the fragment. We employ histogram aggregation to use all available data for the terms that can be computed from more than one measurement basis. The <code>Histogram</code> class facilitates these steps.</p>
+<div class="cell" data-scrolled="true" data-outputid="478057d9-b23c-46df-d1d9-181f237f7187" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.histogram <span class="im">import</span> Histogram, aggregate_histograms</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> pauli_of_to_string, get_compatible_bases</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>hist_dict <span class="op">=</span> {b: Histogram(h, <span class="dv">10</span><span class="op">**</span><span class="dv">6</span>) <span class="cf">for</span> b,h <span class="kw">in</span> <span class="bu">zip</span>(basis_list, hists)}</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>en <span class="op">=</span> <span class="fl">0.</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t,c <span class="kw">in</span> qu_op.terms.items():</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> pauli_of_to_string(t,<span class="dv">2</span>)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    bl <span class="op">=</span> get_compatible_bases(p, basis_list)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    en <span class="op">+=</span> aggregate_histograms(<span class="op">*</span>[hist_dict[b] <span class="cf">for</span> b <span class="kw">in</span> bl]).get_expectation_value(t,c)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MI-FNO energy:     "</span>, e_tot_frag)</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Aggregated energy: "</span>, en <span class="op">+</span> correction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MI-FNO energy:      -76.33817036745623
+Aggregated energy:  -76.16544280598923</code></pre>
+</div>
+</div>
+<p>We can use the computed fragment energy to recalculate the full system energy to get an idea of the impact on overall total energy:</p>
+<div class="cell" data-outputid="936a51c7-8c75-45b3-c7ae-d7eacf3f40af" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Energy resummation</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>e_mifno <span class="op">=</span> fno_fragments.e_tot</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>e_sim<span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: en})</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MI-FNO energy:     "</span>, e_mifno)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Simulated energy: "</span>, e_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>MI-FNO energy:      -76.52019103159677
+Simulated energy:  -76.34746347012977</code></pre>
+</div>
+</div>
+<p>We see that the energy simulated using the noise level obtained from the characterization of the IonQ Harmony device differs significantly from the MI-FNO energy. This motivates us to introduce some error mitigation techniques in order to correct for the hardware noise.</p>
+</section>
+<section id="designing-and-running-a-quantum-experiment" class="level1">
+<h1>5 Designing and running a quantum experiment</h1>
+<p>One of the more flexible approaches to estimating eigenvalues from a quantum state is the <a href="https://arxiv.org/abs/1711.01053">classical shadow protocol</a>. By performing measurements for a randomized set of Pauli operator tensor products we can recreate a classical “snapshot” of the quantum state, which can be used to calculate expectation values of observables or construct a density matrix. Tangelo provides us with tools to construct and operate with classical shadows.</p>
+<p>The second mitigation strategy we employ is symmetry post-selection. The idea is to apply a symmetry operator corresponding to a Pauli word that commutes with the Hamiltonian and entangle the system with an ancilla acting as a symmetry verification qubit. We then select only the samples that are associated with the correct symmetry eigenvalue: the other samples are discarded.</p>
+<p>In this experiment, we examine how well these two techniques perform, separately and together. We apply this approach using a <span class="math inline">\(ZZ\)</span> symmetry operator and construct a randomized classical shadow, which is necessary to reconstruct the reduced density matrices required to post-process the results. As illustrated in the cell below, applying this approach to our ADAPT circuit would entangle our 2 qubits with an additional ancilla qubit.</p>
+<div class="cell" data-outputid="fc2108bd-3bf1-43b3-c41e-8481a8b8a72f" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> ancilla_symmetry_circuit</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>adapt_symmpostselect_circ <span class="op">=</span> ancilla_symmetry_circuit(adapt_circ, <span class="st">"ZZ"</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>adapt_symmpostselect_circ.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
+WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<p><img src="umbrella_inversion_files/figure-html/cell-19-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+<section id="running-on-amazon-braket" class="level2">
+<h2 class="anchored" data-anchor-id="running-on-amazon-braket">5.1 Running on Amazon Braket <a class="anchor" id="51"></a></h2>
+<p>Tangelo provides tools to construct a randomized shadow. For simplicity here, since for a two qubit system there are very few measurement bases, we excplitly specify them to expose more clearly how we use Braket. We define all the possible measurement bases below, and for each of these we append first the symmetry verification circuit and then transform the system qubits into the corresponding measurement basis. QEMIST Cloud users can leverage the Tangelo integration to submit the experiments to Amazon Braket, as shown below. Since QEMIST Cloud is not yet publically available, we simply provide the code snippets and their outputs.</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>n_shots <span class="op">=</span> <span class="dv">10</span><span class="op">**</span><span class="dv">5</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># All 2-qubit measurement bases needed for the classical shadow</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>cs_basis_list <span class="op">=</span> [<span class="st">"ZZ"</span>, <span class="st">"XZ"</span>, <span class="st">"ZX"</span>, <span class="st">"XX"</span>, <span class="st">"YZ"</span>, <span class="st">"ZY"</span>, <span class="st">"YY"</span>, <span class="st">"XY"</span>, <span class="st">"YX"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> QEMISTCloudConnection</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>qemcl <span class="op">=</span> QEMISTCloudConnection()</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>qemcl.job_estimate(adapt_circ, n_shots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The code cell above returns the prices for running 10,000 shots of the circuit provided, on the supported quantum devices and simulators, here part of Amazon Braket’s selection. Here’s the output from back then:</p>
+<pre class="text"><code>{'arn:aws:braket:::device/qpu/ionq/ionQdevice': 100.3,
+ 'arn:aws:braket:::device/quantum-simulator/amazon/sv1': 0.038,
+ 'arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-1': 3.8}</code></pre>
+<p>The code below adds the symmetry post-selection gates and the measurement gates to define our quantum circuit for each of the measurement bases, and submits them to Braket, using their QEMIST Cloud credits. It is however possible for Braket users to submit these jobs using the Braket API or our convenience wrappers, with their own Braket credentials.</p>
+<p>We submit overall 9 quantum circuits, differing by their final measurement gates.</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> <span class="st">'arn:aws:braket:::device/qpu/ionq/ionQdevice'</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>job_ids <span class="op">=</span> {}</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Build circuits and submit to Amazon Braket</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis <span class="kw">in</span> cs_basis_list:</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    meas_circ <span class="op">=</span> Circuit(measurement_basis_gates(pauli_string_to_of(basis)))</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    final_circ <span class="op">=</span> adapt_symmpostselect_circ <span class="op">+</span> meas_circ</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    job_id <span class="op">=</span> qemcl.job_submit(final_circ, n_shots<span class="op">=</span>n_shots, backend<span class="op">=</span>backend)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    job_ids[basis] <span class="op">=</span> job_id</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results and save to json file</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> {basis: qemcl.job_result(job_id)[<span class="dv">0</span>] <span class="cf">for</span> basis, job_id <span class="kw">in</span> job_ids.items()}</span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ionq_data/H3Op_sym_postselect_10000_ionq.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    json.dump(res, <span class="bu">file</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Replacing job submission by cost estimation in the code above is a way to assess the total cost of the experiment before submitting anything. As experiments are usually done on a budget, this information is still rather central in its design. Here we’d get an estimate of about $900.</p>
+<p>Below we read in the data that we obtained from our experiment on IonQ Harmony during the Summer of 2022, and perform full symmetry post-selection.</p>
+<div class="cell" data-outputid="f2ce1cea-c95f-4c6d-d61b-93fb0feb7bc1" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data coming from our quantum experiment on Harmony</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ionq_data/H3Op_sym_postselect_10000_ionq.json"</span>, <span class="st">"r"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> json.load(<span class="bu">file</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform post-selection</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>res_post <span class="op">=</span> {}</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> base, hist <span class="kw">in</span> res.items():</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> Histogram(hist)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    h.post_select({<span class="dv">2</span>: <span class="st">"0"</span>})</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    res_post[base] <span class="op">=</span> h</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_post)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'ZZ': {'00': 0.0087, '01': 0.0056, '10': 0.0053, '11': 0.9136}, 'XZ': {'00': 0.0101, '01': 0.5165, '10': 0.0051, '11': 0.4167}, 'ZX': {'00': 0.0049, '01': 0.0103, '10': 0.4553, '11': 0.4728}, 'XX': {'00': 0.1809, '01': 0.2659, '10': 0.2629, '11': 0.2281}, 'YZ': {'00': 0.0051, '01': 0.5002, '10': 0.0104, '11': 0.4106}, 'ZY': {'00': 0.0033, '01': 0.0101, '10': 0.4859, '11': 0.4321}, 'YY': {'00': 0.2659, '01': 0.185, '10': 0.2278, '11': 0.2549}, 'XY': {'00': 0.1904, '01': 0.1958, '10': 0.2416, '11': 0.2919}, 'YX': {'00': 0.2233, '01': 0.2413, '10': 0.221, '11': 0.2388}}</code></pre>
+</div>
+</div>
+</section>
+<section id="post-processing-construct-classical-shadow-and-purify" class="level2">
+<h2 class="anchored" data-anchor-id="post-processing-construct-classical-shadow-and-purify">5.2 Post-processing: construct classical shadow and purify <a class="anchor" id="52"></a></h2>
+<p>We can now construct a classical shadow and purify the state.</p>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> RandomizedClassicalShadow</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>bitstrings, unitaries <span class="op">=</span> [], []</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b, hist <span class="kw">in</span> res_post.items():</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s,f <span class="kw">in</span> hist.frequencies.items():</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        factor <span class="op">=</span> <span class="bu">round</span>(f<span class="op">*</span>(n_shots))</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        bitstrings.extend([s]<span class="op">*</span>factor)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>        unitaries.extend([b]<span class="op">*</span>factor)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>ionq_cs_post <span class="op">=</span> RandomizedClassicalShadow(unitaries<span class="op">=</span>unitaries, bitstrings<span class="op">=</span>bitstrings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>After constructing the shadow, we can use convenience functions provided by Tangelo to compute the 1- and 2-RDM. Since this is a small, two qubit system, we can use the McWeeny technique to purify the 2-RDM and calculate the purified energy. Below we show a comparison of the difference between the purified and non-purified energies and suggests that purification mitigates the noise efficiently.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.mc_weeny_rdm_purification <span class="im">import</span> mcweeny_purify_2rdm</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.rdms <span class="im">import</span> compute_rdms, energy_from_rdms</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>rdm1_p, rdm2_p, rdm1_ss_p, rdm2_ss_p <span class="op">=</span> compute_rdms(ferm_op, <span class="st">"scbk"</span>, <span class="va">True</span>, exp_data<span class="op">=</span>res)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>rdm1_p_pur, rdm2_p_pur <span class="op">=</span> mcweeny_purify_2rdm(rdm2_p.real)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="a97051fd-bbf9-4361-9706-96592ee3cf25" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>e_p_exp <span class="op">=</span> energy_from_rdms(ferm_op, rdm1_ss_p, rdm2_ss_p)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>e_p_pur <span class="op">=</span> energy_from_rdms(ferm_op, rdm1_p_pur, rdm2_p_pur)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Experiment energy:"</span>, e_p_exp)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Purified energy:  "</span>, e_p_pur)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Diff from MI-FNO:   "</span>, e_p_pur<span class="op">-</span>(e_tot_frag<span class="op">-</span>correction))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Experiment energy: -76.2369464417231
+Purified energy:   -76.3276400895683
+Diff from MI-FNO:    0.001410481713961076</code></pre>
+</div>
+</div>
+<p>A similar calculation can be performed for non-post-selected data, which one can obtain by removing the ancilla qubit and adding together the corresponding frequencies. This data can also be purified to see the effect of the two mitigation techniques separately. For brevity, we present the final results:</p>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>e_exp <span class="op">=</span> <span class="op">-</span><span class="fl">76.2685</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>e_pur <span class="op">=</span> <span class="op">-</span><span class="fl">76.3138</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finally, we can estimate the error of the energy by using a technique called bootstrapping. This consists in generating an ensemble of new histograms by resampling from the experimental data and calculating a standard devition of the resulting energies. For brevity, here we only present the results of those calculations. You can find more details about bootstrapping in <a href="https://github.com/goodchemistryco/Tangelo/blob/develop/examples/overview_endtoend.ipynb">this notebook</a>.</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>e_exp_err <span class="op">=</span> <span class="fl">0.0037</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>e_pur_err <span class="op">=</span> <span class="fl">0.0019</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>e_p_exp_err <span class="op">=</span> <span class="fl">0.0037</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>e_p_pur_err <span class="op">=</span> <span class="fl">0.0007</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="energy-resummation-and-plot" class="level2">
+<h2 class="anchored" data-anchor-id="energy-resummation-and-plot">5.3 Energy resummation and plot <a class="anchor" id="53"></a></h2>
+<p>Finally, we need to recalculate the energy of the full system using this fragment energy to see the final result. We plot the whole data set, including the Hartree-Fock and MI-FNO umbrella curve, and the four total energies calculated below. In the inset we show the lower portion of the whole plot to emphasize the impact of the error mitigation techniques. The shaded region around the curve indicates the regime of chemical accuracy.</p>
+<div class="cell" data-outputid="4ba98cfd-bb57-48f3-b322-6c92414a4fbf" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recompute total energy, overriding the fragment enregy with the different experimental results </span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>et_exp <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_exp})</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>et_pur <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_pur})</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>et_post_exp <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_p_exp})</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>et_post_pur <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_p_pur})</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Classical:"</span>, fno_fragments.e_tot)</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Raw:"</span>, et_exp)</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Raw purified:"</span>, et_pur)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Post-selected:"</span>, et_post_exp)</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Post-selected purified:"</span>, et_post_pur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Classical: -76.52019103159677
+Raw: -76.4596404603145
+Raw purified: -76.5049404603145
+Post-selected: -76.4280869020376
+Post-selected purified: -76.5187805498828</code></pre>
+</div>
+</div>
+<p>We load the MI-FNO data precomputed with QEMIST Cloud for various geometries of the system of interest, in order to better illustrate where the results sit compared to Hartree-Fock and the MI-FNO resolution.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>mifno_curve <span class="op">=</span> np.loadtxt(<span class="st">"H3Oplus_MIFNO_CCPVDZ.csv"</span>, delimiter<span class="op">=</span><span class="st">","</span>)[:,<span class="dv">1</span>:].T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="e2a22048-65a3-4c16-b9b5-d6b8f42d794c" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pylab <span class="im">as</span> plt</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>,<span class="dv">6</span>), dpi<span class="op">=</span><span class="dv">120</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.axes([<span class="fl">0.02</span>,<span class="fl">0.02</span>,<span class="fl">0.98</span>,<span class="fl">0.98</span>])</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>ax.plot(theta, rhf, label<span class="op">=</span><span class="st">"RHF"</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>ax.plot(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"MIFNO"</span>)</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.0016</span>, mifno_curve[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.0016</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">.1</span>)</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_exp, e_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Raw"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_pur, e_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_post_exp, e_p_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_post_pur, e_p_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected + purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Energy [Ha]"</span>)</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Angle [deg]"</span>)</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.axes([<span class="fl">0.5</span>,<span class="fl">0.4</span>,<span class="fl">0.48</span>,<span class="fl">0.48</span>])</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>ax2.plot([],[])</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>ax2.plot(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"MIFNO"</span>)</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>ax2.fill_between(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.0016</span>, mifno_curve[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.0016</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">.1</span>)</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>ax2.plot([],[])</span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_pur, e_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_post_exp, e_p_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_post_pur, e_p_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected + purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="28">
+<pre><code>&lt;ErrorbarContainer object of 3 artists&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="umbrella_inversion_files/figure-html/cell-29-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="bonus-nuclear-dynamics-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="bonus-nuclear-dynamics-simulation">6 Bonus: Nuclear Dynamics Simulation <a class="anchor" id="60"></a></h2>
+<p>To examine the umbrella inversion in action, we can perform a quantum simulation of the nuclear motion. This is not possible on current quantum devices: we run the following fault-tolerant approach on a simulator.</p>
+<p>We start with calculating the coordinate change in mass-weighted coordinates.</p>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define constants for unit conversion, and hydrogen / oxygen atom mass</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>angstrom2bohr <span class="op">=</span> <span class="fl">1.8897259886</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>me2amu <span class="op">=</span> <span class="fl">1822.888486209</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>hm <span class="op">=</span> <span class="fl">1.00784</span> <span class="op">*</span> me2amu</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>om <span class="op">=</span> <span class="fl">15.999</span> <span class="op">*</span> me2amu</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduced mass for simulation</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>hm<span class="op">*</span>om<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>hm<span class="op">+</span>om)<span class="op">/</span>me2amu</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="co"># OH bond length</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="fl">0.986</span> <span class="op">*</span> angstrom2bohr</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_mw_coords(theta):</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate mass-weighted cartesian coordinates"""</span></span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> theta<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    C, S <span class="op">=</span> np.cos(theta), np.sin(theta)</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>    c, s <span class="op">=</span> np.cos(np.pi<span class="op">/</span><span class="dv">3</span>), np.sin(np.pi<span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>    h_pos <span class="op">=</span> d<span class="op">*</span>np.array([[   S,    <span class="dv">0</span>, C],</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c,  S<span class="op">*</span>s, C],</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c, <span class="op">-</span>S<span class="op">*</span>s, C]])</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>    o_pos <span class="op">=</span> np.zeros(<span class="dv">3</span>)</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    cmass <span class="op">=</span> (hm<span class="op">*</span>h_pos[<span class="dv">0</span>] <span class="op">+</span> hm<span class="op">*</span>h_pos[<span class="dv">1</span>] <span class="op">+</span> hm<span class="op">*</span>h_pos[<span class="dv">2</span>])<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>hm<span class="op">+</span>om)</span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a>    mw_coords <span class="op">=</span> np.zeros((<span class="dv">4</span>,<span class="dv">3</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>        mw_coords[i] <span class="op">=</span> (h_pos[i] <span class="op">-</span> cmass)<span class="op">*</span>np.sqrt(hm)  </span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>    mw_coords[<span class="dv">3</span>] <span class="op">=</span> (o_pos<span class="op">-</span>cmass)<span class="op">*</span>np.sqrt(om)  </span>
+<span id="cb46-27"><a href="#cb46-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mw_coords</span>
+<span id="cb46-28"><a href="#cb46-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-29"><a href="#cb46-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Reference configuration </span></span>
+<span id="cb46-30"><a href="#cb46-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (Case where all atoms of H3O+ are on the same plane)</span></span>
+<span id="cb46-31"><a href="#cb46-31" aria-hidden="true" tabindex="-1"></a>ref_config <span class="op">=</span> calc_mw_coords(theta<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb46-32"><a href="#cb46-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-33"><a href="#cb46-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_qs(theta, ref_config):</span>
+<span id="cb46-34"><a href="#cb46-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return displacement in mass-weighted coordinates"""</span></span>
+<span id="cb46-35"><a href="#cb46-35" aria-hidden="true" tabindex="-1"></a>    new_config <span class="op">=</span> calc_mw_coords(theta)</span>
+<span id="cb46-36"><a href="#cb46-36" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb46-37"><a href="#cb46-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb46-38"><a href="#cb46-38" aria-hidden="true" tabindex="-1"></a>        diff <span class="op">+=</span> np.dot(ref_config[i] <span class="op">-</span> new_config[i], ref_config[i] <span class="op">-</span> new_config[i])</span>
+<span id="cb46-39"><a href="#cb46-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(diff)</span>
+<span id="cb46-40"><a href="#cb46-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-41"><a href="#cb46-41" aria-hidden="true" tabindex="-1"></a>thetas <span class="op">=</span> np.linspace(<span class="dv">60</span>, <span class="dv">120</span>, <span class="dv">31</span>)</span>
+<span id="cb46-42"><a href="#cb46-42" aria-hidden="true" tabindex="-1"></a>mass_weighted <span class="op">=</span> np.zeros(<span class="dv">31</span>)</span>
+<span id="cb46-43"><a href="#cb46-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-44"><a href="#cb46-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, theta <span class="kw">in</span> <span class="bu">enumerate</span>(thetas):</span>
+<span id="cb46-45"><a href="#cb46-45" aria-hidden="true" tabindex="-1"></a>    mass_weighted[i] <span class="op">=</span> calc_qs(theta, ref_config)</span>
+<span id="cb46-46"><a href="#cb46-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-47"><a href="#cb46-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Only returns absolute value of displacement so need to assign negative value </span></span>
+<span id="cb46-48"><a href="#cb46-48" aria-hidden="true" tabindex="-1"></a><span class="co"># to one direction</span></span>
+<span id="cb46-49"><a href="#cb46-49" aria-hidden="true" tabindex="-1"></a>mass_weighted[:<span class="dv">16</span>] <span class="op">*=</span> <span class="op">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Calculate interpolation of data for any coordinate length to use for nuclear dynamics.</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> CubicSpline</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>spl <span class="op">=</span> CubicSpline(mass_weighted, mifno_curve[<span class="dv">1</span>])</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 8 qubits, corresponding to 64 grid pts for simulation</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>n_pts <span class="op">=</span> <span class="dv">2</span><span class="op">**</span>n_qubits</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>xdata <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">114.75</span>, <span class="fl">114.75</span>, n_pts, endpoint<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> xdata[<span class="dv">1</span>] <span class="op">-</span> xdata[<span class="dv">0</span>]</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>interpolated_curve <span class="op">=</span> spl(xdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We convert the interpolated data into an equivalent <code>QubitOperator</code> object.</p>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.sparse <span class="im">import</span> diags</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qu_vpot(vals, order<span class="op">=</span><span class="st">'lsq_first'</span>):</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Return representation of diagonal matrix as a QubitOperator where vals are the diagonal elements of the matrix."</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    n_qubits<span class="op">=</span><span class="bu">round</span>(math.log2(<span class="bu">len</span>(vals)))</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    new_vals <span class="op">=</span> vals.copy()</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> order <span class="op">==</span> <span class="st">"msq_first"</span>:</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>        new_vals <span class="op">=</span> new_vals.reshape([<span class="dv">2</span>]<span class="op">*</span>n_qubits).transpose(<span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(n_qubits)))).flatten() </span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>    v_op <span class="op">=</span> QubitOperator()</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> product([<span class="st">"I"</span>, <span class="st">"Z"</span>], repeat<span class="op">=</span>n_qubits):</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>        tup <span class="op">=</span> <span class="bu">tuple</span>([(j, op) <span class="cf">for</span> j, op <span class="kw">in</span> <span class="bu">enumerate</span>(i) <span class="cf">if</span> op <span class="op">!=</span> <span class="st">"I"</span>])</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>        qu_op <span class="op">=</span> QubitOperator(tup)</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> get_sparse_operator(qu_op, n_qubits<span class="op">=</span>n_qubits)</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>        v_op <span class="op">+=</span> (diags(new_vals).dot(v)).trace()<span class="op">*</span>QubitOperator(tup)</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    v_op <span class="op">/=</span> <span class="dv">2</span><span class="op">**</span>n_qubits</span>
+<span id="cb48-22"><a href="#cb48-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v_op   </span>
+<span id="cb48-23"><a href="#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="#cb48-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose qubit order so bitstrings are directly converted to data</span></span>
+<span id="cb48-25"><a href="#cb48-25" aria-hidden="true" tabindex="-1"></a>qubit_order <span class="op">=</span> <span class="st">"lsq_first"</span> </span>
+<span id="cb48-26"><a href="#cb48-26" aria-hidden="true" tabindex="-1"></a>qu_op_v <span class="op">=</span> qu_vpot(interpolated_curve, qubit_order)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We initialize the wavefunction to the gaussian <span class="math inline">\(\sqrt{\frac{2}{\sigma \sqrt{2\pi}}}e^{-\left(\frac{x-x0}{\sigma}\right)^2}\)</span> in left configuration, with <span class="math inline">\(\sigma\)</span> as the normalization factor.</p>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits.statevector <span class="im">import</span> StateVector</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>init_vec <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">/</span>sigma<span class="op">/</span>np.sqrt(<span class="dv">2</span><span class="op">*</span>np.pi)) <span class="op">*</span> np.exp(<span class="op">-</span>((xdata <span class="op">-</span> x0)<span class="op">/</span>sigma)<span class="op">**</span><span class="dv">2</span>)<span class="op">*</span>np.sqrt(dx)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>initial_density <span class="op">=</span> init_vec<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> StateVector(init_vec, order<span class="op">=</span>qubit_order)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>init_circuit <span class="op">=</span> state.initializing_circuit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We use the split operator method <span class="math inline">\(e^{-i H \Delta t}\approx e^{-i p^2/2/m \Delta t}e^{-i v \Delta t}e^{-i p^2/2/m \Delta t}\)</span>. The kinetic energy term is calculated using the centered fast fourier transform for which the circuit can easily be generated using <code>get_psquared_circuit</code>. The potential evolution can be generated by calling <code>trotterize</code>. We run the simulation for about 1.2 ps.</p>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.grid_circuits <span class="im">import</span> get_psquared_circuit</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.ansatz_utils <span class="im">import</span> trotterize</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify qubit order to define psquared circuit (depends on statevector ordering)</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>qubit_list <span class="op">=</span> <span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(n_qubits))) </span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Build split operator with n_trotter_steps</span></span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> trotter_func(n_trotter_steps, time):</span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    p2_circ <span class="op">=</span> get_psquared_circuit(time<span class="op">/</span>n_trotter_steps<span class="op">/</span><span class="dv">2</span>, dx<span class="op">=</span>dx, mass<span class="op">=</span>m, qubit_list<span class="op">=</span>qubit_list)</span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>    vcirc <span class="op">=</span> trotterize(operator<span class="op">=</span>qu_op_v, time<span class="op">=</span>time<span class="op">/</span>n_trotter_steps, n_trotter_steps<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (p2_circ <span class="op">+</span> vcirc <span class="op">+</span> p2_circ) <span class="op">*</span> n_trotter_steps</span>
+<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Time evolution for about 1.2 picoseconds</span></span>
+<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> <span class="dv">50000</span></span>
+<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>f, _ <span class="op">=</span> sim.simulate(init_circuit <span class="op">+</span> trotter_func(<span class="dv">200</span>, time))</span>
+<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>final_density <span class="op">=</span> np.zeros(n_pts)</span>
+<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, prob <span class="kw">in</span> f.items():</span>
+<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>    final_density[<span class="bu">int</span>(key, base<span class="op">=</span><span class="dv">2</span>)] <span class="op">=</span> prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let’s plot the initial and final densities, as well as our interpolated curve.</p>
+<div class="cell" data-outputid="5389826e-6299-452a-ec1a-3107e0cbd951" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.image <span class="im">as</span> image</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.offsetbox <span class="im">import</span> OffsetImage, AnnotationBbox</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay H3O+ molecule image</span></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="bu">file</span> <span class="op">=</span> <span class="st">"umbrella_inversion_H3Op.png"</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>inversion <span class="op">=</span> image.imread(<span class="bu">file</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>imagebox <span class="op">=</span> OffsetImage(inversion, zoom<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a>ab <span class="op">=</span> AnnotationBbox(imagebox, (<span class="dv">0</span>, <span class="op">-</span><span class="fl">76.49</span>), pad<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize <span class="op">=</span> (<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Main plot</span></span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax.twinx()</span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>ax2.add_artist(ab)</span>
+<span id="cb51-17"><a href="#cb51-17" aria-hidden="true" tabindex="-1"></a>ax.plot(xdata, initial_density, xdata, final_density)</span>
+<span id="cb51-18"><a href="#cb51-18" aria-hidden="true" tabindex="-1"></a>ax2.plot(xdata, interpolated_curve, <span class="st">'g-'</span>)</span>
+<span id="cb51-19"><a href="#cb51-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Length along inversion $(\sqrt</span><span class="sc">{m_u}</span><span class="st"> a_0)$"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb51-20"><a href="#cb51-20" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb51-21"><a href="#cb51-21" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Energy (Hartree)"</span>, color<span class="op">=</span><span class="st">'g'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb51-22"><a href="#cb51-22" aria-hidden="true" tabindex="-1"></a>ax.legend([<span class="st">"Initial Density"</span>, <span class="st">"Final Density"</span>], fontsize<span class="op">=</span><span class="dv">16</span>, loc<span class="op">=</span><span class="st">"upper center"</span>)</span>
+<span id="cb51-23"><a href="#cb51-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylim([<span class="op">-</span><span class="fl">0.05</span>, <span class="fl">0.08</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<pre><code>(-0.05, 0.08)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="umbrella_inversion_files/figure-html/cell-35-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In the figure, we see the initial density is localized in the left well signifying that the orientation of the molecule has the three hydrogen atoms below the oxygen nuclei (as depicted on the left side of the inset inversion process figure). The final density on the other hand shows peaks in the right well, which means that there is significant probability that the hydrogen atoms are localized above the oxygen atom. Even though the initial wave packet was localized below the barrier height, the wave packet tunneled through such that we have successfully witnessed the umbrella inversion!</p>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing words</h2>
+<p>This notebook illustrates how Tangelo, QEMIST Cloud and Amazon Braket can be combined to explore the potential of quantum computing for chemistry simulation, here using the umbrella inversion as a use case. It accompanies an article published on AWS Quantum blog, which goes more into detail about the chemistry and the experimental results obtained on a quantum device.</p>
+<p>By breaking down a problem instance into a collection of subproblems requiring a lower amount of computational resources, the problem decomposition techniques available in Tangelo and QEMIST Cloud can extend the range of use-cases within reach of current quantum devices. The toolboxes in Tangelo support researchers at every step of their quantum exploration, by providing algorithms or reusable building-blocks to express their own custom workflows and put their ideas to the test.</p>
+<p>What will you do with Tangelo ?</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
