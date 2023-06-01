@@ -35,6 +35,7 @@ An overview of the many notebooks so far (there may be more, including example s
     * [Density Matrix Embedding Theory](examples/problem_decomposition/dmet.html)
     * [MIFNO](examples/problem_decomposition/mifno.html)
     * [ONIOM](examples/problem_decomposition/oniom.html)
+    * [Unrestricted Hatree-Fock DMET](examples/problem_decomposition/dmet_uhf.html)
 * Hardware Experiments
     * [End-to-End hardware experiment](examples/hardware_experiments/overview_endtoend.html)
     * [Hardware Experiment using QEMIST Cloud](examples/hardware_experiments/qemist_cloud_hardware_experiment.html)

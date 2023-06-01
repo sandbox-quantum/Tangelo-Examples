@@ -49,6 +49,8 @@ A full list of the example notebooks is
     * `Density Matrix Embedding Theory <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/dmet.ipynb>`_
     * `MIFNO <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/mifno.ipynb>`_
     * `ONIOM <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/oniom.ipynb>`_
+    * `Unrestricted Hatree-Fock DMET <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/dmet_uhf.ipynb>`_
+
 * Hardware Experiments
     * `End-to-End hardware experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb>`_
     * `Hardware Experiment using QEMIST Cloud <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/qemist_cloud_hardware_experiment.ipynb>`_
