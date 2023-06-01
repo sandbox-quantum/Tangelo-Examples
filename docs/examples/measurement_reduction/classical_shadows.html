@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.306">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -329,6 +329,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Linq: noisy simulation</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
       </ul>
   </li>
       </ul>
@@ -362,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/measurement_reduction/classical_shadows.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
-<p></p><figcaption class="figure-caption">Open In Colab</figcaption><p></p>
+<figcaption class="figure-caption">Open In Colab</figcaption>
 </figure>
 </div>
 <p>The output of a quantum computer is a histogram of measurements, corresponding to the different outcomes observed, usually expressed as bitstrings. The cost and duration of a quantum experiment is roughly linear with the number of shots used to build such histograms, which also correlates with the accuracy of the results. This measurement overhead can be prohibitive for state tomography and computation of observables for quantum chemistry applications.</p>
@@ -371,7 +377,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../img/classical_shadow_overview.png" title="Classical Shadow" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Classical Shadows overview</figcaption><p></p>
+<figcaption class="figure-caption">Classical Shadows overview</figcaption>
 </figure>
 </div>
 <p>The randomized, derandomized and adaptive shadow protocols using the single-qubit Pauli basis as a set of unitaries are currently available in Tangelo. This introduction will shed light on how to leverage their use in your own investigation, and highlight the main differences between these approaches. At the end of this notebook, a comparison is made between energies predicted with those techniques and the one computed by using a Hamiltonian partitioning approach relying on qubitwise commutativity.</p>
