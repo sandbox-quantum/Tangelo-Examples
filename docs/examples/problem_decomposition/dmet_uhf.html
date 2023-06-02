@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/problem_decomposition/dmet.html">Problem Decomposition</a></li><li class="breadcrumb-item"><a href="../../examples/problem_decomposition/dmet_uhf.html">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Using quantum cloud services API with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<!--- Approach with PD --->
+<p>Density-Matrix Embedding Theory (DMET) is part of a toolset we call problem decomposition methods, which breaks down a molecular problem into a collection of smaller subproblems requiring a lower amount of computational resources (classical or quantum). In another <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/dmet.ipynb">notebook</a>, we introduced the DMET algorithm, its relevance, and implemented features in <a href="https://github.com/goodchemistryco/Tangelo">Tangelo</a>.</p>
+<p>Some conclusions can be drawn from this educational resource: - There is a tradeoff between the DMET fragmentation (number of atoms per fragment) and the DMET energy accuracy; - Each fragment can be treated independently; - The 1- and 2-body Reduced Density Matrices (RDMs) are the information needed for each fragment to recontruct the full system wavefunction.</p>
+<!--- Restricted DMET --->
+<p>When not explicitly mentioned, DMET’s underlying mean-field calculation for each fragment generally refers to a restricted Hartree-Fock calculation, meaning the spin orbitals are treated as pairs. As stated in <a href="https://books.google.ca/books/about/Modern_Quantum_Chemistry.html?id=6mV9gYzEkgIC&amp;redir_esc=y">Szabo &amp; Ostlund</a>, the lowest mean-field energy of a molecule with unpaired electrons is retrieved from an unrestricted calculation. According to the from the Unrestricted Hartree–Fock <a href="https://en.wikipedia.org/wiki/Unrestricted_Hartree%E2%80%93Fock">wiki page</a>:</p>
+<blockquote class="blockquote">
+<p>“(…) the unrestricted Hartree–Fock method is used frequently, and in preference to the restricted open-shell Hartree–Fock (ROHF) method, because UHF is simpler to code, easier to develop post-Hartree–Fock methods with, and returns unique functions unlike ROHF where different Fock operators can give the same final wave function.”</p>
+</blockquote>
+<p>More information on those concepts can be found in the <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb">quantum chemistry modelling notebook</a>.</p>
+<!--- Free radicals and battery chemistry --->
+<p>Expanding DMET calculations beyond the restricted formalism opens up the application of this problem decomposition scheme to free radicals (at least one unpaired valence electron). Those molecules, although rarely present in a stable form at standard temperature and pressure, can be found as intermediate species in chemical reactions. As a consequence, they are important for modelling kinetics in complex chemical systems. One example of those complex systems is battery chemistry, where understanding energy transfer between chemicals is essential to further develop this technology. On this point, quantum simulation for battery chemistry has attracted some attention with public announcements and scientific publications. The <a href="https://doi.org/10.1103/PhysRevResearch.4.023019">Mercedes-Benz</a> (with PsiQuantum), <a href="https://arxiv.org/abs/2208.07977">Ford</a> and <a href="https://doi.org/10.1103/PhysRevA.106.032428">Volkswagen</a> (with Xanadu) initiatives are part of this push. While the first and third studies bring insights on the resources required to tackle quantum simulation for battery chemistry with fault-tolerant algorithms, the second study could be categorized as a NISQ-friendly approach. However, the estimated circuit depths are still way beyond existing device capabilities, as it yields circuits of <span class="math inline">\(10^5 - 10^6\)</span> moments.</p>
+<!--- UHF + DMET --->
+<p>While waiting for a hardware breakthrough towards fault-tolerant quantum computers, unrestricted DMET calculation (UHF-DMET) may help modelling more industrially-relevant molecules on Noisy Intermediate Scale Quantum (NISQ) devices. We have previously addressed this statement with restricted DMET calculations in a <a href="https://doi.org/10.1038/s42005-021-00751-9">Communcation Physics publication</a>, reproduced in the <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb">“overview of an end-to-end experiment” notebook</a>. In this notebook, we focus on a use case relevant for battery chemistry development using the UHF-DMET algorithm. The quantum resource estimation and experiment are intentionally left out of this notebook as they are already covered in the references above.</p>
+<p>But first, let’s install Tangelo in our environment.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="im">import</span> tangelo</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tackling-the-textlio_2-molecule-with-dmet-and-classical-solvers" class="level2">
+<h2 class="anchored" data-anchor-id="tackling-the-textlio_2-molecule-with-dmet-and-classical-solvers">Tackling the <span class="math inline">\(\text{LiO}_2\)</span> Molecule with DMET and Classical Solvers</h2>
+<p>We tackle the ground-state preparation of the lithium superoxide (<span class="math inline">\(\text{LiO}_2\)</span>) molecule, using UHF-DMET. <span class="math inline">\(\text{LiO}_2\)</span> is a chemical compound formed in an electrolytic cell from the reaction of a lithium ion with oxygen at the cathode:</p>
+<p><span class="math display">\[\text{Li}^+ + \text{e}^- + \text{O}_2 -&gt; \text{LiO}_2\]</span></p>
+<p>The stabilization of this compound could lead to a new type of batteries with improved energy density, as stated in this <a href="https://phys.org/news/2016-01-stable-superoxide-door-class-batteries.html">phys.org news article</a>. To study this compound, a wet chemistry analog of this process would be the <span class="math inline">\(\text{LiO}_2\)</span> synthesis from lithium electride dissolved in anhydrous ammonia.</p>
+<p>Via quantum chemistry theory, we know that the <span class="math inline">\(\text{LiO}_2\)</span> molecule is described by 42 molecular orbitals (in the STO-3G basis) and 19 electrons. This problem statement involves computational challenges due to the exponential scaling of the matrix and vector sizes for classical algorithms, like the Full Configuration Interaction (FCI) method. This aspect grows into a bigger issue as we move on to more complete basis sets, and this is one of the reasons why <a href="https://doi.org/10.1021/jacs.2c13042">quantum chemistry is so complicated</a>. This is a textbook example where a problem decomposition like UHF-DMET could shine.</p>
+<p>The remaining part of this notebook shows how UHF-DMET can be used in Tangelo. In the next cell, we build a <span class="math inline">\(\text{LiO}_2\)</span> molecule object with the <code>cc-pvdz</code> basis set, using a UHF mean-field calculation (by setting the <code>uhf</code> argument to <code>True</code>).</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>LiO2 <span class="op">=</span> [</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Li"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.380605</span>)),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"O"</span>, (<span class="fl">0.</span>, <span class="fl">0.676045</span>, <span class="op">-</span><span class="fl">0.258863</span>)),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"O"</span>, (<span class="fl">0.</span>, <span class="op">-</span><span class="fl">0.676045</span>, <span class="op">-</span><span class="fl">0.258863</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>mol_lio2 <span class="op">=</span> SecondQuantizedMolecule(LiO2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">1</span>, basis<span class="op">=</span><span class="st">"cc-pvdz"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>, uhf<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By looking at the the <code>n_active_ab_electrons</code> and <code>active_mos</code> properties, we can confirm that an unrestricted self-consistent field has been generated. The alpha and beta spin orbitals are treated separately, therefore the orbitals properties are grouped in pairs, where the first (resp. last) element of the tuple refers to the alpha (resp. beta) spin orbitals.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_alpha, n_beta <span class="op">=</span> mol_lio2.n_active_ab_electrons</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mos_alpha, mos_beta <span class="op">=</span> mol_lio2.active_mos</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n_alpha<span class="sc">}</span><span class="ss"> alpha electrons in </span><span class="sc">{</span><span class="bu">len</span>(mos_alpha)<span class="sc">}</span><span class="ss"> molecular orbitals."</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n_beta<span class="sc">}</span><span class="ss"> beta electrons in </span><span class="sc">{</span><span class="bu">len</span>(mos_beta)<span class="sc">}</span><span class="ss"> molecular orbitals."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10 alpha electrons in 42 molecular orbitals.
+9 beta electrons in 42 molecular orbitals.</code></pre>
+</div>
+</div>
+<p>At the time of writing, only <code>CCSDSolver</code>, where CCSD refers to coupled-cluster singles and doubles, supports an unrestricted mean field in Tangelo. Since calculating the ground state of <span class="math inline">\(\text{LiO}_2\)</span> in the cc-pVDZ basis set with FCI is challenging (and even might be not possible) for most supercomputers, we use CCSD for the reference calculations.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ccsd <span class="op">=</span> CCSDSolver(mol_lio2)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>e_ccsd <span class="op">=</span> ccsd.simulate()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean-field energy: </span><span class="sc">{</span>mol_lio2<span class="sc">.</span>mf_energy<span class="sc">}</span><span class="ss"> Ha"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unrestricted CCSD energy: </span><span class="sc">{</span>e_ccsd<span class="sc">}</span><span class="ss"> Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Mean-field energy: -157.10964086805075 Ha
+Unrestricted CCSD energy: -157.4899499964378 Ha</code></pre>
+</div>
+</div>
+<p>Next, we define the DMET options and perform the simulation. - The molecular orbitals were localized via natural atomic orbitals (NAO); - DMET fragments are defined to contain 1 atom each; - The CCSD solver is used for every fragment.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.dmet <span class="im">import</span> Localization</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> DMETProblemDecomposition</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>opt_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_lio2,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fragment_solvers"</span>: <span class="st">"ccsd"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"electron_localization"</span>: Localization.nao,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"virtual_orbital_threshold"</span>: <span class="fl">1e-13</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"verbose"</span>: <span class="va">False</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>dmet_solver <span class="op">=</span> DMETProblemDecomposition(opt_dmet)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>dmet_solver.build()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>e_dmet_ccsd <span class="op">=</span> dmet_solver.simulate()</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unrestricted DMET-CCSD energy: </span><span class="sc">{</span>e_dmet_ccsd<span class="sc">}</span><span class="ss"> Ha"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference vs the unrestricted CCSD: </span><span class="sc">{</span><span class="bu">abs</span>(e_ccsd <span class="op">-</span> e_dmet_ccsd)<span class="sc">:.4f}</span><span class="ss"> Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Unrestricted DMET-CCSD energy: -157.47151520319153 Ha
+Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
+</div>
+</div>
+<p>UHF-DMET here retrieves most of the correlation energy (0.36 Ha). This method requires considerably less resources than approaching the full system head on. We have turned a 42 MOS + 19 electrons electronic structure calculation into 3 smaller problems of 28 MOS + 15 (or 17) electrons. Assuming an occupation mapping such as the <a href="https://learn.microsoft.com/en-us/azure/quantum/user-guide/libraries/chemistry/concepts/jordan-wigner">Jordan-Wigner transformation</a>, it would mean a reduction from 84 qubits to 56.</p>
+<p>This decomposition scheme comes at the cost of introducing an error of about 0.018 Ha when comparing to the full-molecule CCSD calculation. This is caused by a virtual orbital space truncation step done during the DMET fragment construction. This feature can be turned off by setting the <code>virtual_orbital_threshold</code> to 0 (default is <span class="math inline">\(1\times10^{-13}\)</span>), at the expense of a significant increase in the computational cost of the DMET calculation. On another note, when this DMET error is more or less constant across a set of calculations (this could be a reasonable statement for the same class of molecule with similar fragmentation), this is revealed to be a powerful tool for reducting computational cost.</p>
+<p>The last calculation has been made with a given geometry for the nuclei. If one is interested in the formation of <span class="math inline">\(\text{LiO}_2\)</span>, as described earlier in this notebook, the approach of a <span class="math inline">\(\text{Li}\)</span> atom towards an <span class="math inline">\(\text{O}_2\)</span> molecule should be modelled. As a consequence, geometry changes would be a necessary component of the study.</p>
+<p>The data below displays the energies of different <span class="math inline">\(\text{LiO}_2\)</span> geometries by varying the <span class="math inline">\(\text{Li}\)</span>-<span class="math inline">\(\text{O}_2\)</span> distance. Here unrestricted CCSD refers to the calculation of CCSD with an unrestricted mean-field starting point.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">r, Unrestricted CCSD, UHF, ROHF, UHF-DMET+CCSD</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">0.8, -156.77290395144,  -156.407069154552, -156.395663251967, -156.760717950373</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">1.0, -157.181626088186, -156.813883767609, -156.802127699106, -157.163705479905</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">1.2, -157.377673286621, -157.00703363169,  -156.99505890766,  -157.360034403805</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">1.4, -157.459368788708, -157.086059337141, -157.07401601092,  -157.44244444947</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">1.6, -157.484607625707, -157.108840759645, -157.096849245497, -157.466961019203</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">1.8, -157.483616469896, -157.105696261544, -157.093842156837, -157.466603459799</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">2.0, -157.471129533643, -157.091589272408, -157.079928235107, -157.457900669265</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">2.2, -157.454061938212, -157.073591742696, -157.062157197992, -157.443997798073</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="st">2.4, -157.435670655538, -157.054932359744, -157.043743505371, -157.428861609471</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="st">2.6, -157.417467388055, -157.036982535102, -157.026047930188, -157.414458252749</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="st">2.8, -157.400122479842, -157.0202427614,   -157.009560505402, -157.405471025456</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_table(StringIO(data), sep<span class="op">=</span><span class="st">","</span>, skipinitialspace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>df.plot(x<span class="op">=</span><span class="st">"r"</span>, y<span class="op">=</span>[<span class="st">"Unrestricted CCSD"</span>, <span class="st">"UHF"</span>, <span class="st">"ROHF"</span>, <span class="st">"UHF-DMET+CCSD"</span>], xlabel<span class="op">=</span><span class="st">"Li-O2 distance / Angstrom"</span>, ylabel<span class="op">=</span><span class="st">"Energy / Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>&lt;AxesSubplot: xlabel='Li-O2 distance / Angstrom', ylabel='Energy / Ha'&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="dmet_uhf_files/figure-html/cell-7-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>We are getting most of the correlation energy with the UHF-DMET on the full span of the configurational space. We can also see from this plot the lower energy given by an unrestricted mean-field calculation (vs restricted). We show in the next section how one can leverage this problem decomposition method to efficiently map the <span class="math inline">\(\text{LiO}_2\)</span> molecule on a (or many) quantum computer(s).</p>
+</section>
+<section id="what-about-the-quantum-algorithms" class="level2">
+<h2 class="anchored" data-anchor-id="what-about-the-quantum-algorithms">What about the Quantum Algorithms?</h2>
+<p>Up until this section, the discussion revolved around solving the Schrödinger equation for the <span class="math inline">\(\text{LiO}_2\)</span> molecule in the <code>cc-pVDZ</code> basis set using UHF-DMET (and CCSD). As mentionned in the introduction, UHF-DMET is one of many tools that scientists have to reduce computational cost of a quantum chemistry calculation.</p>
+<section id="resource-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="resource-estimation">Resource estimation</h3>
+<p>We shown in the previous section that a reduction of 84 qubits to 56 was possible when working in the <code>cc-pVDZ</code> basis set. However, working with this many qubits would require the accurate computation of expectation values (within 1 mHa) on deep quantum circuits.</p>
+<p>This is one of the reason quantum chemistry calculation on NISQ devices are often done using a minimal basis set, like <code>sto-3g</code> or <code>minao</code>. As most of the experiments serve as proofs of concept, scaling up problem size will occur accordingly to quantum hardware development. We show in the next cell a resource estimation for a DMET fragment mapping on quantum hardware, using the <code>sto-3g</code> basis set and the variational quantum eigensolver (VQE).</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> BuiltInAnsatze, VQESolver</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>mol_lio2 <span class="op">=</span> SecondQuantizedMolecule(LiO2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">1</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>, uhf<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>opt_vqe <span class="op">=</span> {<span class="st">"molecule"</span>: mol_lio2,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>           <span class="st">"qubit_mapping"</span>: <span class="st">"JW"</span>, </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>           <span class="st">"up_then_down"</span>: <span class="va">True</span>, </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>           <span class="st">"ansatz"</span>: BuiltInAnsatze.QCC,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(opt_vqe)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Full VQE quantum resources:"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>pprint(vqe_solver.get_resources())</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>opt_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_lio2,</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>],</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fragment_solvers"</span>: [<span class="st">"vqe"</span>, <span class="st">"ccsd"</span>, <span class="st">"ccsd"</span>],</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">"solvers_options"</span>: [{<span class="st">"qubit_mapping"</span>: <span class="st">"JW"</span>, <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"ansatz"</span>: BuiltInAnsatze.QCC}, <span class="va">None</span>, <span class="va">None</span>],</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>            <span class="st">"electron_localization"</span>: Localization.nao,</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>            <span class="st">"virtual_orbital_threshold"</span>: <span class="fl">1e-13</span>,</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>            <span class="st">"verbose"</span>: <span class="va">False</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>            }</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>dmet_solver <span class="op">=</span> DMETProblemDecomposition(opt_dmet)</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>dmet_solver.build()</span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">DMET-VQE quantum resources:"</span>)</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>pprint(dmet_solver.get_resources()[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Full VQE quantum resources:
+{'circuit_2qubit_gates': 3804,
+ 'circuit_depth': 2965,
+ 'circuit_var_gates': 694,
+ 'circuit_width': 30,
+ 'qubit_hamiltonian_terms': 20548,
+ 'vqe_variational_parameters': 694}
+
+DMET-VQE quantum resources:
+{'circuit_2qubit_gates': 978,
+ 'circuit_depth': 848,
+ 'circuit_var_gates': 203,
+ 'circuit_width': 20,
+ 'qubit_hamiltonian_terms': 6397,
+ 'vqe_variational_parameters': 203}</code></pre>
+</div>
+</div>
+<p>The resource for a single DMET fragment, corresponding to the <span class="math inline">\(\text{Li}\)</span> atom, are in the order of 20 qubits and 6367 Hamiltonian terms (with a Jordan-Wigner qubit mapping). Versus the full VQE problem, this is a 33% and a 69% improvement in terms of the number of required qubits and Hamiltonian terms, respectively. This also yields a shallower circuit, with fewer variational parameters: a complete discussion on this topic depends on the ansatz choice.</p>
+</section>
+<section id="trade-off-between-energy-accuracy-and-virtual-orbital-truncation-in-dmet-fragments" class="level3">
+<h3 class="anchored" data-anchor-id="trade-off-between-energy-accuracy-and-virtual-orbital-truncation-in-dmet-fragments">Trade-off between energy accuracy and virtual orbital truncation in DMET fragments</h3>
+<p>We briefly touched the <code>virtual_orbital_threshold</code> parameter earlier when we discussed the DMET energy error. This discussion is even more relevant when constructing quantum circuits, as we work with minimal basis sets to restrain the number of qubits. Changing the <code>virtual_orbital_threshold</code> while dealing with smaller basis sets can have a significant impact on the DMET energy, as shown in the table below. This is due to the truncation of a few virtual orbitals having proportionally greater impact on small virtual orbital spaces than on larger ones.</p>
+<table class="table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Truncation threshold</th>
+<th>Problem size (number of qubits)</th>
+<th>DMET error vs full CCSD (Ha)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(0\)</span></td>
+<td><span class="math inline">\(20\)</span></td>
+<td><span class="math inline">\(0.011\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(10^{-2}\)</span></td>
+<td><span class="math inline">\(18\)</span></td>
+<td><span class="math inline">\(0.034\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing Words</h2>
+<p>We have demonstrated the use of UHF-DMET via the modelling of the <span class="math inline">\(\text{LiO}_2\)</span> formation. DMET reduces the computational resource requirements at the cost of adding a new potential source of error induced by the fragmentation. However, if the DMET error is constant for two different calculations, the agreement with experiment can be good as energy differences are all that can be measured in laboratories.</p>
+<p>This resource reduction is welcome when simulating chemical problems on NISQ devices. One should be aware of unanswered questions when using DMET (regardless of the flavour, with UHF or not): - How to build accurate shallow ansatze for DMET fragments, to further reduce circuit depth compared to the full molecular problem? - Is the measurement problem avoidable? We need to design an efficient way to extract the 2-body Reduced Density Matrices (RDMs) from each fragment solver. - How resilient is DMET to statistical and physical noise, leading in particular to noisy 2-RDM data?</p>
+<p>Tangelo may help you answer some of these questions. Its DMET framework facilitates the exploration of <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe_custom_ansatz_hamiltonian.ipynb">many ansatze</a>, <a href="https://github.com/goodchemistryco/Tangelo-Examples/tree/main/examples/measurement_reduction">measurement reduction</a> and <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/3.noisy_simulation.ipynb">noisy performance</a> of quantum algorithms. The rest is up to you !</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
