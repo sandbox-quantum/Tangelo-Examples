@@ -3,7 +3,7 @@ Generate the rendered documentation with Quarto
 
 This document is here to assist this project's maintainers in updating the `documentation <https://goodchemistryco.github.io/Tangelo-Examples/>`_ of this repository.
 Notebooks are rendered using `Quarto <https://quarto.org/>`_, and the source files are deployed via github-pages.
-The required step to render the documentation after significant changes, like the addition of a new notebook, are described below.
+The required stepa to render the documentation after significant changes, like the addition of a new notebook, are described below.
 
 1. Installing Quarto
 --------------------
