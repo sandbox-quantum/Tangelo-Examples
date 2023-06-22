@@ -30,7 +30,7 @@ On Ubuntu (or other Debian-based distributions), the relevant commands can be cu
 There are two files which may require modifications, on top of the other generated files (html, json, ...)
 
 - `README.rst`: A README update for users visiting the Github page.
-- `index.qmd`:Tthe main page of the rendered documentation, listing and tying together all the other rendered html files.
+- `index.qmd`: The main page of the rendered documentation, listing and tying together all the other rendered html files.
 
 2b. Regenerate the html files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
