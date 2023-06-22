@@ -48,7 +48,7 @@ Please make sure to add, commit and push all modifications, and trust the proces
 2c. Deployment on github-pages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-At the time of writing this tutorial, only way to regenerate the documentation is to manually deploy from the user's branch.
+At the time of writing this tutorial, the only way to regenerate the documentation is to manually deploy from the user's branch.
 Regenerating this documentation and verifying it works as expected is mandatory before approving and merging a PR that impacts it.
 Doing so will however overwrite the existing documentation.
 In case the new documentation is not working out and needs further work, please fix it as soon as possible or regenerate from the `main` branch to revert to the previous version: many users depend on it !
