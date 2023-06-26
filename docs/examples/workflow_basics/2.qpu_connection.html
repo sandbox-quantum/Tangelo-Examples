@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.306">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Using quantum cloud services API with Tangelo</title>
+<title>Connecting to quantum services with Tangelo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,7 +128,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Workflow Basics</a></li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/2.qpu_connection.html">Using quantum cloud services API with Tangelo</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Workflow Basics</a></li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/2.qpu_connection.html">Connecting to quantum services with Tangelo</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -329,7 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Using quantum cloud services API with Tangelo</span></a>
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Using quantum cloud services API with Tangelo</h1>
+<h1 class="title">Connecting to quantum services with Tangelo</h1>
 </div>
 
 
@@ -374,27 +374,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/2.qpu_connection.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
-<figcaption class="figure-caption">Open In Colab</figcaption>
-</figure>
-</div>
-<p>This notebook elaborates on how the <code>tangelo.linq</code> module can facilitate hardware experiments by integrating the API provided by some hardware providers (IonQ, Honeywell…) or broader quantum cloud services providers such as Azure Quantum or Braket. We essentially provide convenience wrappers to these APIs: the API of your favorite cloud provider is still called underneath, using your own credentials.</p>
-<p>This notebook should be relevant to Tangelo users that prefer to install all the dependencies on their machine, use their own credentials, and be billed directly by the target quantum cloud service(s).</p>
-<p>This approach is an alternative to using <a href="https://goodchemistry.com/qemist-cloud/">QEMIST Cloud</a>, which we intend to make a single and convenient entry point to reach many different platforms. What’s pretty cool with this other option is that users do not have to set up the environment required by the quantum cloud(s) of their choice (e.g Braket, Azure Quantum, etc) or even an account with those services. A QEMIST Cloud account provides a single entry point enabling you to reach all of them, and pay with your QEMIST Cloud credits.</p>
+<p>Tangelo provides convenient ways to help you run experiments on quantum hardware. The <code>tangelo.linq</code> module integrates the API provided by some hardware providers (IonQ, Honeywell…) or broader quantum cloud services providers such as Azure Quantum (Microsoft) or Braket (AWS). Here’s what Tangelo provides to support you:</p>
+<ul>
+<li><p>Connection objects that act as a convenience wrapper for job management, which underneath uses whatever API the hardware provider exposed (qiskit-runtime, braket, Rest API…). It’s simple, covers most usage, and gets you submitting jobs in no time. No need to learn about all the different APIs !</p></li>
+<li><p>Translation functions that can convert your quantum circuits and operators in the desired format (qiskit, braket, OpenQASM, IonQ JSON…). You can then use the API of your choice directly, for full control. Useful if you need very fine control and want to run an edge case not yet covered by the connection objects.</p></li>
+</ul>
+<p>Regardless of what you pick: you are responsible for configuring the environment allowing you to submit jobs, and entering your own credentials. You are billed directly by the target quantum cloud service(s), Tangelo is simply here as a helpful, transparent middleman.</p>
+<p>This approach is an alternative to using <a href="https://goodchemistry.com/qemist-cloud/">QEMIST Cloud</a>, which we intend to make a single and convenient entry point to reach many different platforms. What’s pretty cool with this other option is that users do not have to set up the environment required by the quantum cloud(s) of their choice or even an account with those services. A QEMIST Cloud account provides a single entry point enabling you to reach all of them, and pay with your QEMIST Cloud credits.</p>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of contents</h2>
 <ul>
-<li><a href="#1">1. IonQ Rest API</a>
-<ul>
-<li><a href="#1.1">1.1 References</a></li>
-<li><a href="#1.2">1.2 Environment</a></li>
-<li><a href="#1.3">1.3 Quantum Circuit</a></li>
-<li><a href="#1.4">1.4 IonQConnection class</a></li>
+<li><a href="#1">Method 1: Fine control (translation functions)</a></li>
+<li><a href="#2">Method 2: Convenience (Connection classes)</a></li>
+<li><ul>
+<li><a href="#21">2.1. Braket example</a></li>
 </ul></li>
-<li><a href="#2">2. Azure Quantum</a></li>
-<li><a href="#3">3. Braket</a></li>
+<li><ul>
+<li><a href="#22">2.2. IBM example</a></li>
+</ul></li>
+<li><ul>
+<li><a href="#23">2.3. IonQ example</a></li>
+</ul></li>
+<li><ul>
+<li><a href="#24">2.4. Azure Quantum</a></li>
+</ul></li>
 </ul>
 <hr>
 </section>
@@ -402,7 +405,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
 <ul>
 <li>Tangelo needs to be installed in your environment. The cell below does this installation for you if it is not found.</li>
-<li>Ensure you have valid ID tokens and logins for the services of your choice (IonQ, Braket…), and that your environment is ready to use them (e.g install their SDK and dependencies according to the instructions they provide)</li>
+<li>The requirements specific to the target quantum services are detailed below, in the corresponding section. It’s usually about setting up your environment and obtaining valid credentials.</li>
 </ul>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
@@ -411,60 +414,149 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<hr>
 </section>
-<section id="ionq-rest-api" class="level2">
-<h2 class="anchored" data-anchor-id="ionq-rest-api">1. IonQ Rest API <a class="anchor" id="1"></a></h2>
-<section id="references" class="level3">
-<h3 class="anchored" data-anchor-id="references">1.1 References <a class="anchor" id="1.1"></a></h3>
-<p>Tangelo provides a few Python wrappers around the REST API provided by IonQ, to facilitate job submission and monitoring. The most up-to-date list of supported features and information regarding the IonQ API is available at https://docs.ionq.co</p>
+<section id="method-1-fine-control-translation-functions" class="level2">
+<h2 class="anchored" data-anchor-id="method-1-fine-control-translation-functions">Method 1: Fine control (Translation functions) <a class="anchor" id="1"></a></h2>
+<p>In order to submit an experiment through some quantum services, you need to provide objects such as quantum circuits or qubit operators in one of the formats they support. For example, IBM may support formats such as OpenQASM and Qiskit, Amazon supports Braket, and your favorite hardware provider may support their own specific format using native gates not supported anywhere else.</p>
+<p>Tangelo expresses quantum circuits and operators in its own generic format, in order to keep the library compatible with various technologies, and ready to accomodate the quantum platforms of tomorrow. The <code>linq</code> module contains a collection of translation functions to convert from the Tangelo format to popular formats (and sometimes the other way around). If you haven’t, check out <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/0a1c84b64517ca2617bf9b9cb9460e8029709947/examples/workflow_basics/1.the_basics.ipynb">this notebook</a> for examples.</p>
+<p>Here is a simple example with IonQ, but there are various different formats supported in Tangelo. IonQ’s hardware is available through several cloud services, but they also have their own <a href="https://cloud.ionq.com/">cloud portal</a>. The following shows how to translate a Tangelo circuit into the json IonQ format detailed in <a href="https://docs.ionq.co">their documentation</a>.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, translate_circuit</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>circ1 <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">1</span>)])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>json_circ1 <span class="op">=</span> translate_circuit(circ1, target<span class="op">=</span><span class="st">"ionq"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json_circ1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'qubits': 2, 'circuit': [{'gate': 'h', 'targets': [0]}, {'gate': 'x', 'targets': [1]}]}</code></pre>
+</div>
+</div>
+<p>You now have a quantum circuit in a very specific format, supported by IonQ’s platforms. You can interact directly with their cloud API, and are in full control of all the steps: connecting to their quantum services, submitting and managing quantum jobs, etc.</p>
+<ul>
+<li><p>Pros: Fine control, can leverage latest features / changes from a hardware provider.</p></li>
+<li><p>Cons: You need to learn how to interact with the target platform (e.g their API), and are responsible for everything from there on to run the hardware experiment.</p></li>
+</ul>
+<hr>
 </section>
-<section id="environment" class="level3">
-<h3 class="anchored" data-anchor-id="environment">1.2 Environment <a class="anchor" id="1.2"></a></h3>
-<p>Users allowed to use the IonQ API should have an ID token, e.g a string of alphanumeric characters and dashes, which can be obtained through the <a href="https://cloud.ionq.com/">IonQ dashboard</a>. Users need to set their <code>IONQ_APIKEY</code> environment variable to this value; here are two ways to do it:</p>
+<section id="method-2-convenience-connection-classes" class="level2">
+<h2 class="anchored" data-anchor-id="method-2-convenience-connection-classes">Method 2: Convenience (Connection classes) <a class="anchor" id="2"></a></h2>
+<p>Connection classes are here for convenience, to provide a simple, more generic way to connect to various platforms and manage experiments programmatically. We recommend that you do not hesitate to leverage whatever graphic interface / dashboard the target quantum service provider offers, as it is usually a more comfortable way to access and visualize a lot of information about the systems available or your jobs.</p>
+<p>The connection classes spare you a number of lines of code and having to figure out a bunch of APIs, but you still have to install whatever your environment needs and provide your own valid credentials to the target services. Not all quantum services offer the same functionalities, or handle authentication similarly: we recommend you have a look at the <a href="https://github.com/goodchemistryco/Tangelo/tree/main/tangelo/linq/qpu_connection">classes themselves</a> (the <code>develop</code> branch may have additional features) to see what they have to offer or how they accomplish it.</p>
+<p>Here’s how it typically works:</p>
+<table class="table">
+<colgroup>
+<col style="width: 57%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Step</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Pre-requisites</td>
+<td style="text-align: left;">Install the required packages, acquire valid credentials for the target quantum service (check out their documentation)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Create connection objects</td>
+<td style="text-align: left;">Instantiate relevant connection object (e.g <code>IBMConnection</code>, <code>BraketConnection</code>, …). This usually requires you to provide your credentials either as parameters or through environment variables.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Submit a job</td>
+<td style="text-align: left;">Use the <code>job_submit</code> method. It takes your Tangelo objects as input and some options. It returns and logs job IDs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Manage your job</td>
+<td style="text-align: left;">Use <code>job_status</code> or <code>job_cancel</code> methods on jobs you’ve already submitted, through their job ID.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Retrieve your results</td>
+<td style="text-align: left;">Use the <code>job_result</code> method to retrieve your job results in a generic Tangelo format (bitstrings with qubit 0 on the left, read left-to-right), but also in raw format with all the metadata provided by the target service.</td>
+</tr>
+</tbody>
+</table>
+<p>Depending on the service, additional methods and features may be available (listing all devices visible on the service, obtaining information about their noise, cost estimate …). Let’s see a few examples.</p>
+</section>
+<section id="braketconnection-example" class="level2">
+<h2 class="anchored" data-anchor-id="braketconnection-example">1. BraketConnection example <a class="anchor" id="21"></a></h2>
+<section id="pre-requisites" class="level3">
+<h3 class="anchored" data-anchor-id="pre-requisites">1.1 Pre-requisites</h3>
+<p>Install the <a href="https://github.com/aws/amazon-braket-sdk-python/">Braket python SDK</a> provided by Amazon (<code>pip install amazon-braket-sdk</code>). You also need to install the AWS CLI, and assumes you have an IAM user with proper permissions (Braket, S3 buckets). The Braket services can also be accessed through your web browser, which gives you access to managed python notebooks. These actions may require assistance from whoever manages cloud access in your organization.</p>
+<p>Before you are able to use the service, some environment variables should be set. Depending on how you use Braket (managed notebooks, etc), you may or may have not to set all of these variables yourself. The following should be enough, replace the dots by the appropriate strings. Some of these information may be in your <code>~/.aws/credentials</code> file.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up credentials [clear before pushing to public repo]</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_REGION"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_ACCESS_KEY_ID"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_SECRET_ACCESS_KEY"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_SESSION_TOKEN"</span>] <span class="op">=</span> <span class="st">"..."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In order to submit experiments through Braket or retrieve results, you need to provide the name of a S3 bucket your account has access to, as well as a folder for the results. We recommend you ensure that is set up before proceeding.</p>
+</section>
+<section id="instantiate-the-connection-object" class="level3">
+<h3 class="anchored" data-anchor-id="instantiate-the-connection-object">1.2 Instantiate the connection object</h3>
+<p>As long as the Braket python package is found in your environment, instantiation will be successful. Your environment variables or S3 bucket / folder come into play later, as you attempt to make requests to the service. You can set up your S3 bucket name and folder during instantiation (or change their value manually later using the <code>s3_bucket</code> and <code>folder</code> attributes).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection.braket_connection <span class="im">import</span> BraketConnection</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> BraketConnection(s3_bucket<span class="op">=</span><span class="st">"your_bucket_name"</span>, folder<span class="op">=</span><span class="st">"your_folder_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="submit-and-manage-jobs-additional-features." class="level3">
+<h3 class="anchored" data-anchor-id="submit-and-manage-jobs-additional-features.">1.3 Submit and manage jobs, additional features.</h3>
+<p>The fastest way to see things in action may be to check out <a href="https://github.com/goodchemistryco/Tangelo/blob/develop/tangelo/linq/tests/test_braket_connection.py">our tests</a>. It’s pretty straightforward.</p>
+<p>This connection object supports batch submission of quantum circuits, which means you could provide a list of circuits and submit them all at once, otherwise your jobs may not run in similar conditions (quantum devices exhibit noise drift and are recalibrated regularly). To see all what the interface has to offer, the best way is to check out <a href="https://github.com/goodchemistryco/Tangelo/blob/develop/tangelo/linq/qpu_connection/braket_connection.py">the implementation</a>.</p>
+</section>
+</section>
+<section id="ibmconnection-example" class="level2">
+<h2 class="anchored" data-anchor-id="ibmconnection-example">2. IBMConnection example <a class="anchor" id="22"></a></h2>
+<p>We have run an experiment on IBM devices for the IBM Quantum Summit of 2022, and it is probably the easiest way to see it in action. Section 4 of <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/berylium_ibm_quantum.ipynb">this notebook</a> details the submission of the experiment itself using IBM Quantum, which involves Zero-Noise Extrapolation and plotting with error bars. You can find our implementation details <a href="https://github.com/goodchemistryco/Tangelo/blob/develop/tangelo/linq/qpu_connection/ibm_connection.py">here</a>.</p>
+<p>The gist of it:</p>
+<ul>
+<li>you need to install <code>qiskit</code> and <code>qiskit-runtime</code>, and provide your <code>IBM_TOKEN</code> before instantiating the connection.</li>
+<li>the interface is generic (<code>job_submit</code>, <code>job_cancel</code>, <code>job_results</code>, …). <code>job_submit</code> can use the <code>sampler</code> or <code>estimator</code> services, which respectively return histograms of quasi-frequencies, or expectation values.</li>
+<li>the interface supports a number of options for batch submission, optimization and noise-mitigation.</li>
+</ul>
+<p>It’s pretty easy to create an account on IBM Quantum, and even get access to some quantum computers for free.</p>
+</section>
+<section id="ionqconnection-example" class="level2">
+<h2 class="anchored" data-anchor-id="ionqconnection-example">3. IonQConnection example <a class="anchor" id="23"></a></h2>
+<section id="pre-requisites-1" class="level3">
+<h3 class="anchored" data-anchor-id="pre-requisites-1">3.1 Pre-requisites</h3>
+<p>IonQ does not require any package in particular to be installed. As long as you can interact with their REST API, all is well. At the moment of writing, users allowed to use the IonQ API should have an ID token, e.g a string of alphanumeric characters and dashes, which can be obtained through the <a href="https://cloud.ionq.com/">IonQ dashboard</a>. Users need to set their <code>IONQ_APIKEY</code> environment variable to this value; here are two ways to do it:</p>
 <ul>
 <li>in your terminal (<code>export IONQ_APIKEY=&lt;value&gt;</code>)</li>
 <li>or, in your Python script (<code>os.environ['IONQ_APIKEY'] = &lt;value&gt;</code>)</li>
 </ul>
 <p>Here’s an example of what it could look like for you (make sure you use a valid key, or you’ll get an “unauthorized” error :) )</p>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"IONQ_APIKEY"</span>] <span class="op">=</span> <span class="st">'2T14z1YQEzMLCwuYM110oXPDT2h850E4'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"IONQ_APIKEY"</span>] <span class="op">=</span> <span class="st">'2T14z1YQEzMLCwuYM110oXPDT2h850E4'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="quantum-circuit" class="level3">
-<h3 class="anchored" data-anchor-id="quantum-circuit">1.3 Quantum circuit <a class="anchor" id="1.3"></a></h3>
-<p>IonQ uses a JSON representation for quantum circuits, which <code>tangelo.linq</code> can generate from an abstract circuit, using the <code>translator</code> module. IonQ also offers partial support for other common formats (OpenQASM, …). For this example, we’ll work with their JSON format, which is pretty much nested lists and dictionaries. For more detailed and up-to-date information, check out their <a href="https://docs.ionq.com/#tag/quantum_programs">documentation</a>.</p>
-<p>Below, we show how users can produce a simple quantum circuit in the JSON format:</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, translate_circuit</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>circ1 <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">1</span>)])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>json_circ1 <span class="op">=</span> translate_circuit(circ1, target<span class="op">=</span><span class="st">"ionq"</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json_circ1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>{'qubits': 2, 'circuit': [{'gate': 'h', 'targets': [0]}, {'gate': 'x', 'targets': [1]}]}</code></pre>
-</div>
-</div>
-<p>Our convenience wrappers below do not require users to translate their circuit into the IonQ format: providing a circuit in the Tangelo format is enough.</p>
-</section>
-<section id="ionqconnection-class" class="level3">
-<h3 class="anchored" data-anchor-id="ionqconnection-class">1.4 IonQConnection class <a class="anchor" id="1.4"></a></h3>
-<p>The <code>IonQConnection</code> class encapsulates a collection of wrappers to the IonQ REST API. Internally, it stores information about the endpoint and the authorization header, containing your identification token. This class only is instantiated succesfully if your ID token has been set properly.</p>
+<section id="instantiate-the-connection-object-1" class="level3">
+<h3 class="anchored" data-anchor-id="instantiate-the-connection-object-1">3.2 Instantiate the connection object</h3>
+<p>The <code>IonQConnection</code> class encapsulates a collection of wrappers to the IonQ REST API. Internally, it stores information about the endpoint and the authorization header, containing your identification token. This class only is instantiated succesfully if your ID token has been set properly, otherwise you’ll get an error.</p>
 <p>More generally speaking, all calls to the REST API are checked for errors, and would return the IonQ error message corresponding to the unsuccessful request.</p>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IonQConnection</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ionq_connection <span class="op">=</span> IonQConnection()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IonQConnection</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ionq_connection <span class="op">=</span> IonQConnection()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
 </div>
+</section>
+<section id="submit-and-manage-jobs-and-additional-features" class="level3">
+<h3 class="anchored" data-anchor-id="submit-and-manage-jobs-and-additional-features">3.3 Submit and manage jobs, and additional features</h3>
+<p>Here we detail a number of features available using the IonQ portal.</p>
 <section id="backend-info" class="level4">
 <h4 class="anchored" data-anchor-id="backend-info">Backend info</h4>
-<p>Tangelo’s <code>get_backend_info</code> method allows us to return some information about all the devices listed on IonQ’s platform. Tangelo currently returns this info inside a <code>pandas.DataFrame</code> object, to help with visualization.</p>
+<p>The <code>get_backend_info</code> method returns some information about all the devices listed on IonQ’s platform. Tangelo currently returns this info inside a <code>pandas.DataFrame</code> object, to help with visualization.</p>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> ionq_connection.get_backend_info()</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>res <span class="co"># to display the dataframe neatly in the notebook</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> ionq_connection.get_backend_info()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>res <span class="co"># to display the dataframe neatly in this notebook</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
@@ -518,31 +610,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This information can help users to filter or sort devices according to their needs. For example, filtering out devices who do not have enough qubits for the target experiment, as well as the unavailable devices.</p>
 <p>We can also retrieve “characterizations”: a snapshot of the IonQ platform’s performance at a moment in time. We can use the <code>get_characterization</code> method with either a backend string (ex: <code>qpu.harmony</code> or <code>simulator</code>) or a characterization url, if available (see dataframe above).</p>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>charac_dict <span class="op">=</span> ionq_connection.get_characterization(<span class="st">'qpu.s11'</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'fidelity'</span>])</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'timing'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>charac_dict <span class="op">=</span> ionq_connection.get_characterization(<span class="st">'qpu.s11'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'fidelity'</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'timing'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'1q': {'mean': 0.9979}, '2q': {'mean': 0.961}, 'spam': {'mean': 0.99752}}
 {'t1': 10000, 't2': 0.2, '1q': 1e-05, '2q': 0.0002, 'readout': 0.00013, 'reset': 2e-05}</code></pre>
 </div>
 </div>
-<p>This information can help users having a better understanding of the capabilities of a device, and anticipate its performance on their usecases.</p>
-<p>Please check <a href="https://docs.ionq.com/#tag/characterizations">IonQ’s documentation</a> to confirm what these quantities mean, and the units in which they are expressed in.</p>
+<p>This information can help users having a better understanding of the capabilities of a device, and anticipate its performance on their usecases. Please check <a href="https://docs.ionq.com/#tag/characterizations">IonQ’s documentation</a> to confirm what these quantities mean, and the units in which they are expressed in.</p>
 </section>
 <section id="job-submission" class="level4">
 <h4 class="anchored" data-anchor-id="job-submission">Job submission</h4>
-<p>Job submission can be achieved through the <code>job_submit</code> method, which attempts to submit a job on a backend (simulator or QPU), and returns a job ID if submission was succesful.</p>
-<p>This method takes input arguments that need to be provided by the user:</p>
+<p>Submit a job with the <code>job_submit</code> method. It returns a job ID if submission was successful.</p>
+<p>At the time of writing, this method takes input arguments that need to be provided by the user:</p>
 <ul>
-<li>the target backend (a string such as ‘simulator’ or one that refers to a QPU)</li>
+<li>the target backend (strings provided by IonQ to refer to their simulators or QPUs)</li>
 <li>the quantum circuit (in Tangelo format)</li>
 <li>the number of shots required</li>
 <li>a name for your job</li>
 <li>any other option as key arguments (see source code and IonQ documentation)</li>
 </ul>
-<p>Assuming a valid API key, we can then submit a simple job targeting their statevector simulator. The status of the job may be in various states (queued, ready, running …).</p>
+<p>Assuming a valid API key, we here submit a simple job targeting their statevector simulator. The status of the job may be in various states (queued, ready, running …).</p>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> ionq_connection.job_submit(<span class="st">'simulator'</span>, circ1, <span class="dv">100</span>, <span class="st">'test_json_job'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> ionq_connection.job_submit(<span class="st">'simulator'</span>, circ1, <span class="dv">100</span>, <span class="st">'test_json_job'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job submission  ID :: dfb38687-8c70-4b40-833d-c6166a902efe   status :: ready</code></pre>
 </div>
@@ -553,8 +644,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Users can access their job history and info through the <code>job_get_history</code> and <code>job_status</code> methods, shown as below. But IonQ also provides an <a href="https://cloud.ionq.com/">online dashboard</a>, which may be more convenient to you.</p>
 <p>Depending on the timing of your REST requests, the job info may differ widely, from a failed job to a completed job with results included.</p>
 <div class="cell" data-scrolled="true" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>job_status <span class="op">=</span> ionq_connection.job_status(job_id)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(job_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>job_status <span class="op">=</span> ionq_connection.job_status(job_id)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(job_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job info    ID:: dfb38687-8c70-4b40-833d-c6166a902efe    status :: completed 
 {'status': 'completed', 'name': 'test_json_job', 'target': 'simulator', 'predicted_execution_time': 4, 'execution_time': 19, 'id': 'dfb38687-8c70-4b40-833d-c6166a902efe', 'qubits': 2, 'type': 'circuit', 'request': 1659075527, 'start': 1659075529, 'response': 1659075529, 'gate_counts': {'1q': 2}, 'data': {'histogram': {'2': 0.5, '3': 0.5}, 'registers': None}}</code></pre>
@@ -562,8 +653,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The output of <code>job_get_history</code> should at least feature the job we just submitted, and can also show a number of previous jobs run under your account. The output is a <code>pandas</code> dataframe, in order to facilitate parsing of information:</p>
 <div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>job_history[:<span class="dv">5</span>] <span class="co"># Here we only display info of the last 5 jobs run</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>job_history[:<span class="dv">5</span>] <span class="co"># Here we only display info of the last 5 jobs run</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -622,8 +713,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For our example circuit, IonQ’s raw results would return <code>{'2': 0.5, '3': 0.5}</code> with an exact simulator. - 2 is ‘10’ in binary, indicating <span class="math inline">\(q_0\)</span> mesured in state <span class="math inline">\(|0\rangle\)</span>, and <span class="math inline">\(q_1\)</span> in state <span class="math inline">\(|1\rangle\)</span> - 3 is ‘11’ in binary, indicating <span class="math inline">\(q_0\)</span> mesured in state <span class="math inline">\(|1\rangle\)</span>, and <span class="math inline">\(q_1\)</span> in state <span class="math inline">\(|1\rangle\)</span></p>
 <p>Tangelo returns <code>{'01': 0.5, '11': 0.5}</code>.</p>
 <div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> ionq_connection.job_results(job_id)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> ionq_connection.job_results(job_id)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job info    ID:: dfb38687-8c70-4b40-833d-c6166a902efe    status :: completed 
 {'01': 0.5, '11': 0.5}</code></pre>
@@ -634,9 +725,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h4 class="anchored" data-anchor-id="job-cancel-delete">Job cancel / delete</h4>
 <p>A wrapper called <code>job_cancel</code> provides a method to cancel before execution (if the job hasn’t run yet), or delete a job from the history. The cell below cancels / deletes the previously-submitted job: it therefore should not appear in the history anymore.</p>
 <div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ionq_connection.job_cancel(job_id)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>job_history</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ionq_connection.job_cancel(job_id)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>job_history</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job cancel  ID :: dfb38687-8c70-4b40-833d-c6166a902efe   status :: deleted </code></pre>
 </div>
@@ -754,62 +845,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 </section>
 <section id="azure-quantum" class="level2">
-<h2 class="anchored" data-anchor-id="azure-quantum">2. Azure Quantum <a class="anchor" id="2"></a></h2>
-<p>Though this package does not currently provide a way to directly submit jobs through Microsoft’s Azure Quantum cloud services, the <code>translate_qsharp</code> function in the <code>translator</code> module can parse an abstract circuit and generate Q# code that can be written to file.</p>
-<p>Azure quantum also supports circuits in a number of other formats (<code>cirq</code>, <code>qiskit</code>, IonQ…), which means any of your favorite translate function from <code>tangelo.linq</code> can come in handy: check out their <a href="https://docs.microsoft.com/en-us/azure/quantum/concepts-circuits">documentation</a> for the most reliable information.</p>
-<p>Our generated Q# code is compatible with both the local QDK simulator (good for testing before submitting to an actual QPU) or by Azure Quantum. Submission through Azure Quantum will require the user to have an account on Azure, install the local CLI and Python dependencies.</p>
-<p>For an example of how one can use this package to first generate circuits, and then submit jobs through Azure quantum, please look into the <code>example/qsharp</code> folder of this package.</p>
-</section>
-<section id="braket" class="level2">
-<h2 class="anchored" data-anchor-id="braket">3. Braket <a class="anchor" id="3"></a></h2>
-<p>Tangelo currently offers to generate a quantum circuit in the Braket format using the <code>translate_braket</code> function from the translator module, and may provide convenience wrappers later on around Braket’s API. Once you have a circuit in Braket’s format, you can pretty much do anything you want using their SDK.</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.translator <span class="im">import</span> translate_braket</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>abstract_circuit <span class="op">=</span> Circuit([Gate(<span class="st">'H'</span>,<span class="dv">0</span>), Gate(<span class="st">'CNOT'</span>, target<span class="op">=</span><span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>)])</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>braket_circuit <span class="op">=</span> translate_braket(abstract_circuit)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(braket_circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>T  : |0|1|
-          
-q0 : -H-C-
-        | 
-q1 : ---X-
-
-T  : |0|1|</code></pre>
-</div>
-</div>
-<p>Users can use the <a href="https://github.com/aws/amazon-braket-sdk-python/">Braket python SDK</a> provided by Amazon (<code>amazon-braket-sdk</code>) to submit experiments to backends available in the Braket cloud and retrieve results, or simply run them using the <a href="https://docs.aws.amazon.com/braket/latest/developerguide/braket-get-started-run-circuit.html">LocalSimulator</a> that comes with the SDK.</p>
-<p>Braket relies on you installing the AWS CLI, and assumes you have an IAM user with proper permissions (Braket, S3 buckets). The Braket services can also be accessed through your web browser, which gives you access to managed python notebooks.</p>
-<blockquote class="blockquote">
-<p>Signing up for <a href="https://goodchemistry.com/qemist-cloud/">QEMIST Cloud</a> allows you to otherwise use a single entry-point, does not require you to install Braket dependencies, and pay with your QEMIST Cloud credits.</p>
-</blockquote>
-<p>This simple <a href="https://github.com/aws/amazon-braket-sdk-python/blob/main/examples/bell.py">Braket example</a> shows how you can retrieve measurement counts. Bitstrings are read left-to-right (first is qubit 0, then qubit 1…).</p>
-<p>The <code>measurement_counts</code> method returns an object of the built-in Python <code>Counter</code> class.</p>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Illustrates what Braket may return for a 2-qubit circuit, run with 100 shots.</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> Counter({<span class="st">'00'</span>:<span class="dv">53</span>, <span class="st">'11'</span>:<span class="dv">47</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>This object can then be passed to other Tangelo functions right away. Below, we show how to compute an expectation value:</p>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_expectation_value_from_frequencies_oneterm</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits.measurement_basis <span class="im">import</span> pauli_string_to_of</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Rescale counts to obtain frequency histogram</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>freqs <span class="op">=</span> {k:v<span class="op">/</span><span class="dv">100</span> <span class="cf">for</span> k,v <span class="kw">in</span> counts.items()}</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Frequencies: </span><span class="sc">{</span>freqs<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute expectation value for ZZ operator</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>exp_ZZ <span class="op">=</span> get_expectation_value_from_frequencies_oneterm(pauli_string_to_of(<span class="st">"ZZ"</span>), freqs)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Expectation value for ZZ operator </span><span class="sc">{</span>exp_ZZ<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Frequencies: {'00': 0.53, '11': 0.47}
-Expectation value for ZZ operator 1.0</code></pre>
-</div>
-</div>
+<h2 class="anchored" data-anchor-id="azure-quantum">4. Azure Quantum <a class="anchor" id="24"></a></h2>
+<p>A work in progress ! Though this package does not currently provide a way to directly submit jobs through Microsoft’s Azure Quantum cloud services, the <code>tangelo.linq</code> module can parse an abstract circuit and generate Q# code that can be written to file, or other of the formats supported by Azure Quantum (<code>cirq</code>, <code>qiskit</code>, IonQ…). Check out their <a href="https://docs.microsoft.com/en-us/azure/quantum/concepts-circuits">documentation</a> for the most reliable information.</p>
+<p>Some users have successfully submitted experiments to Azure Quantum by simply translating their Tangelo circuit into the desired format and adding measurement gates at the end of their circuit.</p>
+<p>Our generated Q# code is compatible with both the local QDK simulator (good for testing before submitting to an actual QPU) or by Azure Quantum. Submission through Azure Quantum will require the user to have an account on Azure, install the local CLI and Python dependencies. For an example of how one can use this package to first generate circuits, and then submit jobs through Azure quantum, please look into the <code>example/qsharp</code> folder of this package.</p>
+<p>In the future, we intend to provide a connection object for Azure Quantum as well. Let us know if you would like us to prioritize this feature, or even help us implement it faster by contributing.</p>
 
 
 </section>
