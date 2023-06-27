@@ -26,6 +26,10 @@ jobs:
         pip install jupyter
         pip install pyqsp
 
+    - name: Install q.chem backend
+      run: |
+        pip install pyscf
+
     - name: Install backends except qsharp/qdk
       run: |
         pip install qiskit
