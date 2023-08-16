@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: [3.9]
 
     steps:
     - uses: actions/checkout@v2
@@ -33,6 +33,7 @@ jobs:
     - name: Install backends except qsharp/qdk
       run: |
         pip install qiskit
+        pip install qiskit_aer
         pip install qulacs
         pip install amazon-braket-sdk
         pip install cirq
@@ -55,6 +56,13 @@ jobs:
     - name: tangelo install
       run: |
         pip install git+https://github.com/goodchemistryco/Tangelo.git@develop
+      if: always()
+
+    - name: Download required data to run the MIFNO notebook
+      run: |
+        cd examples/problem_decomposition
+        sudo apt-get install subversion
+        svn export https://github.com/goodchemistryco/Tangelo/branches/develop/tangelo/problem_decomposition/tests/incremental/data
       if: always()
 
     - name: tangelo notebooks as tests
