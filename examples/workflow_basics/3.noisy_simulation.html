@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Linq: noisy simulation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Workflow Basics</a></li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/3.noisy_simulation.html">Linq: noisy simulation</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Linq: noisy simulation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/3.noisy_simulation.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Open In Colab</figcaption>
+</figure>
+</div>
+<p>This notebook assumes that you are familiar with the basics of this package (Gate, Circuit, Translator, Simulator), and focuses on how users can perform noisy simulation on simulators such as cirq, qiskit or qulacs, using a common interface. Users are free to pick between different compute backends, favoring the one with the best performance of most adequate features, and switch between them with minimal changes to their code.</p>
+<p>In particular, we also take the time here to briefly introduce the various quantum error channels supported for the sake of clarity, occasionally sprinkling some (gentle) mathematical equations on top.</p>
+<p>Finally, the last section of this notebook delves a bit deeper into the strengths and weaknesses of the different backends supported, in order to give users some insight about what simulator may work best for their experiments, and yield the best performance.</p>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of contents</h2>
+<ul>
+<li><a href="#1">1. NoiseModel class</a></li>
+<li><a href="#2">2. Noisy Simulation</a></li>
+<li><a href="#2.1">2.1 Pauli error</a></li>
+<li><a href="#2.1">2.2 Depolarization error</a></li>
+<li><a href="#3">3. About the supported backends</a></li>
+</ul>
+<hr>
+</section>
+<section id="requirements" class="level2">
+<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
+<p>In order to run the contents of this notebook, I simply recommend that you install <code>tangelo</code> as per the installation instructions, as well as one or several backends supporting noisy simulation (cirq, qiskit, qulacs…). You can install them with <code>pip</code>. Executing the cell below provides a quick way of installing Tangelo, as well as the minimal set of backends to execute code cells in this notebook.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qiskit qulacs amazon<span class="op">-</span>braket<span class="op">-</span>sdk <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="noisemodel-class" class="level2">
+<h2 class="anchored" data-anchor-id="noisemodel-class">1. NoiseModel class <a class="anchor" id="1"></a></h2>
+<p>The <code>noisy_simulation</code> module is home to the <code>NoiseModel</code> class, which provides a generic way to define a noise model that can later on be passed to the <code>Simulator</code> to perform the noisy simulation of a <code>Circuit</code> object on backends supporting that feature.</p>
+<p>A <code>NoiseModel</code> object contains a dictionary that maps abstract gates to a list of noises and their parameters, which are usually probabilities. The type of noise currently available can be reached using the <code>SUPPORTED_NOISE_MODELS</code> variable, and the documentation of the <code>NoiseModel</code> class explains what parameters are valid for each of them. The <code>noisy_gates</code> method allows users to quickly check the set of gates included in the noise model.</p>
+<p>This representation tells the simulation backend that whenever one of the gates listed in this dictionary is encountered at runtime, the corresponding additional noise(s) should be applied to the quantum state afterwards.</p>
+<p>Below, we show the available noise models as well as how users can instantiate a <code>NoiseModel</code> object and then specify noise for any gate relevant to them (here, a Pauli noise with uniform probability distribution over X, Y and Z) using the <code>add_quantum_error</code> method.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel, SUPPORTED_NOISE_MODELS</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Supported noise models: </span><span class="sc">{</span>SUPPORTED_NOISE_MODELS<span class="sc">}</span><span class="ch">\n</span><span class="ss">'</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>nmp <span class="op">=</span> NoiseModel()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"X"</span>, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>])</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Noisy gates: </span><span class="sc">{</span>nmp<span class="sc">.</span>noisy_gates<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>nmp<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Supported noise models: {'pauli', 'depol'}
+
+Noisy gates: {'CNOT', 'X'}
+{'X': [('pauli', [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])], 'CNOT': [('pauli', [0.3333333333333333, 0.3333333333333333, 0.3333333333333333])]}</code></pre>
+</div>
+</div>
+<p>As you can see above, attempting to print a <code>NoiseModel</code> object prints the underlying dictionary. Each noisy gate is associated with a list of 2-tuples, corresponding to the noise model and its parameters.</p>
+<p>Using <code>add_quantum_error</code> several times on the same gate allows users to specify potentially complex noise models, cumulating <strong>different</strong> types of error channels. Combined with variables spanning sets of gates and the Python syntax, we can quickly express rather complete noise models, such as the arbitrary one below:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> ONE_QUBIT_GATES, TWO_QUBIT_GATES</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>nm <span class="op">=</span> NoiseModel()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> g <span class="kw">in</span> ONE_QUBIT_GATES:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    nm.add_quantum_error(g, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>]<span class="op">*</span><span class="dv">3</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'CNOT'</span>, <span class="st">'pauli'</span>, [<span class="fl">1.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'CNOT'</span>, <span class="st">'depol'</span>, <span class="fl">0.72</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'PHASE': [('pauli', [0.25, 0.25, 0.25])], 'T': [('pauli', [0.25, 0.25, 0.25])], 'RX': [('pauli', [0.25, 0.25, 0.25])], 'S': [('pauli', [0.25, 0.25, 0.25])], 'Z': [('pauli', [0.25, 0.25, 0.25])], 'Y': [('pauli', [0.25, 0.25, 0.25])], 'RY': [('pauli', [0.25, 0.25, 0.25])], 'H': [('pauli', [0.25, 0.25, 0.25])], 'X': [('pauli', [0.25, 0.25, 0.25])], 'RZ': [('pauli', [0.25, 0.25, 0.25])], 'CNOT': [('pauli', [1.0, 0.0, 0.0]), ('depol', 0.72)]}</code></pre>
+</div>
+</div>
+<p><strong>Note</strong>: You can directly access the underlying dictionary of the <code>NoiseModel</code> object through its private member <code>_quantum_errors</code> if you wish to perform some “surgery” on it directly, in order to modify an existing object. We however recommend to use the <code>add_quantum_error</code> whenever possible to avoid bad surprises and subtle bugs.</p>
+<p><strong>Note</strong>: Attempting to cumulate quantum error channels of same type (ex: two <code>depol</code> error channels) will return an error.</p>
+</section>
+<section id="noisy-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="noisy-simulation">2. Noisy Simulation <a class="anchor" id="2"></a></h2>
+<p>Once a noise model has been created, it can be passed to a simulator (preferably at instantiation). Not all simulators can perform noisy simulation: check out the <code>backend_info</code> dictionary to see which targets shows <code>noisy_simulation</code> set to <code>True</code>. Qiskit and qulacs should be among the available options.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> backend_info</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>pprint(backend_info)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'cirq': {'noisy_simulation': True,
+          'statevector_available': True,
+          'statevector_order': 'lsq_first'},
+ 'qdk': {'noisy_simulation': False,
+         'statevector_available': False,
+         'statevector_order': None},
+ 'qiskit': {'noisy_simulation': True,
+            'statevector_available': True,
+            'statevector_order': 'msq_first'},
+ 'qulacs': {'noisy_simulation': True,
+            'statevector_available': True,
+            'statevector_order': 'msq_first'}}</code></pre>
+</div>
+</div>
+<p>You can then instantiate a <code>Simulator</code> object for the target of your choice, and provide both the number of shots and noise model required. We recommend to set these parameters at instantiation and avoid modifying them later.</p>
+<p>Assuming you have defined an abstract circuit (e.g an object of the <code>Circuit</code> class), the <code>simulate</code> method can then be used to perform the noisy simulation for the desired target and number of shots. It returns a 2-tuple whose second entry is <code>None</code>, which we will disregard as a noisy simulation does not return a statevector.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a noise model</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>nmp <span class="op">=</span> NoiseModel()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"X"</span>, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>])</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Instantiate a simulator supporting noisy simulation</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>s_nmp <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">'qulacs'</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmp)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a Circuit</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>c1 <span class="op">=</span> Circuit([Gate(<span class="st">"X"</span>,<span class="dv">0</span>)])</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate and look at the results</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>res_pauli1, _ <span class="op">=</span> s_nmp.simulate(c1)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_pauli1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'0': 0.665706, '1': 0.334294}</code></pre>
+</div>
+</div>
+<section id="pauli-error" class="level3">
+<h3 class="anchored" data-anchor-id="pauli-error">2.1 Pauli error <a class="anchor" id="2.1"></a></h3>
+<p>A <strong>Pauli error</strong> channel can be defined by an arbitrary probability distribution <span class="math inline">\([p_X, p_Y, p_Z]\)</span> over the 3 Pauli operators. This channel randomly applies one of the X, Y, Z Pauli operators after a noisy gate has been encountered, by sampling from this probability distribution. Implicitly, the identity is applied with probability <span class="math inline">\(1- (p_X + p_Y + p_Z)\)</span>, and no noise is added in that case.</p>
+<p>In the example above, our circuit merely consists of a single <code>X</code> gate applied to a single qubit, initially in state <span class="math inline">\(|0\rangle\)</span>. Our noise model always randomly applies, with equal probability, an extra <code>X</code>, <code>Y</code> or <code>Z</code> gate to the resulting quantum state.</p>
+<p>As the number of shots grows, the results of the above should converge towards <span class="math inline">\(|1\rangle\)</span> (resp <span class="math inline">\(|0\rangle\)</span>) observed with probability <span class="math inline">\(1/3\)</span> (resp <span class="math inline">\(2/3\)</span>). The theoretical verification is pretty straightforward:</p>
+<ul>
+<li>After <code>X</code> has been applied to our qubit, our system is in state <span class="math inline">\(|1\rangle\)</span></li>
+<li>With probability <span class="math inline">\(2/3\)</span>, an extra <code>X</code> or <code>Y</code> gate is applied, and our system is sure to be measured in state <span class="math inline">\(|0\rangle\)</span></li>
+<li>With probability <span class="math inline">\(1/3\)</span>, an extra <code>Z</code> gate is applied, and our system is sure to be measured in state <span class="math inline">\(|1\rangle\)</span></li>
+</ul>
+</section>
+<section id="depolarization-error" class="level3">
+<h3 class="anchored" data-anchor-id="depolarization-error">2.2 Depolarization error <a class="anchor" id="2.2"></a></h3>
+<p><strong>Depolarizing quantum error</strong> channels are also available. The channel can be defined as:</p>
+<p><span class="math display">\[E_{\lambda, n}(\rho) = (1 - \lambda)\rho + \lambda Tr[\rho] \frac{I}{2^{n}}\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(n\)</span> is the number of qubits in the system</li>
+<li><span class="math inline">\(\rho\)</span> is the density matrix representing the quantum state of the system</li>
+<li><span class="math inline">\(\lambda\)</span> is the parameter of the depolarizing channel, and is such that <span class="math inline">\(0 \le \lambda \le \frac{4^n}{4^n-1}\)</span></li>
+</ul>
+<p>In particular:</p>
+<ul>
+<li>If <span class="math inline">\(\lambda=0\)</span>, <span class="math inline">\(E\)</span> is the identity channel (no noise)</li>
+<li>If <span class="math inline">\(\lambda=1\)</span>, <span class="math inline">\(E(\rho)=\frac{I}{2^{n}}\)</span></li>
+<li>If <span class="math inline">\(\lambda=\frac{4^n}{4^n-1}\)</span>, <span class="math inline">\(E\)</span> is a uniform Pauli error channel</li>
+</ul>
+<p>The cell below shows that calculations for our “X-gate circuit” align with this formula. In particular, the case where <span class="math inline">\(\lambda=\frac{4}{3}\)</span> yields the same error channel than the Pauli error channel introduced in the previous section.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> [<span class="fl">0.</span>, <span class="fl">1.</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">3</span>]:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    nmd <span class="op">=</span> NoiseModel()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    nmd.add_quantum_error(<span class="st">"X"</span>, <span class="st">'depol'</span>, l)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    s_nmd <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">'qulacs'</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    res_depol1, _ <span class="op">=</span> s_nmd.simulate(c1) <span class="co"># This circuit only contains a single X gate</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'lambda = </span><span class="sc">{</span>l<span class="sc">:.2f}</span><span class="ss"> :: </span><span class="sc">{</span>res_depol1<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>lambda = 0.00 :: {'1': 1.0}
+lambda = 1.00 :: {'0': 0.500183, '1': 0.499817}
+lambda = 1.33 :: {'0': 0.666488, '1': 0.333512}</code></pre>
+</div>
+</div>
+<p>Similarly, we verify that in the example below, the results coincide with the mathematical formula above, and yield <span class="math inline">\(\frac{1}{2}\rho + \frac{1}{8}I\)</span>, <span class="math inline">\(\rho\)</span> being the density matrix of the system, still left in state <span class="math inline">\(|00\rangle\)</span> after the CNOT gate has been applied.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A circuit with a single CNOT gate</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> Circuit([Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span><span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>)])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>nmd <span class="op">=</span> NoiseModel()</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>nmd.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">'depol'</span>, <span class="fl">0.5</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>s_nmd <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">'qulacs'</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>res_depol1, _ <span class="op">=</span> s_nmd.simulate(c2)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_depol1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'11': 0.124993, '00': 0.624951, '01': 0.125071, '10': 0.124985}</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="about-the-supported-backends" class="level2">
+<h2 class="anchored" data-anchor-id="about-the-supported-backends">3. About the supported backends <a class="anchor" id="3"></a></h2>
+<p><code>get_backend</code> provides a uniform interface to several noisy simulators, such as qiskit and qulacs, hiding the complexity of the noisy simulation process from the user. The inner workings are a bit different depending on the simulator selected, and the simulators themselves have their own strengths and weaknesses, which we gloss over in order to provide you with some insight about what tool may help you the most in your developments.</p>
+<section id="qiskit-this-section-is-outdated-and-needs-to-be-updated" class="level3">
+<h3 class="anchored" data-anchor-id="qiskit-this-section-is-outdated-and-needs-to-be-updated">Qiskit [This section is outdated and needs to be updated]</h3>
+<p><code>qiskit</code> already has their own <code>NoiseModel</code> class. Our package simply translates our <code>NoiseModel</code> object into the <code>qiskit</code> one at runtime, which is then passed to their shot-based QASM simulator, in charge of transpiling and applying this noise model to the circuit. The package exposes this function as <code>get_qiskit_noise_model</code>, but you should ideally let the backend object take care of it. I recommend you import qiskit’s <code>NoiseModel</code> as <code>QiskitNoiseModel</code> to avoid insidious bugs, if you ever need both in the same script.</p>
+<p><strong>Note:</strong> The rest of this subsection may not hold for long, as a pull-request introducing support for rx, ry and rz gates has been merged into the Qiskit repository, and may be avilable through the pip package soon (Oct 2020?)</p>
+<p>Qiskit can be <strong>restrictive</strong>, as it enforces transpilation of your circuit into the gate set supported by their qasm simulator. For instance, the qasm simulator gate set does not include the <code>rx</code>,<code>ry</code>,<code>rz</code> rotation gates, but instead converts them at runtime into <code>u1</code>,<code>u2</code> or<code>u3</code> gates (<a href="https://qiskit.org/textbook/ch-states/single-qubit-gates.html#generalU3">reference</a>), which are IBM’s gates. This has several implications:</p>
+<ul>
+<li><p>Users may not “get what they ask for”: there is a loss of transparency due to what’s going on under the hood, with the transpiling step.</p></li>
+<li><p>In particular all rotations gates may map into <code>u3</code> gates ar runtime, since it can apply any single-qubit unitary with the right parameters. This means that specifying different noise channel for the different rotation gates (which may make sense according to some researchers) is ill-defined: what noise should then be applied to <code>u3</code> ? Our package limits cumulating quantum error channels of different natures only to avoid stacking redundant noise to mitigate the issue, but it is better to probably switch to another backend to stay true to your research.</p></li>
+</ul>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> get_qiskit_noise_model</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>nm <span class="op">=</span> NoiseModel()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'RX'</span>, <span class="st">'depol'</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'RX'</span>, <span class="st">'pauli'</span>, [<span class="fl">1.</span>,<span class="fl">0.</span>,<span class="fl">0.</span>])</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>qnm <span class="op">=</span> get_qiskit_noise_model(nm)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Any rotation gate will have its quantum error channel applied to u1, u2, u3 as we do not know</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># which one the transpiler will generate and need to apply noise to. </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Qiskit always shows a warning when several noise channels are composed onto the same basis gate</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qnm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING: all-qubit error already exists for instruction "u1", composing with additional error.
+WARNING: all-qubit error already exists for instruction "u2", composing with additional error.
+WARNING: all-qubit error already exists for instruction "u3", composing with additional error.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NoiseModel:
+  Basis gates: ['cx', 'id', 'rz', 'sx', 'u1', 'u2', 'u3']
+  Instructions with noise: ['u2', 'u1', 'u3']
+  All-qubits errors: ['u1', 'u2', 'u3']</code></pre>
+</div>
+</div>
+</section>
+<section id="qulacs" class="level3">
+<h3 class="anchored" data-anchor-id="qulacs">Qulacs</h3>
+<p><code>qulacs</code> does not have built-in noise model objects, but has noisy gates instead, which means users can build their own noisy circuit by adding these noisy gates when relevant. That noisy circuit is then simulated by the <code>qulacs</code> C++ engine. This very flexible approach, coupled to the fact the qulacs simulator does not enforce any specific basis gate set (it even supports the IBM <code>u</code> gates), lets you do pretty much whatever you want when it comes to noise.</p>
+<p>The <code>translate_circuit</code> function, taking in an abstract circuit and returning a qulacs circuit thus supports an extra arguments compared to the other one: it can take in a <code>NoiseModel</code> object, and will return the noisy circuit. The <code>Simulator</code> is tasked with calling this translation function with the noise model, under the hood. The noisy circuit is however of limited interest to the user to have access to this circuit, as the noisy gates show up as “generic gates” and very little information is available through Python (the underlying <code>qulacs</code> code being written in C++): all you know is basically where noisy gates have been added.</p>
+<p>If you’d like to know more about what these noisy gates are, please have a look at the following: - <a href="http://docs.qulacs.org/en/latest/intro/4.1_python_tutorial.html#Stochastic-unitary-operations">Brief look at Probabilistic gates</a> - <a href="http://docs.qulacs.org/ja/latest/api/program_listing_file__home_docs_checkouts_readthedocs.org_user_builds_qulacs-rtd-ja_checkouts_latest_qulacs-src_cppsim_gate_factory.cpp.html">Code listing: Noise functions</a></p>
+</section>
+<section id="cirq" class="level3">
+<h3 class="anchored" data-anchor-id="cirq">cirq</h3>
+<p>Much like <code>qulacs</code>, <code>cirq</code> does not have built-in noise model objects, but has noisy gates instead, which means users can build their own noisy circuit by adding these noisy gates when relevant. That noisy circuit is then simulated by <code>cirq</code>. The <code>translate_circuit</code> function takes a <code>NoiseModel</code> object to implement this approach, returning the noisy circuit.</p>
+<p>One further note, the <a href="https://quantumai.google/reference/python/cirq/sim/DensityMatrixSimulator">DensityMatrixSimulator</a> is used for cirq simulation of noisy or mixed state circuits.</p>
+<p>If you’d like to know more about what these noisy gates are, please have a look at the following: - <a href="https://quantumai.google/cirq/noise">Guide: Noise</a> - <a href="https://quantumai.google/reference/python/cirq/ops">Code listing: All Gates</a></p>
+</section>
+<section id="performance" class="level3">
+<h3 class="anchored" data-anchor-id="performance">Performance</h3>
+<p>When it comes to noisy simulation, we noticed that the performance of the different backends we support was not as we expected from publicly available benchmarks, which usually focus on noiseless simulation. This may be explained by both the difference in the approaches taken by these backends, as well as the quality of our wrappers. Performance also depends on:</p>
+<ul>
+<li>the size of your circuit (number of qubits, depth)</li>
+<li>your hardware and your environment (OS, number of OpenMP threads, virtual machine or not…)</li>
+</ul>
+<p>We recommend proceeding on a case-by-case basis. Below, a quick example on our both of them perform on a circuit repeating <code>CNOT</code> ladders a few times. Feel free to change some parameters.</p>
+<p><strong>Note</strong>: Jupyter notebooks may be considerably slower than running Python scripts directly, depending on your environment. They may not be the most reliable when it comes to making a choice. In the future, there may be a <strong>benchmark</strong> folder available in this package, which could help you figure out quickly what is best in your environment and how fast things can go.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> <span class="fl">2.1</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>n_repetitions <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ladder_gates(n_qubits, theta, n_repetitions):</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">=</span> [Gate(<span class="st">"H"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_qubits)]</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span>i<span class="op">+</span><span class="dv">1</span>, control<span class="op">=</span>i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span> (n_qubits<span class="op">-</span><span class="dv">1</span>)]</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"RY"</span>, n_qubits<span class="op">-</span><span class="dv">1</span>, parameter<span class="op">=</span>theta)]</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span>i<span class="op">+</span><span class="dv">1</span>, control<span class="op">=</span>i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span> (n_qubits<span class="op">-</span><span class="dv">1</span>)][::<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> gates <span class="op">*</span> n_repetitions</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># CNOT ladder circuit, a common pattern in quantum chemistry ansatz circuits</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>c_base <span class="op">=</span> Circuit(ladder_gates(n_qubits, theta, n_repetitions))</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c_base)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Define noise model</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>nmb <span class="op">=</span> NoiseModel()</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>nmb.add_quantum_error(<span class="st">'RY'</span>, <span class="st">'pauli'</span>, [<span class="fl">.5</span>, <span class="fl">0.5</span>, <span class="fl">0.</span>])</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>nmb.add_quantum_error(<span class="st">'CNOT'</span>, <span class="st">'depol'</span>, <span class="fl">0.2</span>)</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nmb,<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Elapsed time may differ greatly depending on your machine and development environment</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> backend <span class="kw">in</span> {<span class="st">'qulacs'</span>, <span class="st">'qiskit'</span>, <span class="st">'cirq'</span>}:</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    sim <span class="op">=</span> get_backend(backend, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmb)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    tstart <span class="op">=</span> time.time()</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    res, _ <span class="op">=</span> sim.simulate(c_base)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss">:: </span><span class="sc">{</span>res<span class="sc">}</span><span class="ss"> </span><span class="ch">\t</span><span class="ss"> (elapsed: </span><span class="sc">{</span>time<span class="sc">.</span>time()<span class="op">-</span>tstart<span class="sc">:.1f}</span><span class="ss"> s)</span><span class="ch">\n</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Circuit object. Size 42 
+
+H         target : [0]   
+H         target : [1]   
+H         target : [2]   
+H         target : [3]   
+H         target : [4]   
+CNOT      target : [1]   control : [0]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [4]   control : [3]   
+RY        target : [4]   parameter : 2.1
+CNOT      target : [4]   control : [3]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [1]   control : [0]   
+H         target : [0]   
+H         target : [1]   
+H         target : [2]   
+H         target : [3]   
+H         target : [4]   
+CNOT      target : [1]   control : [0]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [4]   control : [3]   
+RY        target : [4]   parameter : 2.1
+CNOT      target : [4]   control : [3]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [1]   control : [0]   
+H         target : [0]   
+H         target : [1]   
+H         target : [2]   
+H         target : [3]   
+H         target : [4]   
+CNOT      target : [1]   control : [0]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [4]   control : [3]   
+RY        target : [4]   parameter : 2.1
+CNOT      target : [4]   control : [3]   
+CNOT      target : [3]   control : [2]   
+CNOT      target : [2]   control : [1]   
+CNOT      target : [1]   control : [0]   
+
+{'RY': [('pauli', [0.5, 0.5, 0.0])], 'CNOT': [('depol', 0.2)]} 
+
+cirq:: {'10110': 0.031467, '11001': 0.03113, '00000': 0.031401, '01100': 0.031785, '10100': 0.031793, '11111': 0.030839, '01111': 0.031061, '10101': 0.03082, '00001': 0.031185, '11100': 0.03136, '11010': 0.031607, '01010': 0.031367, '01001': 0.031188, '00011': 0.030849, '00101': 0.03113, '11110': 0.031378, '00010': 0.031566, '10000': 0.03142, '11000': 0.031563, '00111': 0.030893, '10001': 0.031271, '00100': 0.031254, '01101': 0.030801, '11011': 0.03114, '01011': 0.03132, '01000': 0.031301, '10011': 0.031099, '10111': 0.031005, '01110': 0.031418, '11101': 0.030834, '10010': 0.031388, '00110': 0.031367}     (elapsed: 5.5 s)
+
+qiskit:: {'10111': 0.029946, '01100': 0.030131, '00000': 0.030416, '11110': 0.030231, '01011': 0.032338, '10000': 0.032232, '11000': 0.030366, '01001': 0.030344, '11010': 0.032555, '10011': 0.032224, '00001': 0.031977, '10101': 0.032195, '10100': 0.030172, '11001': 0.032078, '01110': 0.032224, '00011': 0.030167, '10110': 0.032283, '11101': 0.030029, '00111': 0.032251, '01010': 0.030193, '01101': 0.032227, '11111': 0.032376, '01000': 0.032486, '11011': 0.030211, '10010': 0.030649, '00100': 0.032344, '00110': 0.030454, '10001': 0.030305, '00010': 0.032109, '01111': 0.03028, '00101': 0.030018, '11100': 0.032189}     (elapsed: 2.1 s)
+
+qulacs:: {'10110': 0.031455, '00100': 0.031153, '11111': 0.030975, '10001': 0.031072, '11100': 0.031301, '01110': 0.03146, '00111': 0.031039, '01001': 0.030899, '01011': 0.030996, '11101': 0.03128, '11010': 0.03132, '00110': 0.031647, '11110': 0.031263, '10010': 0.03098, '10101': 0.031471, '01010': 0.031262, '11011': 0.031197, '11000': 0.031448, '00011': 0.03094, '10011': 0.031287, '00010': 0.031363, '01111': 0.031272, '00001': 0.03129, '10100': 0.03135, '01100': 0.031506, '01101': 0.031216, '01000': 0.031404, '00101': 0.030979, '00000': 0.031368, '10111': 0.03109, '11001': 0.031172, '10000': 0.031545}    (elapsed: 7.5 s)
+</code></pre>
+</div>
+</div>
+<hr>
+<p><em>Valentin Senicourt</em></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

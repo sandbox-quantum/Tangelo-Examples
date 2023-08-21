@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/hardware_experiments/berylium_ibm_quantum.html">Hardware Experiments</a></li><li class="breadcrumb-item"><a href="../../examples/hardware_experiments/berylium_ibm_quantum.html">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>This notebook demonstrates how problem decomposition from QEMIST Cloud can be combined with Tangelo and IBM’s technology, in order to apply quantum computing to the study of chemical systems. It supported a brief presentation made at IBM Quantum Summit 2022, available on <a href="https://youtu.be/hPYFDGLmKZg?t=183">Youtube</a>. We meant to showcase how these different software can be combined, and how experiment on IBM Quantum are streamlined with Tangelo. We do not comment on the numerical results, as they are not the focus.</p>
+<p>The use case for this study is a single Berylium atom in the cc-PVDZ basis. Tackled head-on with an algorithm such as VQE, this problem would require more than 25 qubits, and deep quantum circuits (thousands of gates for UCCSD). By approaching this problem with a more elaborate approach, it is possible to make this system more tractable for current devices and reduce resource requirements to about 6 qubits and much shallower circuits.</p>
+<p>Here, we implement a workflow combining problem decomposition (MI-FNO), a quantum algorithm (custom QCC ADAPT approach), the IBM Kolkata device, and several post-processing techniques offered by IBM including Zero-Noise Extrapolation (ZNE). We share the experimental results obtained when attempting to compute the energy of a fragment of the system, using different noise-mitigation techniques available on the IBM devices.</p>
+<p>We refer the reader to various dedicated notebook tutorials about the different techniques mentioned above, and detail some of them in the following sections.</p>
+<section id="setting-up-the-environment" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-the-environment">Setting up the environment</h2>
+<p>The installation of Tangelo, Qiskit and Qiskit-runtime is required for this notebook.</p>
+<p>In order to perform problem decomposition in QEMIST Cloud, users need to <a href="https://goodchemistry.com/contact/">sign up</a> and install the client library in their environment. For simplicity, this notebook simply loads pre-computed MI-FNO results obtained from a previous run on QEMIST Cloud, and focuses on the quantum side of things.</p>
+<div class="cell" data-outputid="78ac62b0-95ac-4f85-8053-45440bf8b062">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install: Tangelo, here directly from the develop branch on Github</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install: qiskit, qiskit-runtime</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qiskit <span class="op">--</span>quiet</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qiskit<span class="op">-</span>ibm<span class="op">-</span>runtime <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Preparing metadata (setup.py) ... done
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 240.4/240.4 KB 8.1 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 42.6 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.8/1.8 MB 60.4 MB/s eta 0:00:00
+  Preparing metadata (setup.py) ... done
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 577.4/577.4 KB 42.1 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 46.6 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 120.2/120.2 KB 13.8 MB/s eta 0:00:00
+  Building wheel for tangelo-gc (setup.py) ... done
+  Building wheel for pubchempy (setup.py) ... done
+  Preparing metadata (setup.py) ... done
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 45.0 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.8/12.8 MB 74.7 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 241.3/241.3 KB 15.5 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 107.0/107.0 KB 11.6 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 54.3/54.3 KB 6.5 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.9/1.9 MB 81.4 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.0/50.0 KB 5.7 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 37.5/37.5 MB 23.6 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 49.6/49.6 KB 5.6 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 85.2 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 112.7/112.7 KB 12.2 MB/s eta 0:00:00
+  Building wheel for qiskit (setup.py) ... done
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 190.4/190.4 KB 7.9 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 245.8/245.8 KB 24.7 MB/s eta 0:00:00
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 140.6/140.6 KB 14.9 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 62.8/62.8 KB 7.0 MB/s eta 0:00:00
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 50.5/50.5 KB 5.3 MB/s eta 0:00:00
+  Installing build dependencies ... done
+  Getting requirements to build wheel ... done
+  Preparing metadata (pyproject.toml) ... done
+  Building wheel for ibm-platform-services (pyproject.toml) ... done
+  Building wheel for ibm-cloud-sdk-core (pyproject.toml) ... done</code></pre>
+</div>
+</div>
+</section>
+<section id="define-use-case" class="level2">
+<h2 class="anchored" data-anchor-id="define-use-case">Define use case</h2>
+<p>Briefly redefining our molecular system locally: a single berylium atom in the ccPVDZ basis.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Our molecular system</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Be_coordinates <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">    Be    0.0000   0.0000   0.0000</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> <span class="st">"cc-pVDZ"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>charge <span class="op">=</span> <span class="dv">0</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>spin <span class="op">=</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>#1. Importing QEMIST Cloud fragments into Tangelo</p>
+<p>The <a href="https://aip.scitation.org/doi/abs/10.1063/5.0054647">Method of Increment with Frozen Natural Orbital</a> (MI-FNO) was previously run with QEMIST Cloud, for our system of interest: a single atom of berylium in the ccPVDZ basis. The Heat-Bath CI (HBCI) classisal solver was used to solve individual fragments resulting from the MI-FNO decomposition.</p>
+<p>Dedicated notebooks cover these steps. We load the pre-computed fragment information and references values. This system is small, and yields two one-body fragments and a single two-body fragment. The <code>MIFNOHelper</code> class enables us to load fragment data, and see how each of them contributes to the total energy of the system.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load pre-computed MI-FNO data, obtained with QEMIST Cloud</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip <span class="op">-</span>qq .<span class="op">/</span>data<span class="op">/</span>Be_iso_VS1.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="94b94e94-1cb5-4c7e-c086-5e2f17580ddd">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> MIFNOHelper</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fno_fragments <span class="op">=</span> MIFNOHelper(mi_json_file<span class="op">=</span><span class="st">"./Be_iso_VS1/16435123521074770.json"</span>, fno_json_folder<span class="op">=</span><span class="st">"./Be_iso_VS1/frags"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fno_fragments)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fno_fragments.retrieve_mo_coeff(<span class="st">"./Be_iso_VS1/frags"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(All the energy values are in hartree)
+Total MI-FNO energy = -14.60874953362714
+Correlation energy = -0.03641190267375371
+Mean-field energy = -14.572337630953388
+         epsilon     problem_handle  energy_correlation  correction  \
+(0,)   -0.000226  67697585423398483           -0.000226   -0.000161   
+(1,)   -0.031890  24334728019588691           -0.031890   -0.017285   
+(0, 1) -0.004297   2147133126882914           -0.036412   -0.019480   
+
+        energy_total  
+(0,)      -14.572563  
+(1,)      -14.604227  
+(0, 1)    -14.608750  </code></pre>
+</div>
+</div>
+</section>
+<section id="reconstructing-a-fragment-hamiltonian" class="level1">
+<h1>2. Reconstructing a fragment Hamiltonian</h1>
+<p>For this demonstration, we focus on fragment <code>(1,)</code>, which consists in a one-body problem that contributes quite a bit to the total energy of the system. Similarly, fragment <code>(0, 1)</code>, associated with a two-body problem, is also relevant and is however more computationally challenging (you can change the value of <code>frag</code> below to get a sense of that, and see what qubit operator comes out).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Build Tangelo molecule object (includes HF calculation)</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> SecondQuantizedMolecule(Be_coordinates, q<span class="op">=</span>charge, spin<span class="op">=</span>spin, basis<span class="op">=</span>basis)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Select a fragment,retrieve the number of electrons and spinorbitals</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>frag <span class="op">=</span> <span class="st">"(1,)"</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>n_electrons, n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(frag)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>mol.freeze_mos(fno_fragments[frag][<span class="st">"frozen_orbitals_truncated"</span>], inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the Fermionic operator</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>ferm_op <span class="op">=</span> fno_fragments.compute_fermionoperator(mol, frag)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>#3. Designing our quantum experiment</p>
+<p>At this point, we can make our own adventure in Tangelo. The experiment below uses:</p>
+<ul>
+<li>scBK qubit mapping</li>
+<li>ADAPT-VQE algorithm, using a custom pool of Qubit Coupled Cluster (QCC) operators</li>
+<li>a few post-processing techniques, including Zero-Noise Extrapolation.</li>
+</ul>
+<div class="cell" data-outputid="cbe65b0b-684d-482e-f993-15522c701708">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> count_qubits</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply qubit mapping</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>qu_op <span class="op">=</span> fermion_to_qubit_mapping(ferm_op, <span class="st">"scBK"</span>, n_spinorbitals, n_electrons, up_then_down<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qu_op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-14.402485811590493 [] +
+0.07351153728840519 [X0 X1] +
+0.08885408506584569 [Z0] +
+0.007856350768804587 [Z0 Z1] +
+0.0888540850658457 [Z1]</code></pre>
+</div>
+</div>
+<p>We define a custom pool of QCC operators, and use it with ADAPT-VQE, with the aim of producing a shallow quantum circuit for our fragment. The variational algorithm runs on a simulator, the user is free to specify a backend (cirq, qiskit, qulacs…) and behaviour, including a noise model. They can also define their own backend (see tutorials about our <code>linq</code> module).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_mf <span class="im">import</span> init_qmf_from_hf</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_cc <span class="im">import</span> construct_dis</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom function: define a pool of QCC operators</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qcc_pool(mol, mapping, up_then_down, qubit_hamiltonian):</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    qmf_var_params <span class="op">=</span> init_qmf_from_hf(mol.n_active_sos, mol.n_active_electrons, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>                                      mapping, up_then_down, mol.spin)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    dis <span class="op">=</span> construct_dis(qubit_hamiltonian, qmf_var_params, <span class="fl">0.</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [item <span class="cf">for</span> sublist <span class="kw">in</span> dis <span class="cf">for</span> item <span class="kw">in</span> sublist]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> ADAPTSolver</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>pool_args <span class="op">=</span> {<span class="st">"mol"</span>: mol, <span class="st">"mapping"</span>: <span class="st">"scBK"</span>, <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"qubit_hamiltonian"</span>: qu_op}</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>opt_dict <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"tol"</span>: <span class="fl">0.01</span>, <span class="st">"max_cycles"</span>: <span class="dv">5</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"qubit_mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"up_then_down"</span>: <span class="va">True</span>, </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"n_spinorbitals"</span>: n_spinorbitals, <span class="st">"n_electrons"</span>: n_electrons,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"pool"</span>: qcc_pool, <span class="st">"pool_args"</span>: pool_args}</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> ADAPTSolver(opt_dict)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>solver.build()</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> solver.simulate()</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>opt_circ <span class="op">=</span> solver.vqe_solver.optimal_circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s take a look at this circuit. Tangelo provides a built-in <code>draw</code> method to visualize it, but since we support bidirectional conversion functions between multiple formats, it would be very easy for users to generate a qiskit equivalent and use the beautiful drawing features of that package as well !</p>
+<div class="cell" data-outputid="7c3b9efc-493b-4255-b0cf-d37bfa6e0fd2">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>opt_circ.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>WARNING:matplotlib.font_manager:findfont: Font family ['Arial'] not found. Falling back to DejaVu Sans.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<p><img src="berylium_ibm_quantum_files/figure-html/cell-10-output-2.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>Before running a quantum experiment, we always try to understand: - the accuracy of the quantum approach itself (e.g compared to classical reference value) - whether it is feasible and likely to be accurate enough on a target device (resource requirements mostly, sometimes running with a noise model) - the anticipated cost ($)</p>
+<p>We take a look at the resource requirements associated with our quantum circuit. The number of qubits and gates seems tractable for the IBM devices available to us. We find the number of 2-qubit gates relevant, as the these can significantly impact the accuracy of numerical results coming from superconducting devices at the time of writing. Finally, we get a sense of how accurate is our quantum alfgorithm in estimating the energy of that fragment. This gives us an idea of what we could hope from a device, in the ideal scenario that enough shots are drawn and that noise has been mitigated enough.</p>
+<div class="cell" data-outputid="37ffc4b9-66bb-4cf4-a086-1c92df770c64">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count gates appearing in the circuit</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(opt_circ._gate_counts, <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Computation requirements associated with the algorithm</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(solver.get_resources())</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Error induced by using our quantum variational approach compared to classical reference value</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Fragment energy difference between reference value and noiseless quantum approach: "</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>      <span class="op">+</span> <span class="ss">f"</span><span class="sc">{</span><span class="bu">abs</span>(e <span class="op">-</span> (fno_fragments[frag][<span class="st">'energy_total'</span>] <span class="op">-</span> fno_fragments[frag][<span class="st">'correction'</span>]))<span class="sc">:.5E}</span><span class="ss"> Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'X': 2, 'RX': 2, 'H': 2, 'CNOT': 2, 'RZ': 1} 
+
+{'qubit_hamiltonian_terms': 5, 'circuit_width': 2, 'circuit_depth': 6, 'circuit_2qubit_gates': 2, 'circuit_var_gates': 1, 'vqe_variational_parameters': 1}
+
+Fragment energy difference between reference value and noiseless quantum approach: 6.05324E-03 Ha</code></pre>
+</div>
+</div>
+</section>
+<section id="running-the-experiment-on-ibm-quantum" class="level1">
+<h1>4. Running the experiment on IBM Quantum</h1>
+<p>For this experiment, we aim to compute the target fragment energy compare energies obtained with 3 different error-mitigation strategies: - raw results (no error-mitigation) - read-out error mitigation (ROEM), here implementing the T-REx method - zero-noise extrapolation (ZNE) + ROEM</p>
+<p>We first select our target device. For the purpose of cleaning up this notebook, the numerical results of some of the cells below were recomputed with a different backend or a simulator, but this does not alter the workflow or type of objects encountered. We share and plug the values obtained through running the same code on the Kolkata device from our experiments back then just before the final visualization.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>backend_name <span class="op">=</span> <span class="st">'ibm_qasm_simulator'</span> <span class="co"># 'ibm_kolkata'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>IBMConnection</code> class enables us to easily submit jobs to the IBM Quantum platform. As qiskit-runtime primitives are used under the hood, the installation of both <code>qiskit</code> and <code>qiskit-runtime</code> is necessary (see install section).</p>
+<p>To instantiate the connection, the environment variable <code>IBM_TOKEN</code> need to be set with an acceptable value tied to an IBM Quantum account, or be passed as an argument (see documentation and install section).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Your IBM Quantum token should be found in your environment, to create the connection object.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'IBM_TOKEN'</span>] <span class="op">=</span> <span class="st">'your_ibm_quantum_token'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IBMConnection</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> IBMConnection()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="raw-results" class="level3">
+<h3 class="anchored" data-anchor-id="raw-results">RAW results</h3>
+<section id="job-submission" class="level4">
+<h4 class="anchored" data-anchor-id="job-submission">Job submission</h4>
+<p>Using the connection object, we easily submit the job with <code>job_submit</code>. Here, we call the Estimator primitive of Qiskit-runtime to compute the expectation of our quantum circuit with regards to the qubit Hamiltonian of the fragment, using 1 million shots. The output is a job id.</p>
+<p>The <code>runtime_options</code> variable is used to indicate we do not want any noise-mitigation to be applied by IBM Quantum. Variable names and values streamlined in Tangelo are mostly identical to the ones documented in qiskit-runtime, for transparency and simplicity.</p>
+<div class="cell" data-outputid="b9e3e694-befa-46b9-c93b-9dc075010a9d">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># RAW results</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>job_id_raw <span class="op">=</span> conn.job_submit(<span class="st">"estimator"</span>, backend_name, <span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, opt_circ, qu_op, runtime_options<span class="op">=</span>{<span class="st">'resilience_level'</span>:<span class="dv">0</span>})</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(job_id_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>cfc6jonp2bp10gchkpi0</code></pre>
+</div>
+</div>
+</section>
+<section id="job-results" class="level4">
+<h4 class="anchored" data-anchor-id="job-results">Job results</h4>
+<p>The <code>job_results</code> method retrieves the result of the job, saves them in the <code>IBMConnection</code> object, and returns here a list of 1 expectation values (as 1 circuit was submitted), without all the metadata attached. Note that it is a blocking call, and the cell would hang until the job is complete.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>expval_raw <span class="op">=</span> conn.job_results(job_id_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>IBMConnection</code> class remembers previous jobs and their results and stores them in the format used by qiskit-runtime, providing access to all the metadata available on IBM Quantum. We store this in a dictionary attribute called <code>job_results</code>, indexed by job ids.</p>
+<p>By using this metadata, we can access the variance and number of shots of the calculations, and compute the standard deviation of the expectation value. Error bars are important to keep track of in experiments, due to the statistical nature of quantum computing: this is valuable information. Here’s what the computation may look like on a device (<code>values</code> contains the expectation values):</p>
+<div class="cell" data-outputid="cc5ee8b3-3c01-4f30-eeda-73d379193bcb">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access full data of complete jobs</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>raw_results <span class="op">=</span> conn.jobs_results[job_id_raw]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raw_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>EstimatorResult(values=array([-14.56441683]), metadata=[{'variance': 0.010114398620993439, 'shots': 100000}])</code></pre>
+</div>
+</div>
+<p>It may take a long time for your job to run and complete, and your python script or notebook may terminate or disconnect before that. Through a <code>QiskitRuntimeService</code> object, qiskit-runtime users can retrieve data for a past job. Our <code>IBMConnection</code> object exposes such an object through its <code>service</code> attribute as well, and we can use that to bring back results obtained from previous runs if needed.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>job <span class="op">=</span> conn.service.job(job_id)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>my_results <span class="op">=</span> job.result()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Regardless of how the metadata was retrieved, we can now compute the standard deviation of our expectation value using it.</p>
+<div class="cell" data-outputid="99f0fd1d-0e9a-4839-a1e1-f4f2602dba5f">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>data_raw <span class="op">=</span> (raw_results.values[<span class="dv">0</span>], np.sqrt(raw_results.metadata[<span class="dv">0</span>][<span class="st">'variance'</span>] <span class="op">/</span> raw_results.metadata[<span class="dv">0</span>][<span class="st">'shots'</span>]))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(-14.564416825107253, 0.0003180314233058337)</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="roem-and-zne-results" class="level3">
+<h3 class="anchored" data-anchor-id="roem-and-zne-results">ROEM and ZNE results</h3>
+<p>If you’d like to know more about readout error-mitigation (here abbreviated as ROEM)and ZNE, here’s <a href="https://qiskit.org/documentation/partners/qiskit_ibm_runtime/tutorials/Error-Suppression-and-Error-Mitigation.html">some documentation from IBM</a>. The technique used for error mitigation is called T-REx. Here we just show how these features are streamlined through Tangelo and our <code>IBMConnection</code> object: it’s as simple as changing the value of the <code>resilience_level</code> in the <code>runtime_option</code> dictionary.</p>
+<p>Although IBM Quantum provides a streamlined way to perform ZNE (see link above), there is no streamlined way to simultaneously apply ZNE and ROEM at the time of writing. We thus manually perform a linear ZNE using two datapoints corresponding to noise levels 1 and 3, with the assumption that the noise mostly originates from 2-qubit gates (CNOTs). The latter is obtained by running our quantum circuit and replicating CNOT gates to amplify noise (e.g inserting 3 consecutive CNOT gates instead of 1). We define a simple function to produce that circuit, using the original one as input (NB: since there are only two qubits in our example, barrier operations are not required).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> repeat_CNOT(circ, n_repeat):</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  gates <span class="op">=</span> []</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> g <span class="kw">in</span> circ:</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>      n <span class="op">=</span> n_repeat <span class="cf">if</span> g.name <span class="op">==</span> <span class="st">'CNOT'</span> <span class="cf">else</span> <span class="dv">1</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>      gates <span class="op">+=</span> [g]<span class="op">*</span>n</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Circuit(gates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="4351b29a-b632-4d50-b214-6427e4adae37">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>opt_circ3 <span class="op">=</span> repeat_CNOT(opt_circ, <span class="dv">3</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>opt_circ3.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<p><img src="berylium_ibm_quantum_files/figure-html/cell-20-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>Because the noise characterization of a device changes, batch submission of circuits is important to make sure all data is obtained in similar conditions and the jobs are not run several hours apart, for example. We thus submit both circuits simultaneously by providing circuits and operators as lists of 2 elements.</p>
+<p>We here force <code>optimization_level</code> to be <code>0</code>, because it turns out the default value (<code>1</code>) means IBM Quantum currently optimizes the extra CNOTs away, although we do need the device to execute them and amplify the noise for ZNE.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ROEM results (T-REx)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>job_id_roem <span class="op">=</span> conn.job_submit(<span class="st">"estimator"</span>, backend_name, <span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, [opt_circ, opt_circ3], [qu_op]<span class="op">*</span><span class="dv">2</span>, </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>                              runtime_options<span class="op">=</span>{<span class="st">'resilience_level'</span>:<span class="dv">1</span>, <span class="st">'optimization_level'</span>:<span class="dv">0</span>})</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(job_id_roem) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>conn.job_results(job_id_roem)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>roem_results <span class="op">=</span> conn.jobs_results[job_id_roem]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We derive the standard deviation of the resulting expectation values for each of our two data points, stored into tuples.</p>
+<div class="cell" data-outputid="94d9453f-76b3-4443-da20-55b6ff04dd98">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>data_roem   <span class="op">=</span> (roem_results.values[<span class="dv">0</span>], np.sqrt(roem_results.metadata[<span class="dv">0</span>][<span class="st">'variance'</span>] <span class="op">/</span> roem_results.metadata[<span class="dv">0</span>][<span class="st">'shots'</span>]))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>data_roem_3 <span class="op">=</span> (roem_results.values[<span class="dv">1</span>], np.sqrt(roem_results.metadata[<span class="dv">1</span>][<span class="st">'variance'</span>] <span class="op">/</span> roem_results.metadata[<span class="dv">1</span>][<span class="st">'shots'</span>]))</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data_roem)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data_roem_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(-14.582281356801207, 0.00010402729980565454)
+(-14.550073443064663, 0.00012629566832783953)</code></pre>
+</div>
+</div>
+<p>Tangelo provides an implementation of Richardson’s extrapolation, which helps us derive the ZNE datapoint. This function generalizes to an arbitrary number of input data points and take as input their noise levels, the corresponding expectation values and their standard deviations.</p>
+<div class="cell" data-outputid="a7693397-8ed3-4c44-f217-d7a127eca5b1">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.extrapolation <span class="im">import</span> richardson_analytical</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use data_roem and data_roem_3 to compute ZNE results</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>noise_levels <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">3</span>]</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>energies <span class="op">=</span> [data_roem[<span class="dv">0</span>], data_roem_3[<span class="dv">0</span>]]</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>stderr <span class="op">=</span> [data_roem[<span class="dv">1</span>], data_roem_3[<span class="dv">1</span>]]</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>data_roem_zne <span class="op">=</span> richardson_analytical(noise_levels, energies, stderr)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(data_roem_zne)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(-14.58553651, 0.00015233875934902451)</code></pre>
+</div>
+</div>
+</section>
+<section id="visualization-of-results" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-of-results">5. Visualization of results</h2>
+<p>We cleaned up and tested this notebook several weeks after running our experiment on Kolkata (Oct 2022), and the values from the cells above were obtained on other backends, for convenience. When we ran those calculations on Kolkata, we obtained the numerical results below. We plug them into the final cell, which illustrates how we built the final visualization of the results with matplotlib.</p>
+<p>As you can see, the <code>roem3</code> datapoint shows that in our experiment the additional CNOTs definitely amplified the noise and degraded the results of the calculation: the outcome was even worse than raw results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Data obtained with Kolkata in October 2022, for the final plot</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>data_raw      <span class="op">=</span> (<span class="op">-</span><span class="fl">14.57206231</span>, <span class="fl">0.00009134</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>data_roem     <span class="op">=</span> (<span class="op">-</span><span class="fl">14.58389566</span>, <span class="fl">0.00009584</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>data_roem3    <span class="op">=</span> (<span class="op">-</span><span class="fl">14.58061396</span>, <span class="fl">0.00010080</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>data_roem_zne <span class="op">=</span> (<span class="op">-</span><span class="fl">14.58553651</span>, <span class="fl">0.00015234</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s plot these results. The dashed line shows the mean-field energy, the continuous line the exact MI-FNO energy, and the gray band what is within chemical accuracy.</p>
+<div class="cell" data-outputid="59064b45-f205-4fdc-9d85-365baf5fbe2a">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>e_ref_frag <span class="op">=</span> fno_fragments[frag][<span class="st">"energy_total"</span>] <span class="op">-</span> fno_fragments[frag][<span class="st">"correction"</span>]</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>e_hf_frag <span class="op">=</span> mol.mf_energy</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>chem_acc_error <span class="op">=</span> <span class="fl">1.59e-3</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>fig,ax   <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">1</span>,figsize<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">8</span>))</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>fig.subplots_adjust(hspace<span class="op">=</span><span class="fl">0.0</span>,wspace<span class="op">=</span><span class="fl">0.0</span>,bottom<span class="op">=</span><span class="fl">0.25</span>,left<span class="op">=</span><span class="fl">0.2</span>,top<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>ax.axhline(e_hf_frag,ls<span class="op">=</span><span class="st">'--'</span>,color<span class="op">=</span><span class="st">'gray'</span>)</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>ax.axhline(e_ref_frag,ls<span class="op">=</span><span class="st">'-'</span>,color<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>ax.axhspan(e_ref_frag <span class="op">-</span> chem_acc_error, e_ref_frag <span class="op">+</span> chem_acc_error, color<span class="op">=</span><span class="st">'gray'</span>,alpha<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>ax.errorbar([<span class="dv">0</span>],data_raw[<span class="dv">0</span>],yerr<span class="op">=</span>data_raw[<span class="dv">1</span>], marker<span class="op">=</span><span class="st">'o'</span>, capsize<span class="op">=</span><span class="dv">12</span>,ms<span class="op">=</span><span class="dv">10</span>,mew<span class="op">=</span><span class="dv">2</span>,mec<span class="op">=</span><span class="st">'b'</span>)</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>ax.errorbar([<span class="dv">1</span>],data_roem[<span class="dv">0</span>],yerr<span class="op">=</span>data_roem[<span class="dv">1</span>],marker<span class="op">=</span><span class="st">'D'</span>,capsize<span class="op">=</span><span class="dv">12</span>,ms<span class="op">=</span><span class="dv">10</span>,mew<span class="op">=</span><span class="dv">2</span>,mec<span class="op">=</span><span class="st">'r'</span>)</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>ax.errorbar([<span class="dv">2</span>],data_roem_zne[<span class="dv">0</span>],yerr<span class="op">=</span>data_roem_zne[<span class="dv">1</span>],marker<span class="op">=</span><span class="st">'s'</span>,capsize<span class="op">=</span><span class="dv">12</span>,ms<span class="op">=</span><span class="dv">10</span>,mew<span class="op">=</span><span class="dv">2</span>,mec<span class="op">=</span><span class="st">'g'</span>)</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'E [Hartree]'</span>)<span class="op">;</span></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>ax.set_xticks([<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> ax.set_xticklabels([<span class="st">'RAW'</span>,<span class="st">'ROEM'</span>,<span class="st">'ROEM+ZNE'</span>],rotation<span class="op">=</span><span class="dv">15</span>,ha<span class="op">=</span><span class="st">'right'</span>,fontsize<span class="op">=</span><span class="dv">10</span>)<span class="op">;</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy difference between exact value and ZNE results: </span><span class="sc">{</span><span class="bu">abs</span>(e_ref_frag <span class="op">-</span> data_roem_zne[<span class="dv">0</span>])<span class="sc">:.3e}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy difference between exact value and ZNE results: 1.406e-03
+</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="berylium_ibm_quantum_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="closing-words" class="level1">
+<h1>Closing words</h1>
+<p>Tangelo is a powerful and flexible tool enabling users to study quantum systems, with streamlined integration to qiskit and qiskit-runtime. Tangelo users can easily submit experiments to backends available on IBM Quantum and leverage the features of the service.</p>
+<p>The combination of QEMIST Cloud and Tangelo allows users to explore the potential of quantum computing on systems that may otherwise be out of reach for current devices, by decomposing a problem into smaller subproblems requiring less resources and implementing workflow combining shallow circuits and noise-mitigation techniques. In this example, a system that would require 25+ qubits and circuits too deep for current devices was reduced to a few smaller problems requiring up to 6 qubits and much shallower circuits, making it more tractable for NISQ hardware.</p>
+<p>What will you do with Tangelo, QEMIST Cloud, and IBM Quantum ?</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

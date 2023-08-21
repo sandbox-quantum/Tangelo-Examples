@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Quantum Chemistry: Modelling Basics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/qchem_modelling_basics.html">Quantum Chemistry: Modelling Basics</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quantum Chemistry: Modelling Basics</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The aim of this notebook is to provide the basic quantum chemistry knowledge to help solve a chemistry problem with quantum computers. Many parameters can be tweaked, and some have higher impact on the accuracy and the quantum resources (number of qubits, quantum circuit depth and number of measurements) than others. This set of parameters includes the choice of initial state, choice of basis set, and the freezing of molecular orbitals. Some references are provided when needed.</p>
+<p>The <a href="https://goodchemistry.com/tangelo/">Tangelo</a> python package is necessary to run the code cells in this notebook, and it can be installed in your environment by executing the code cell below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
+<figcaption class="figure-caption">Open In Colab</figcaption>
+</figure>
+</div>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#1">Introduction</a></li>
+<li><a href="#2">Computation of the Mean-Field</a>
+<ul>
+<li><a href="#21">Molecular Information</a></li>
+<li><a href="#22">Restricted vs Unrestricted Hartree-Fock (RHF/ROHF vs UHF)</a></li>
+<li><a href="#23">Choice of the Basis Set</a></li>
+</ul></li>
+<li><a href="#3">Consideration of Correlation Energy - Potential of Quantum Computing</a></li>
+<li><a href="#4">Resource Reduction</a>
+<ul>
+<li><a href="#41">Active Space Selection</a></li>
+<li><a href="#42">Considering Symmetries</a></li>
+</ul></li>
+<li><a href="#5">Advanced Usage of PySCF</a>
+<ul>
+<li><a href="#51">Extracting Mean-Field Quantities</a></li>
+<li><a href="#52">Outputting Cube Files</a></li>
+</ul></li>
+<li><a href="#6">Closing Words</a></li>
+<li><a href="#7">References</a></li>
+</ul>
+</section>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction<a class="anchor" id="1"></a></h2>
+<p>Quantum chemistry aims to solve the Schrödinger equation for many-electron molecules. As stated in the postulates of quantum mechanics, the wavefunction <span class="math inline">\(\Psi\)</span> encodes all the information of the system. One who knows the electronic wavefunction of a molecular system can therefore predict measurement outcomes of an experiment. This is a highly valuable asset for academia and industrial purposes, to help develop new drugs or functional materials.</p>
+<p>The analysis of natural products is an efficient way of quickly getting inspiration for the design of new materials, while taking into account the million years of evolution that nature had to optimize a biochemical process. For instance, one difficult thing to do in the laboratory is to change the spin state of a compound during a chemical reaction. Nature circumvents this problem by leveraging transition metals to achieve this challenging task: the oxygen fixation process is achieved by the heme biomolecule, where a Fe(II) atom is involved in the spin state change mechanism (see figure below) [<a href="https://doi.org/10.1074/jbc.M314007200">10.1074/jbc.M314007200</a>].</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/FeIIPorImO2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">FeIIPorImO2 system</figcaption>
+</figure>
+</div>
+<p>Fully understanding the mechanism of oxygen fixation, that is to say knowing the rate constants for all elementary reactions, would lead to valuable insights for the design of chemical catalysts. Achieving this goal would take us one step closer to <a href="https://goodchemistry.com/"><em>making the world cleaner, healthier, and more sustainable</em></a>. This is one of the main applications of quantum chemistry. However, the Schrödinger equation shown below cannot be solved exactly for systems beyond one electron, i.e.&nbsp;all relevant chemical systems for industrial applications.</p>
+<p><span class="math display">\[
+\hat{H} \Psi = E \Psi
+\]</span></p>
+<p>Here, the electronic Hamiltonian <span class="math inline">\(\hat{H}\)</span> for <span class="math inline">\(N\)</span> electrons is expressed in the first quantization form,</p>
+<p><span class="math display">\[
+\hat{H} = -\frac{\hbar^2}{2 m_e} \sum_i \nabla_i^2 -\frac{e^2}{4&nbsp;\pi \epsilon_0} \sum_i \sum_A \frac{Z_A}{r_{iA}} + \frac{e^2}{4 \pi \epsilon_0} \sum_i \sum_{j&gt;i} \frac{1}{r_{ij}}
+\]</span></p>
+<p>Where <span class="math inline">\(m_e\)</span>, <span class="math inline">\(\nabla^2\)</span>, <span class="math inline">\(e\)</span>, the relative nucleus charge, <span class="math inline">\(Z_A\)</span>, <span class="math inline">\(r_{iA}\)</span> and <span class="math inline">\(r_{ij}\)</span> are respectively the electron mass, the Laplacian, the elementary charge, the distance between the nucleus and the electron <span class="math inline">\(i\)</span> and the distance between electron <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>. In the second quantization form, the electronic Hamiltonian is expressed as</p>
+<p><span class="math display">\[
+H = \sum_{pq}h_{pq} a_p^{\dagger}a_q + \frac{1}{2}\sum_{pqrs}h_{pqrs}a_p^{\dagger}a_r^{\dagger}a_s a_q
+\]</span></p>
+<p>Where <span class="math inline">\(h_{pq}\)</span> and <span class="math inline">\(h_{pqrs}\)</span> refer respectively to the one-body and two-body integrals. For more information about the state-of-the-art theories and methods in quantum chemistry, the reader is invited to read the references at the end of this notebook. The scope of this notebook is to provide clues on how to choose input parameters for modelling molecules on quantum computers with <a href="https://github.com/goodchemistryco/Tangelo">Tangelo</a>. As quantum resources are still scarce, the definition of the problem is a crucial step in an end-to-end quantum chemistry experiment on quantum hardware. To keep a reasonable runtime for this notebook, we work with a simple example, the dioxygen molecule.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>o2_xyz <span class="op">=</span> [(<span class="st">"O"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>)), (<span class="st">"O"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.21</span>))]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="computation-of-the-mean-field" class="level2">
+<h2 class="anchored" data-anchor-id="computation-of-the-mean-field">Computation of the Mean-Field<a class="anchor" id="2"></a></h2>
+<p>The computation of the mean-field is usually the first step of all post Hartree-Fock approaches, which we describe in a <a href="#3">section below</a>. The mean-field approaches solve the Schrödinger equation by averaging the electron-electron repulsion term in a self-consistent way. In other words, each electron does not explicitely interact with other electrons. Depending on the molecular information, discussed shortly, different flavours of mean-field solutions can be computed.</p>
+<section id="molecular-information" class="level3">
+<h3 class="anchored" data-anchor-id="molecular-information">Molecular Information<a class="anchor" id="21"></a></h3>
+<p>The chemical information is encapsulated in the <code>SecondQuantizedMolecule</code> object. As the name suggests, the formalism used in Tangelo is second quantization; however, the package is not restricted to it and data structures could be implemented in other formalisms (like first quantization).</p>
+<p>When defining a molecule, one must specify molecular properties. One of them is the total charge of the system, i.e.&nbsp;the difference between the number of electrons and the total nuclear charge (default value is 0). This is an important property when dealing with oxydo-reduction reactions where cations (deficit in electrons) and anions (surplus in electrons) are involved. Another important quantity to specify is the spin, defined by the difference between the number of alpha and beta electrons (default value is 0). This allows radical systems to be modelled: a spin of 0 characterizes a restricted-shell molecule while a spin different from 0 defines an open-shell system.</p>
+<p>In the next cell, the dioxygen molecule data structure is constructed. The ground state of the dioxygen molecule is neutral and is a triplet state (q=0 and spin=2).</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>o2_sto3g <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_sto3g<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> active molecular orbitals"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_sto3g<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> active electrons"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8 active molecular orbitals
+12 active electrons</code></pre>
+</div>
+</div>
+<p>In the above output, there are missing orbitals and electrons. The default implementation of Tangelo freezes the core orbitals; for the O<span class="math inline">\(_2\)</span> molecule, two orbitals, corresponding to the 1p atomic orbitals, are frozen. The next sections elaborate on the impact of the basis sets and frozen orbitals.</p>
+</section>
+<section id="restricted-vs-unrestricted-hartree-fock-rhfrohf-vs-uhf" class="level3">
+<h3 class="anchored" data-anchor-id="restricted-vs-unrestricted-hartree-fock-rhfrohf-vs-uhf">Restricted vs Unrestricted Hartree-Fock (RHF/ROHF vs UHF)<a class="anchor" id="22"></a></h3>
+<p>The mean-field solution is automatically computed when the <code>SecondQuantizedMolecule</code> object is created. With the provided spin, it computes the relevant mean-field, that is to say the Restricted or Restricted Open-Shell Hatree-Fock solution (RHF or ROHF). Using those methods, the spin-orbitals are treated as pairs, so each molecular orbital can accept up to two electrons. The unrestricted Hartree-Fock (UHF) mean-field calculation, where the spin-orbitals are considered individually, usually results in more accurate energies for open-shell systems. At the time of writing, the UHF approach has not yet been implemented in Tangelo. Further details about the RHF, ROHF and UHF methods can be found in <a href="https://books.google.ca/books/about/Modern_Quantum_Chemistry.html?id=6mV9gYzEkgIC&amp;redir_esc=y">Szabo &amp; Ostlund</a>.</p>
+</section>
+<section id="choice-of-the-basis-set" class="level3">
+<h3 class="anchored" data-anchor-id="choice-of-the-basis-set">Choice of the Basis Set<a class="anchor" id="23"></a></h3>
+<p>The many-electron Schrödinger equation is typically solved in a basis of molecular orbitals which are expressed as a linear combination of atomic orbitals (LCAO). LCAO coefficients, used to construct molecular orbitals, are obtained through the minimization of the total energy, according to the variational principle. For convenience, the basis is usually represented by atom-centered functions for molecular systems, or plane-wave functions in solid-state physics.</p>
+<p>In early quantum chemistry, basis sets were constructed with decreasing exponential functions (<span class="math inline">\(e^{-\alpha r}\)</span>). This strategy was referred to as <em>Slater Type Orbitals</em> (STOs). With the increase of computational resources, the use of Gaussian functions (<span class="math inline">\(e^{-\alpha r^2}\)</span>) was popularized. Computing the numerous overlap integrals, needed in quantum chemistry, is much more efficient to do using Gaussian functions than with STOs. This is the main point of using a <em>Gaussian Type Orbitals</em> (GTOs) wavefunction.</p>
+<p>State-of-the-art basis sets are constructed from many Gaussian primitives. The Pople notation is one of the most explicit notations for basis sets: - The hyphen symbol (-) separates the reference to core and valence orbitals; - The digits represent the number of Gaussian primitives in a function; - There are as many digits as there are functions for each atomic orbital (zeta <span class="math inline">\(\zeta\)</span>); - The letter G refers to the use of Gaussian functions.</p>
+<p>As an example, the <code>3-21G</code> double zeta basis set uses three Gaussian primitives for each core orbital and a set of two plus one Gaussian primitives for the valence orbitals. More information, examples and discussions about the GTOs can be found in this <a href="https://chem.libretexts.org/Courses/Pacific_Union_College/Quantum_Chemistry/11%3A_Computational_Quantum_Chemistry/11.02%3A_Gaussian_Basis_Sets">link</a>.</p>
+<p>Below are popular basis set examples used in quantum chemistry.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>basis_sets <span class="op">=</span> [</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"STO-3G"</span>,       <span class="co"># Simple zeta, minimal basis.</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"3-21G"</span>,        <span class="co"># Double zeta.</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6-31G"</span>,        <span class="co"># Double zeta with more Gaussian primitives.</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6-31G(d,p)"</span>,   <span class="co"># Polarization functions (+ 5 d-orbitals for all atoms except H, +3 p-orbitals for H atoms) added.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6-311G(d,p)"</span>,  <span class="co"># Triple zeta with polarization functions.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"6-311+G(d,p)"</span>, <span class="co"># Triple zeta with polarization functions and diffuse functions.</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cc-pvqz"</span>,      <span class="co"># Quadruple zeta.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"cc-pv5z"</span>       <span class="co"># Quintuple zeta.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The wavefunction for a molecule is an approximation when using a finite basis set,</p>
+<p><span class="math display">\[
+\Phi_{\text{approx}} = \sum_{i=0}^N c_i |i \rangle
+\]</span></p>
+<p>According to the variational principle, considering <span class="math inline">\(\Phi_{\text{approx}}\)</span> is normalized, the approximated energy is greater or equals to the true ground-state energy.</p>
+<p><span class="math display">\[
+\langle \Phi_{\text{approx}} | \hat{H} | \Phi_{\text{approx}} \rangle = \epsilon_{\text{approx}} \geq  \epsilon_{\text{true}}
+\]</span></p>
+<p>With an infinite basis set, the approximation should be close to the real wavefunction.</p>
+<p><span class="math display">\[
+\Phi_{\text{approx}} = \sum_{i=0}^{\infty} c_i |i \rangle \approx \Psi_{\text{true}}
+\]</span></p>
+<p>However, increasing the basis set size has the effect of increasing the number of parameters to optimize, therefore extending the required computational resources in space (amount of memory) and in time (number of operations). As we shall see shortly, it is often a good idea to balance the basis set size to optimize the time to solution versus the target accuracy (<span class="math inline">\(|\epsilon_{\text{approx}} - \epsilon_{\text{true}}|\)</span>), as the increase in the basis set complexity yields diminishing returns in accuracy gain.</p>
+<p>A full list of available basis sets supported in <a href="https://pyscf.org/">PySCF</a> (therefore also in Tangelo) is available at this <a href="https://pyscf.org/_modules/pyscf/gto/basis.html">link</a>. Also, the <a href="https://www.basissetexchange.org/">Basis Set Exchange</a> initiative hosts a collection of bases for every atom in the periodic table. With this constantly increasing number of bases available to the community, choosing a basis set can be a challenging task. The theory states that an infinite basis is the way of getting the true wavefunction. However, it is not possible most of the time and one may prefer a tailored approach to their use case. Here are some tips and tricks for the basis set choice depending on the modelled system: - As a rule of thumb, a double zeta (e.g.&nbsp;<code>6-31G</code> or <code>cc-pvdz</code>) is the minimum basis size required to get semi-quantitative energies. - For molecules with a high electronegativity difference between atoms, adding polarization functions (e.g.&nbsp;<code>6-31G**</code> or <code>6-31G(d,p)</code>) is recommended. - Diffuse functions (e.g.&nbsp;<code>6-31G+(d,p)</code>) should be included when dealing with anions. Diffuse functions are functions with small coefficients (small <span class="math inline">\(\alpha\)</span> in <span class="math inline">\(e^{-\alpha r^2}\)</span>) that can fit the electronic density far from the nucleus. - Effective Core Potential (ECP) basis sets are needed when dealing with heavier atoms with relativistic and non-trivial effects (for example, the iodine atom is often modelled in the <code>LANDL2DZ</code> basis).</p>
+<p>In the next cell, we demonstrate the effect of the basis on the total energy calculations and time to solution.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>mf_energies <span class="op">=</span> <span class="bu">list</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>mf_times <span class="op">=</span> <span class="bu">list</span>()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform a Mean-Field calculation for each basis set.</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bs <span class="kw">in</span> basis_sets:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Measure execution time.</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> time.time()</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    scan_basis_mol <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, basis<span class="op">=</span>bs)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> time.time()</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    mf_energies.append(scan_basis_mol.mf_energy)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    mf_times.append(end<span class="op">-</span>start)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the matplotlib figure.</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">5</span>))</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the energies.</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>ax.set_xticks(<span class="bu">range</span>(<span class="bu">len</span>(basis_sets)), basis_sets, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Basis set"</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Energy / Hartree"</span>, color<span class="op">=</span><span class="st">"b"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>ax.scatter(<span class="bu">range</span>(<span class="bu">len</span>(basis_sets)), mf_energies, marker<span class="op">=</span><span class="st">"o"</span>, s<span class="op">=</span><span class="dv">50</span>, color<span class="op">=</span><span class="st">"b"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the time to solution.</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>ax_time <span class="op">=</span> ax.twinx()</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>ax_time.scatter(<span class="bu">range</span>(<span class="bu">len</span>(basis_sets)), mf_times, marker<span class="op">=</span><span class="st">"s"</span>, s<span class="op">=</span><span class="dv">50</span>, color<span class="op">=</span><span class="st">"r"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>ax_time.set_ylabel(<span class="st">"Time to solution / s"</span>, color<span class="op">=</span><span class="st">"r"</span>, rotation<span class="op">=</span><span class="dv">270</span>, va<span class="op">=</span><span class="st">"bottom"</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Show the graph.</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>plt.tick_params(axis<span class="op">=</span><span class="st">"both"</span>, direction<span class="op">=</span><span class="st">"in"</span>)</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="qchem_modelling_basics_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>We see in the previous graph that increasing the basis complexity brings the energy eigenvalue closer to the true Hartree-Fock energy. This trend can be generalized to other methods as well, like <a href="https://en.wikipedia.org/wiki/Coupled_cluster">CCSD</a>, <a href="https://en.wikipedia.org/wiki/M%C3%B8ller%E2%80%93Plesset_perturbation_theory">MP2</a>, <a href="https://en.wikipedia.org/wiki/Full_configuration_interaction">FCI</a>, (…) although the time to solution would be greater for those post Hatree-Fock approaches. The takeaway is that even if an infite basis is required to converge to the true energy, there are diminishing returns at some point, especially when considering the time required for the calculation. In our case, <code>6-311G(d,p)</code> appears as a good choice in term of accuracy and compute time.</p>
+</section>
+</section>
+<section id="consideration-of-correlation-energy---potential-of-quantum-computing" class="level2">
+<h2 class="anchored" data-anchor-id="consideration-of-correlation-energy---potential-of-quantum-computing">Consideration of Correlation Energy - Potential of Quantum Computing</h2>
+<p><a class="anchor" id="3"></a></p>
+<p>Post Hatree-Fock methods are meant to consider the electronic correlation energy. The correlation energy is defined as</p>
+<p><span class="math display">\[
+\epsilon_{\text{corr}} = \epsilon - \epsilon_{\text{HF}}
+\]</span></p>
+<p>Where <span class="math inline">\(\epsilon\)</span> and <span class="math inline">\(\epsilon_{\text{HF}}\)</span> are the computed energy and the Hartree-Fock energy, respectively. This correlation energy can be split into two categories: static and dynamical correlation. To consider the former, one should use multi-configuration approaches. The latter can be tackled with post Hartree-Fock methods with a single reference state, like Configuration Interaction (CI), Coupled-Cluster (CC) or perturbative methods (MP2, MP3, …). Going beyond this explanation is out of scope for this notebook, therefore we encourage the user to read on the subject in <a href="https://books.google.ca/books/about/Modern_Quantum_Chemistry.html?id=6mV9gYzEkgIC&amp;redir_esc=y">Szabo &amp; Ostlund</a>.</p>
+<p>We saw in the previous section that the <code>6-311G(d,p)</code> is a good compromise to compute the O<span class="math inline">\(_2\)</span> ground state. In this basis, the dioxygen molecule is described by 72 bases (spin orbitals) and 16 electrons. To get the highest fidelity versus the true wavefunction with the current best method (Full Configuration Interaction), one would need <span class="math inline">\({72 \choose 16} \approx 3 \times 10^{13}\)</span> configurations. Even if we somehow managed to represent each configuration as a single byte of data, 4.11 petabytes would still be needed to store the full wavefunction of the dioxygen molecule. This effect is amplified when dealing with relevant industrial molecules like organometallic complexes or proteins. Going through the classical formalism of quantum chemistry is therefore not a viable solution.</p>
+<p>With the occupation transformation (Jordan-Wigner [<a href="https://doi.org/10.1007/BF01331938">Zeitschrift für Physik, 47, p.&nbsp;631–651 (1928)</a>]), this problem vanishes. By leveraging the quantum superposition principle in a straightforward way, it is possible to map this O<span class="math inline">\(_2\)</span> triplet ground state to 72 qubits (empty and filled spin orbitals are mapped to the <span class="math inline">\(|0\rangle\)</span> and <span class="math inline">\(|1\rangle\)</span> states, respectively). This fact is behind the emerging enthusiasm of the quantum computing community for chemistry applications. We should note that even if the space limitation is mitigated, no consensus is established for the time complexity, correlated to the number of gates and measurement required to approximate the molecular wavefunction [<a href="https://doi.org/10.48550/arXiv.2009.12472">arXiv:2009.12472</a>].</p>
+</section>
+<section id="resource-reduction" class="level2">
+<h2 class="anchored" data-anchor-id="resource-reduction">Resource Reduction<a class="anchor" id="4"></a></h2>
+<p>Resource reduction refers to lowering the computational requirements to run an algorithm. This applies to both classical and quantum computing. In conventional computing, this translates to less bits required to store information and less operations to do on these bits. For quantum computing, this translates to reducing the number of qubits and the number of gates in quantum circuits.</p>
+<p>Our starting point is the O<span class="math inline">\(_2\)</span> molecule in the <code>6-311G(d,p)</code> basis. We focus on reducing resource requirements before choosing an algorithm to compute the ground state. For approaches relying on choosing a different ansatz or fragmenting a molecule into smaller subproblems (problem decomposition), the user can refer to the relevant notebooks in the <a href="https://github.com/goodchemistryco/Tangelo/tree/develop/examples">Tangelo/examples</a> folder.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>o2_6311gdp <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                     basis<span class="op">=</span><span class="st">"6-311G(d,p)"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> active molecular orbitals"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> active electrons"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>36 active molecular orbitals
+16 active electrons</code></pre>
+</div>
+</div>
+<p>The O<span class="math inline">\(_2\)</span> molecule in the 6-311G(d,p) basis would require 72 qubits and inherently a quantum circuit that is considered too deep for current architectures (NISQ devices) at the time of writing. Decreasing the number of qubits required to encode the problem provides the first indirect way to reduce those requirements. The two methods discussed below are the reduction of the active space and the consideration of molecular symmetries.</p>
+<section id="active-space-selection" class="level3">
+<h3 class="anchored" data-anchor-id="active-space-selection">Active Space Selection<a class="anchor" id="41"></a></h3>
+<p>Active space selection is a trivial way to reduce the number of qubits by ignoring some molecular orbitals in the post-Hartree-Fock calculation. Applying this method is trivial, but choosing which molecular orbitals to freeze is not. While there is no general algorithm to perform that operation, one can evaluate which orbitals to freeze by first printing the molecular orbital occupancies.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>o2_6311gdp.mo_occ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>NPArrayWithTag([2., 2., 2., 2., 2., 2., 2., 1., 1., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.,
+                0., 0., 0., 0., 0., 0., 0., 0.])</code></pre>
+</div>
+</div>
+<p>One way of picturing this is to only consider frontier orbitals and their neighbors. The correlation lost on the total energy when only considering a subset of the full active space might be small. For example, freezing low-lying occupied molecular orbitals is known as the <em>frozen-core approximation</em>, and can be applied because core orbitals do not mix with valence orbitals. Also, there are algorithms to freeze virtual orbitals, like the Frozen Natural Orbitals (FNO) truncation method [<a href="https://doi.org/10.1135/cccc20050837">Collect. Czech. Chem. Commun. 2005, 70, 837-850</a> and <a href="https://doi.org/10.1063/1.2902285">J. Chem. Phys. 2008, 128, 164101</a>]. Despite the fact that choosing a suitable active space can be tailored a problem, it can help reducing quantum resources <em>a priori</em>.</p>
+<p>The code cell below results in the consideration of molecular orbitals near the HOMO-LUMO level. The <code>get_orbitals_excluding_homo_lumo</code> function helps users to get the labels of these orbitals. In our case, the active space is defined from the HOMO-3 to LUMO+3.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.frozen_orbitals <span class="im">import</span> get_orbitals_excluding_homo_lumo</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Selecting HOMO-3 to LUMO+3 orbitals.</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>frozen <span class="op">=</span> get_orbitals_excluding_homo_lumo(o2_6311gdp, homo_minus_n<span class="op">=</span><span class="dv">3</span>, lumo_plus_n<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>o2_6311gdp_frozen <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, basis<span class="op">=</span><span class="st">"6-311G(d,p)"</span>, </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                                            frozen_orbitals<span class="op">=</span>frozen)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp_frozen<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> active molecular orbitals"</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp_frozen<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> active electrons"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8 active molecular orbitals
+6 active electrons</code></pre>
+</div>
+</div>
+<p>We decrease the number of considered orbitals from 36 to 8! With conventional fermion-to-qubit mappings, the number of qubits can be reduced from 72 to 16. This is an impressive reduction, but it comes at a significant cost. Configurations involving orbitals below HOMO-4 and above LUMO+4 are not considered here. This results in an energy further away from the true energy as there is nothing telling us that those configurations are irrelevant <em>a priori</em>. In the next code cell, we consider the CCSD calculation of O<span class="math inline">\(_2\)</span> with and without those orbitals.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># CCSD energy with all the orbitals.</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>e_o2_6311gdp <span class="op">=</span> CCSDSolver(o2_6311gdp).simulate()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># CCSD energy with HOMO-3 to LUMO+3 orbitals.</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>e_o2_6311gdp_frozen <span class="op">=</span> CCSDSolver(o2_6311gdp_frozen).simulate()</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Energy difference: </span><span class="sc">{</span><span class="bu">abs</span>(e_o2_6311gdp<span class="op">-</span>e_o2_6311gdp_frozen)<span class="op">*</span><span class="fl">627.5</span><span class="sc">}</span><span class="ss"> kcal/mol."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Energy difference: 226.51013348418326 kcal/mol.</code></pre>
+</div>
+</div>
+<p>Considering the <a href="https://en.wikipedia.org/wiki/Computational_chemistry">chemical accuracy</a> (1 kcal/mol), the difference is indeed significant: 226 kcal/mol. Therefore, the lower bound with the reduced active space is higher than the CCSD ground state. The takeaway is to be careful when choosing an active space for a molecule.</p>
+</section>
+<section id="considering-symmetries" class="level3">
+<h3 class="anchored" data-anchor-id="considering-symmetries">Considering Symmetries<a class="anchor" id="42"></a></h3>
+<p>Molecular symmetries are reflected in the Hamiltonian structure. The number of electrons in the molecule should be consistent before and after the ansatz has been applied onto the initial state. Electronic configurations not respecting this symmetry can therefore be neglected without loss of accuracy. For our purpose in quantum chemistry, it leads to a smaller number of qubits.</p>
+<p>The code cell below shows an example of Z2-symmetries qubit tapering with Tangelo.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> count_qubits</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators.taper_qubits <span class="im">import</span> QubitTapering</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>hamiltonian <span class="op">=</span> fermion_to_qubit_mapping(o2_6311gdp_frozen.fermionic_hamiltonian, <span class="st">"JW"</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> count_qubits(hamiltonian)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>taper <span class="op">=</span> QubitTapering(hamiltonian, n_qubits, </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                      n_electrons<span class="op">=</span>o2_6311gdp_frozen.n_active_electrons)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>hamiltonian_taper <span class="op">=</span> taper.z2_tapered_op</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>n_qubits_tapered <span class="op">=</span> count_qubits(hamiltonian_taper)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of qubits: </span><span class="sc">{</span>n_qubits<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number of qubits after tapering: </span><span class="sc">{</span>n_qubits_tapered<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n_qubits <span class="op">-</span> n_qubits_tapered<span class="sc">}</span><span class="ss"> Z2 symmetries detected"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of qubits: 16
+Number of qubits after tapering: 12
+4 Z2 symmetries detected</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="advanced-usage-of-pyscf" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-usage-of-pyscf">Advanced Usage of PySCF<a class="anchor" id="5"></a></h2>
+<p>Tangelo currently relies on <a href="https://pyscf.org/">PySCF</a>. Advanced usage of this open-source quantum chemistry package enables the use of many analysis tools. We show a couple of examples where advanced users can extract more information from a PySCF calculation.</p>
+<p>A <code>SecondQuantizedMolecule</code> object can be exported as a <code>pyscf.gto.Mole</code> object. From that point, anything implemented in <code>PySCF</code> can be applied to this data structure. The next line shows how to do this operation.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pyscf_mol <span class="op">=</span> sec_mol.to_pyscf(sec_mol.basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="extracting-mean-field-quantities" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-mean-field-quantities">Extracting Mean-Field Quantities<a class="anchor" id="51"></a></h3>
+<p>The first trick is the extraction of the molecular orbital eigenvalues and coefficients. This can be done with the <code>analyze</code> method, and it can be called from the mean-field object to print relevant molecular properties. The output features many sections, described in the table below.</p>
+<table class="table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;">Decription</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>SCF Summaries</code></td>
+<td style="text-align: left;">Self-consistent field energy contributions</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>MO energy</code></td>
+<td style="text-align: left;">Molecular orbital eigenvalues</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>MO coefficients</code></td>
+<td style="text-align: left;">Linear Combination of Atomic Orbitals (LCAO) coefficients</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Mulliken pop</code></td>
+<td style="text-align: left;">Mulliken electron population</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Mulliken atomic charges</code></td>
+<td style="text-align: left;">Partial charges on each atom and dipole moment</td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>o2_sto3g.mean_field.analyze(verbose<span class="op">=</span><span class="dv">5</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>**** SCF Summaries ****
+Total Energy =                        -147.632274661317865
+Nuclear Repulsion Energy =              27.989538428826449
+One-electron Energy =                 -260.148728081504885
+Two-electron Energy =                   84.526914991360584
+**** MO energy ****
+                Roothaan           | alpha              | beta
+MO #1   energy= -20.4249798600401  | -20.4400185052847  | -20.4099412147954  occ= 2
+MO #2   energy= -20.424364897337   | -20.4389300606557  | -20.4097997340182  occ= 2
+MO #3   energy= -1.55251062929102  | -1.61345571756454  | -1.49156554101749  occ= 2
+MO #4   energy= -0.993242469558959 | -1.09010934627351  | -0.896375592844403 occ= 2
+MO #5   energy= -0.581544505580074 | -0.616775236948374 | -0.546313774211774 occ= 2
+MO #6   energy= -0.579365900007762 | -0.714071611414284 | -0.444660188601237 occ= 2
+MO #7   energy= -0.579365900007761 | -0.714071611414284 | -0.444660188601237 occ= 2
+MO #8   energy= -0.0715888741311829 | -0.412074886861292 | 0.268897138598928  occ= 1
+MO #9   energy= -0.0715888741311817 | -0.412074886861291 | 0.268897138598927  occ= 1
+MO #10  energy= 0.73033550676964   | 0.689507257614018  | 0.77116375592526   occ= 0
+ ** MO coefficients (expansion on meta-Lowdin AOs) **
+               #1        #2        #3        #4        #5       
+  0 O 1s      -0.70708   0.70711  -0.00060  -0.00323  -0.00005
+  0 O 2s      -0.00483   0.00057   0.65237   0.65105   0.27278
+  0 O 2px      0.00000   0.00000   0.00000  -0.00000  -0.00000
+  0 O 2py      0.00000   0.00000   0.00000  -0.00000  -0.00000
+  0 O 2pz     -0.00311   0.00019   0.27278  -0.27591  -0.65237
+  1 O 1s       0.70708   0.70711  -0.00060   0.00323  -0.00005
+  1 O 2s       0.00483   0.00057   0.65237  -0.65105   0.27278
+  1 O 2px      0.00000   0.00000   0.00000  -0.00000  -0.00000
+  1 O 2py      0.00000   0.00000   0.00000  -0.00000  -0.00000
+  1 O 2pz     -0.00311  -0.00019  -0.27278  -0.27591   0.65237
+               #6        #7        #8        #9        #10      
+  0 O 1s      -0.00000  -0.00000  -0.00000  -0.00000  -0.00475
+  0 O 2s       0.00000   0.00000   0.00000   0.00000   0.27589
+  0 O 2px     -0.10974   0.69854  -0.11637   0.69747  -0.00000
+  0 O 2py      0.69854   0.10974   0.69747   0.11637  -0.00000
+  0 O 2pz     -0.00000  -0.00000   0.00000  -0.00000   0.65105
+  1 O 1s       0.00000  -0.00000  -0.00000  -0.00000   0.00475
+  1 O 2s       0.00000   0.00000  -0.00000  -0.00000  -0.27589
+  1 O 2px     -0.10974   0.69854   0.11637  -0.69747   0.00000
+  1 O 2py      0.69854   0.10974  -0.69747  -0.11637   0.00000
+  1 O 2pz      0.00000   0.00000  -0.00000   0.00000   0.65105
+ ** Mulliken pop on meta-lowdin orthogonal AOs  **
+ ** Mulliken pop  **
+pop of  0 O 1s        1.99995
+pop of  0 O 2s        1.84777
+pop of  0 O 2px       1.50000
+pop of  0 O 2py       1.50000
+pop of  0 O 2pz       1.15227
+pop of  1 O 1s        1.99995
+pop of  1 O 2s        1.84777
+pop of  1 O 2px       1.50000
+pop of  1 O 2py       1.50000
+pop of  1 O 2pz       1.15227
+ ** Mulliken atomic charges  **
+charge of  0O =      0.00000
+charge of  1O =     -0.00000
+Dipole moment(X, Y, Z, Debye): -0.00000,  0.00000, -0.00000</code></pre>
+</div>
+</div>
+</section>
+<section id="outputting-cube-files" class="level3">
+<h3 class="anchored" data-anchor-id="outputting-cube-files">Outputting Cube Files<a class="anchor" id="52"></a></h3>
+<p>Visualization of molecular orbitals is useful for analysis purposes or making figures. Those few lines create a <code>cube</code> file, compatible with many chemical visualization softwares (<a href="https://gaussian.com/gaussview6/">GaussView</a>, <a href="https://avogadro.cc/">avogadro</a>, <a href="https://www.ks.uiuc.edu/Research/vmd/">VMD</a>, …), for the <code>MO #10</code>.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyscf <span class="im">import</span> tools</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>tools.cubegen.orbital(pyscf_mol, <span class="ss">f"MO10.cube"</span>, sec_mol.mean_field.mo_coeff[:,<span class="dv">9</span>]) <span class="co"># Python indices start with 0.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing Words<a class="anchor" id="6"></a></h2>
+<p>This notebook glanced over the first steps of modelling a chemical system for quantum computing exploration. One of the challenges of quantum chemistry is the ever-present trade-off between computational resources requirements and accuracy of calculations. We emphasized how the choice of a basis set and frozen orbitals can greatly affect this trade-off.</p>
+<p>Quantum computing is a nascent technology, and the capabilities of current devices are limited. Efficient modelling of the system can be therefore crucial to sucessfully design experiments on quantum computers, and even simulators.</p>
+<p>In our <a href="../../examples/variational_methods/vqe.html">VQE notebook</a>, we show how the modelling choices can greatly impact the quantum computational resources required by this quantum algorithm, and how the algorithm options themselves can further affect both resource requirements and accuracy.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References<a class="anchor" id="7"></a></h2>
+<ul>
+<li>McQuarrie, D. A. <a href="https://books.google.ca/books/about/Quantum_Chemistry.html?id=zzxLTIljQB4C&amp;redir_esc=y">Quantum Chemistry</a>, University Science Books 2nd ed.&nbsp;(2007)</li>
+<li>Engel, T. <a href="https://books.google.ca/books/about/Quantum_Chemistry_and_Spectroscopy.html?id=JhUqngEACAAJ&amp;redir_esc=y">Quantum chemistry &amp; spectroscopy</a>. Pearson 3rd ed.&nbsp;(2012)</li>
+<li>Szabo, A. &amp; Ostlund, N. S. <a href="https://books.google.ca/books/about/Modern_Quantum_Chemistry.html?id=6mV9gYzEkgIC&amp;redir_esc=y">Modern quantum chemistry: Introduction to advanced electronic structure theory</a>. Mineola, Dover Publications 1st ed.&nbsp;(1996).</li>
+<li><a href="https://chem.libretexts.org/Courses/Pacific_Union_College/Quantum_Chemistry/11%3A_Computational_Quantum_Chemistry">Computational_Quantum_Chemistry</a>, Chemistry LibreTexts, visited on Aug 17, 2022.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
