@@ -1,6 +1,5 @@
 project:
   type: website
-  output-dir: docs
 
 website:
   navbar:
@@ -12,3 +11,6 @@ website:
   sidebar:
     style: "docked"
     contents: auto
+
+execute:
+  freeze: auto

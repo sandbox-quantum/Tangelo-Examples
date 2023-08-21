@@ -1,4 +1,4 @@
-How to generate and update the Github-pages documentation
+How to generate and update the GitHub-pages documentation
 =========================================================
 
 This document is here to assist this project maintainers in updating the `documentation <https://goodchemistryco.github.io/Tangelo-Examples/>`_ of this repository.
@@ -29,11 +29,11 @@ On Ubuntu (or other Debian-based distributions), the relevant commands can be cu
 
 There are two files which may require modifications, on top of the other generated files (html, json, ...)
 
-- `README.rst`: A README update for users visiting the Github page.
+- `README.rst`: A README update for users visiting the GitHub page.
 - `index.qmd`: The main page of the rendered documentation, listing and tying together all the other rendered html files.
 
-2b. Regenerate the html files
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2b. Locally regenerating the html files (optional)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is simply done by calling the following command in the root directory of the `Tangelo-Examples` folder:
 
@@ -41,18 +41,12 @@ This is simply done by calling the following command in the root directory of th
 
    quarto render
 
-Note that all html pages include data about the side menu used to navigate through the website. As a result, even though you may be only adding or modifying a single file, you may find that all generated files (html, json) have slightly changed as a result. 
-Please make sure to add, commit and push all modifications, and trust the process.
+Rendered files have been generated, and they can be naviguated in the `_site` folder.
+This step can be done to test locally the rendering of the python notebooks.
 
 2c. Deployment on github-pages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-At the time of writing this tutorial, the only way to regenerate the documentation is to manually deploy the workflow from the user branch.
-Regenerating this documentation and verifying it works as expected is mandatory before approving and merging a PR that impacts it. Doing so will however overwrite the existing documentation.
-In case the new documentation is not working out and needs further work, please fix it as soon as possible or regenerate from the `main` branch to revert to the previous version: many users depend on it !
-
-|manual_deployment|
-
-.. |manual_deployment| image:: ./manual_deployment.png
-   :width: 600
-   :alt: manual_deployment
+Deployment is automatically done in the `gh-pages` branch by GitHub actions, and this happens everytime changes are pushed to the `main` branch.
+Therefore, any merged pull request will trigger the GitHub actions to deploy a new website for the documentation.
+For more information on how it is set up, see the `Quarto - GitHub Pages <https://quarto.org/docs/publishing/github-pages.html>`_ webpage.
