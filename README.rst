@@ -4,7 +4,7 @@
    :width: 600
    :alt: tangelo_logo
 
-|maintainer| |licence| |systems|
+|maintainer| |licence|
 
 Launch this repository on Binder: |binder|
 
@@ -24,20 +24,26 @@ Launch this repository on Binder: |binder|
 .. |tag_vqe| image:: https://img.shields.io/badge/-VQE-yellow
 .. |tag_chem| image:: https://img.shields.io/badge/-Chemistry-008080
 .. |tag_qcloud| image:: https://img.shields.io/badge/-QEMIST%20Cloud-blue
-.. |tag_qsim| image:: https://img.shields.io/badge/-Backends-orange
+.. |tag_qsim| image:: https://img.shields.io/badge/-Backends-AFEEEE
 .. |tag_qalg| image:: https://img.shields.io/badge/-Quantum%20Algorithms-lavender
 .. |tag_ft| image:: https://img.shields.io/badge/-Fault%20Tolerant-brown
+
 .. |example_repo| https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/
 
+.. |space| unicode:: U+0020 .. space
+.. |nbspc| unicode:: U+00A0 .. non-breaking space
+.. |tangerine| unicode:: U+1F34A .. tangerine emoji
 
 Welcome traveler!
 
 You have found the Github repository featuring the tutorials / examples notebooks and scripts created by the `Tangelo <https://github.com/goodchemistryco/Tangelo>`_ community. Most tutorials are not just about "code", but were designed to provide you with knowledge, references and insights about applying quantum computing to the simulation of electronic systems. Feel free to use any of these resources for educational purposes, or as a basis for your own projects. Any user can contribute to this repository and showcase their cool work, including you!
 
 You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). 
-In order to help you find content relevant to your interests, this page provides a table that associates each resource with a few tags describing the main topics they relate to. If you are new to Tangelo, we suggest you start with those tagged with |tag_intro|.
+In order to help you find content relevant to your interests, this page provides a table that associates each resource with a few tags describing the main topics they relate to. If you are new to Tangelo, we suggest you start with those tagged with |tag_intro|. Please enjoy your stay. |tangerine|
 
-* |tag_intro| : great resource to get started |br|
+|nbspc|
+
+* |tag_intro| : great resource to get started
 * |tag_chem| : great resource to learn more about chemistry
 * |tag_qsim| : related to the simulation of quantum circuits
 * |tag_exp| : related to experiments on quantum devices
@@ -47,7 +53,10 @@ In order to help you find content relevant to your interests, this page provides
 * |tag_qalg| : discusses quantum algorithms more broadly
 * |tag_qcloud| : related to QEMIST Cloud
 
--
+|nbspc|
+
+Contents
+========
 
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
 | Tutorial                                                                                                                | Main tag                     | Secondary tags                                                            |
