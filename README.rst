@@ -28,8 +28,6 @@ Launch this repository on Binder: |binder|
 .. |tag_qalg| image:: https://img.shields.io/badge/-Quantum%20Algorithms-lavender
 .. |tag_ft| image:: https://img.shields.io/badge/-Fault%20Tolerant-brown
 
-.. |example_repo| https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/
-
 .. |space| unicode:: U+0020 .. space
 .. |nbspc| unicode:: U+00A0 .. non-breaking space
 .. |tangerine| unicode:: U+1F34A .. tangerine emoji
@@ -47,9 +45,9 @@ In order to help you find content relevant to your interests, this page provides
 * |tag_chem| : great resource to learn more about chemistry
 * |tag_qsim| : related to the simulation of quantum circuits
 * |tag_exp| : related to experiments on quantum devices
-* |tag_pd| : related to problem decomposition (fragmentation) techniques
-* |tag_vqe| : related to the Variational Quantum Eigensolver
-* |tag_ft| : related to fault-tolerant approaches
+* |tag_pd| : features problem decomposition (fragmentation) techniques
+* |tag_vqe| : features the Variational Quantum Eigensolver
+* |tag_ft| : features fault-tolerant approaches
 * |tag_qalg| : discusses quantum algorithms more broadly
 * |tag_qcloud| : related to QEMIST Cloud
 
@@ -61,44 +59,44 @@ Contents
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
 | Tutorial                                                                                                                | Main tag                     | Secondary tags                                                            |
 +=========================================================================================================================+==============================+===========================================================================+
-| `1. The basics <|example_repo|workflow_basics/1.the_basics.ipynb>`_                                                     | |tag_qsim|                   | |tag_intro|                                                               |
+| `1. The basics <examples/workflow_basics/1.the_basics.ipynb>`_                                                          | |tag_qsim|                   | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `2. QPU Connection <|example_repo|workflow_basics/2.qpu_connection.ipynb>`_                                             | |tag_qsim|                   | |tag_exp|                                                                 |
+| `2. QPU Connection <examples/workflow_basics/2.qpu_connection.ipynb>`_                                                  | |tag_qsim|                   | |tag_exp|                                                                 |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `3. Noisy Simulation <|example_repo|workflow_basics/3.noisy_simulation.ipynb>`_                                         | |tag_qsim|                   | |tag_intro|                                                               |
+| `3. Noisy Simulation <examples/workflow_basics/3.noisy_simulation.ipynb>`_                                              | |tag_qsim|                   | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Symbolic Simulation <|example_repo|workflow_basics/symbolic_simulator.ipynb>`_                                         | |tag_qsim|                   | |tag_intro|                                                               |
+| `Symbolic Simulation <examples/workflow_basics/symbolic_simulator.ipynb>`_                                              | |tag_qsim|                   | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Quantum Chemistry Basics <|example_repo|workflow_basics/chemistry/qchem_modelling_basics.ipynb>`_                      | |tag_chem|                   | |tag_intro|                                                               |
+| `Quantum Chemistry Basics <examples/chemistry/qchem_modelling_basics.ipynb>`_                                           | |tag_chem|                   | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Excited State methods <|example_repo|chemistry/excited_states.ipynb>`_                                                 | |tag_qalg|                   | |tag_chem| |tag_vqe|                                                      |
+| `Excited State methods <examples/chemistry/excited_states.ipynb>`_                                                      | |tag_qalg|                   | |tag_chem| |tag_vqe|                                                      |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `VQE <|example_repo|variational_methods/vqe.ipynb>`_                                                                    | |tag_vqe|                    | |tag_intro|                                                               |
+| `VQE <examples/variational_methods/vqe.ipynb>`_                                                                         | |tag_vqe|                    | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `VQE with custom ansatz and Hamiltonian <|example_repo|variational_methods/vqe_custom_ansatz_hamiltonian.ipynb>`_       | |tag_vqe|                    |                                                                           |
+| `VQE with custom ansatz and Hamiltonian <examples/variational_methods/vqe_custom_ansatz_hamiltonian.ipynb>`_            | |tag_vqe|                    |                                                                           |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Adapt VQE Solver <|example_repo|variational_methods/adapt.ipynb>`_                                                     | |tag_vqe|                    |                                                                           |
+| `Adapt VQE Solver <examples/variational_methods/adapt.ipynb>`_                                                          | |tag_vqe|                    |                                                                           |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Iterative Qubit Coupled Cluster with Clifford Circuits <|example_repo|variational_methods/iqcc_using_clifford.ipynb>`_ | |tag_vqe|                    | |tag_qsim|                                                                |
+| `Iterative Qubit Coupled Cluster with Clifford Circuits <examples/variational_methods/iqcc_using_clifford.ipynb>`_      | |tag_vqe|                    | |tag_qsim|                                                                |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Classical Shadows <|example_repo|measurement_reduction/classical_shadows.ipynb>`_                                      | |tag_qsim|                   |                                                                           |
+| `Classical Shadows <examples/measurement_reduction/classical_shadows.ipynb>`_                                           | |tag_qalg|                   |                                                                           |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Density Matrix Embedding Theory <|example_repo|problem_decomposition/dmet.ipynb>`_                                     | |tag_pd|                     | |tag_intro|                                                               |
+| `Density Matrix Embedding Theory <examples/problem_decomposition/dmet.ipynb>`_                                          | |tag_pd|                     | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `DMET Unrestricted Hartree-Fock <|example_repo|problem_decomposition/dmet_uhf.ipynb>`_                                  | |tag_pd|                     |                                                                           |
+| `DMET Unrestricted Hartree-Fock <examples/problem_decomposition/dmet_uhf.ipynb>`_                                       | |tag_pd|                     |                                                                           |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `MIFNO <|example_repo|problem_decomposition/mifno.ipynb>`_                                                              | |tag_pd|                     | |tag_intro| |tag_qcloud|                                                  |
+| `MIFNO <examples/problem_decomposition/mifno.ipynb>`_                                                                   | |tag_pd|                     | |tag_intro| |tag_qcloud|                                                  |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `ONIOM <|example_repo|problem_decomposition/oniom.ipynb>`_                                                              | |tag_pd|                     | |tag_intro|                                                               |
+| `ONIOM <examples/problem_decomposition/oniom.ipynb>`_                                                                   | |tag_pd|                     | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `End-to-End hardware experiment <|example_repo|measurement_reduction/hardware_experiments/overview_endtoend.ipynb>`_    | |tag_exp|                    | |tag_intro| |tag_pd|                                                      |
+| `End-to-End hardware experiment <examples/measurement_reduction/hardware_experiments/overview_endtoend.ipynb>`_         | |tag_exp|                    | |tag_intro| |tag_pd|                                                      |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Hardware Experiment using QEMIST Cloud <|example_repo|hardware_experiments/qemist_cloud_hardware_experiment.ipynb>`_   | |tag_exp|                    | |tag_qcloud|                                                              |
+| `Hardware Experiment using QEMIST Cloud <examples/hardware_experiments/qemist_cloud_hardware_experiment.ipynb>`_        | |tag_exp|                    | |tag_qcloud|                                                              |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Berylium IBM Quantum experiment <|example_repo|hardware_experiments/berylium_ibm_quantum.ipynb>`_                      | |tag_exp|                    | |tag_pd| |tag_qcloud|                                                     |
+| `Berylium IBM Quantum experiment <examples/hardware_experiments/berylium_ibm_quantum.ipynb>`_                           | |tag_exp|                    | |tag_pd| |tag_qcloud|                                                     |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `Umbrella inversion Braket <|example_repo|hardware_experiments/umbrella_inversion.ipynb>`_                              | |tag_exp|                    | |tag_pd| |tag_qcloud|                                                     |
+| `Umbrella inversion Braket <examples/hardware_experiments/umbrella_inversion.ipynb>`_                                   | |tag_exp|                    | |tag_pd| |tag_qcloud| |tag_ft|                                            |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
-| `State Preparation with Quantum Signal Processing <|example_repo|fault_tolerant/qsp_state_prep.ipynb>`_                 | |tag_ft|                     |                                                                           |
+| `State Preparation with Quantum Signal Processing <examples/fault_tolerant/qsp_state_prep.ipynb>`_                      | |tag_ft|                     |                                                                           |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
 
