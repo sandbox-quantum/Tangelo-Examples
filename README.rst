@@ -18,6 +18,27 @@ Launch this repository on Binder: |binder|
 
 ----
 
+Test badges
+
+.. |tag_intro| image:: https://img.shields.io/badge/-Introduction-green
+.. |tag_experiment| image:: https://img.shields.io/badge/-Experiment-7373e3
+.. |tag_problemdecomp| image:: https://img.shields.io/badge/-Problem%20Decomp-red
+.. |tag_vqe| image:: https://img.shields.io/badge/-VQE-yellow
+.. |tag_chemistry| image:: https://img.shields.io/badge/-Chemistry-008080
+.. |tag_qcloud| image:: https://img.shields.io/badge/-QEMIST%20Cloud-blue
+.. |tag_qsim| image:: https://img.shields.io/badge/-Backends-orange
+
+
+|tag_intro| 
+|tag_experiment|
+|tag_problemdecomp|
+|tag_vqe|
+|tag_chemistry|
+|tag_qcloud|
+|tag_qsim|
+
+----
+
 Welcome !
 
 This is the repository that holds the example jupyter notebooks for `Tangelo <https://github.com/goodchemistryco/Tangelo>`_.
