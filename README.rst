@@ -44,9 +44,23 @@ Test badges
 | Tutorial                                                                                                                | Main tag                     | Secondary tags                                                            |
 +=========================================================================================================================+==============================+===========================================================================+
 | `1. The basics <|example_repo|workflow_basics/1.the_basics.ipynb>`_                                                     | |tag_qsim|                   | |tag_intro|                                                               |
-| `2. QPU Connection <|example_repo|workflow_basics/2.qpu_connection.ipynb>`_                                             | |tag_qsim|                   | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| `2. QPU Connection <|example_repo|workflow_basics/2.qpu_connection.ipynb>`_                                             | |tag_qsim|                   | |tag_exp|                                                                 |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
 | `3. Noisy Simulation <|example_repo|workflow_basics/3.noisy_simulation.ipynb>`_                                         | |tag_qsim|                   | |tag_intro|                                                               |
 +-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| `Symbolic Simulation <|example_repo|workflow_basics/symbolic_simulator.ipynb>`_                                         | |tag_qsim|                   | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| `Quantum Chemistry Basics <|example_repo|workflow_basics/chemistry/qchem_modelling_basics.ipynb>`_                      | |tag_chem|                   | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| `Excited State methods <|example_repo|chemistry/excited_states.ipynb>`_                                                 | |tag_qsim|                   | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| `VQE <|example_repo|variational_methods/vqe.ipynb>`_                                                                    | |tag_vqe|                    | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| `VQE with custom ansatz and Hamiltonian <|example_repo|variational_methods/vqe_custom_ansatz_hamiltonian.ipynb>`_       | |tag_qsim|                   | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+
+
 
 Welcome !
 
@@ -58,16 +72,6 @@ If you are new to Tangelo, we suggest you start with `1. The basics <https://git
 `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_. After that, what you are most interested in determines
 where you go next.
 
-A full list of the example notebooks is
-
-* Workflow Basics
-    * `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb>`_
-    * `2. QPU Connection <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/2.qpu_connection.ipynb>`_
-    * `3. Noisy Simulation <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/3.noisy_simulation.ipynb>`_
-    * `Symbolic Simulation <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/symbolic_simulator.ipynb>`_
-* Chemistry
-    * `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_
-    * `Excited State methods <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/excited_states.ipynb>`_
 * Variational Methods
     * `VQE <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe.ipynb>`_
     * `VQE with user defined ansatz <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe_custom_ansatz_hamiltonian.ipynb>`_
