@@ -21,23 +21,32 @@ Launch this repository on Binder: |binder|
 Test badges
 
 .. |tag_intro| image:: https://img.shields.io/badge/-Introduction-green
-.. |tag_experiment| image:: https://img.shields.io/badge/-Experiment-7373e3
-.. |tag_problemdecomp| image:: https://img.shields.io/badge/-Problem%20Decomp-red
+.. |tag_exp| image:: https://img.shields.io/badge/-Experiment-7373e3
+.. |tag_pd| image:: https://img.shields.io/badge/-Problem%20Decomp-red
 .. |tag_vqe| image:: https://img.shields.io/badge/-VQE-yellow
-.. |tag_chemistry| image:: https://img.shields.io/badge/-Chemistry-008080
+.. |tag_chem| image:: https://img.shields.io/badge/-Chemistry-008080
 .. |tag_qcloud| image:: https://img.shields.io/badge/-QEMIST%20Cloud-blue
 .. |tag_qsim| image:: https://img.shields.io/badge/-Backends-orange
 
 
+.. |example_repo| https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/
+
 |tag_intro| 
-|tag_experiment|
-|tag_problemdecomp|
+|tag_exp|
+|tag_pd|
 |tag_vqe|
-|tag_chemistry|
+|tag_chem|
 |tag_qcloud|
 |tag_qsim|
 
-----
+
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
+| Tutorial                                                                                                                | Main tag                     | Secondary tags                                                            |
++=========================================================================================================================+==============================+===========================================================================+
+| `1. The basics <|example_repo|workflow_basics/1.the_basics.ipynb>`_                                                     | |tag_qsim|                   | |tag_intro|                                                               |
+| `2. QPU Connection <|example_repo|workflow_basics/2.qpu_connection.ipynb>`_                                             | |tag_qsim|                   | |tag_intro|                                                               |
+| `3. Noisy Simulation <|example_repo|workflow_basics/3.noisy_simulation.ipynb>`_                                         | |tag_qsim|                   | |tag_intro|                                                               |
++-------------------------------------------------------------------------------------------------------------------------+------------------------------+---------------------------------------------------------------------------+
 
 Welcome !
 
