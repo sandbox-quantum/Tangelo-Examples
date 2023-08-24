@@ -4,7 +4,7 @@
    :width: 600
    :alt: tangelo_logo
 
-|maintainer| |licence| |systems|
+|maintainer| |licence|
 
 Launch this repository on Binder: |binder|
 
@@ -14,46 +14,32 @@ Launch this repository on Binder: |binder|
    :target: https://github.com/goodchemistryco/Tangelo/blob/main/LICENSE
 .. |systems| image:: https://img.shields.io/badge/OS-Linux%20MacOS%20Windows-7373e3
 .. |binder| image:: https://mybinder.org/badge_logo.svg
- :target: https://mybinder.org/v2/gh/goodchemistryco/Tangelo-Examples/main
+   :target: https://mybinder.org/v2/gh/goodchemistryco/Tangelo-Examples/main
 
-----
+--------------------------------
 
-Welcome !
+.. |tag_intro| image:: https://img.shields.io/badge/-Introduction-green
+.. |tag_exp| image:: https://img.shields.io/badge/-Experiment-7373e3
+.. |tag_pd| image:: https://img.shields.io/badge/-Problem%20Decomp-red
+.. |tag_vqa| image:: https://img.shields.io/badge/-VQE-yellow
+.. |tag_chem| image:: https://img.shields.io/badge/-Chemistry-008080
+.. |tag_qcloud| image:: https://img.shields.io/badge/-QEMIST%20Cloud-blue
+.. |tag_qsim| image:: https://img.shields.io/badge/-Backends-AFEEEE
+.. |tag_qalg| image:: https://img.shields.io/badge/-Quantum%20Algorithms-lavender
+.. |tag_ft| image:: https://img.shields.io/badge/-Fault%20Tolerant-brown
 
-This is the repository that holds the example jupyter notebooks for `Tangelo <https://github.com/goodchemistryco/Tangelo>`_.
+.. |space| unicode:: U+0020 .. space
+.. |nbspc| unicode:: U+00A0 .. non-breaking space
+.. |tangerine| unicode:: U+1F34A .. tangerine emoji
 
-This includes tutorial notebooks and research related notebooks. Anyone can contribute a notebook to this repository!
+Welcome traveler!
 
-If you are new to Tangelo, we suggest you start with `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb>`_, and
-`Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_. After that, what you are most interested in determines
-where you go next.
+You have found the Github repository featuring the tutorials / examples notebooks and scripts created by the `Tangelo <https://github.com/goodchemistryco/Tangelo>`_ community. Most tutorials are not just about "code", but were designed to provide you with knowledge, references and insights about applying quantum computing to the simulation of electronic systems. Feel free to use any of these resources for educational purposes, or as a basis for your own projects. Any user can contribute to this repository and showcase their cool work, including you!
 
-A full list of the example notebooks is
+You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). 
+We introduced a visual tagging system to help you find resources that are relevant to you, in the link below.
+If you are new to Tangelo, we recommend you start your exploration with tutorials tagged with |tag_intro|. 
 
-* Workflow Basics
-    * `1. The basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb>`_
-    * `2. QPU Connection <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/2.qpu_connection.ipynb>`_
-    * `3. Noisy Simulation <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/3.noisy_simulation.ipynb>`_
-    * `Symbolic Simulation <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/symbolic_simulator.ipynb>`_
-* Chemistry
-    * `Quantum Chemistry Basics <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb>`_
-    * `Excited State methods <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/excited_states.ipynb>`_
-* Variational Methods
-    * `VQE <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe.ipynb>`_
-    * `VQE with user defined ansatz <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe_custom_ansatz_hamiltonian.ipynb>`_
-    * `Adapt VQE Solver <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/adapt.ipynb>`_
-    * `Iterative Qubit Coupled Cluster using only Clifford Circuits <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/iqcc_using_clifford.ipynb>`_
-* Measurement Reduction
-    * `Classical Shadows <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/measurement_reduction/classical_shadows.ipynb>`_
-* Problem Decomposition
-    * `Density Matrix Embedding Theory <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/dmet.ipynb>`_
-    * `DMET Unrestricted Hartree-Fock <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/dmet_uhf.ipynb>`_
-    * `MIFNO <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/mifno.ipynb>`_
-    * `ONIOM <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/problem_decomposition/oniom.ipynb>`_
-* Hardware Experiments
-    * `End-to-End hardware experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb>`_
-    * `Hardware Experiment using QEMIST Cloud <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/qemist_cloud_hardware_experiment.ipynb>`_
-    * `Berylium IBM Quantum experiment <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/berylium_ibm_quantum.ipynb>`_
-    * `Umbrella inversion Braket <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/umbrella_inversion.ipynb>`_
-* Fault Tolerant Algorithms
-    * `State Preparation with Quantum Signal Processing <https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/fault_tolerant/qsp_state_prep.ipynb>`_
+Please enjoy your stay. |tangerine|
+
+`List of resources, with tags <./contents.rst>`_.
