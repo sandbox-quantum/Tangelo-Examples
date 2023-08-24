@@ -32,7 +32,7 @@ There are two files which may require modifications, on top of the other generat
 - `README.rst`: A README update for users visiting the GitHub page.
 - `index.qmd`: The main page of the rendered documentation, listing and tying together all the other rendered html files.
 
-2b. Locally regenerating the html files (optional)
+2b. Locally regenerating the html files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is simply done by calling the following command in the root directory of the `Tangelo-Examples` folder:
@@ -41,8 +41,8 @@ This is simply done by calling the following command in the root directory of th
 
    quarto render
 
-Rendered files have been generated, and they can be naviguated in the `_site` folder.
-This step can be done to test locally the rendering of the python notebooks.
+Rendered files have been generated, and they can be navigated in the `_site` folder.
+This step regenerates the html documentation locally to ensure notebooks render as they should, and that the navigation works as expected.
 
 2c. Deployment on github-pages
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
