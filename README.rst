@@ -37,7 +37,7 @@ Welcome traveler!
 You have found the Github repository featuring the tutorials / examples notebooks and scripts created by the `Tangelo <https://github.com/goodchemistryco/Tangelo>`_ community. Most tutorials are not just about "code", but were designed to provide you with knowledge, references and insights about applying quantum computing to the simulation of electronic systems. Feel free to use any of these resources for educational purposes, or as a basis for your own projects. Any user can contribute to this repository and showcase their cool work, including you!
 
 You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). 
-We tried to introduce a visual tagging system to help you find resources that are relevant to you, in the file linked below.
+We tried to introduce a visual tagging system to help you find resources that are relevant to you, in the link below.
 If you are new to Tangelo, we recommend you start your exploration with tutorials tagged with |tag_intro|. 
 
 Please enjoy your stay. |tangerine|
