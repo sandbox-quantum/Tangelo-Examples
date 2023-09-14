@@ -4,9 +4,10 @@
    :width: 600
    :alt: tangelo_logo
 
-|maintainer| |licence|
+----------------------------------
 
-Launch this repository on Binder: |binder|
+Quick launch options (clickable):
+|colab| |binder|
 
 .. |maintainer| image:: https://img.shields.io/badge/Maintainer-GoodChemistry-blue
    :target: https://goodchemistry.com
@@ -15,6 +16,8 @@ Launch this repository on Binder: |binder|
 .. |systems| image:: https://img.shields.io/badge/OS-Linux%20MacOS%20Windows-7373e3
 .. |binder| image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/goodchemistryco/Tangelo-Examples/main
+.. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/
 
 --------------------------------
 
@@ -36,10 +39,15 @@ Welcome traveler!
 
 You have found the Github repository featuring the tutorials / examples notebooks and scripts created by the `Tangelo <https://github.com/goodchemistryco/Tangelo>`_ community. Most tutorials are not just about "code", but were designed to provide you with knowledge, references and insights about applying quantum computing to the simulation of electronic systems. Feel free to use any of these resources for educational purposes, or as a basis for your own projects. Any user can contribute to this repository and showcase their cool work, including you!
 
-You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). 
+Getting started
+---------------
+
+You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). If one of the quick launch options above (Google Colab, Binder, etc) works for you, that is the easiest way to get started.
+
 We introduced a visual tagging system to help you find resources that are relevant to you, in the link below.
-If you are new to Tangelo, we recommend you start your exploration with tutorials tagged with |tag_intro|. 
+If you are new to Tangelo, we recommend you start your exploration with tutorials tagged with |tag_intro|.
+
+- `Tutorials and examples with tags <./contents.rst>`_.
+- The `hands_on` folder contains very simple hands-on exercise notebooks with small exercises and solutions.
 
 Please enjoy your stay. |tangerine|
-
-`List of resources, with tags <./contents.rst>`_.
