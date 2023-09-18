@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Tangelo hands-on: hardware experiments</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../hands_on/T1_circuits.html">Hands On</a></li><li class="breadcrumb-item"><a href="../hands_on/T4_hardware_experiments.html">Tangelo hands-on: hardware experiments</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Hands On</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T1_circuits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T1_circuits_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T2_simulators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T2_simulators_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T3_VQE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T3_VQE_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T4_hardware_experiments.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T4_hardware_experiments_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T5_fault_tolerant_build_blocks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fault Tolerant Building blocks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../hands_on/T5_fault_tolerant_build_blocks_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fault Tolerant Building blocks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Tangelo hands-on: hardware experiments</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="before-you-jump-in" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-jump-in">Before you jump in</h2>
+<p>This hands-on notebook complements existing tutorials, documentation and the developer notes available in the Tangelo GitHub repositories, which present content in much more depth.</p>
+<p>You will come across code cells that require you to change code or fill in the blanks in order to achieve a desired outcome. There may be many ways to solve these simple exercises, and you are encouraged to explore.</p>
+<hr>
+<p><strong>Getting started</strong></p>
+<p>Please have a look at the landing page of this repository for guidance about how to deploy these notebooks and get started easily.</p>
+<p>In order to complete this hands-on tutorial, we recommend you use the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs qiskit qiskit<span class="op">-</span>ibm<span class="op">-</span>runtime qiskit<span class="op">-</span>aer amazon<span class="op">-</span>braket<span class="op">-</span>sdk <span class="op">--</span>quiet</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p>For this hands-on, we recommend you consider the following resources: - Optional: For connecting to quantum devices, have a look at this <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/2.qpu_connection.ipynb">tutorial notebook</a>. - Optional: <a href="https://aws.amazon.com/blogs/quantum-computing/exploring-quantum-chemistry-applications-with-tangelo-and-qemist-cloud-using-amazon-braket/">A Tangelo post released on AWS Quantum Blog</a> exploring the Umbrella inversion on molecules such as <span class="math inline">\(H_3O^+\)</span> and <span class="math inline">\(NH_3\)</span> in <code>cc-pvdz</code> basis. - Optional: <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/contents.rst">Any tutorial</a> tagged <img src="https://img.shields.io/badge/-Experiment-7373e3.png" class="img-fluid">. Some of them have fully detailed accounts of hardware experiments that resulted in published work.</p>
+<hr>
+</section>
+<section id="hands-on" class="level2">
+<h2 class="anchored" data-anchor-id="hands-on">Hands-on</h2>
+<section id="connecting-to-a-quantum-device" class="level3">
+<h3 class="anchored" data-anchor-id="connecting-to-a-quantum-device">1. Connecting to a quantum device</h3>
+<p>No experiment on quantum hardware would be possible without the ability to send a task to a quantum device. It is very straightforward with the connection objects in Tangelo. Let’s define a simple circuit as a use case:</p>
+<div class="cell" data-outputid="7695684a-b8c6-48d5-e72b-3cf33f674f3e">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circuit([Gate(<span class="st">'H'</span>, <span class="dv">0</span>), Gate(<span class="st">'X'</span>, <span class="dv">1</span>)])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>c.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>Example: IBM Quantum</strong></p>
+<p>If you have an account with <a href="https://quantum-computing.ibm.com/login">IBM Quantum</a>, you can log in and retrieve your API token in order to run the cell below. You should see the task pop up in your IBM Quantum dashboard. You just submitted an experiment on IBM Quantum using Tangelo !</p>
+<p>Submitting a task to an actual quantum device may take a long time, as your job will likely be queued. The cell below uses the <code>ibmq_qasm_simulator</code> backend, which should be available right away and fast.</p>
+<div class="cell" data-outputid="19c7f9c8-95d8-4867-afaa-8385a2b05281">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IBMConnection</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> IBMConnection(ibm_quantum_token<span class="op">=</span><span class="st">''</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> conn.job_submit(<span class="st">'sampler'</span>, <span class="st">'ibmq_qasm_simulator'</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">5</span>, c)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>job_results <span class="op">=</span> conn.job_results(job_id)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simulation results from IBM Quantum : </span><span class="sc">{</span>job_results<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="a-simple-experiment" class="level3">
+<h3 class="anchored" data-anchor-id="a-simple-experiment">2. A “simple experiment”</h3>
+<p>Remember VQE ? It is a NISQ algorithm that uses relatively shallow parameterized circuits and the variational principle to compute the energy of a molecule, as an expectation value. For this use case, let’s apply it to a simple <span class="math inline">\(H_2\)</span> molecule to generate a qubit Hamiltonian and a quantum circuit with optimized variational parameters.</p>
+<p>The optimized VQE energy is the expectation of the qubit Hamiltonian of the system, with regards to the state preparation define by the optimized circuit.</p>
+<div class="cell" data-outputid="a90923f4-eaf2-441b-c793-8520c613be6f">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define H2 molecule</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xyz_H2 <span class="op">=</span> [(<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>)), (<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.7414</span>))]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>mol_H2_sto3g <span class="op">=</span> SecondQuantizedMolecule(xyz_H2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_sto3g</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Run VQE</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"qubit_mapping"</span>: <span class="st">'jw'</span>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>opt_energy <span class="op">=</span> vqe_solver.simulate()</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(opt_energy)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve optimal circuit and qubit Hamiltonian</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> vqe_solver.optimal_circuit</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>qb_ham <span class="op">=</span> vqe_solver.qubit_hamiltonian</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="quantum-circuit-simplification" class="level3">
+<h3 class="anchored" data-anchor-id="quantum-circuit-simplification">Quantum circuit simplification</h3>
+<p>Operations on current quantum devices are not carried with 100% fidelity: noise accumulates as the device executes the quantum circuit. As a result, it is desirable to compile circuits that are as efficient and shallow as possible for the target device.</p>
+<p>As it turns out, the circuit returned by VQE features a number of operations that can be discarded or simplified. For instance, <code>RZ</code> gates with an angle very close to 0 will be very close to the identity, and could be discarded (for instance, some of current quantum devices can only perform rotation gates with an accuracy of about <code>0.001</code> on the angle, and would therefore treat a smaller value as a 0).</p>
+<blockquote class="blockquote">
+<p><strong>Q</strong>: Take a look at the <a href="https://github.com/goodchemistryco/Tangelo/blob/main/tangelo/linq/circuit.py">Circuit class methods</a>. Can you try to simplify this circuit ? What happened ?</p>
+</blockquote>
+<div class="cell" data-outputid="444d2f47-238e-4f3d-97d1-6abe70f1a134">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> c.copy()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>c2.remove_small_rotations(param_threshold<span class="op">=</span><span class="fl">1e-3</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>c2.remove_redundant_gates()</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.size, c2.size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>It is important to know that devices have a native gate set. In reality, the physical operations realized on the device may correspond to a different gate set. That is, your quantum circuit may be compiled to an equivalent one that may look very different. For instance, current IonQ devices do not directly apply the CNOT gate but instead entangle pairs of qubits with the XX gate. IBM devices do not compile circuits into Rx, Ry and Rz gates but instead use their U1, U2 and U3 rotations gates.</p>
+<p>Compilation for different gate sets and topologies are a topic of research, and multiple projects have been developed by the community during the years (cirq, pytket, …). Tangelo will provide tools to facilitate this step. In the meantime, the format conversion functions in Tangelo allow you to easily leverage these projects yourself.</p>
+</section>
+<section id="hamiltonian-factorization" class="level3">
+<h3 class="anchored" data-anchor-id="hamiltonian-factorization">Hamiltonian factorization</h3>
+<p>The qubit Hamiltonian resulting from the previous algorithm has 15 terms, printed in the cell below.</p>
+<div class="cell" data-outputid="21f2c259-788d-49b5-f01c-5c2a25c58ce5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qb_ham)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In order to compute the expectation value of a single term of this qubit Hamiltonian on a device, one would have to add additional gates at the end of the circuit to rotate the qubits in the right measurement basis (the gate depends on the Pauli operator involved).</p>
+<p>A naive approach would be to generate one circuit per term (here 15), and invidually compute the expectation value of each term using the corresponding circuit. A linear combination of these values, using the Hamiltonian’s coefficients, would then yield the desired expectation value.</p>
+<p>However, we may be able to devise measurement protocols that require fewer measurement bases, and thus fewer circuits to be simulated. The data obtained for a measurement basis may be used to compute the expectation value of several “compatible” Pauli words for instance.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Use the <code>group_qwc</code> function from the <code>measurements</code> toolbox to apply qubit-wise commutativity to the Hamiltonian. How many measurement bases are needed overall ? How many terms can be computed using the <code>Z0 Z1 Z2 Z3</code> basis ?</p>
+</blockquote>
+<div class="cell" data-outputid="11f13184-fc0c-4603-c927-ba9e43657fa8">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> group_qwc</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>grouped_ops <span class="op">=</span> group_qwc(qb_ham)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pprint(grouped_ops)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In practice, you may have to recombine histograms of experimental results in order to compute the quantities that are relevant to you. Below, we show -using a simulator- that it is rather easy to generate all the necessary circuits in Tangelo and recombine the histograms afterwards in this situation:</p>
+<div class="cell" data-outputid="fb8cf5da-7c76-439b-f469-267b39553579">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> exp_value_from_measurement_bases, measurement_basis_gates</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, get_backend</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>histograms <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate circuits corresponding to each measurement bassis required, compute the histogram</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis, sub_op <span class="kw">in</span> grouped_ops.items():</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    c_full <span class="op">=</span> c <span class="op">+</span> Circuit(measurement_basis_gates(basis))</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    histograms[basis], _ <span class="op">=</span> sim.simulate(c_full)</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the expectation value by using the histograms and the measurement map</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>exp_value <span class="op">=</span> exp_value_from_measurement_bases(grouped_ops, histograms)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exp_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="post-processing-of-histograms" class="level3">
+<h3 class="anchored" data-anchor-id="post-processing-of-histograms">Post processing of histograms</h3>
+<p>Quantum devices return histograms of bitstrings, indicating the states that were measured. This data is then agllomerated in some form to compute quantities that are relevant to us, and learn from the experiment.</p>
+<p>Tangelo offers the <code>Histogram</code> class, from the <code>post_processing</code> toolbox (you can check out the <a href="http://tangelo-docs.goodchemistry.com/tangelo.toolboxes.post_processing.html#module-tangelo.toolboxes.post_processing.histogram">documentation</a>)</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Assume the 2 <code>freqs</code> objects are experimental results obtained on by simulating a 2-qubit circuit, with 1000 shots each. Can you define the two corresponding <code>Histogram</code> objects ?</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms, filter_hist</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>freqs1 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.3</span>, <span class="st">'00'</span>:<span class="fl">0.2</span>, <span class="st">'10'</span>: <span class="fl">0.5</span>}</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>freqs2 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.6</span>, <span class="st">'10'</span>: <span class="fl">0.4</span>}</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>hist1 <span class="op">=</span> Histogram(freqs1, <span class="dv">1000</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>hist2 <span class="op">=</span> Histogram(freqs2, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Assume the data coming from these histograms can be aggregated into a single histogram worth 2000 shots of data. How can you obtain such a histogram ?</p>
+</blockquote>
+<div class="cell" data-outputid="581176b6-924b-4c78-b997-dcb818848980">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hist3 <span class="op">=</span> aggregate_histograms(hist1, hist2)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hist3.n_shots, hist3.frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sometimes, we can predict in advance what bitstrings should not be found in our histograms, and thus are caused by noise. For example, circuits may feature additional qubits with the role to detect errors (<code>0</code> if no error, <code>1</code> otherwise), or certain properties in the use case itself may give us those insights.</p>
+<p>In these situation, removing those entries from our histograms can significantly improve the results of our calculation. It is a form of error-mitigation called post-selection.</p>
+<p>Below, we have defined a function <code>my_predicate</code> that returns <code>False</code> if a bitstring is ‘00’ and <code>True</code> otherwise. This function could be as elaborate and extend to many more bitstrings encountered in your use cases.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Can you find how to apply this predicate to remove undesired entries from the histogram ?</p>
+</blockquote>
+<div class="cell" data-outputid="2162035d-001a-420e-899f-6c11ce5a025f">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_predicate(bs):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return True if a bitstring "bs" is acceptable, False otherwise</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> bs <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'00'</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>hist4 <span class="op">=</span> filter_hist(hist3, my_predicate)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hist4.frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you’ve looked into the documentation, you may have noticed there is more you can do with <code>Histogram</code> objects ! In past quantum experiments the Tangelo team has used <code>post_select</code>, <code>remove_qubits</code>, <code>resample</code> and other methods in order to obtain numerical results and compute their statistical uncertainty. We encourage you to further explore !</p>
+</section>
+<section id="bonus-anticipating-experimental-results" class="level3">
+<h3 class="anchored" data-anchor-id="bonus-anticipating-experimental-results">Bonus: Anticipating experimental results</h3>
+<p>We simulated calculations on a “perfect backend” for the sake of simplicity, but quantum devices are noisy. Before you embark on a quantum experiment, with may be time- and money-consuming, it is good practice to use a noisy simulator to try to anticipate the behavior of the device. This may lead you to change the design of your experiment in order to raise it’s rate of success, or keep the cost acceptable.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> What if you tried to compute the expectation value for the <span class="math inline">\(H_2\)</span> use case with a backend running with a given amount of shots and a noise model of your choice ? You may be surprised at how much these parameters affect the results.</p>
+</blockquote>
+<p>Note: Noisy simulation cost is usually linear with the number of shots, which means execution time may increase linearly with it as well.</p>
+</section>
+</section>
+<section id="final-words" class="level1">
+<h1>Final words</h1>
+<p>You have reached the end of this hands-on. This should give you a good idea of how to submit tasks to quantum devices using Tangelo, reducing resource requirements, as well as manipulating histograms coming from calculations. Designing successful experiments on current quantum devices can be challenging, as we are under budget constraints and quantum computation is subject to noise. Understanding experimental results and extracting value from them is not always straightforward.</p>
+<p>Do not hesitate to explore the resources mentioned at the beginning of this notebook at your own pace to learn more about the topics discussed here. The hardware experiment notebooks go more into details about these topics, with insights from practictioners.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

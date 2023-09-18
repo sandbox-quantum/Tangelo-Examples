@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</title>
+<title>Tangelo hands-on: simulating quantum circuits</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,22 +57,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -112,7 +112,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html" rel="" target="">
+    <a class="nav-link" href="../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
 </ul>
@@ -126,7 +126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/hardware_experiments/berylium_ibm_quantum.html">Hardware Experiments</a></li><li class="breadcrumb-item"><a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../hands_on/T1_circuits.html">Hands On</a></li><li class="breadcrumb-item"><a href="../hands_on/T2_simulators_solved.html">Tangelo hands-on: simulating quantum circuits</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -158,13 +158,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Excited States in Tangelo</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
   </div>
 </li>
@@ -181,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">State preparation using quantum signal processing</span></a>
   </div>
 </li>
@@ -189,34 +189,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
  <span class="menu-text">Hardware Experiments</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 show">  
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link active">
+  <a href="../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
   </div>
 </li>
@@ -233,7 +233,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Classical Shadows</span></a>
   </div>
 </li>
@@ -250,25 +250,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/problem_decomposition/mifno.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
   </div>
 </li>
@@ -285,25 +285,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ADAPT-VQE</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">VQE with Tangelo</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
   </div>
 </li>
@@ -320,25 +320,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Linq: the basics</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Linq: noisy simulation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+  <a href="../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
   </div>
 </li>
@@ -357,61 +357,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T1_circuits.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T1_circuits.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T1_circuits_solved.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T1_circuits_solved.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T2_simulators.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T2_simulators.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T2_simulators_solved.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T2_simulators_solved.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T3_VQE.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T3_VQE.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T3_VQE_solved.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T3_VQE_solved.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T4_hardware_experiments.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T4_hardware_experiments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T4_hardware_experiments_solved.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T4_hardware_experiments_solved.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T5_fault_tolerant_build_blocks.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T5_fault_tolerant_build_blocks.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Fault Tolerant Building blocks</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../hands_on/T5_fault_tolerant_build_blocks_solved.html" class="sidebar-item-text sidebar-link">
+  <a href="../hands_on/T5_fault_tolerant_build_blocks_solved.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Fault Tolerant Building blocks</span></a>
   </div>
 </li>
@@ -428,7 +428,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</h1>
+<h1 class="title">Tangelo hands-on: simulating quantum circuits</h1>
 </div>
 
 
@@ -443,122 +443,169 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>This short tutorial shows how users can achieve that by simply installing both the Tangelo and QEMIST Cloud’s client library, and access all the backends available in <a href="https://aws.amazon.com/braket/">Amazon Braket</a>.</p>
-<p>Tangelo users can express quantum circuits in various formats, which can be then submitted to one of the quantum cloud services providers using their account credentials and the API.</p>
-<p>This short tutorial shows how users can access all the backends available in Amazon Braket by simply installing both the Tangelo and QEMIST Cloud’s client library, then running quantum hardware experiments using their QEMIST Cloud account credentials and credits.</p>
-<section id="installation-environment" class="level2">
-<h2 class="anchored" data-anchor-id="installation-environment">Installation &amp; environment</h2>
-<p>In order to succesfully submit an experiment, you will first need to:</p>
-<ul>
-<li>install <code>Tangelo</code></li>
-<li>install <code>qemist-client</code> (QEMIST client library)</li>
-</ul>
-<p>Once you have installed the two required packages, set up both environment variables <code>QEMIST_PROJECT_ID</code> and <code>QEMIST_AUTH_TOKEN</code> in your local environment. You may set these variables in your OS / terminal, or provide them in your script using the <code>os</code> module, as below:</p>
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_PROJECT_ID'</span>] <span class="op">=</span> <span class="st">"your_project_id_string"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_AUTH_TOKEN'</span>] <span class="op">=</span> <span class="st">"your_qemist_authentication_token"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="before-you-jump-in" class="level2">
+<h2 class="anchored" data-anchor-id="before-you-jump-in">Before you jump in</h2>
+<p>This hands-on notebook complements existing tutorials, documentation and the developer notes available in the Tangelo GitHub repositories, which present content in much more depth.</p>
+<p>You will come across code cells that require you to change code or fill in the blanks in order to achieve a desired outcome. There may be many ways to solve these simple exercises, and you are encouraged to explore.</p>
+<hr>
+<p><strong>Getting started</strong></p>
+<p>Please have a look at the landing page of this repository for guidance about how to deploy these notebooks and get started easily.</p>
+<p>In order to complete this hands-on tutorial, we recommend you use the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs qiskit qiskit<span class="op">-</span>aer <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If these two variables are not properly set, you will get errors later on in some import statements related to <code>qemist-client</code>.</p>
-<p>Assuming you have access to the QEMIST Cloud dashboard: - You can get a project ID by navigating to <strong>Projects</strong> using the left-side bar, and selecting a project. - Your API token can be found by clicking the top-right dropdown menu and then <strong>API token</strong></p>
+<hr>
+<p>For this hands-on, we recommend you consider the following resources: - the latter half of this <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb">tutorial notebook</a> on <code>linq</code>, on conversion functions as well as built-in simulators - Optional: our <a href="https://goodchemistry.com/blog/">blog post</a> about harnessing the diversity of compute backends - Optional: If you’re familiar with quantum simulators (Qiskit, Qulacs, Cirq, etc), you can also check out the <a href="https://github.com/goodchemistryco/Tangelo/tree/main/tangelo/linq/target">source code</a> for the <code>Backend</code> class and the different targets supported to see how we leverage them to perform calculations in various scenarios.</p>
+<hr>
 </section>
-<section id="a-simple-example" class="level2">
-<h2 class="anchored" data-anchor-id="a-simple-example">A simple example</h2>
-<p>First, we define a quantum circuit using the API provided by Tangelo. For the purpose of this tutorial, we here explicitly define a short circuit that simply prepares a Bell state. However, this feature works with any quantum circuit expressed in the Tangelo format, including those you may have obtained from a complicated custom workflow expressed with Tangelo.</p>
-<div class="cell" data-execution_count="2">
+<section id="hands-on" class="level2">
+<h2 class="anchored" data-anchor-id="hands-on">Hands-on</h2>
+<section id="noiseless-simulation" class="level3">
+<h3 class="anchored" data-anchor-id="noiseless-simulation">1. Noiseless simulation</h3>
+<p>There are a number of quantum circuit simulators available in popular projects such as Cirq, Qiskit, Qulacs, etc. Let’s see how we can leverage them in Tangelo using the simple circuit below.</p>
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>circuit <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"CNOT"</span>, <span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>)])</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Circuit object. Size 2 
-
-H         target : 0   
-CNOT      target : 1   control : 0   
-</code></pre>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circuit([Gate(<span class="st">'H'</span>, <span class="dv">0</span>), Gate(<span class="st">'X'</span>, <span class="dv">1</span>)])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>c.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<p><img src="T2_simulators_solved_files/figure-html/cell-3-output-2.svg" class="img-fluid"></p>
 </div>
 </div>
-<p>In order to submit a quantum job and run this circuit on one of the available devices, we import a few convenience functions from the Tangelo, which rely on the QEMIST client library. We illustrate their usage in the rest of the notebook.</p>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> QEMISTCloudConnection</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>qcloud_connection <span class="op">=</span> QEMISTCloudConnection()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<section id="job-price-estimate" class="level3">
-<h3 class="anchored" data-anchor-id="job-price-estimate">Job price estimate</h3>
-<p>Before running one or several quantum experiments, it may be useful to have an estimate of the cost. We provide a convenience function <code>job_estimate</code>, which returns a dictionary featuring the price associated with the different backends available, in QEMIST Cloud credits (currently 1 QEMIST credit = 1 USD). These prices and backends are the ones available to us, using our own subscription to Amazon Braket and other cloud services: we make them available to you through this API.</p>
-<p>Some pricing formulas may take into account the specifics of your circuit, while others do not. Simulator backends sometimes charge per-the-minute and are therefore difficult to estimate: we currently choose to only return estimates for actual quantum devices.</p>
-<p>Do not hesitate to look directly into the official pricing provided by cloud providers (ex: https://aws.amazon.com/braket/pricing/) for the backends that we do not list or for which the estimate can be difficult to make.</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>price_estimates <span class="op">=</span> qcloud_connection.job_estimate(circuit, n_shots<span class="op">=</span><span class="dv">1000</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(price_estimates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>{'braket_ionq': 10.3, 'braket_rigetti': 0.65}</code></pre>
-</div>
-</div>
-</section>
-<section id="job-submission" class="level3">
-<h3 class="anchored" data-anchor-id="job-submission">Job submission</h3>
-<p>The <code>job_submit</code> function can be used to submit a quantum job on the target backends available in Amazon Braket (through their <a href="https://docs.aws.amazon.com/braket/latest/developerguide/braket-devices.html">device arn</a>), and the number of shots required. Both parameters are required. It returns a ID, used as a handle to your quantum job. This call is asynchronous / non-blocking, which means that it returns without waiting for the job to complete, allowing you to continue with your script in the meantime.</p>
-<p>Feel free to uncomment any of the lines below, if you wish to run the following commands on the backend of your choice. Note that the quantum devices are not guaranteed to be immediately available and that you will require a subscription to QEMIST Cloud.</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> <span class="st">'arn:aws:braket:::device/quantum-simulator/amazon/sv1'</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># backend = 'arn:aws:braket:::device/qpu/ionq/ionQdevice'</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># backend = 'arn:aws:braket:::device/qpu/rigetti/Aspen-9'</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># backend = 'arn:aws:braket:::device/quantum-simulator/amazon/dm1'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>Assuming the qubits are initialized in the <span class="math inline">\(|00\rangle\)</span> state, the outcome is the quantum state <span class="math inline">\(\frac{1}{\sqrt 2}(|01\rangle + |11\rangle)\)</span>, where the leftmost bit describe the state of qubit 0 and the rightmost one qubit 1. Upon measurement, both states <span class="math inline">\(|01\rangle\)</span> and <span class="math inline">\(|11\rangle\)</span> should therefore have a probability of being observed of 0.5, while the probability of observing states <span class="math inline">\(|00\rangle\)</span> and <span class="math inline">\(|10\rangle\)</span> should be 0.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Can you use the function <code>get_backend</code> to simulate the previously defined quantum circuit c, and print the resulting probability histogram as well as the underlying statevector ? Try a few backends such as <code>"cirq"</code>, <code>"qulacs"</code> and <code>"qiskit"</code>. What do you observe ?</p>
+</blockquote>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> qcloud_connection.job_submit(circuit, n_shots<span class="op">=</span><span class="dv">100</span>, backend<span class="op">=</span>backend)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Job submitted with job id :: </span><span class="sc">{</span>job_id<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert code here</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> {<span class="st">"cirq"</span>, <span class="st">"qiskit"</span>, <span class="st">"qulacs"</span>}:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    sim <span class="op">=</span> get_backend(b)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    freqs, sv <span class="op">=</span> sim.simulate(c, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(freqs, sv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'shots': 100, 'backend': 'arn:aws:braket:::device/quantum-simulator/amazon/sv1'}
-Job submitted with job id :: 60301948057975242</code></pre>
+<pre><code>{'01': 0.5000000000000001, '11': 0.5000000000000001} [0.        +0.j 0.70710678+0.j 0.        +0.j 0.70710678+0.j]
+{'01': 0.5000000000000001, '11': 0.4999999999999999} [0.        +0.j 0.        +0.j 0.70710678+0.j 0.70710678+0.j]
+{'01': 0.4999999999999999, '11': 0.4999999999999999} [0.        +0.j 0.        +0.j 0.70710678+0.j 0.70710678+0.j]</code></pre>
 </div>
 </div>
-</section>
-<section id="job-status" class="level3">
-<h3 class="anchored" data-anchor-id="job-status">Job status</h3>
-<p>Once your job has been submitted, you may query his status through the <code>job_status</code>. It may take time for this job to start, as your request has been queued with the desired cloud services: it could be instant or take hours for the job to start.</p>
-<p>The return values are: <code>ready</code>, <code>in_progress</code>, <code>complete</code>, <code>cancelled</code>.</p>
+<p>These simulators may have different features, accuracy and speed. Not all of them are able to return a state vector. They have their own interface and learning curve, but the interface above enables you to switch between different “built-in backends” easily, rather than explicitly learning how to use them on your own and adapting your code.</p>
+<p>Actual quantum computers are not able to give us access to the quantum state. Instead, we rely on repeatedly preparing and sampling the quantum state in order to approximate its underlying probability distribution. Each repetition is called a “shot”.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Can you simulate the previous circuit and print the histogram of frequencies obtained for 100, 10000 and 1000000 shots ? What do you observe ?</p>
+</blockquote>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qcloud_connection.job_status(job_id))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ns <span class="kw">in</span> [<span class="dv">100</span>, <span class="dv">10000</span>, <span class="dv">1000000</span>]:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Insert code here</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    sim <span class="op">=</span> get_backend(<span class="st">"cirq"</span>, n_shots<span class="op">=</span>ns)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    freqs, _ <span class="op">=</span> sim.simulate(c)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(freqs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>ready</code></pre>
+<pre><code>{'11': 0.51, '01': 0.49}
+{'11': 0.5007, '01': 0.4993}
+{'11': 0.500306, '01': 0.499694}</code></pre>
 </div>
 </div>
+<p>The objects returned by <code>get_backend</code> are children classes of the <code>Backend</code> class. It is easy for Tangelo developers to define new backends or modify the behaviour of existing ones using object-oriented programming concepts such as inheritance.</p>
 </section>
-<section id="job-cancel" class="level3">
-<h3 class="anchored" data-anchor-id="job-cancel">Job cancel</h3>
-<p>A job that has been submitted and has not yet started may be cancelled through the <code>job_cancel</code> command, which takes the job ID as parameter. You are free to uncomment this line and try, if you’d like.</p>
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print(qcloud_connection.job_cancel(job_id))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="job-result" class="level3">
-<h3 class="anchored" data-anchor-id="job-result">Job result</h3>
-<p>Finally, you can make a blocking call to retrieve your results using <code>job_result</code>. This function returns the histogram of frequencies associated with your quantum circuit, as well as the raw data provided by the quantum services provider, as nested dictionaries.</p>
-<p>The histogram of frequencies is returned in a standard format, where the bitstrings read left-to-right: that is, the string <code>01</code> refers to the basis state that measured qubit 0 (resp. 1) in state <span class="math inline">\(|0\rangle\)</span> (resp. state <span class="math inline">\(|1\rangle\)</span>).</p>
-<p>Feel free to investigate and parse the output as you see fit: while the histogram of frequencies ensures you get the essentials in a standard format, the raw data blob is something you can save or dig into to find more about what actually happened on the device, now or later.</p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>freqs, raw_data <span class="op">=</span> qcloud_connection.job_results(job_id)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Frequencies :: </span><span class="sc">{</span>freqs<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="expectation-values" class="level3">
+<h3 class="anchored" data-anchor-id="expectation-values">2. Expectation values</h3>
+<p>Quantum algorithms often call for the computation of the expectation of a qubit operator <span class="math inline">\(H\)</span> (usually as a linear combination of Pauli words) with regard to a given state preparation <span class="math inline">\(|\psi\rangle\)</span> represented as a quantum circuit. This expectation value, often noted as <span class="math inline">\(\langle H \rangle_{\psi}\)</span> or <span class="math inline">\(\langle\psi | H | \psi\rangle\)</span>, is a complex number conputed using the coefficients and terms present in the operator <code>H</code> itself, as well as <span class="math inline">\(|\psi\rangle\)</span>. It is therefore influenced by things such as the accuracy of your backend and the number of shots chosen.</p>
+<p>Very often, this operator encodes the use case a given algorithm attempts to solve. Mapping a problem into qubit operators is a topic of research, and several mappings are offered in Tangelo for the purpose of encoding molecular systems: we will touch that in another hands-on.</p>
+<p>In Tangelo, qubit operators are currently following the OpenFermion format. The <code>QubitOperator</code> class implements a number of mathematical operations on this data-structure, such as multiplication, addition, division, etc.</p>
+<p>Below we define the operator <code>qb_op</code> = <span class="math inline">\(0.3 X_0 + 0.5 Z_0Z_1 + 2\)</span>, which consists of a linear combination of 3 Pauli words. The coefficient in front of each word is sometimes called a prefactor.</p>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>qb_op <span class="op">=</span> <span class="fl">0.3</span> <span class="op">*</span> QubitOperator(<span class="st">'X0'</span>) <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> QubitOperator(<span class="st">'Z0 Z1'</span>) <span class="op">+</span> <span class="dv">2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qb_op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Frequencies :: {'00': 0.53, '11': 0.47}</code></pre>
+<pre><code>2.0 [] +
+0.3 [X0] +
+0.5 [Z0 Z1]</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raw_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Pick a simulator backend of your choice. Can you compute the expectation of <code>qb_op</code> with regards to the state preparation defined by circuit <code>c</code> ?</p>
+</blockquote>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend(<span class="st">"cirq"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert code here</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>expval <span class="op">=</span> sim.get_expectation_value(qb_op, c)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(expval)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{'fragment_type': 'QuantumCircuit', 'problem_handle': 60301948057975242, 'result': {'results': {'measurements': [[0, 0], [1, 1], [0, 0], [0, 0], [0, 0], [0, 0], [1, 1], [1, 1], [0, 0], [0, 0], [1, 1], [0, 0], [1, 1], [1, 1], [1, 1], [1, 1], [0, 0], [1, 1], [0, 0], [0, 0], [0, 0], [1, 1], [1, 1], [1, 1], [0, 0], [0, 0], [1, 1], [0, 0], [1, 1], [1, 1], [1, 1], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [1, 1], [0, 0], [1, 1], [0, 0], [0, 0], [0, 0], [1, 1], [1, 1], [1, 1], [0, 0], [1, 1], [1, 1], [0, 0], [0, 0], [1, 1], [0, 0], [0, 0], [0, 0], [1, 1], [1, 1], [0, 0], [0, 0], [1, 1], [1, 1], [0, 0], [1, 1], [1, 1], [1, 1], [0, 0], [0, 0], [0, 0], [1, 1], [0, 0], [1, 1], [1, 1], [0, 0], [1, 1], [0, 0], [0, 0], [1, 1], [1, 1], [0, 0], [0, 0], [0, 0], [0, 0], [1, 1], [1, 1], [1, 1], [0, 0], [0, 0], [1, 1], [1, 1], [0, 0], [0, 0], [0, 0], [0, 0], [1, 1], [0, 0], [1, 1], [1, 1], [0, 0], [0, 0], [1, 1], [1, 1]], 'measured_qubits': [0, 1], 'measurement_counts': {'00': 53, '11': 47}, 'measurement_probabilities': {'00': 0.53, '11': 0.47}}, 'metadata': {'action': {'results': [], 'instructions': [{'type': 'h', 'target': 0}, {'type': 'cnot', 'target': 1, 'control': 0}], 'basis_rotation_instructions': []}, 'rigettiMetadata': None}}, 'solve_time': 777, 'status': 'complete'}</code></pre>
+<pre><code>2.3000000000000007</code></pre>
 </div>
 </div>
+<p>It may be that you have obtained frequencies from execuitng a quantum circuit on a real quantum device, or a previous simulation. That step may have been time-consuming or expensive: in that case, it makes sense to compute the expectation value of a Pauli word by providing those frequencies as input.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> What method of the backend class can be used to compute the expectation value of a single Pauli word, by providing a histogram of frequency as input ? (you can refer to the resources described at the beginning of this hands-on or explore the Backend class)</p>
+</blockquote>
+<p>We will show in a later hands-on how this method can be used in practice to help us post-process experimental results.</p>
 </section>
-<section id="closing-words" class="level3">
-<h3 class="anchored" data-anchor-id="closing-words">Closing words</h3>
-<p>Managing multiple quantum cloud service subscriptions and juggling all those login credentials can be cumbersome and tedious. This notebook briefly demonstrates how users with a subscription to QEMIST Cloud can benefit from using our wrappers and submit hardware experiments to a broad range of backends with only one set of credentials, using our subscription.</p>
+<section id="conversion-functions" class="level3">
+<h3 class="anchored" data-anchor-id="conversion-functions">3. Conversion functions</h3>
+<p>The Tangelo format used to represent gates and circuits is rather abstract, since it never describes the actual mathematical operations associated to the gates defined by the user: it merely stores data. However, backends such as Qiskit, Qulacs, Cirq, etc, have their own representations for these objects. Under the hood, Tangelo must convert between its own format and the “target” format.</p>
+<blockquote class="blockquote">
+<p><strong>Q:</strong> Can you use the translate functions to produce a Qiskit equivalent of our quantum circuit <code>c</code> and our operator <code>qu_op</code> ? And then convert those objects from the Qiskit format into the Cirq format ?</p>
+</blockquote>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> translate_circuit, translate_operator</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert code here</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>c_qiskit <span class="op">=</span> translate_circuit(c, target<span class="op">=</span><span class="st">"qiskit"</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>op_qiskit <span class="op">=</span> translate_operator(qb_op, source<span class="op">=</span><span class="st">"tangelo"</span>, target<span class="op">=</span><span class="st">"qiskit"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c_qiskit)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(op_qiskit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     ┌───┐
+q_0: ┤ H ├
+     ├───┤
+q_1: ┤ X ├
+     └───┘
+c: 2/═════
+          
+SparsePauliOp(['IX', 'ZZ', 'II'],
+              coeffs=[0.3+0.j, 0.5+0.j, 2. +0.j])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Insert code here</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>c_cirq <span class="op">=</span> translate_circuit(c_qiskit, target<span class="op">=</span><span class="st">"cirq"</span>, source<span class="op">=</span><span class="st">"qiskit"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>op_cirq <span class="op">=</span> translate_operator(op_qiskit, source<span class="op">=</span><span class="st">"qiskit"</span>, target<span class="op">=</span><span class="st">"cirq"</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c_cirq)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(op_cirq)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0: ───I───H───
+
+1: ───I───X───
+0.300*X(q(0))+0.500*Z(q(0))*Z(q(1))+2.000*I</code></pre>
+</div>
+</div>
+<p>Although Tangelo does not require you to perform format conversion to leverage its built-in simulators, you are free to use them in order to leverage various frameworks simultaneously in your projects, or exports your circuits and operators in the preferred format for yourself or your collaborators.</p>
+</section>
+</section>
+<section id="final-words" class="level1">
+<h1>Final words</h1>
+<p>You have reached the end of this hands-on. By now you should have an understanding of how to use built-in backends in tangelo to simulate a quantum circuit and compute expectation values. These two operations are pretty much the essential buildings blocks of quantum algorithms !</p>
+<p>Do not hesitate to explore the resources mentioned at the beginning of this notebook at your own pace to learn more about the topics discussed here. There is so much more we can do, including noisy simulation, or desired measurement values for circuits containing mid-circuit measurements.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
