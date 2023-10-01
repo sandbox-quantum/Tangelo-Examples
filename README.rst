@@ -6,8 +6,7 @@
 
 ----------------------------------
 
-Quick launch options (clickable):
-|colab| |binder|
+Get started immediately with a click, no install :|colab|
 
 .. |maintainer| image:: https://img.shields.io/badge/Maintainer-GoodChemistry-blue
    :target: https://goodchemistry.com
@@ -42,7 +41,7 @@ You have found the Github repository featuring the tutorials / examples notebook
 Getting started
 ---------------
 
-You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). If one of the quick launch options above (Google Colab, Binder, etc) works for you, that is the easiest way to get started.
+You can either explore this content directly through Github, or through GitHub-pages (automated web rendering). If one of the quick launch options above (Google Colab, etc) works for you, that is the easiest way to get started with our hands on and run the tutorials.
 
 We introduced a visual tagging system to help you find resources that are relevant to you, in the link below.
 If you are new to Tangelo, we recommend you start your exploration with tutorials tagged with |tag_intro|.
