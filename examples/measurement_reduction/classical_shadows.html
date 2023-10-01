@@ -443,12 +443,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/measurement_reduction/classical_shadows.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
-<figcaption class="figure-caption">Open In Colab</figcaption>
-</figure>
-</div>
 <p>The output of a quantum computer is a histogram of measurements, corresponding to the different outcomes observed, usually expressed as bitstrings. The cost and duration of a quantum experiment is roughly linear with the number of shots used to build such histograms, which also correlates with the accuracy of the results. This measurement overhead can be prohibitive for state tomography and computation of observables for quantum chemistry applications.</p>
 <p>The emergent method <em>classical shadows</em> (<a href="https://arxiv.org/abs/2002.08953">Nat. Phys. 2020, 16, 1050–1057</a>) has been developed to mitigate the measurement overhead by offloading quantum tasks to the pre- and post-processing steps. This prediction protocol exhibits logarithmic scaling with the number of terms to measure, in order to compute the expectation value of a term within a given accuracy.</p>
 <p>In short, gates representing a unitary operation are appended to the state prepared by a quantum circuit. Upon measurement, the output bitstring (ex: 100101…) is stored in a conventional register. This is repeated <span class="math inline">\(N\)</span> times, where <span class="math inline">\(N\)</span> defines the shadow size and is equivalent to the number of shots run on the quantum hardware. The classical shadow is built from the bitstrings stored in the classical register, and can be used to calculate observables. Different flavours of classical shadow exist, as they each come with a specific protocol for choosing a set of unitaries. The figure below, from <a href="https://arxiv.org/abs/2002.08953">Nat. Phys. 16, 1050–1057 (2020)</a>, illustrates the randomized shadow protocol.</p>

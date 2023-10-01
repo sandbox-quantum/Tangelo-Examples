@@ -442,12 +442,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>This notebook shows how to implement iQCC using only Clifford circuits with Tangelo, and accompanies a note released at <a href="https://arxiv.org/abs/2211.10501">arXiv:2211.10501</a>. We provide here the abstract of the article in this notebook for convenience and highlight the main steps of our implementation. Please refer to the article for full details.</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/iqcc_using_clifford.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
-<figcaption class="figure-caption">Open In Colab</figcaption>
-</figure>
-</div>
 <section id="abstract" class="level3">
 <h3 class="anchored" data-anchor-id="abstract">Abstract</h3>
 <p>We draw attention to a variant of the iterative qubit coupled cluster (iQCC) method that only uses Clifford circuits. The iQCC method relies on a small parameterized wave function ansatz, which takes form as a product of exponentiated Pauli word operators, to approximate the ground state electronic energy of a mean field reference state through iterative qubit Hamiltonian transformations. In this variant of the iQCC method, the wave function ansatz at each iteration is restricted to a single exponentiated Pauli word operator and parameter. The Rotosolve algorithm utilizes Hamiltonian expectation values computed with Clifford circuits to optimize the single-parameter Pauli word ansatz. Although the exponential growth of Hamiltonian terms is preserved with this variation of iQCC, we suggest several methods to mitigate this effect. This method is useful for near-term variational quantum algorithm applications as it generates good initial parameters by using Clifford circuits which can be efficiently simulated on a classical computers according to the Gottesman–Knill theorem. It may also be useful beyond the NISQ era to create short-depth Clifford pre-optimized circuits that improve the success probability for fault-tolerant algorithms such as phase estimation.</p>

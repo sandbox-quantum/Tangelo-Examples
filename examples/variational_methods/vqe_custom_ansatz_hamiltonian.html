@@ -443,12 +443,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><a href="https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/examples/variational_methods/vqe_custom_ansatz_hamiltonian.ipynb"><img src="https://colab.research.google.com/assets/colab-badge.svg" class="img-fluid figure-img"></a></p>
-<figcaption class="figure-caption">Open In Colab</figcaption>
-</figure>
-</div>
 <p>Tangelo comes packaged with an implementation of several standard ansatz circuits for the user to take advantage of. In this tutorial, we’ll explore how you can incorporate the built in <code>VQESolver</code> into your own workflow, by introducing a user-defined custom ansatz circuit and/or a qubit Hamiltonian. We’ll base our work here on the <code>VQESolver</code> class, and take advantage of tools readily available through Tangelo.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
@@ -469,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="hardware-efficient-ansatz" class="level2">
 <h2 class="anchored" data-anchor-id="hardware-efficient-ansatz">Hardware Efficient Ansatz</h2>
-<p>For our example, we’re going to implement the so-called <a href="https://arxiv.org/pdf/1704.05018.pdf">Hardware Efficient Ansatz</a> (HEA), developed by Kandala et al at IBM. In this ansatz, a circuit is constructed with repeated layers of a simple structure. Each layer consists of entangling gates (e.g.&nbsp;CNOT or CZ) which couple neighbouring qubits, followed by a series of Euler rotations carried out as single-qubit rotations <span class="math inline">\(\mathrm{exp}\{i\theta_i^1 Z_i\}\mathrm{exp}\{i\theta_i^2 X_i\}\mathrm{exp}\{i\theta_i^3 Z_i\}\)</span>. We’ll start by initializing our <code>Ansatz</code> class, and then fill in the functionality required to implement this ansatz in <code>VQESolver</code>.</p>
+<p>For our example, we’re going to implement the so-called <a href="https://arxiv.org/pdf/1704.05018.pdf">Hardware Efficient Ansatz</a> (HEA), developed by Kandala et al at IBM. In this ansatz, a circuit is constructed with repeated layers of a simple structure. Each layer consists of entangling gates (e.g.&nbsp;CNOT or CZ) which couple neighbouring qubits, followed by a series of Euler rotations carried out as single-qubit rotations <span class="math inline">\(e^{i\theta_i^1 Z_i}e^{i\theta_i^2 X_i}e^{i\theta_i^3 Z_i}\)</span>. We’ll start by initializing our <code>Ansatz</code> class, and then fill in the functionality required to implement this ansatz in <code>VQESolver</code>.</p>
 <p>To construct our HEA ansatz, we’re going to make use of the three helper functions defined here. The first will go through a register of qubits and add a layer of Euler-rotations as prescribed above. The second adds two columns of alternating CNOT gates, establishing long-range entanglement. The third brings these together into a sequence of alternating entanglers and Euler rotations.</p>
 <div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerCircuit(n_qubits):</span>
