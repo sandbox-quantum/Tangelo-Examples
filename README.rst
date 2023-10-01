@@ -6,7 +6,7 @@
 
 ----------------------------------
 
-Get started immediately with a click, no install :|colab|
+Get started immediately with a click, no install: |colab|
 
 .. |maintainer| image:: https://img.shields.io/badge/Maintainer-GoodChemistry-blue
    :target: https://goodchemistry.com
