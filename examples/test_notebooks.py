@@ -58,8 +58,8 @@ class TestNotebooks(unittest.TestCase):
     def test_classical_shadows_notebook(self):
         run_notebook_as_test('measurement_reduction/classical_shadows.ipynb')
 
-    def test_mifno_notebook(self):
-        run_notebook_as_test('problem_decomposition/mifno.ipynb')
+    def test_ifci_mifno_notebook(self):
+        run_notebook_as_test('problem_decomposition/ifci_mifno.ipynb')
 
     def test_iQCC_clifford_notebook(self):
         run_notebook_as_test('variational_methods/iqcc_using_clifford.ipynb')
