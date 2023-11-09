@@ -58,7 +58,7 @@ jobs:
         pip install git+https://github.com/goodchemistryco/Tangelo.git@develop
       if: always()
 
-    - name: Download required data to run the MIFNO notebook
+    - name: Download required data to run the iFCI - MIFNO notebook
       run: |
         cd examples/problem_decomposition
         sudo apt-get install subversion
