@@ -451,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver, FCISolver</span>
@@ -465,7 +465,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="hardware-efficient-ansatz">Hardware Efficient Ansatz</h2>
 <p>For our example, we’re going to implement the so-called <a href="https://arxiv.org/pdf/1704.05018.pdf">Hardware Efficient Ansatz</a> (HEA), developed by Kandala et al at IBM. In this ansatz, a circuit is constructed with repeated layers of a simple structure. Each layer consists of entangling gates (e.g.&nbsp;CNOT or CZ) which couple neighbouring qubits, followed by a series of Euler rotations carried out as single-qubit rotations <span class="math inline">\(e^{i\theta_i^1 Z_i}e^{i\theta_i^2 X_i}e^{i\theta_i^3 Z_i}\)</span>. We’ll start by initializing our <code>Ansatz</code> class, and then fill in the functionality required to implement this ansatz in <code>VQESolver</code>.</p>
 <p>To construct our HEA ansatz, we’re going to make use of the three helper functions defined here. The first will go through a register of qubits and add a layer of Euler-rotations as prescribed above. The second adds two columns of alternating CNOT gates, establishing long-range entanglement. The third brings these together into a sequence of alternating entanglers and Euler rotations.</p>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerCircuit(n_qubits):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Construct a circuit applying an Euler Z-X-Z rotation to each qubit."""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    circuit <span class="op">=</span> Circuit()</span>
@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>build_circuit</strong>: instantiate the variational circuit object</li>
 </ol>
 <p>Below, we’re going to type out the entire class as we will use it. This is a lot of code in one place. So afterwards, we’ll break it down into each of the relevant member methods.</p>
-<div class="cell" data-execution_count="3">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HEA(Ansatz):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_spinorbitals, n_electrons, n_layers, mapping<span class="op">=</span><span class="st">'jw'</span>):</span>
@@ -530,7 +530,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Set initial variational parameter values"""</span></span>
 <span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> var_params <span class="kw">is</span> <span class="va">None</span>:</span>
 <span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>            var_params <span class="op">=</span> np.random.random(<span class="va">self</span>.n_var_params)</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> var_params <span class="op">==</span> <span class="st">"ones"</span>:</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(var_params, <span class="bu">str</span>) <span class="kw">and</span> var_params <span class="op">==</span> <span class="st">"ones"</span>:</span>
 <span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>            var_params <span class="op">=</span> np.ones(<span class="va">self</span>.n_var_params, dtype<span class="op">=</span><span class="bu">float</span>)</span>
 <span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">len</span>(var_params) <span class="op">!=</span> <span class="va">self</span>.n_var_params:</span>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'Invalid number of parameters.'</span>)</span>
@@ -561,33 +561,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Very briefly, we’ll go through the member methods required to construct an <code>Ansatz</code> class. These code blocks duplicate the code above. We emphasize here that these member functions can be really as simple or as elaborate as you like.</p>
 <p>Let’s start with <code>set_var_params</code>. We’re going to do something very basic and just force this to be a random or all ones numpy array. We add some error handling in case the number of parameters is incompatible with the number of variational gates in the ansatz circuit. Have a look at the implementation of UCCSD to see how you can make this more fancy and interesting.</p>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_var_params(<span class="va">self</span>, var_params<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> var_params <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        var_params <span class="op">=</span> np.random.random(<span class="va">self</span>.n_var_params)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> var_params <span class="op">==</span> <span class="st">"ones"</span>:</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        var_params <span class="op">=</span> np.ones(<span class="va">self</span>.n_var_params, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">len</span>(var_params) <span class="op">!=</span> <span class="va">self</span>.n_var_params:</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'Invalid number of parameters.'</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.var_params <span class="op">=</span> var_params</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> var_params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> set_var_params(<span class="va">self</span>, var_params<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> var_params <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        var_params <span class="op">=</span> np.random.random(<span class="va">self</span>.n_var_params)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">isinstance</span>(var_params, <span class="bu">str</span>) <span class="kw">and</span> var_params <span class="op">==</span> <span class="st">"ones"</span>:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        var_params <span class="op">=</span> np.ones(<span class="va">self</span>.n_var_params, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> <span class="bu">len</span>(var_params) <span class="op">!=</span> <span class="va">self</span>.n_var_params:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="st">'Invalid number of parameters.'</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.var_params <span class="op">=</span> var_params</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> var_params</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Next, we’ll implement <code>update_var_params</code>, where the circuit is updated with a new batch of variational parameters. The <code>tangelo.linq</code> Circuit class keeps a record of the variational gates in the circuit, making this update very straightforward, and avoids having to rebuild the circuit from scratch. All variational gates in the circuit are updated as per the <code>var_params</code> argument.</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_var_params(<span class="va">self</span>, var_params):</span>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_var_params(<span class="va">self</span>, var_params):</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> param_index <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.n_var_params):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit._variational_gates[param_index].parameter <span class="op">=</span> var_params[param_index]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Next, we’ll use the methods from the <code>qubit_mappings</code> toolbox to construct a Hartree-Fock reference state. This will just generate a circuit with an X-gate applied to each qubit which we want to begin in the <span class="math inline">\(|1\rangle\)</span> state.</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prepare_reference_state(<span class="va">self</span>):</span>
+<p>We’ll use the methods from the <code>qubit_mappings</code> toolbox to construct a Hartree-Fock reference state. This will just generate a circuit with an X-gate applied to each qubit which we want to begin in the <span class="math inline">\(|1\rangle\)</span> state.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prepare_reference_state(<span class="va">self</span>):</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    circuit <span class="op">=</span> get_reference_circuit(n_spinorbitals<span class="op">=</span><span class="va">self</span>.n_spinorbitals, n_electrons<span class="op">=</span><span class="va">self</span>.n_electrons, mapping<span class="op">=</span><span class="va">self</span>.mapping)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <p>Finally, we’ll implement the <code>build_circuit</code> method. As compared to the three others here, this is really the only method in the present case that requires much effort–everything else above has followed pretty boilerplate code. For this, we’re just going to alternate between entanglers and Euler rotations, using the <code>HEACircuit</code> helper function we defined earlier. We then combine this with the Hartree Fock reference circuit. In the event that no qubits are instantiated as <span class="math inline">\(|1\rangle\)</span>, we skip this empty reference circuit.</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_circuit(<span class="va">self</span>, var_params<span class="op">=</span><span class="va">None</span>):</span>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> build_circuit(<span class="va">self</span>, var_params<span class="op">=</span><span class="va">None</span>):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Construct the variational circuit to be used as our ansatz."""</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.var_params <span class="op">=</span> <span class="va">self</span>.set_var_params(var_params)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -599,37 +591,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit <span class="op">=</span> hea_circuit</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="hea-vqe-on-an-h_2-dimer" class="level1">
 <h1>HEA-VQE on an H<span class="math inline">\(_2\)</span>-dimer</h1>
 <p>With the <code>Ansatz</code> so defined, we’re ready to go ahead and build our VQE solver class, and run a calculation on a molecule of interest. I’m going to use the <code>SecondQuantizedMolecule</code> class to build a hydrogen dimer and run VQE on it using my custom ansatz. In the next section, I will also show how to run VQE with a custom qubit Hamiltonian that did not require passing a molecule.</p>
 <section id="using-a-molecule-object-as-input" class="level2">
 <h2 class="anchored" data-anchor-id="using-a-molecule-object-as-input">Using a molecule object as input</h2>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>H2 <span class="op">=</span> [(<span class="st">'H'</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)),(<span class="st">'H'</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.74137727</span>))]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mol_H2 <span class="op">=</span> SecondQuantizedMolecule(H2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With this molecule prepared, we’re ready to instantiate our ansatz, and feed it into VQE. I’ll access details of the molecule required to build our ansatz circuit (i.e.&nbsp;number of spin-orbitals and number of electrons) from the molecule object. Feel free to change the number of layers in the circuit, and explore how this changes VQE results, and timing.</p>
-<div class="cell" data-execution_count="9">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n_spinorbitals <span class="op">=</span> mol_H2.n_active_sos</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n_electrons <span class="op">=</span> mol_H2.n_active_electrons</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hea_layers <span class="op">=</span> <span class="dv">4</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>HEA_ansatz <span class="op">=</span> HEA(n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons, n_layers<span class="op">=</span>hea_layers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we can instantiate the <code>VQESolver</code>, and run. We have decided to initialize all the variational parameters to ones through an option supported in the <code>set_var_params</code> of our <code>HEA</code> ansatz class.</p>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H2, <span class="st">"qubit_mapping"</span>: <span class="st">'JW'</span>, <span class="st">'ansatz'</span>: HEA_ansatz, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>}</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE <span class="op">=</span> VQESolver(vqe_options)</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>HEA_VQE.build()</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>HEA_VQE.simulate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_46116/549362070.py:25: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
-  elif var_params == "ones":</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="10">
-<pre><code>-1.1372335845006827</code></pre>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>-1.1372335844997628</code></pre>
 </div>
 </div>
 </section>
@@ -638,54 +625,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>VQESolver</code> can also directly take as input a custom qubit operator instead of computing a Hamiltonian starting from a molecule. This situation can be relevant in the case where one wants to perform VQE using a qubit Hamiltonian: * That does not correspond to a molecular system; * That has been tailored by the user (to reduce complexity or to study something specific); * That is too expensive to recompute.</p>
 <p>As written in the previous section, it is possible to get the same result by providing <code>VQESolver</code> with a qubit Hamiltonian instead of a molecule. First, let’s store the optimal variational parameters to use them as a starting point for comparison.</p>
 <p>Next step is to generate the qubit Hamiltonian. With the help of <code>MolecularData</code> and <code>fermion_to_qubit_mapping</code>, we are able to generate a fermionic Hamiltonian and transform it into operations doable on a quantum computer.</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fermionic_hamiltonian_H2 <span class="op">=</span> mol_H2.fermionic_hamiltonian</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>qubit_hamiltonian_H2 <span class="op">=</span> fermion_to_qubit_mapping(fermionic_hamiltonian_H2, mapping<span class="op">=</span><span class="st">"jw"</span>, n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qubit_hamiltonian_H2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fermionic_hamiltonian_H2 <span class="op">=</span> mol_H2.fermionic_hamiltonian</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>qubit_hamiltonian_H2 <span class="op">=</span> fermion_to_qubit_mapping(fermionic_hamiltonian_H2, mapping<span class="op">=</span><span class="st">"jw"</span>, n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qubit_hamiltonian_H2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(-0.09883484730799569+0j) [] +
-(-0.045321883918106265+0j) [X0 X1 Y2 Y3] +
-(0.045321883918106265+0j) [X0 Y1 Y2 X3] +
-(0.045321883918106265+0j) [Y0 X1 X2 Y3] +
-(-0.045321883918106265+0j) [Y0 Y1 X2 X3] +
-(0.17120123806595938+0j) [Z0] +
-(0.16862327595071586+0j) [Z0 Z1] +
-(0.12054612740556847+0j) [Z0 Z2] +
-(0.16586801132367474+0j) [Z0 Z3] +
-(0.1712012380659594+0j) [Z1] +
-(0.16586801132367474+0j) [Z1 Z2] +
-(0.12054612740556847+0j) [Z1 Z3] +
+<pre><code>(-0.09883484730799605+0j) [] +
+(-0.0453218839181063+0j) [X0 X1 Y2 Y3] +
+(0.0453218839181063+0j) [X0 Y1 Y2 X3] +
+(0.0453218839181063+0j) [Y0 X1 X2 Y3] +
+(-0.0453218839181063+0j) [Y0 Y1 X2 X3] +
+(0.17120123806595933+0j) [Z0] +
+(0.16862327595071597+0j) [Z0 Z1] +
+(0.1205461274055685+0j) [Z0 Z2] +
+(0.1658680113236748+0j) [Z0 Z3] +
+(0.1712012380659593+0j) [Z1] +
+(0.1658680113236748+0j) [Z1 Z2] +
+(0.1205461274055685+0j) [Z1 Z3] +
 (-0.22279639651093203+0j) [Z2] +
-(0.17434948757007068+0j) [Z2 Z3] +
-(-0.22279639651093203+0j) [Z3]</code></pre>
+(0.17434948757007063+0j) [Z2 Z3] +
+(-0.22279639651093205+0j) [Z3]</code></pre>
 </div>
 </div>
 <p><strong>Notes</strong>: Users can directly retrieve the qubit Hamiltonian object used in <code>VQESolver</code> by accessing its <code>qubit_hamiltonian</code> attribute.</p>
 <p>The dihydrogen molecule ground state energy is computed again from this qubit Hamiltonian (which is identical to the one used in the first part computed from the molecule).</p>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vqe_alternative_options <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qubit_hamiltonian_H2, <span class="st">'ansatz'</span>: HEA_ansatz, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>}</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN <span class="op">=</span> VQESolver(vqe_alternative_options)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN.build()</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN.simulate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/tmp/ipykernel_46116/549362070.py:25: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
-  elif var_params == "ones":</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="12">
-<pre><code>-1.1372335845006827</code></pre>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vqe_alternative_options <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qubit_hamiltonian_H2, <span class="st">'ansatz'</span>: HEA_ansatz, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN <span class="op">=</span> VQESolver(vqe_alternative_options)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN.build()</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN.simulate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>-1.1372335844997628</code></pre>
 </div>
 </div>
 <p>The behaviour of VQE is identical to the previous one. Regarding chemical accuracy, how well did we do here? Let’s compare against Hartree Fock and FCI.</p>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>energy_fci <span class="op">=</span> FCISolver(mol_H2).simulate()</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>energy_hf <span class="op">=</span> mol_H2.mf_energy</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>energy_vqe <span class="op">=</span> HEA_VQE.optimal_energy</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>energy_vqe_hamiltonian <span class="op">=</span> HEA_VQE_HAMILTONIAN.optimal_energy</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'FCI ENERGY: </span><span class="sc">{</span>energy_fci <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HF ENERGY: </span><span class="sc">{</span>energy_hf <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from molecule): </span><span class="sc">{</span>energy_vqe <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from qubit Hamiltonian): </span><span class="sc">{</span>energy_vqe_hamiltonian <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>energy_fci <span class="op">=</span> FCISolver(mol_H2).simulate()</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>energy_hf <span class="op">=</span> mol_H2.mf_energy</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>energy_vqe <span class="op">=</span> HEA_VQE.optimal_energy</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>energy_vqe_hamiltonian <span class="op">=</span> HEA_VQE_HAMILTONIAN.optimal_energy</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'FCI ENERGY: </span><span class="sc">{</span>energy_fci <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HF ENERGY: </span><span class="sc">{</span>energy_hf <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from molecule): </span><span class="sc">{</span>energy_vqe <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from qubit Hamiltonian): </span><span class="sc">{</span>energy_vqe_hamiltonian <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>FCI ENERGY: -1.1372704 Ha
 HF ENERGY: -1.1166856 Ha
@@ -697,9 +680,9 @@ HEA-VQE ENERGY (from qubit Hamiltonian): -1.1372336 Ha</code></pre>
 <section id="using-a-custom-circuit-as-input" class="level2">
 <h2 class="anchored" data-anchor-id="using-a-custom-circuit-as-input">Using a custom circuit as input</h2>
 <p>Lastly, it is possible to pass a pre-built arbitrary circuit with variational gates as input to <code>VQESolver</code>. In that case, <code>VQESolver</code> will optimize the variational parameters of these gates in order to minimize the cost function, which still requires a qubit Hamiltonian. This situation can be relevant to users who wish to apply variational approaches to arbitrary circuits or a circuit they got from other collaborators.</p>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>circuit <span class="op">=</span> HEA_ansatz.build_circuit()</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>circuit <span class="op">=</span> HEA_ansatz.build_circuit()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Circuit object. Size 74 
 
@@ -781,22 +764,22 @@ RZ        target : [3]   parameter : 0.0     (variational)
 </div>
 </div>
 <p>The dihydrogen energy is recomputed for the third time by using its qubit Hamiltonian and the abstract circuit provided. We are here optimizing the variational parameters of the pre-built circuit, in an attempt to return the minimal energy for this ansatz.</p>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>vqe_second_alternative_options <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qubit_hamiltonian_H2, <span class="st">"ansatz"</span>: circuit, <span class="st">"initial_var_params"</span>: <span class="st">"random"</span>}</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT <span class="op">=</span> VQESolver(vqe_second_alternative_options)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT.build()</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT.simulate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
-<pre><code>-1.1370682042984708</code></pre>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>vqe_second_alternative_options <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qubit_hamiltonian_H2, <span class="st">"ansatz"</span>: circuit, <span class="st">"initial_var_params"</span>: <span class="st">"random"</span>}</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT <span class="op">=</span> VQESolver(vqe_second_alternative_options)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT.build()</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT.simulate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>-1.1372416894541575</code></pre>
 </div>
 </div>
 <p><strong>Note</strong>: Users may also give <code>VQESolver</code> a <code>SecondQuantizedMolecule</code> with a custom circuit. The energy at the end is the very same as the previous calculations with a molecule + custom ansatz and a qubit Hamiltonian.</p>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>energy_vqe_circuit <span class="op">=</span> HEA_VQE_CIRCUIT.optimal_energy</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from a circuit): </span><span class="sc">{</span>energy_vqe_circuit <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>energy_vqe_circuit <span class="op">=</span> HEA_VQE_CIRCUIT.optimal_energy</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from a circuit): </span><span class="sc">{</span>energy_vqe_circuit <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>HEA-VQE ENERGY (from a circuit): -1.1370682 Ha</code></pre>
+<pre><code>HEA-VQE ENERGY (from a circuit): -1.1372417 Ha</code></pre>
 </div>
 </div>
 </section>
