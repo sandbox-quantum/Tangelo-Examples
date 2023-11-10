@@ -34,7 +34,7 @@ An overview of the many notebooks so far (there may be more, including example s
 * Problem Decomposition
     * [Density Matrix Embedding Theory](examples/problem_decomposition/dmet.html)
     * [DMET Unrestricted Hartree-Fock](examples/problem_decomposition/dmet_uhf.html)
-    * [MIFNO](examples/problem_decomposition/mifno.html)
+    * [iFCI - MIFNO](examples/problem_decomposition/ifci_mifno.html)
     * [ONIOM](examples/problem_decomposition/oniom.html)
 * Hardware Experiments
     * [End-to-End hardware experiment](examples/hardware_experiments/overview_endtoend.html)

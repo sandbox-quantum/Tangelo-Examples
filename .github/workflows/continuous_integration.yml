@@ -58,11 +58,11 @@ jobs:
         pip install git+https://github.com/goodchemistryco/Tangelo.git@develop
       if: always()
 
-    - name: Download required data to run the MIFNO notebook
+    - name: Download required data to run the iFCI - MIFNO notebook
       run: |
         cd examples/problem_decomposition
         sudo apt-get install subversion
-        svn export https://github.com/goodchemistryco/Tangelo/branches/develop/tangelo/problem_decomposition/tests/incremental/data
+        svn export https://github.com/goodchemistryco/Tangelo/branches/develop/tangelo/problem_decomposition/tests/incremental/data/BeH2_CCPVDZ_MIFNO_HBCI
       if: always()
 
     - name: tangelo notebooks as tests
