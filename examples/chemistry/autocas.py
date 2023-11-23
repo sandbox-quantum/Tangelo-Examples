@@ -47,7 +47,7 @@ from tangelo import SecondQuantizedMolecule
 
 
 def call_autocas(sqmol: SecondQuantizedMolecule, settings: dict) -> dict:
-    """Calls SCINE autoCAS to perform active space calculation on a molecule.
+    """Calls SCINE autoCAS to generate the active space of a molecule.
 
     Args:
     - sqmol (SecondQuantizedMolecule): SecondQuantizedMolecule object
@@ -91,9 +91,9 @@ def call_autocas(sqmol: SecondQuantizedMolecule, settings: dict) -> dict:
 
 
 def apply_active_space(sqmol: SecondQuantizedMolecule, autocas_results: dict) -> None:
-    """Applies the active space selection obtained from autoCAS results to the
-    molecule. Modifies the 'sqmol' object in place by freezing molecular
-    orbitals based on autoCAS results. Does not return any value.
+    """Applies the active space obtained from autoCAS to the molecule. Modifies
+    the 'sqmol' object by in-place freezing molecular orbitals and utilizing the
+    molecular coefficients returned from autoCAS. Does not return any value.
 
     Args:
     - sqmol (SecondQuantizedMolecule): SecondQuantizedMolecule object
