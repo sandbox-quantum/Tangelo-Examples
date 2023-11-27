@@ -44,6 +44,7 @@ import yaml
 
 from scine_autocas.main_functions import MainFunctions
 from tangelo import SecondQuantizedMolecule
+from tangelo.algorithms.classical import FCISolver
 
 
 def call_autocas(sqmol: SecondQuantizedMolecule, settings: dict) -> dict:
@@ -142,5 +143,8 @@ if __name__ == "__main__":
     autocas_results = call_autocas(n2, settings)
     apply_active_space(n2, autocas_results)
 
-    # Print the new molecule object.
-    print(n2)
+    # Call the FCI classical solver.
+    fci = FCISolver(n2)
+    e_fci = fci.simulate()
+
+    print(f"The FCI energy of the N2 / cc-pVDZ system with an active space CAS(e, o) ({n2.n_active_electrons}, {n2.n_active_mos}) is {e_fci} Ha.")
