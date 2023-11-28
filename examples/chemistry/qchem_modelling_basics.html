@@ -642,7 +642,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <p>The O<span class="math inline">\(_2\)</span> molecule in the 6-311G(d,p) basis would require 72 qubits and inherently a quantum circuit that is considered too deep for current architectures (NISQ devices) at the time of writing. Decreasing the number of qubits required to encode the problem provides the first indirect way to reduce those requirements. The two methods discussed below are the reduction of the active space and the consideration of molecular symmetries.</p>
 <section id="active-space-selection" class="level3">
 <h3 class="anchored" data-anchor-id="active-space-selection">Active Space Selection<a class="anchor" id="41"></a></h3>
-<p>Active space selection is a trivial way to reduce the number of qubits by ignoring some molecular orbitals in the post-Hartree-Fock calculation. Applying this method is trivial, but choosing which molecular orbitals to freeze is not. While there is no general algorithm to perform that operation, one can evaluate which orbitals to freeze by first printing the molecular orbital occupancies.</p>
+<p>Active space selection is a way to reduce the number of qubits by ignoring some molecular orbitals in the post-Hartree-Fock calculation. Applying this method is trivial, but choosing which molecular orbitals to freeze is not. While there is no general algorithm to perform that operation, one can evaluate which orbitals to freeze by first printing the molecular orbital occupancies.</p>
 <div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>o2_6311gdp.mo_occ</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
@@ -668,7 +668,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 6 active electrons</code></pre>
 </div>
 </div>
-<p>We decrease the number of considered orbitals from 36 to 8! With conventional fermion-to-qubit mappings, the number of qubits can be reduced from 72 to 16. This is an impressive reduction, but it comes at a significant cost. Configurations involving orbitals below HOMO-4 and above LUMO+4 are not considered here. This results in an energy further away from the true energy as there is nothing telling us that those configurations are irrelevant <em>a priori</em>. In the next code cell, we consider the CCSD calculation of O<span class="math inline">\(_2\)</span> with and without those orbitals.</p>
+<p>Following this approach, we decrease the number of considered orbitals from 36 to 8. With conventional fermion-to-qubit mappings, the number of qubits can be reduced from 72 to 16. While this is an impressive reduction, configurations involving orbitals below HOMO-4 and above LUMO+4 are not considered here. This results in an energy further away from the true energy as there is nothing telling us that those configurations are irrelevant <em>a priori</em>. In the next code cell, we consider the CCSD calculation of O<span class="math inline">\(_2\)</span> with and without those orbitals.</p>
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -683,7 +683,8 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <pre><code>Energy difference: 226.51012414558244 kcal/mol.</code></pre>
 </div>
 </div>
-<p>Considering the <a href="https://en.wikipedia.org/wiki/Computational_chemistry">chemical accuracy</a> (1 kcal/mol), the difference is indeed significant: 226 kcal/mol. Therefore, the lower bound with the reduced active space is higher than the CCSD ground state. The takeaway is to be careful when choosing an active space for a molecule.</p>
+<p>This choice results in an energy difference of over 200 kcal/mol, well above <a href="https://en.wikipedia.org/wiki/Computational_chemistry">chemical accuracy</a> (1 kcal/mol). In this situation, the lower bound with the reduced active space is higher than the CCSD ground state. The takeaway is to be careful when choosing an active space for a molecule.</p>
+<p>Several approaches have been developed by the community to truncate the active space of a molecule for a given basis set. They follow specific criteria ensuring a controlled impact on accuracy. Beyond the built-in options available in Tangelo, such as frozen core or FNO, users can use external tools to compute frozen orbitals or integrals such as <a href="https://github.com/qcscine/autocas">SCINE autoCAS</a>, as described in this <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/autocas.py">example script</a>.</p>
 </section>
 <section id="considering-symmetries" class="level3">
 <h3 class="anchored" data-anchor-id="considering-symmetries">Considering Symmetries<a class="anchor" id="42"></a></h3>
