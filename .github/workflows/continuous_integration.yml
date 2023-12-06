@@ -61,8 +61,8 @@ jobs:
     - name: Download required data to run the iFCI - MIFNO notebook
       run: |
         cd examples/problem_decomposition
-        sudo apt-get install subversion
-        svn export https://github.com/goodchemistryco/Tangelo/branches/develop/tangelo/problem_decomposition/tests/incremental/data/BeH2_CCPVDZ_MIFNO_HBCI
+        curl https://codeload.github.com/goodchemistryco/Tangelo/tar.gz/develop | \
+        tar -xz --strip=6 Tangelo-develop/tangelo/problem_decomposition/tests/incremental/data/BeH2_CCPVDZ_MIFNO_HBCI
       if: always()
 
     - name: tangelo notebooks as tests
