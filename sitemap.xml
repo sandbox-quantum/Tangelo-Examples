@@ -2,126 +2,126 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/workflow_basics/2.qpu_connection.html</loc>
-    <lastmod>2023-12-06T18:05:50.317Z</lastmod>
+    <lastmod>2023-12-06T19:10:42.056Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/workflow_basics/3.noisy_simulation.html</loc>
-    <lastmod>2023-12-06T18:05:48.873Z</lastmod>
+    <lastmod>2023-12-06T19:10:40.620Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/measurement_reduction/classical_shadows.html</loc>
-    <lastmod>2023-12-06T18:05:47.449Z</lastmod>
+    <lastmod>2023-12-06T19:10:39.216Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/problem_decomposition/ifci_mifno.html</loc>
-    <lastmod>2023-12-06T18:05:46.269Z</lastmod>
+    <lastmod>2023-12-06T19:10:38.044Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/problem_decomposition/dmet_uhf.html</loc>
-    <lastmod>2023-12-06T18:05:45.129Z</lastmod>
+    <lastmod>2023-12-06T19:10:36.908Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/variational_methods/vqe_custom_ansatz_hamiltonian.html</loc>
-    <lastmod>2023-12-06T18:05:44.073Z</lastmod>
+    <lastmod>2023-12-06T19:10:35.860Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/variational_methods/adapt.html</loc>
-    <lastmod>2023-12-06T18:05:42.741Z</lastmod>
+    <lastmod>2023-12-06T19:10:34.552Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/chemistry/qchem_modelling_basics.html</loc>
-    <lastmod>2023-12-06T18:05:41.161Z</lastmod>
+    <lastmod>2023-12-06T19:10:32.984Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html</loc>
-    <lastmod>2023-12-06T18:05:39.881Z</lastmod>
+    <lastmod>2023-12-06T19:10:31.676Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/hardware_experiments/umbrella_inversion.html</loc>
-    <lastmod>2023-12-06T18:05:38.793Z</lastmod>
+    <lastmod>2023-12-06T19:10:30.612Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T5_fault_tolerant_build_blocks.html</loc>
-    <lastmod>2023-12-06T18:05:36.221Z</lastmod>
+    <lastmod>2023-12-06T19:10:28.052Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T1_circuits_solved.html</loc>
-    <lastmod>2023-12-06T18:05:35.029Z</lastmod>
+    <lastmod>2023-12-06T19:10:26.872Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T2_simulators.html</loc>
-    <lastmod>2023-12-06T18:05:34.061Z</lastmod>
+    <lastmod>2023-12-06T19:10:25.860Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T5_fault_tolerant_build_blocks_solved.html</loc>
-    <lastmod>2023-12-06T18:05:33.053Z</lastmod>
+    <lastmod>2023-12-06T19:10:24.860Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T1_circuits.html</loc>
-    <lastmod>2023-12-06T18:05:31.905Z</lastmod>
+    <lastmod>2023-12-06T19:10:23.716Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/index.html</loc>
-    <lastmod>2023-12-06T18:05:30.617Z</lastmod>
+    <lastmod>2023-12-06T19:10:22.448Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T3_VQE.html</loc>
-    <lastmod>2023-12-06T18:05:31.461Z</lastmod>
+    <lastmod>2023-12-06T19:10:23.280Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T2_simulators_solved.html</loc>
-    <lastmod>2023-12-06T18:05:32.385Z</lastmod>
+    <lastmod>2023-12-06T19:10:24.188Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T3_VQE_solved.html</loc>
-    <lastmod>2023-12-06T18:05:33.601Z</lastmod>
+    <lastmod>2023-12-06T19:10:25.420Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T4_hardware_experiments_solved.html</loc>
-    <lastmod>2023-12-06T18:05:34.593Z</lastmod>
+    <lastmod>2023-12-06T19:10:26.436Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/hands_on/T4_hardware_experiments.html</loc>
-    <lastmod>2023-12-06T18:05:35.545Z</lastmod>
+    <lastmod>2023-12-06T19:10:27.392Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/hardware_experiments/overview_endtoend.html</loc>
-    <lastmod>2023-12-06T18:05:37.717Z</lastmod>
+    <lastmod>2023-12-06T19:10:29.552Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/hardware_experiments/berylium_ibm_quantum.html</loc>
-    <lastmod>2023-12-06T18:05:39.457Z</lastmod>
+    <lastmod>2023-12-06T19:10:31.248Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/fault_tolerant/qsp_state_prep.html</loc>
-    <lastmod>2023-12-06T18:05:40.313Z</lastmod>
+    <lastmod>2023-12-06T19:10:32.108Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/chemistry/excited_states.html</loc>
-    <lastmod>2023-12-06T18:05:42.141Z</lastmod>
+    <lastmod>2023-12-06T19:10:33.940Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/variational_methods/vqe.html</loc>
-    <lastmod>2023-12-06T18:05:43.545Z</lastmod>
+    <lastmod>2023-12-06T19:10:35.340Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/variational_methods/iqcc_using_clifford.html</loc>
-    <lastmod>2023-12-06T18:05:44.533Z</lastmod>
+    <lastmod>2023-12-06T19:10:36.336Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/problem_decomposition/oniom.html</loc>
-    <lastmod>2023-12-06T18:05:45.685Z</lastmod>
+    <lastmod>2023-12-06T19:10:37.452Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/problem_decomposition/dmet.html</loc>
-    <lastmod>2023-12-06T18:05:46.909Z</lastmod>
+    <lastmod>2023-12-06T19:10:38.688Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/workflow_basics/1.the_basics.html</loc>
-    <lastmod>2023-12-06T18:05:48.225Z</lastmod>
+    <lastmod>2023-12-06T19:10:39.976Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/goodchemistryco/Tangelo-Examples/examples/workflow_basics/symbolic_simulator.html</loc>
-    <lastmod>2023-12-06T18:05:49.461Z</lastmod>
+    <lastmod>2023-12-06T19:10:41.212Z</lastmod>
   </url>
 </urlset>

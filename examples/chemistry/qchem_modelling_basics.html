@@ -580,12 +580,12 @@ H = \sum_{pq}h_{pq} a_p^{\dagger}a_q + \frac{1}{2}\sum_{pqrs}h_{pqrs}a_p^{\dagge
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform a Mean-Field calculation for each basis set.</span></span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bs <span class="kw">in</span> basis_sets:</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Measure execution time.</span></span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    start <span class="op">=</span> time.time()</span>
 <span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    scan_basis_mol <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, basis<span class="op">=</span>bs)</span>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    end <span class="op">=</span> time.time()</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    mf_energies.append(scan_basis_mol.mf_energy)</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    mf_times.append(end<span class="op">-</span>start)</span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a></span>
@@ -630,7 +630,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <p>Resource reduction refers to lowering the computational requirements to run an algorithm. This applies to both classical and quantum computing. In conventional computing, this translates to less bits required to store information and less operations to do on these bits. For the gate-model quantum computing, this translates to reducing the number of qubits and the number of gates in quantum circuits.</p>
 <p>Our starting point is the O<span class="math inline">\(_2\)</span> molecule in the <code>6-311G(d,p)</code> basis. We focus on reducing resource requirements before choosing an algorithm to compute the ground state. For approaches relying on choosing a different ansatz or fragmenting a molecule into smaller subproblems (problem decomposition), the user can refer to the relevant notebooks in the <a href="https://github.com/goodchemistryco/Tangelo-Examples">Tangelo-Examples repository</a>.</p>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>o2_6311gdp <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, </span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>o2_6311gdp <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                                     basis<span class="op">=</span><span class="st">"6-311G(d,p)"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> active molecular orbitals"</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> active electrons"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -659,7 +659,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Selecting HOMO-3 to LUMO+3 orbitals.</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>frozen <span class="op">=</span> get_orbitals_excluding_homo_lumo(o2_6311gdp, homo_minus_n<span class="op">=</span><span class="dv">3</span>, lumo_plus_n<span class="op">=</span><span class="dv">3</span>)</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>o2_6311gdp_frozen <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, basis<span class="op">=</span><span class="st">"6-311G(d,p)"</span>, </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>o2_6311gdp_frozen <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, basis<span class="op">=</span><span class="st">"6-311G(d,p)"</span>,</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>                                            frozen_orbitals<span class="op">=</span>frozen)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp_frozen<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> active molecular orbitals"</span>)</span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>o2_6311gdp_frozen<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> active electrons"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -697,7 +697,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>hamiltonian <span class="op">=</span> fermion_to_qubit_mapping(o2_6311gdp_frozen.fermionic_hamiltonian, <span class="st">"JW"</span>)</span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> count_qubits(hamiltonian)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>taper <span class="op">=</span> QubitTapering(hamiltonian, n_qubits, </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>taper <span class="op">=</span> QubitTapering(hamiltonian, n_qubits,</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                      n_electrons<span class="op">=</span>o2_6311gdp_frozen.n_active_electrons)</span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>hamiltonian_taper <span class="op">=</span> taper.z2_tapered_op</span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>n_qubits_tapered <span class="op">=</span> count_qubits(hamiltonian_taper)</span>
@@ -717,7 +717,8 @@ Number of qubits after tapering: 12
 <h2 class="anchored" data-anchor-id="advanced-usage-of-pyscf">Advanced Usage of PySCF<a class="anchor" id="5"></a></h2>
 <p><a href="https://pyscf.org/">PySCF</a> is one of the classical chemistry backends supported by Tangelo (<a href="https://psicode.org/">Psi4</a> is also supported). Advanced usage of this open-source quantum chemistry package enables the use of many analysis tools. We show a couple of examples where advanced users can extract more information from a PySCF calculation.</p>
 <p>A <code>SecondQuantizedMolecule</code> object can be exported as a <code>pyscf.gto.Mole</code> object. From that point, anything implemented in <code>PySCF</code> can be applied to this data structure. The next line shows how to do this operation.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>pyscf_mol <span class="op">=</span> sec_mol.to_pyscf(sec_mol.basis)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.integral_solver_pyscf <span class="im">import</span> mol_to_pyscf</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>pyscf_mol <span class="op">=</span> mol_to_pyscf(sec_mol, sec_mol.basis, sec_mol.symmetry, sec_mol.ecp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <section id="extracting-mean-field-quantities" class="level3">
 <h3 class="anchored" data-anchor-id="extracting-mean-field-quantities">Extracting Mean-Field Quantities<a class="anchor" id="51"></a></h3>
 <p>The first trick is the extraction of the molecular orbital eigenvalues and coefficients. This can be done with the <code>analyze</code> method, and it can be called from the mean-field object to print relevant molecular properties. The output features many sections, described in the table below.</p>
