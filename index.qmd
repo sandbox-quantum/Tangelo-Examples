@@ -36,6 +36,7 @@ An overview of the many notebooks so far (there may be more, including example s
     * [DMET Unrestricted Hartree-Fock](examples/problem_decomposition/dmet_uhf.html)
     * [iFCI - MIFNO](examples/problem_decomposition/ifci_mifno.html)
     * [ONIOM](examples/problem_decomposition/oniom.html)
+    * [QMMM](examples/problem_decomposition/qmmm.html)
 * Hardware Experiments
     * [End-to-End hardware experiment](examples/hardware_experiments/overview_endtoend.html)
     * [Hardware Experiment using QEMIST Cloud](examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html)
