@@ -48,6 +48,9 @@ class TestNotebooks(unittest.TestCase):
     def test_oniom_notebook(self):
         run_notebook_as_test('problem_decomposition/oniom.ipynb')
 
+    def test_qmmm_notebook(self):
+        run_notebook_as_test('problem_decomposition/qmmm.ipynb')
+
     def test_excited_states(self):
         run_notebook_as_test('chemistry/excited_states.ipynb')
 
