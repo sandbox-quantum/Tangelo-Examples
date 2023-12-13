@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>The QM/MM method: Solvation of the Glycine Amino Acid</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/problem_decomposition/dmet.html">Problem Decomposition</a></li><li class="breadcrumb-item"><a href="../../examples/problem_decomposition/qmmm.html">The QM/MM method: Solvation of the Glycine Amino Acid</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/ifci_mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/qmmm.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">The QM/MM method: Solvation of the Glycine Amino Acid</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Hands On</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T1_circuits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T1_circuits_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T2_simulators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T2_simulators_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T3_VQE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T3_VQE_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T4_hardware_experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T4_hardware_experiments_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T5_fault_tolerant_build_blocks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fault Tolerant Building blocks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T5_fault_tolerant_build_blocks_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fault Tolerant Building blocks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">The QM/MM method: Solvation of the Glycine Amino Acid</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<section id="principles-of-the-qmmm-method" class="level3">
+<h3 class="anchored" data-anchor-id="principles-of-the-qmmm-method">Principles of the QM/MM method</h3>
+<p>In 2013, the Nobel Prize in Chemistry was awarded to Martin Karplus, Michael Levitt, and Arieh Warshel for their groundbreaking work in advancing the understanding of complex chemical systems. Their achievement was centered around the development of multiscale models, a significant milestone in the field of computational chemistry. Specifically, their work highlighted the QM/MM method, an abbreviation for Quantum Mechanics/Molecular Mechanics. Introduced in 1976 in the <a href="https://doi.org/10.1016/0022-2836(76)90311-9">Journal of Molecular Biology</a>, it amalgamates quantum mechanics, which describes the behavior of particles at the electronic level, with molecular mechanics, a classical approach that uses forcefields to model interatomic interactions. The introduction of this method became a cornerstone in biochemical simulation workflows, allowing scientists to simulate and understand complex chemical reactions occurring within biological contexts with remarkable accuracy. Its primary objective remains the reduction of computational cost in modeling intricate chemical systems, useful in the study of biochemical entities like DNA/RNA strands, proteins, and organic molecules.</p>
+<p>Consider protein simulations as a case in point: the majority of proteins consist of 50 to 200 amino acids (<a href="https://www.ncbi.nlm.nih.gov/books/NBK26830/">source</a>). With an average of approximately 19 atoms per amino acid, a solitary protein system might necessitate the consideration of anywhere between 950 to 3800 atoms. This estimate however does not take into account solvents, ions, and other vital molecular species that could be important in the simulation model.</p>
+<p>This problem size is quite typical in many molecular mechanics workflows. Nonetheless, handling interactions like charge transfers or hydrogen bonds, which are pivotal in protein/drug interactions, can pose challenges when using forcefield-based methods. In such scenarios, the nuanced description of these molecular interactions is better represented via quantum mechanics. However, the problem size becomes intractable for quantum mechanics methods alone. Hence, the fusion of both realms has been beneficial for the computational chemistry community and forms the essence of the QM/MM approach.</p>
+</section>
+<section id="quantum-mechanical-methods" class="level3">
+<h3 class="anchored" data-anchor-id="quantum-mechanical-methods">Quantum mechanical methods</h3>
+<p>Molecules reside within the microscopic realm and adhere to the principles of the Schrödinger equation. For more introductory material on modeling molecular systems, please refer to our <a href="https://goodchemistryco.github.io/Tangelo-Examples/examples/chemistry/qchem_modelling_basics.html">previous notebook</a>.</p>
+<p>Quantum computing research is rapidly advancing on both software and hardware fronts. Chemistry stands out as a promising application for these devices, propelling an active research field, exemplified further in the paper reviews by <a href="https://doi.org/10.1146/annurev-physchem-032210-103512">Kassal et al.</a> and <a href="https://doi.org/10.1021/acs.chemrev.8b00803">Cao et al.</a>. Harnessing QM/MM methodologies within quantum computing simulations holds promise in capturing crucial environmental effects, such as solvent interactions, enriching the accuracy and realism of computational models [1, 2].</p>
+</section>
+<section id="computing-solvation-energies" class="level3">
+<h3 class="anchored" data-anchor-id="computing-solvation-energies">Computing solvation energies</h3>
+<p>We apply this approach to the explicit solvation of a simple amino acid (glycine) in water through electrostatic embedding. To determine solvation energies for chemical compounds, the following steps are taken in this notebook: 1. Compute the molecular energies of isolated compounds using a quantum algorithm. For the sake of simplicity, the quantum algorithm used here is the Variational Quantum Eigensolver (VQE). Other quantum solvers available in Tangelo have already been or can be integrated with QM/MM. 2. Calculate the molecular energies of solvated compounds. In this step, the QM/MM problem decomposition method models the glycine amino acid using VQE, similar to the previous step. Meanwhile, explicit water molecules are modeled through molecular mechanics. 3. Determine the energy differences that signify solvation energy. A more negative energy denotes a stronger interaction between the solvent and the molecule.</p>
+</section>
+</section>
+<section id="use-case-solvation-of-the-glycine-animo-acid" class="level2">
+<h2 class="anchored" data-anchor-id="use-case-solvation-of-the-glycine-animo-acid">Use-case: Solvation of the glycine animo acid</h2>
+<section id="preparation-for-the-notebook" class="level3">
+<h3 class="anchored" data-anchor-id="preparation-for-the-notebook">Preparation for the notebook</h3>
+<p>The next cells ensure that the appropriate packages are installed and imported into the Python environment to successfully execute this notebook.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs pyscf rdkit openbabel<span class="op">-</span>wheel <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tangelo common imports.</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> VQESolver, BuiltInAnsatze</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.frozen_orbitals <span class="im">import</span> get_orbitals_excluding_homo_lumo</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.molecule <span class="im">import</span> atom_string_to_list</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># QM/MM-related imports.</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.qmmm.qmmm_problem_decomposition <span class="im">import</span> QMMMProblemDecomposition</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.oniom._helpers.helper_classes <span class="im">import</span> Fragment, Link</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.mm_charges_solver <span class="im">import</span> MMChargesSolverRDKit</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Basis set used in this notebook.</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> <span class="st">"cc-pvdz"</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Constants.</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>ha_to_kcalmol <span class="op">=</span> <span class="fl">627.509</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>cal_to_j <span class="op">=</span> <span class="fl">4.184</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="amino-acid-tautomers" class="level3">
+<h3 class="anchored" data-anchor-id="amino-acid-tautomers">Amino acid tautomers</h3>
+<p>Amino acids form the basic building blocks of polypeptides and proteins within living organisms. While nature encompasses about 500 variations, only 22 are encoded in the genetic blueprint of life. These molecules are characterized by their end-capping functional groups: an amine (NH<span class="math inline">\(_3\)</span>) and a carboxylic acid (COOH), with a central functional group denoted as ‘R’ that defines the unique properties of each amino acid.</p>
+<p>This notebook primarily focuses on employing computational techniques that integrate quantum mechanics with molecular mechanics (QM/MM). This method allows researchers to explore interactions among molecules within aqueous solutions, providing essential insights into the behaviors and functionalities of proteins at a reasonable computational cost.</p>
+<p>Our initial step involves defining the atomic coordinates of glycine, the simplest amino acid with a ‘R’ functional group consisting solely of a hydrogen atom. Given the extensive computational requirements for running a full quantum algorithm on the entire system, this notebook opts to freeze certain molecular orbitals, therefore simplifying the simulation to manage its complexity.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xyz_glycine <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">  C          2.05388        0.61558        0.07379</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">  O          1.96483       -0.57096       -0.21241</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">  O          3.19750        1.18239        0.43269</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">  H          3.96112        0.54040        0.42260</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">  C          0.91678        1.61052        0.03784</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">  H          0.94914        2.17916        0.95644</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">  H          1.13065        2.30136       -0.76945</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">  N         -0.39578        0.99717       -0.14991</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -0.70125        0.48980        0.67086</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -0.41063        0.36439       -0.94717</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a molecule object from the coordinates.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>glycine <span class="op">=</span> SecondQuantizedMolecule(xyz_glycine, basis<span class="op">=</span>basis)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting the active space to HOMO-1 to LUMO+1.</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>frozen_orbitals_gly <span class="op">=</span> get_orbitals_excluding_homo_lumo(glycine, homo_minus_n<span class="op">=</span><span class="dv">1</span>, lumo_plus_n<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>glycine.freeze_mos(frozen_orbitals_gly, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The neutral form of GLY will be described by an active space of </span><span class="sc">{</span>glycine<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> molecular orbitals and </span><span class="sc">{</span>glycine<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> electrons."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The neutral form of GLY will be described by an active space of 4 molecular orbitals and 4 electrons.</code></pre>
+</div>
+</div>
+<p>One might wonder why this amino acid dissolves in water despite being a neutral organic compound. The reason lies in its behavior when in water; evidences show that amino acids adopt a <a href="https://en.wikipedia.org/wiki/Zwitterion">zwitterionic</a> form [3-6]. Although the entire molecule remains electrically neutral, a hydrogen atom shifts from the carboxylic acid group to the amine group, showcasing a form of <a href="https://en.wikipedia.org/wiki/Tautomer">tautomerism</a>. Thus, to precisely model the interaction of water with glycine, it is crucial to include the equivalent tautomer in the calculations of solvation properties.</p>
+<p>In the next cell, we construct this chemical structure while using the same approach of freezing certain molecular orbitals.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>xyz_zwitterion <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">  C         -0.72588       -0.48930       -0.87995</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -0.40429       -0.99901        0.24400</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -1.71249       -0.74617       -1.57606</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">  C          0.24065        0.58647       -1.40746</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">  H          0.94067        0.15610       -2.10976</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -0.32329        1.37177       -1.87959</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">  N          0.99940        1.14332       -0.24215</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">  H          1.19967        0.36262        0.37817</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">  H          1.91733        1.52621       -0.51811</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="st">  H          0.35328        1.80600        0.26884</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a molecule object from the coordinates.</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>zwitterion <span class="op">=</span> SecondQuantizedMolecule(xyz_zwitterion, basis<span class="op">=</span>basis)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Setting the active space to HOMO-1 to LUMO+1.</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>frozen_orbitals_zwit <span class="op">=</span> get_orbitals_excluding_homo_lumo(zwitterion, homo_minus_n<span class="op">=</span><span class="dv">1</span>, lumo_plus_n<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>zwitterion.freeze_mos(frozen_orbitals_zwit)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The zwitterion form of GLY will be described by an active space of </span><span class="sc">{</span>zwitterion<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss"> molecular orbitals and </span><span class="sc">{</span>zwitterion<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss"> electrons."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The zwitterion form of GLY will be described by an active space of 4 molecular orbitals and 4 electrons.</code></pre>
+</div>
+</div>
+<p>With the molecules now encoded as Tangelo objects, we’re ready to perform quantum chemistry calculations. Below is a visual representation illustrating the two distinct tautomers of the glycine amino acid that we previously constructed.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/glycine_forms.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Glycine forms</figcaption>
+</figure>
+</div>
+</section>
+<section id="using-quantum-algorithms-on-the-glycine-molecule" class="level3">
+<h3 class="anchored" data-anchor-id="using-quantum-algorithms-on-the-glycine-molecule">Using quantum algorithms on the glycine molecule</h3>
+<p>The following code cell defines the options passed to our quantum solver (for simplicity, the well-known Variational Quantum Eigensolver (VQE) with a UCCSD ansatz). These settings are applied in subsequent energy computations.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vqe_options<span class="op">=</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ansatz"</span>: BuiltInAnsatze.UCCSD,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qubit_mapping"</span>: <span class="st">"scBK"</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"up_then_down"</span>: <span class="va">True</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We then run the quantum solver for both forms of glycine. We are particularly interested in the total molecular energies obtained, as they are necessary to calculate the hydration energy later on (see step 1 outlined in the “Computing solvation energies” section above).</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>quantum_solver_gly <span class="op">=</span> VQESolver({<span class="st">"molecule"</span>: glycine, <span class="op">**</span>vqe_options})</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>quantum_solver_gly.build()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>e_quantum_gly <span class="op">=</span> quantum_solver_gly.simulate()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The gas phase molecular energy of glycine (neutral) is </span><span class="sc">{</span>e_quantum_gly<span class="sc">:.5f}</span><span class="ss"> Ha."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The gas phase molecular energy of glycine (neutral) is -282.85661 Ha.</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>quantum_solver_zwit <span class="op">=</span> VQESolver({<span class="st">"molecule"</span>: zwitterion, <span class="op">**</span>vqe_options})</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>quantum_solver_zwit.build()</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>e_quantum_zwit <span class="op">=</span> quantum_solver_zwit.simulate()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The gas phase molecular energy of glycine (zwitterion) is </span><span class="sc">{</span>e_quantum_zwit<span class="sc">:.5f}</span><span class="ss"> Ha."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The gas phase molecular energy of glycine (zwitterion) is -282.79736 Ha.</code></pre>
+</div>
+</div>
+<p>Since tautomers have the same set of atoms, comparing the two molecular energies indicates that the neutral form of the glycine amino acid is more stable than the zwitterion. This outcome aligns with the fact that formal charges on atoms in the gas phase are difficult to generate due to the lack of an environment for stabilization.</p>
+<p>We now have access to the molecular energies of each tautomer. We now sample the energy of the molecular system consisting of a cluster of water around the molecules (see step 2 outlined in the “Computing solvation energies” section above). The energy differences <span class="math inline">\(\Delta E_{\text{solv}}\)</span> (after removing the water molecule potential energy contributions) should be proportional to the free energies of solvation <span class="math inline">\(\Delta H_{\text{solv}}\)</span> or <span class="math inline">\(\Delta G_{\text{solv}}\)</span> measured in laboratories.</p>
+<p>The remaining steps taken in this notebook are revolving around computing the molecular energies of those clusters using the QM/MM method, which is a simplified version of a more complete study as reported in [7].</p>
+</section>
+<section id="preparing-the-qmmm-calculation-get-the-partial-charges-for-h_2o" class="level3">
+<h3 class="anchored" data-anchor-id="preparing-the-qmmm-calculation-get-the-partial-charges-for-h_2o">Preparing the QM/MM calculation: get the partial charges for <span class="math inline">\(H_2O\)</span></h3>
+<p>The supported QM/MM framework in Tangelo needs the partial charges for the part of the system described via molecular mechanics. This is what we do in the next code cell. Here, in summary: - A mean-field calculation is performed for a single water molecule; - The Mulliken atomic charges are retrived from the <code>analyze</code> method; - A function is defined to construct an array in the <code>[(partial_charge, (x, y, z)), ...]</code> format.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>xyz_h2o <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.08448       -2.25652       -0.22848</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -2.35312       -3.17615       -0.12238</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.83562       -1.85666        0.64078</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>h2o <span class="op">=</span> SecondQuantizedMolecule(xyz_h2o, basis<span class="op">=</span>basis)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>(_, mulliken_atomic_charges), _ <span class="op">=</span> h2o.mean_field.analyze()</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_charges(water_molecule_coords):</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    xyz_h2os <span class="op">=</span> atom_string_to_list(water_molecule_coords)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    mulliken_charges_waters <span class="op">=</span> [<span class="op">*</span>mulliken_atomic_charges] <span class="op">*</span> (<span class="bu">len</span>(xyz_h2os) <span class="op">//</span> <span class="bu">len</span>(mulliken_atomic_charges))</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(q, xyz_h2os[i][<span class="dv">1</span>]) <span class="cf">for</span> i, q <span class="kw">in</span> <span class="bu">enumerate</span>(mulliken_charges_waters)]</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The Mulliken partial charges computed from an Hartree-Fock calculation in </span><span class="sc">{</span>basis<span class="sc">}</span><span class="ss"> are</span><span class="ch">\n</span><span class="ss">O = </span><span class="sc">{</span>mulliken_atomic_charges[<span class="dv">0</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">H1 = </span><span class="sc">{</span>mulliken_atomic_charges[<span class="dv">1</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">H2 = </span><span class="sc">{</span>mulliken_atomic_charges[<span class="dv">2</span>]<span class="sc">}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The Mulliken partial charges computed from an Hartree-Fock calculation in cc-pvdz are
+O = -0.6346652155730794
+H1 = 0.3194372332962432
+H2 = 0.31522798227682913.</code></pre>
+</div>
+</div>
+</section>
+<section id="computing-the-solvation-energies-using-qmmm-with-charge-embedding" class="level3">
+<h3 class="anchored" data-anchor-id="computing-the-solvation-energies-using-qmmm-with-charge-embedding">Computing the solvation energies using QM/MM with charge embedding</h3>
+<p>The next task involves computing solvated molecule energies using the QM/MM electrostatic embedding method. Using the previously calculated water atomic charges, the <code>QMMMProblemDecomposition</code> class consolidates necessary information for this calculation. This includes: - “geometry”: Coordinates of the molecule in a list format. - “mmpackage”: Molecular mechanics package utilized. - “charges”: Electrostatic charges and their coordinates. - “qmfragment”: A <code>Fragment</code> object defining the solver and related options for computing the molecular energy in quantum mechanics.</p>
+<p>It’s worth noting the various methods available for generating water cluster geometries. The following geometries were created by randomly positioning three water molecules around each terminal and subsequently optimized using the AMBER94 force field. This optimization step can be done with any molecular mechanics package, like <a href="https://openmm.org/">OpenMM</a> or <a href="https://www.rdkit.org/">RDKit</a>. An illustration showcasing one of the generated conformations is presented in the figure below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../img/cluster_glycine.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Cluster of water molecules and glycine</figcaption>
+</figure>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>xyz_waters_gly <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.08448       -2.25652       -0.22848</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -2.35312       -3.17615       -0.12238</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.83562       -1.85666        0.64078</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -0.29165       -1.17766       -1.97014</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="st">  H          0.55770       -1.31516       -1.52416</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -0.98020       -1.66830       -1.47470</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="st">  O          4.62948       -0.92998        0.20740</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="st">  H          5.09272       -1.49221        0.83838</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="st">  H          3.79167       -1.33448       -0.07876</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.80676        2.14474       -0.62525</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.85118        1.90309       -0.45829</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -2.93359        2.38421       -1.55080</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -1.81568       -0.72927        1.87434</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.84048       -0.80009        2.83473</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -2.66617       -0.33065        1.49202</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -3.76770        0.00135        0.46835</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -3.57200        0.87852        0.03795</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -3.59648       -0.71670       -0.16049</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>qmmm_model_gly <span class="op">=</span> QMMMProblemDecomposition({</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: atom_string_to_list(xyz_glycine),</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mmpackage"</span>: <span class="st">"rdkit"</span>,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"charges"</span>: get_charges(xyz_waters_gly),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qmfragment"</span>: Fragment(solver_high<span class="op">=</span><span class="st">"vqe"</span>,</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        options_high<span class="op">=</span>{<span class="st">"basis"</span>: basis, <span class="st">"frozen_orbitals"</span>: frozen_orbitals_gly, <span class="op">**</span>vqe_options})</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>e_qmmm_gly <span class="op">=</span> qmmm_model_gly.simulate()</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The hydration energy for glycine (neutral) is </span><span class="sc">{</span>(e_qmmm_gly<span class="op">-</span>e_quantum_gly) <span class="op">*</span> ha_to_kcalmol <span class="op">*</span> cal_to_j<span class="sc">:5.0f}</span><span class="ss"> kJ/mol."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The hydration energy for glycine (neutral) is  -136 kJ/mol.</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>xyz_waters_zwit <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.33478        0.43459        1.56814</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.65671       -0.25663        1.45580</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -3.11977        0.14754        1.04111</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="st">  O          3.57502        1.26874       -0.76381</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="st">  H          3.59649        0.47309       -0.17203</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="st">  H          4.40577        1.75433       -0.74479</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -0.93902        2.44112        0.89259</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.06155        3.25709        1.38776</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.58516        1.71621        1.19305</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -3.99606       -0.58515       -0.21107</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -4.64697       -0.10084       -0.73262</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -3.23854       -0.83634       -0.78921</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="st">  O          3.12434       -0.68537        0.90701</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="st">  H          3.33270       -0.62390        1.84641</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="st">  H          2.63054       -1.54344        0.73112</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="st">  O          1.55389       -2.64818        0.61476</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="st">  H          0.69747       -2.15400        0.51558</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="st">  H          1.54074       -3.48659        0.14319</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>qmmm_model_zwit <span class="op">=</span> QMMMProblemDecomposition({</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"geometry"</span>: atom_string_to_list(xyz_zwitterion),</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">"mmpackage"</span>: <span class="st">"rdkit"</span>,</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"charges"</span>: get_charges(xyz_waters_zwit),</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qmfragment"</span>: Fragment(solver_high<span class="op">=</span><span class="st">"vqe"</span>,</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        options_high<span class="op">=</span>{<span class="st">"basis"</span>: basis, <span class="st">"frozen_orbitals"</span>: frozen_orbitals_zwit, <span class="op">**</span>vqe_options})</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>e_qmmm_zwit <span class="op">=</span> qmmm_model_zwit.simulate()</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The hydration energy for glycine (zwitterion) is </span><span class="sc">{</span>(e_qmmm_gly<span class="op">-</span>e_quantum_zwit) <span class="op">*</span> ha_to_kcalmol <span class="op">*</span> cal_to_j<span class="sc">:5.0f}</span><span class="ss"> kJ/mol."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The hydration energy for glycine (zwitterion) is  -292 kJ/mol.</code></pre>
+</div>
+</div>
+<p>It’s important to note that we haven’t deducted the potential energy contribution of water molecules. This omission is intentional based on the PySCF backend used in this study, as outlined in its <a href="https://pyscf.org/user/qmmm.html">QM/MM documentation</a>. In PySCF’s implementation, the calculated total energy doesn’t include the static Coulomb interactions of MM point charges, MM energy, vdw interaction, or other bonding/non-bonding effects between QM and MM particles. Tangelo supports other chemistry backends, including Psi4, and users should refer to the relevant backend documentation to confirm energy contributions and understand the output.</p>
+<p>The results indicate negative energy differences, suggesting stabilization for both forms of the glycine amino acid in aqueous solutions. Experimental <span class="math inline">\(\Delta H_{\text{solv}}\)</span> is approximately 122 kJ/mol (Russian Journal of General Chemistry, 2008, 78, 6, 1155 - 1160). While we’re not directly computing free energy differences (for example, we didn’t include entropic effects), our results fall within a similar order of magnitude. Notably, the zwitterion form exhibits enhanced stabilization by the water shell, attributed to water’s polar nature, which enhances its ability to solvate polar molecules.</p>
+</section>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing words</h2>
+<p>This notebook serves as an introductory exploration of the QM/MM method applied to biochemical systems within aqueous environments, demonstrating how quantum algorithms in Tangelo can be applied to such applications.</p>
+<p>By examining glycine tautomers and stability differences, it showcases the potential of QM/MM for studying solvated systems. We demonstrated that QM/MM + VQE calculations are able to show both forms of the glycine amino acid are stabilized in aqueous solutions. Although we didn’t directly compute free energy differences, our results roughly align with experimental data, notably indicating the zwitterion’s enhanced stabilization by the water shell due to water’s inherent polarity.</p>
+<p>Like other problem decomposition techniques available in Tangelo (ONIOM, DMET, etc), the QM/MM implementation gives users the freedom to select and integrate quantum algorithms tailored to their research needs. In this tutorial, we simply used VQE as the fragment solver, but the QM/MM method can be paired with other quantum or classical solvers in Tangelo. Users can tailor quantum algorithms to their biochemical systems, optimizing their computational approach based on the nature and complexity of the problem at hand.</p>
+<p>What will you do with QM/MM and Tangelo ?</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ol type="1">
+<li>Liu, H.; Low, G.H.; Steiger, D.S.; Häner, T.; Reiher, M.; Troyer, M. Prospects of quantum computing for molecular sciences. Materials Theory. 2022, 6, 11.</li>
+<li>Izsák, R.; Riplinger, C.; Blunt, N.S.; de Souza, D.; Holzmann, N.; Crawford, O.; Camps, J.; Neese, F.; Schopf, P. Quantum computing in pharma: A multilayer embedding approach for near future applications. J. Comput. Chem. 2023, 44(3), 406.</li>
+<li>Jensen, J.H.; Gordon, M.S. On the Number of Water Molecules Necessary To Stabilize the Glycine Zwitterion. J. Am. Chem. Soc. 1995, 117, 8159-8170.</li>
+<li>Fernandez-Ramos, A.; Smedarchina, Z.; Siebrand, W.; Zgierski, M.Z. A direct-dynamics study of the zwitterion-to-neutral interconversion of glycine in aqueous solution. J. Chem. Phys. 2000, 113, 9714-9721.</li>
+<li>Valverde, D.; da Costa Ludwig, Z.M.; da Costa, C.R.; Ludwig, V.; Georg, H. C. Zwitterionization of glycine in water environment: Stabilization mechanism and NMR spectral signatures. J. Chem. Phys. 2018, 148, 024305.</li>
+<li>Bhate, M.P.; Woodard, J.C.; Mehta M.A.&nbsp;Solvation and Hydrogen Bonding in Alanine- and Glycine-Containing Dipeptides Probed Using Solution- and Solid-State NMR Spectroscopy. J. Am. Chem. Soc. 2009, 131, 27, 9579-9589.</li>
+<li>Takenaka, N.; Kitamura, Y.; Koyano, Y.; Asada, T.; Nagaoka, M. Reaction path optimization and vibrational frequency analysis via ab initio QM/MM free energy gradient (FEG) method: Application to isomerization process of glycine in aqueous solution. Theor. Chem. Acc. 2011, 130, 215-226.</li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
