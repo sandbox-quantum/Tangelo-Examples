@@ -1,1 +1,1 @@
-Sitemap: https://github.com/goodchemistryco/Tangelo-Examples/sitemap.xml
+Sitemap: https://goodchemistryco.github.io/Tangelo-Examples/sitemap.xml

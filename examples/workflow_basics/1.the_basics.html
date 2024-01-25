@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -79,7 +79,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -88,6 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -97,13 +104,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar docked nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+    <nav class="navbar navbar-expand-lg border-bottom" data-bs-theme="dark">
       <div class="navbar-container container-fluid">
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -112,30 +146,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Workflow Basics</a></li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Linq: the basics</a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Workflow Basics</a></li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Linq: the basics</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
@@ -426,13 +460,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Workflow Basics</a></li><li class="breadcrumb-item"><a href="../../examples/workflow_basics/1.the_basics.html">Linq: the basics</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Linq: the basics</h1>
 </div>
@@ -447,8 +481,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
+
+<section id="linq-the-basics" class="level1">
+<h1>Linq: the basics</h1>
 <p><code>linq</code> is a submodule of <code>tangelo</code> that helps you connect to and leverage the features of various backends, may they be simulators or QPUs. This notebook talks about the abstract format used in Tangelo to represent a quantum circuit, and how we can then convert it to other formats or objects used in popular packages such as Braket, Qulacs, Qiskit, Cirq (…) and leverage the different features and performance these platforms offer.</p>
 <p>Write code once, run it on various platforms with minimal effort: no need to rewrite everything in order to port your project to a different hardware, or generate what you need for a publication. It also means that whatever new method or code you develop can just run on all the compute backends available.</p>
 <section id="table-of-contents" class="level2">
@@ -466,7 +504,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="requirements" class="level2">
 <h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
 <p>In order to run the contents of this notebook, you need to have <code>tangelo</code> installed in your python environment. Some cells may require that a specific backend (such as <code>qiskit</code>, <code>qulacs</code>…) is installed to run. Please have a look at their installation instructions, if needed. Executing the cell below provides a quick way of installing the requirements of this notebook.</p>
-<div class="cell" data-execution_count="1">
+<div id="cell-3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -488,7 +526,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>An abstract gate is pretty much just a dictionary, with the fields above. Some gates do not need all these fields to be populated in order to be clearly defined: not all of them require control qubits or parameters for instance.</p>
 <p>Let’s have a look at how someone can define a gate and print it. You can see below that at instantiation, you can skip some fields or omit their name if the call is non-ambiguous. We always start with the name and the index of the target qubit, as all gates have them.</p>
 <p><strong>Note</strong>: qubit indexing starts at 0.</p>
-<div class="cell" data-execution_count="2">
+<div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Hadamard gate acting on qubit 2</span></span>
@@ -523,7 +561,7 @@ POTATO    target : [3]   </code></pre>
 <p><strong>Note</strong>: It is more efficient to build circuits by using list comprehension and other python syntaxes to efficiently build a list of <code>Gate</code> objects, and then passing it to the <code>Circuit</code> class; rather than use <code>add_gate</code> or concatenate a lot of small <code>Circuit</code> objects with <code>+</code>.</p>
 <p>The number of qubits required by your circuit is automatically computed, based on the highest qubit index appearing in your gates. It is however possible to enforce a fixed-sized for your quantum circuit, that goes beyond this number.</p>
 <p>We’re all grown-ups, and technically you could perform surgery on your quantum circuit, to directly modify the fields of some of its gates. This can be useful for instance, to change the parameters used in “variational gates” (i.e gates tagged as variational) in the context of variational algorithms. Use responsibly.</p>
-<div class="cell" data-execution_count="3">
+<div id="cell-8" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Here's a list of abstract gates</span></span>
@@ -590,7 +628,7 @@ RZ        target : [4]   parameter : 777.0   (variational)
 <p><strong>Note:</strong> Most functions do not yield a <code>Circuit</code> object, but a list of gates (see the convention used at the end of the function name). For performance reasons, it is better to concatenate a list of gates and then turn it into a Circuit, than to turn smaller lists of gates into <code>Circuit</code> objects and then use the <code>+</code> operator to concatenate them. This will not be an issue unless you are for example running an algorithm that requires a circuit to be rebuilt frequently and requiring many <code>Circuit</code> objects to be concatenated.</p>
 <p>Below, an example of how we can design a function to easily produce <code>Circuit</code> objects implementing a parameter sweep, working for any pauli measurement basis, which is not uncommon in hardware experiments: just a combination of loops and helper functions.</p>
 <p>The measurement basis is assumed to be passed as a list of 2-tuples of the form <code>(i, K)</code> where <code>i</code> is an integer denoting the qubit index and <code>K</code> a letter (string) that can take the value ‘I’, ‘X’, ‘Y’, or ‘Z’; which also happens to be the format encountered while traversing a <code>QubitOperator</code> object in <code>Openfermion</code>.</p>
-<div class="cell" data-execution_count="4">
+<div id="cell-12" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> measurement_basis_gates, pauli_string_to_of</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> theta_sweep(theta, m_basis):</span>
@@ -639,7 +677,7 @@ RX        target : [1]   parameter : 1.5707963267948966
 <p>A <code>translate_operator</code> function is also available, for doing the equivalent with qubit / Pauli operators.</p>
 <p>The <code>translator</code> module defines how the content of your abstract gates should be parsed, what gates are supported, the convention used, and is subject to error-checking: the contents must make sense for the target backend, otherwise you will get errors. At that point, your gates must be supported and their parameters correct.</p>
 <p>You can find in the translator module the dictionaries telling you what backends are supported, and what gates they currently support. As you can see, the exceptional <code>POTATO</code> gate is not yet supported by any available backend. You’d most certainly get an error if you tried to translate an abstract circuit containing such a gate into a given backend’s format, unless a major breakthrough in toaster-oven technology happens and we integrate this disruptive compute platform.</p>
-<div class="cell" data-execution_count="8">
+<div id="cell-14" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_supported_gates</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> backend, gates <span class="kw">in</span> get_supported_gates().items():</span>
@@ -660,7 +698,7 @@ braket : ['CNOT', 'CPHASE', 'CRZ', 'CSWAP', 'CX', 'CY', 'CZ', 'H', 'PHASE', 'RX'
 <p><strong>Note</strong>: Backends often have different conventions, operations may differ up to a phase or sign convention for parametrized gates for instance. Since the outcome of your simulation should not depend on the target backend, the translation step enforces a given convention, detailed in the documentation. In particular, this implies that the native circuit written for a given backend may not be equivalent to the same one written in abstract format, and then translated to this backend. Be mindful of that as you try to take some code written for a given backend, to port it to <code>tangelo</code>.</p>
 <p>Below, we show how <code>translate_circuit</code> returns backend-specific objects, all with their usual built-in functionalities. See how the print function behaves differently for each of them for instance, and remember that you can use their built-in methods to accomplish many things (ex: after translating your circuit into a <code>Qiskit.QuantumCircuit</code> object, you can use the <code>draw</code> method to export it in a nice format: https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.draw.html).</p>
 <p>Here are a few examples. Some cells may fail depending on what packages you have installed.</p>
-<div class="cell" data-scrolled="true" data-execution_count="9">
+<div id="cell-16" class="cell" data-scrolled="true" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> translate_circuit</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the Tangelo format as an intermediate, many combinations of source and target</span></span>
@@ -753,7 +791,7 @@ operation MyQsharpOperation() : Result[] {
 </code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="10">
+<div id="cell-17" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>circ3_qiskit <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qiskit"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_qiskit<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -796,7 +834,7 @@ rz(777) q[4];
 </code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="11">
+<div id="cell-18" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>circ3_qulacs <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qulacs"</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_qulacs<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -813,7 +851,7 @@ Gaussian  : no
 </code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
+<div id="cell-19" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>circ3_braket <span class="op">=</span> translate_circuit(circuit3, <span class="st">"braket"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_braket<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -830,7 +868,7 @@ q4 : -Rz(777.00)------------
 T  : |    0     |1|   2    |</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="13">
+<div id="cell-20" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>circ3_cirq <span class="op">=</span> translate_circuit(circuit3, <span class="st">"cirq"</span>)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_cirq<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -858,7 +896,7 @@ T  : |    0     |1|   2    |</code></pre>
 <p>The <code>get_backend</code> function provides a common interface to all supported compute backends, allowing users to focus on the high-level details of their simulation (number of shots, noise model…) without writing low-level code for the target backend. It returns an object inheriting from the abstract <code>Backend</code> class, which can refer to a simulator or an actual QPU. There are built-in backends for various simulators (qiskit, qulacs, cirq…) and it’s possible to define your own backend.</p>
 <p>The backend object handles all translation and quantum circuit simulation steps, directly returning the results to the user. Some post-processing methods, such as the computation of the expectation value of a qubit operator, are available as well.</p>
 <p>Not all backends provide the same features: some of them do not give access to a state-vector representation of the quantum state, or do not support noisy simulation for instance. Just like the <code>translator</code> module, the <code>simulator</code> module provides a data-structure containing the currently supported features and characteristics of some backends.</p>
-<div class="cell" data-execution_count="14">
+<div id="cell-23" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, backend_info</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> backend, info <span class="kw">in</span> backend_info.items():</span>
@@ -879,7 +917,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <li>the second entry contains the state-vector representation of the quantum state, if available on the target backend and if the user requires it using the <code>return_statevector</code> optional parameter. Watch out for the order of the amplitudes in the state vector: the <code>backend_info</code> data-structure described above helps with understanding how they map to the different basis states.</li>
 </ul>
 <p>The <code>simulate</code> method can also take the optional parameter <code>initial_statevector</code>, which allows to start the system in a given state and “resume” a simulation. It can in particular be useful to avoid resimulating something again and again, when the result is already known and could just be loaded instead. This is one of the perks of statevector simulators !</p>
-<div class="cell" data-execution_count="15">
+<div id="cell-25" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a circuit object in abstract format</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circuit([Gate(<span class="st">"RX"</span>, <span class="dv">0</span>, parameter<span class="op">=</span><span class="fl">2.</span>), Gate(<span class="st">"RY"</span>, <span class="dv">1</span>, parameter<span class="op">=-</span><span class="fl">1.</span>)])</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -911,7 +949,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <li><code>n_shots</code> and <code>noise_model</code> can be changed after the class has been instantiated</li>
 </ul>
 <p>In the cell below, we can see how instantiating a shot-based backend and increasing shot count yields results that are getting closer to the exact theoretical distribution.</p>
-<div class="cell" data-execution_count="16">
+<div id="cell-28" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exact probabilities</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sim_qulacs <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"cirq"</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>exact_freqs, _ <span class="op">=</span> sim_qulacs.simulate(c)</span>
@@ -941,7 +979,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <h3 class="anchored" data-anchor-id="mixed-states">Mixed states</h3>
 <p>The abstract circuit format provides a <code>MEASURE</code> instruction, supported by most compute backends, with the intent of simulating mixed states / mid-circuit measurements in the computational basis (e.g along the Z axis). As mixed states cannot be represented by a statevector, the statevector simulator backends default to simulating the quantum circuit with shots, in order to return a histogram of frequencies. Users thus must ensure the <code>n_shots</code> attribute of their <code>Backend</code> object has been set.</p>
 <p>Simulating a mixed state can be considerably slower than simulating a pure state (some backends are particularly <strong>not</strong> good at this). Including final measurements in your state-preparation circuit is not recommended, if you intend to use <code>linq</code> to simulate it.</p>
-<div class="cell" data-execution_count="17">
+<div id="cell-30" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This circuit prepares a Bell pair (superposition of states |00&gt; and |11&gt;), then measures and flips qubit 0.</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Depending on the result of the measurement, the statevector describing the quantum state would be different.</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>circuit_mixed <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span><span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>), Gate(<span class="st">"MEASURE"</span>, <span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">0</span>)])</span>
@@ -959,7 +997,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <h3 class="anchored" data-anchor-id="expectation-values">Expectation values</h3>
 <p>The <code>get_expectation_value</code>method can be used to compute the expectation value of a qubit / Pauli operator with regards to a state-preparation circuit, and <code>get_expectation_value_from_frequencies_oneterm</code> can directly take a sparse histogram of frequencies obtained by executing or simulating a quantum circuit on a backend (which could be resulting from a QPU experiment).</p>
 <p><strong>Note</strong>: For now, users are to manually loop over terms and corresponding histograms if they intend to compute the expectation value of a linear combination of operators.</p>
-<div class="cell" data-execution_count="18">
+<div id="cell-33" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Openfermion operators can be used</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion.ops <span class="im">import</span> QubitOperator</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>op <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> QubitOperator(<span class="st">'Z0'</span>)</span>
@@ -987,6 +1025,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <p>What will you do with Tangelo ?</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1069,10 +1108,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1082,8 +1120,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1096,6 +1143,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1139,6 +1305,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1164,6 +1331,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1224,6 +1417,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 

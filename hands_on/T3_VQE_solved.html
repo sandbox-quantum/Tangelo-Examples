@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.549">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -79,7 +79,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -88,6 +94,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -97,13 +104,40 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar docked nav-fixed fullcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark border-bottom">
+    <nav class="navbar navbar-expand-lg border-bottom" data-bs-theme="dark">
       <div class="navbar-container container-fluid">
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -112,30 +146,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../hands_on/T1_circuits.html">Hands On</a></li><li class="breadcrumb-item"><a href="../hands_on/T3_VQE_solved.html">Tangelo hands-on: VQE framework</a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../hands_on/T1_circuits.html">Hands On</a></li><li class="breadcrumb-item"><a href="../hands_on/T3_VQE_solved.html">Tangelo hands-on: VQE framework</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
@@ -426,13 +460,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../hands_on/T1_circuits.html">Hands On</a></li><li class="breadcrumb-item"><a href="../hands_on/T3_VQE_solved.html">Tangelo hands-on: VQE framework</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Tangelo hands-on: VQE framework</h1>
 </div>
@@ -447,8 +481,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
+
+<section id="tangelo-hands-on-vqe-framework" class="level1">
+<h1>Tangelo hands-on: VQE framework</h1>
 <section id="before-you-jump-in" class="level2">
 <h2 class="anchored" data-anchor-id="before-you-jump-in">Before you jump in</h2>
 <p>This hands-on notebook complements existing tutorials, documentation and the developer notes available in the Tangelo GitHub repositories, which present content in much more depth.</p>
@@ -457,7 +495,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Getting started</strong></p>
 <p>Please have a look at the landing page of this repository for guidance about how to deploy these notebooks and get started easily.</p>
 <p>In order to complete this hands-on tutorial, we recommend you use the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
-<div class="cell">
+<div id="d3kXtsxtpUED" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -475,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The use cases for this hands-on will be small molecular systems. In-depth understanding of the chemistry behind second quantization, Hartree-Fock, active space selection and classical solvers is nice to have, but not necessary to go throuygh these hands-on. Feel free to have a look at the list of resources recommended in the first section of this hands-on if you would like to know more about these topics.</p>
 <p>We’ll start with the iconic second quantized <span class="math inline">\(H_2\)</span> molecule in <code>sto-3g</code> basis as an initial use case for this hands-on. We’ll quickly ramp up in higher basis sets and also play with <span class="math inline">\(H_2O\)</span>.</p>
 <p>The cell below defines the molecule explicitly, specifying a geometry, charge, spin and basis set. Under the hood, a classical chemistry library (pyscf, psi4…) is used to create this object and compute its mean-field, which will enable more advanced calculations.</p>
-<div class="cell" data-outputid="3add8d0d-9e45-45a5-e19e-8b21922b9519" data-execution_count="2">
+<div id="c9f73f3a" class="cell" data-outputid="3add8d0d-9e45-45a5-e19e-8b21922b9519" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define H2 molecule in minimal basis set</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -489,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>Before we delve into quantum algorithms implementing variational approaches, let’s use classical solvers such as FCI and CCSD to compute references results for the ground state energy of our molecule. These classical solvers can be used to benchmark the accuracy of our variational algorithms later in this hands-on. The results are computed in Hartrees, and in practice an accuracy of 3 digits of precision (e.g about <code>1 mHa</code>) is considered satisfying.</p>
-<div class="cell" data-outputid="ed0a93c1-9804-4ea1-8b86-4954db0540a2" data-execution_count="3">
+<div id="lRhu78uBsZDa" class="cell" data-outputid="ed0a93c1-9804-4ea1-8b86-4954db0540a2" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver, CCSDSolver</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The FCI solver is the reference for chemists, but computational cost scales badly.</span></span>
@@ -513,7 +551,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you use the <code>VQESolver</code> class to compute the ground state energy of our <span class="math inline">\(H_2\)</span> molecule? Use the default <code>vqe_options</code> below. You should find a result of about <code>-1.137270168 Ha</code>.</p>
 </blockquote>
-<div class="cell" data-outputid="84aaf10e-2fce-435e-cc57-0551838e312b" data-execution_count="4">
+<div id="ec8ff26a" class="cell" data-outputid="84aaf10e-2fce-435e-cc57-0551838e312b" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol}</span>
@@ -540,7 +578,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Using the output of the cell below, can you find what qubit mapping, ansatz, backend and classical optimizer were used in your previous simulation ?</p>
 </blockquote>
-<div class="cell" data-outputid="3921c7bd-7454-4581-dd5e-64ed02bbea9b" data-execution_count="6">
+<div id="aac2244c" class="cell" data-outputid="3921c7bd-7454-4581-dd5e-64ed02bbea9b" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>pprint(<span class="bu">vars</span>(vqe_solver))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -615,7 +653,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Now that you’ve taken a peek inside the <code>vqe_solver</code> object, can you print: - the optimal parameters values found by VQE ? - the optimal circuit ?</p>
 </blockquote>
-<div class="cell" data-outputid="ad42342a-eabc-4cff-8e4d-aa3405d49f59" data-execution_count="5">
+<div id="d1f59d6b" class="cell" data-outputid="ad42342a-eabc-4cff-8e4d-aa3405d49f59" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Optimal circuit ::</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>optimal_circuit<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Optimal parameters ::</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>optimal_var_params<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -789,7 +827,7 @@ Optimal parameters ::
 <blockquote class="blockquote">
 <p><strong>Q:</strong> The <code>simulate</code> method runs the entire VQE algorithm, which performed many energy estimations along the way, driven by the classical optimizer. Can you instead perform a single energy estimation, using <code>vqe_solver</code> ? If you pass the optimal parameters as input, you should see that the output is the optimal energy.</p>
 </blockquote>
-<div class="cell" data-outputid="1f8ab0c8-ddca-4273-8a2d-97c7a872aa78" data-execution_count="7">
+<div id="wT5TOBAD2TQ0" class="cell" data-outputid="1f8ab0c8-ddca-4273-8a2d-97c7a872aa78" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vqe_solver.energy_estimation([<span class="op">-</span><span class="fl">5.44105775e-05</span>, <span class="fl">5.65245079e-02</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -807,7 +845,7 @@ Optimal parameters ::
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you instantiate <code>VQESolver</code> objects using a few of these different qubit mappings, and see how they impact the complexity of the algorithm using the <code>get_resources</code> method and printing the <code>qubit_hamiltonian</code>?</p>
 </blockquote>
-<div class="cell" data-outputid="874a9429-75aa-4562-eab5-243ebc88591b" data-execution_count="10">
+<div id="cd889622" class="cell" data-outputid="874a9429-75aa-4562-eab5-243ebc88591b" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> qb_mapping <span class="kw">in</span> [<span class="st">"JW"</span>, <span class="st">"SCBK"</span>, <span class="st">"JKMN"</span>]:</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># INSERT CODE HERE</span></span>
@@ -875,21 +913,21 @@ JKMN :: -1.1372701683419368
 <h3 class="anchored" data-anchor-id="b-compute-backends">2b) Compute backends</h3>
 <p>Algorithms in Tangelo are backend-agnostic. That means that you do not have to rewrite your code if you want to run it on a different simulator or quantum device, switching between them is rather effortless. There’s a lot of quantum simulators out there, with different tradeoffs between speed, accuracy, maximal circuit size or ability to simulate noise.</p>
 <p>Let’s revisit <span class="math inline">\(H_2\)</span> in a bigger basis set (this means a more accurate representation, but more intensive calculations), and see what impact the choice of backend has on our experience.</p>
-<div class="cell" data-execution_count="20">
+<div id="97a5a42a" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tangelo has some built-in molecules that are often reused in tests and tutorials.</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2_321g</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_321g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We’ll use FCI to get the exact value of the ground state of this molecule, for reference:</p>
-<div class="cell" data-outputid="2207c4b0-c6d3-456a-94a7-85185fd5aa12" data-execution_count="16">
+<div id="vrDyYOBUA0Hj" class="cell" data-outputid="2207c4b0-c6d3-456a-94a7-85185fd5aa12" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>fci_energy <span class="op">=</span> FCISolver(mol).simulate()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fci_energy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-1.1478303189235124</code></pre>
 </div>
 </div>
-<div class="cell" data-outputid="ee600577-907d-4be2-83f6-21c6f2ae2357" data-execution_count="12">
+<div id="aca9e218" class="cell" data-outputid="ee600577-907d-4be2-83f6-21c6f2ae2357" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we attempt to simulate anything: let's get an idea of the compute requirements</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'd rather not try to simulate something that we think is not worth it.</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -905,7 +943,7 @@ JKMN :: -1.1372701683419368
 <p><strong>Q:</strong> Can you fill in the cell below to run the same VQE approach on this molecule, with the different backends below ? What do you observe ?</p>
 </blockquote>
 <p>This cell may take a few minutes to run, depending on the machine used. Feel free to continue reading, interrupt the execution of the cell, or revert the molecule to our smaller original use case <code>mol_H2_sto3g</code>.</p>
-<div class="cell" data-outputid="6f79aaa2-9c79-4ac3-c83f-dbae5c354db2" data-execution_count="21">
+<div id="f8b577a2" class="cell" data-outputid="6f79aaa2-9c79-4ac3-c83f-dbae5c354db2" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> [<span class="st">"qulacs"</span>, <span class="st">"cirq"</span>, <span class="st">"qiskit"</span>]:</span>
@@ -939,7 +977,7 @@ qiskit     :: 246.155 s      (energy = -1.147830223398106)</code></pre>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Water_molecule_2.svg/2560px-Water_molecule_2.svg.png" alt="H2O" width="400"></p>
 <p><span class="math inline">\(H_2O\)</span> is a humble molecule, but already quite a challenge with VQE. Assume you want to compute the ground state energy of <span class="math inline">\(H_2O\)</span> in the <code>sto-3g</code> basis set using VQE. Use everything at your disposal here, and don’t be afraid to explore (but maybe use <code>get_resources</code> before blindly jumping into <code>simulate</code>).</p>
 <p>It’s still pretty easy for FCI on a laptop though, and we can get a reference value:</p>
-<div class="cell" data-outputid="784402fc-ddc8-4ecf-9b7a-fb6c2441583b" data-execution_count="24">
+<div id="3445c8f9" class="cell" data-outputid="784402fc-ddc8-4ecf-9b7a-fb6c2441583b" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2O_sto3g</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2O_sto3g</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -953,7 +991,7 @@ qiskit     :: 246.155 s      (energy = -1.147830223398106)</code></pre>
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you compute the ground state energy of this molecule ? - How close can you get to FCI reference results ? - How much can you reduce computational requirements ? - How low can you bring your time-to-solution ?</p>
 </blockquote>
-<div class="cell" data-outputid="663c9cbd-b94c-491a-b612-251b909c977e" data-execution_count="22">
+<div id="cc16eeb3" class="cell" data-outputid="663c9cbd-b94c-491a-b612-251b909c977e" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR OWN CODE</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">"qulacs"</span></span>
@@ -991,6 +1029,7 @@ VQESolver optimization results:
 qulacs     :: 6.904 s    (energy = -1.1478236014490957)</code></pre>
 </div>
 </div>
+</section>
 </section>
 <section id="final-words" class="level1">
 <h1>Final words</h1>
@@ -1080,10 +1119,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1093,8 +1131,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1107,6 +1154,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1150,6 +1316,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1175,6 +1342,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1235,6 +1428,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+
 
 
 
