@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -456,13 +456,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="iterative-qubit-coupled-cluster-using-only-clifford-circuits" class="level1">
-<h1>Iterative Qubit Coupled Cluster using only Clifford circuits</h1>
 <p>This notebook shows how to implement iQCC using only Clifford circuits with Tangelo, and accompanies a note released at <a href="https://arxiv.org/abs/2211.10501">arXiv:2211.10501</a>. We provide here the abstract of the article in this notebook for convenience and highlight the main steps of our implementation. Please refer to the article for full details.</p>
 <section id="abstract" class="level3">
 <h3 class="anchored" data-anchor-id="abstract">Abstract</h3>
 <p>We draw attention to a variant of the iterative qubit coupled cluster (iQCC) method that only uses Clifford circuits. The iQCC method relies on a small parameterized wave function ansatz, which takes form as a product of exponentiated Pauli word operators, to approximate the ground state electronic energy of a mean field reference state through iterative qubit Hamiltonian transformations. In this variant of the iQCC method, the wave function ansatz at each iteration is restricted to a single exponentiated Pauli word operator and parameter. The Rotosolve algorithm utilizes Hamiltonian expectation values computed with Clifford circuits to optimize the single-parameter Pauli word ansatz. Although the exponential growth of Hamiltonian terms is preserved with this variation of iQCC, we suggest several methods to mitigate this effect. This method is useful for near-term variational quantum algorithm applications as it generates good initial parameters by using Clifford circuits which can be efficiently simulated on a classical computers according to the Gottesman–Knill theorem. It may also be useful beyond the NISQ era to create short-depth Clifford pre-optimized circuits that improve the success probability for fault-tolerant algorithms such as phase estimation.</p>
-<div id="cell-2" class="cell" data-execution_count="1">
+<div id="cell-3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -473,7 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="define-clifford-simulator" class="level3">
 <h3 class="anchored" data-anchor-id="define-clifford-simulator">Define Clifford simulator</h3>
 <p>We define a Clifford simulator using cirq. This is a child class of <code>CirqSimulator</code> where we overwrite <code>simulate_circuit</code> and use <code>cirq.CliffordSimulator</code>.</p>
-<div id="cell-4" class="cell" data-execution_count="8">
+<div id="cell-5" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
@@ -517,7 +515,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="class-that-implements-iqcc-using-only-clifford-circuits" class="level3">
 <h3 class="anchored" data-anchor-id="class-that-implements-iqcc-using-only-clifford-circuits">Class that implements iQCC using only Clifford circuits</h3>
 <p>The <code>iQCConlyClifford</code> class is defined as a child class of <code>ADAPTSolver</code> and replaces the <code>simulate</code> and <code>rank_pool</code> functions. A non-clifford backend is used only to check that the full circuit obtains the same energy using the original qubit hamiltonian.</p>
-<div id="cell-6" class="cell" data-execution_count="9">
+<div id="cell-7" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Type</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -696,7 +694,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="running-the-algorithm-for-h3" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-algorithm-for-h3">Running the algorithm for H<sub>3</sub></h3>
-<div id="cell-8" class="cell" data-execution_count="10">
+<div id="cell-9" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.molecule <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> FCISolver</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -769,7 +767,7 @@ with corresponding parameters
 </section>
 <section id="plots-of-energy-convergence-and-growth-of-hamiltonian-terms" class="level3">
 <h3 class="anchored" data-anchor-id="plots-of-energy-convergence-and-growth-of-hamiltonian-terms">Plots of energy convergence and growth of Hamiltonian terms</h3>
-<div id="cell-10" class="cell" data-execution_count="11">
+<div id="cell-11" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
@@ -798,14 +796,14 @@ with corresponding parameters
 <section id="optimizing-interior-generators" class="level3">
 <h3 class="anchored" data-anchor-id="optimizing-interior-generators">Optimizing interior generators</h3>
 <p>Below is the method highlighted in the manuscript to optimize interior generators</p>
-<div id="cell-12" class="cell" data-execution_count="12">
+<div id="cell-13" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dressed_qu_op <span class="op">=</span> qcc_op_dress(deepcopy(iQCC_C_solver.qubit_hamiltonian),</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                             iQCC_C_solver.vqe_solver.ansatz.operators[::<span class="op">-</span><span class="dv">1</span>],</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                             iQCC_C_solver.vqe_solver.optimal_var_params[::<span class="op">-</span><span class="dv">1</span>])</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ref_circ <span class="op">=</span> iQCC_C_solver.vqe_solver.ansatz.prepare_reference_state()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="13">
+<div id="cell-14" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> optimize_interior_generator(op_index, ref_circ):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    dressed_qu_op <span class="op">=</span> qcc_op_dress(deepcopy(iQCC_C_solver.qubit_hamiltonian),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="bu">list</span>(<span class="bu">reversed</span>(iQCC_C_solver.vqe_solver.ansatz.operators[op_index<span class="op">+</span><span class="dv">1</span>:<span class="dv">4</span>])),</span>
@@ -862,7 +860,7 @@ with corresponding parameters
 <span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta_min, new_energy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Perform one rotosolve sweep</p>
-<div id="cell-15" class="cell" data-execution_count="14">
+<div id="cell-16" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>starting_energy <span class="op">=</span> iQCC_C_solver.vqe_solver.energy_estimation(iQCC_C_solver.vqe_solver.optimal_var_params)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"iQCC using only Clifford circuits results in energy </span><span class="sc">{</span>starting_energy<span class="sc">}</span><span class="ss"> with error </span><span class="sc">{</span>starting_energy<span class="op">-</span>exact<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -895,7 +893,6 @@ The calculated new energy is -1.5268319664163104 with error 0.000115038720169158
 <p>This notebook shows that a variant of iQCC can be implemented while only using Clifford circuits as described in our <a href="https://arxiv.org/abs/2211.10501">manuscript</a>. This method can be used to initialize the QCC ansatz for VQE or to create short depth circuits that improve the success probability of fault-tolerant algorithms such as phase estimation.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -978,6 +975,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1012,7 +1027,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

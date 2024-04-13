@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,13 +485,11 @@ window.Quarto = {
 </header>
 
 
-<section id="adapt-vqe" class="level1">
-<h1>ADAPT-VQE</h1>
 <p>ADAPT-VQE was introduced by <a href="https://www.nature.com/articles/s41467-019-10988-2">Grimsley et al</a> as a solution to the often impracticably deep, and not necessarily accurate, static VQE circuits. In ansatze like UCCSD, one easily reaches the order of thousands of gates, even for modestly sized molecules. In UCCSD and its generalized UCCGSD, the number of fermionic excitations in the ansatz scales like <span class="math inline">\(\mathcal{O}(N^2M^2)\)</span>, and <span class="math inline">\(\mathcal{O}(N^4)\)</span> respectively. Here <span class="math inline">\(N\)</span> refers to the number of spin-orbitals in the problem basis, and <span class="math inline">\(M\)</span> the number of electrons. .</p>
 <p>In ADAPT-VQE, an ansatz which approximates not UCCSD/UCCGSD, but in fact FCI, is built iteratively. Over a series of cycles, the ansatz circuit is grown to achieve an approximation to FCI with a minimal number of circuit elements. In this way, ADAPT-VQE can be thought as a meta-VQE: at each cycle, a new ansatz is defined, and its parameters optimized according to conventional VQE. As the cycles proceed, the ansatz grows in both complexity and expressibility. This algorithm comes at the expense of a significant increase in measurement overhead. In order to identify the best operator to append to the present ansatz circuit, a large number of measurements are performed to rank the available operators in order of their ability to further reduce the ansatz state energy.</p>
 <p>In this notebook, we explore the implementation of this algorithm, available in Tangelo. The original algorithm is examined first, and has shown some success in reducing the number of variational parameters required to express the quantum state. Then, we examine another version of ADAPT-VQE which is successful at reducing the circuit size by using a pool of operators defined from the Qubit Hamiltonian.</p>
 <p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -511,7 +509,7 @@ window.Quarto = {
 <section id="running-the-adapt-vqe-algorithm" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-adapt-vqe-algorithm">Running the Adapt-VQE algorithm</h3>
 <p>We define a molecule <span class="math inline">\(H_4\)</span> in this case and use the <code>AdaptSolver</code> class to run Adapt-VQE.</p>
-<div id="cell-4" class="cell" data-execution_count="2">
+<div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> ADAPTSolver</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -528,7 +526,7 @@ window.Quarto = {
 </div>
 </div>
 <p>After 7 cycles, we force the algorithm to terminate. We can now compare the results against the predictions of FCI.</p>
-<div id="cell-6" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver</span>
@@ -555,7 +553,7 @@ window.Quarto = {
 </div>
 </div>
 <p>Ok, so after 7 cycles, we have an error of 0.9 mHa, within chemical accuracy of FCI. How does this all compare against UCCSD-VQE?</p>
-<div id="cell-8" class="cell" data-execution_count="4">
+<div id="cell-9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver, BuiltInAnsatze</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver({<span class="st">'molecule'</span>: mol, <span class="st">'ansatz'</span>: BuiltInAnsatze.UCCSD})</span>
@@ -565,7 +563,7 @@ window.Quarto = {
 <pre><code>-2.028138757838466</code></pre>
 </div>
 </div>
-<div id="cell-9" class="cell" data-execution_count="5">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ADAPT-VQE ERROR: </span><span class="sc">{</span>adapt_solver<span class="sc">.</span>energies[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> exact <span class="sc">:0.4E}</span><span class="ss"> Ha'</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'UCCSD-VQE ERROR: </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>optimal_energy <span class="op">-</span> exact <span class="sc">:0.4E}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -574,7 +572,7 @@ UCCSD-VQE ERROR: 9.3174E-04 Ha</code></pre>
 </div>
 </div>
 <p>From the perspective of energy accuracy, the two have reached very similar results. The big advantage here however, are in the resources required for the ADAPT-VQE ansatz circuit:</p>
-<div id="cell-11" class="cell" data-execution_count="6">
+<div id="cell-12" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ADAPT RESOURCES:</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>adapt_solver<span class="sc">.</span>get_resources()<span class="sc">}</span><span class="ch">\n</span><span class="ss">'</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'UCCSD RESOURCES:</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>get_resources()<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -595,7 +593,7 @@ UCCSD RESOURCES:
 <section id="hamiltonian-inspired-qubit-adapt" class="level3">
 <h3 class="anchored" data-anchor-id="hamiltonian-inspired-qubit-adapt">Hamiltonian-Inspired Qubit-ADAPT</h3>
 <p>We are going to use the qubit Hamiltonian <span class="math inline">\(H\)</span> to establish a set of pool generators to use in our implementation of ADAPT-VQE. For each term in the Hamiltonian which acts on a distinct combination of qubits, we’ll add a pool operator which is guaranteed to have a non-zero commutator with respect to H, and therefore a finite gradient. This will give us a fairly compact set of operators in the pool, all of which are likely to be useful in our ansatz construction. To do this, we will scan through all terms in the qubit Hamiltonian. For each, we will identify the Pauli operators associated with electronic excitation (X and Y gates). We discard Z gates from the Pauli string. If the number of Y gates in a string is even, we can use this to construct an excitation pool element that preserves T-symmetry, by flipping one of the other X gates to a Y, or a Y to an X. Below, we’ll flip the first X or Y to its partner.</p>
-<div id="cell-15" class="cell" data-execution_count="7">
+<div id="cell-16" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_pool(qubit_hamiltonian, n_qubits):</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Use Hamiltonian to identify non-commuting Pauli strings to use as operator pool.</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    We identify terms with even number of Y-operators, in order to define excitations </span></span>
@@ -647,7 +645,7 @@ UCCSD RESOURCES:
 <span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pool_generators</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To exemplify the generation of an operator pool, we will apply this method to a simple Hamiltonian consisting of a single fermionic excitation and its Hermitian conjugate.</p>
-<div id="cell-17" class="cell" data-execution_count="8">
+<div id="cell-18" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>qubit_operator <span class="op">=</span> QubitOperator(((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'X'</span>), (<span class="dv">2</span>, <span class="st">'Y'</span>), (<span class="dv">3</span>, <span class="st">'Y'</span>)), <span class="op">-</span><span class="fl">1.0</span>) <span class="op">\</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                  <span class="op">+</span> QubitOperator(((<span class="dv">0</span>, <span class="st">'X'</span>), (<span class="dv">1</span>, <span class="st">'Y'</span>), (<span class="dv">2</span>, <span class="st">'Y'</span>), (<span class="dv">3</span>, <span class="st">'X'</span>)), <span class="fl">1.0</span>) <span class="op">\</span></span>
@@ -664,7 +662,7 @@ UCCSD RESOURCES:
 <section id="defining-the-problem" class="level3">
 <h3 class="anchored" data-anchor-id="defining-the-problem">Defining the problem</h3>
 <p>For the generator pool we’ve considered here, the smallest non-trivial problem to consider is <span class="math inline">\(H_4\)</span>, as <span class="math inline">\(H_2\)</span> has only one generator and ADAPT terminates at FCI accuracy after a single iteration. So we’ll apply the qubit-ADAPT algorithm to the same <span class="math inline">\(H_4\)</span> molecule as we did above with the UCCGSD pool. We obtain the qubit operator using <code>fermion_to_qubit_mapping</code> to make use of the pool function defined above.</p>
-<div id="cell-20" class="cell" data-execution_count="9">
+<div id="cell-21" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> count_qubits</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -673,7 +671,7 @@ UCCSD RESOURCES:
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> count_qubits(qubit_operator)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With the problem defined and the <code>get_pool</code> function prepared, we can proceed to initiate the ADAPT-VQE method. This is as simple as defining the problem with a options dictionary and initiating the <code>ADAPTSolver</code> class.</p>
-<div id="cell-22" class="cell" data-execution_count="10">
+<div id="cell-23" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> ADAPTSolver</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>opt_dict <span class="op">=</span> {<span class="st">"molecule"</span>: mol,</span>
@@ -691,7 +689,7 @@ UCCSD RESOURCES:
 </div>
 </div>
 <p>After 12 cycles, we force the algorithm to terminate. We can now compare the results against the predictions of FCI.</p>
-<div id="cell-24" class="cell" data-execution_count="11">
+<div id="cell-25" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>errors <span class="op">=</span> np.array(adapt_solver.energies) <span class="op">-</span> exact</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fig,ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">1</span>)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>ax.plot(errors)</span>
@@ -712,7 +710,7 @@ UCCSD RESOURCES:
 </div>
 </div>
 <p>Ok so after 12 cycles, we have an error of 1.4 mHa, within chemical accuracy of FCI. How does this all compare against UCCSD-VQE?</p>
-<div id="cell-26" class="cell" data-execution_count="12">
+<div id="cell-27" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ADAPT-VQE ERROR: </span><span class="sc">{</span>adapt_solver<span class="sc">.</span>energies[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> exact <span class="sc">:0.4E}</span><span class="ss"> Ha'</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'UCCSD-VQE ERROR: </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>optimal_energy <span class="op">-</span> exact <span class="sc">:0.4E}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -721,7 +719,7 @@ UCCSD-VQE ERROR: 9.3174E-04 Ha</code></pre>
 </div>
 </div>
 <p>From the perspective of energy accuracy, the two have reached very similar results, within a factor of two. The big advantage here however, are in the resources required for this ansatz circuit:</p>
-<div id="cell-28" class="cell" data-execution_count="13">
+<div id="cell-29" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'ADAPT RESOURCES:</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>adapt_solver<span class="sc">.</span>get_resources()<span class="sc">}</span><span class="ch">\n</span><span class="ss">'</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'UCCSD RESOURCES:</span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>get_resources()<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -738,7 +736,7 @@ UCCSD RESOURCES:
 <section id="restricting-quantum-numbers" class="level3">
 <h3 class="anchored" data-anchor-id="restricting-quantum-numbers">Restricting Quantum numbers</h3>
 <p>There is one small problem with a qubit inspired ansatz. It does not generally respect the symmetry of the problem. We can now examine the <span class="math inline">\(\hat{S}^2\)</span>, <span class="math inline">\(\hat{S}_Z\)</span> and the <span class="math inline">\(\hat{N}\)</span> operators to determine if any loss of symmetry has occured. For this problem, the ground state is a singlet with four electrons so the expected values are <span class="math inline">\(S^2=0\)</span>, <span class="math inline">\(S_Z=0\)</span> and <span class="math inline">\(N=4\)</span> respectively.</p>
-<div id="cell-30" class="cell" data-execution_count="14">
+<div id="cell-31" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>exact_s2 <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>exact_sz <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>exact_n <span class="op">=</span> mol.n_active_electrons</span>
@@ -757,7 +755,7 @@ UCCSD quantum numbers errors: N = -0.0000, Sz = -0.0000, S^2 = 0.0000</code></pr
 </div>
 </div>
 <p>As you can see, there are small errors in the desired quantum numbers with qubit-Adapt while UCCSD has the correct expectation values. Therefore, the resulting representation is not exactly what we wanted. To address this problem we can add a penalty term to the qubit hamiltonian and minimize this modified <code>qubit_hamiltonian</code> directly using Adapt-VQE instead of the molecular hamiltonian. Generating this new Hamiltonian is as simple as creating a dictionary of <code>[penalty_weight,  desired_quantum_number]</code> for each operator and using the <code>combined_penalty</code> function. For this example, we choose a <code>penalty_weight</code> of 1/2 for each term which is usually a reasonable choice.</p>
-<div id="cell-32" class="cell" data-execution_count="15">
+<div id="cell-33" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.penalty_terms <span class="im">import</span> combined_penalty</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators.operators <span class="im">import</span> qubitop_to_qubitham</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -791,7 +789,7 @@ UCCSD quantum numbers errors: N = -0.0000, Sz = -0.0000, S^2 = 0.0000</code></pr
 </div>
 </div>
 <p>We can now check that minimizing this new Hamiltonian resulted in a state with the correct operator expectation values.</p>
-<div id="cell-34" class="cell" data-execution_count="16">
+<div id="cell-35" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Since we initialized VQESolver with a QubitHamiltonian, we need to provide the corresponding number of molecular</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># orbitals to use the built-in operators S^2, Sz and N.</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>adapt_with_pen_s2 <span class="op">=</span> adapt_solver_with_pen.vqe_solver.operator_expectation(<span class="st">'S^2'</span>, n_active_mos<span class="op">=</span>mol.n_active_mos)</span>
@@ -825,7 +823,6 @@ UCCSD quantum numbers: N = -0.0000, Sz = -0.0000, S^2 = 0.0000</code></pre>
 <p>In this notebook, we’ve explored an implementation of the original ADAPT-VQE algorithm, and the Hamiltonian-inspired qubit variant, using the tools available in Tangelo. It is clear that the number of parameters required for accurate results can be made much smaller with the orignal algorithm, while the qubit version can reduce the circuit depth greatly. The second section illustrates how users can create their own pool of qubit operators through their own <code>get_pool</code> function, to explore their own avenues.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -908,6 +905,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -942,7 +957,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

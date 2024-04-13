@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,8 +485,6 @@ window.Quarto = {
 </header>
 
 
-<section id="the-qmmm-method-solvation-of-the-glycine-amino-acid" class="level1">
-<h1>The QM/MM method: Solvation of the Glycine Amino Acid</h1>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <section id="principles-of-the-qmmm-method" class="level3">
@@ -510,14 +508,14 @@ window.Quarto = {
 <section id="preparation-for-the-notebook" class="level3">
 <h3 class="anchored" data-anchor-id="preparation-for-the-notebook">Preparation for the notebook</h3>
 <p>The next cells ensure that the appropriate packages are installed and imported into the Python environment to successfully execute this notebook.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs pyscf rdkit openbabel<span class="op">-</span>wheel <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-2" class="cell" data-execution_count="2">
+<div id="cell-3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tangelo common imports.</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> VQESolver, BuiltInAnsatze</span>
@@ -542,7 +540,7 @@ window.Quarto = {
 <p>Amino acids form the basic building blocks of polypeptides and proteins within living organisms. While nature encompasses about 500 variations, only 22 are encoded in the genetic blueprint of life. These molecules are characterized by their end-capping functional groups: an amine (NH<span class="math inline">\(_3\)</span>) and a carboxylic acid (COOH), with a central functional group denoted as ‘R’ that defines the unique properties of each amino acid.</p>
 <p>This notebook primarily focuses on employing computational techniques that integrate quantum mechanics with molecular mechanics (QM/MM). This method allows researchers to explore interactions among molecules within aqueous solutions, providing essential insights into the behaviors and functionalities of proteins at a reasonable computational cost.</p>
 <p>Our initial step involves defining the atomic coordinates of glycine, the simplest amino acid with a ‘R’ functional group consisting solely of a hydrogen atom. Given the extensive computational requirements for running a full quantum algorithm on the entire system, this notebook opts to freeze certain molecular orbitals, therefore simplifying the simulation to manage its complexity.</p>
-<div id="cell-4" class="cell" data-execution_count="4">
+<div id="cell-5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xyz_glycine <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">  C          2.05388        0.61558        0.07379</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">  O          1.96483       -0.57096       -0.21241</span></span>
@@ -569,7 +567,7 @@ window.Quarto = {
 </div>
 <p>One might wonder why this amino acid dissolves in water despite being a neutral organic compound. The reason lies in its behavior when in water; evidences show that amino acids adopt a <a href="https://en.wikipedia.org/wiki/Zwitterion">zwitterionic</a> form [3-6]. Although the entire molecule remains electrically neutral, a hydrogen atom shifts from the carboxylic acid group to the amine group, showcasing a form of <a href="https://en.wikipedia.org/wiki/Tautomer">tautomerism</a>. Thus, to precisely model the interaction of water with glycine, it is crucial to include the equivalent tautomer in the calculations of solvation properties.</p>
 <p>In the next cell, we construct this chemical structure while using the same approach of freezing certain molecular orbitals.</p>
-<div id="cell-6" class="cell" data-execution_count="5">
+<div id="cell-7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>xyz_zwitterion <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">  C         -0.72588       -0.48930       -0.87995</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -0.40429       -0.99901        0.24400</span></span>
@@ -605,7 +603,7 @@ window.Quarto = {
 <section id="using-quantum-algorithms-on-the-glycine-molecule" class="level3">
 <h3 class="anchored" data-anchor-id="using-quantum-algorithms-on-the-glycine-molecule">Using quantum algorithms on the glycine molecule</h3>
 <p>The following code cell defines the options passed to our quantum solver (for simplicity, the well-known Variational Quantum Eigensolver (VQE) with a UCCSD ansatz). These settings are applied in subsequent energy computations.</p>
-<div id="cell-8" class="cell" data-execution_count="6">
+<div id="cell-9" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vqe_options<span class="op">=</span> {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ansatz"</span>: BuiltInAnsatze.UCCSD,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"qubit_mapping"</span>: <span class="st">"scBK"</span>,</span>
@@ -613,7 +611,7 @@ window.Quarto = {
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a> }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We then run the quantum solver for both forms of glycine. We are particularly interested in the total molecular energies obtained, as they are necessary to calculate the hydration energy later on (see step 1 outlined in the “Computing solvation energies” section above).</p>
-<div id="cell-10" class="cell" data-execution_count="7">
+<div id="cell-11" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>quantum_solver_gly <span class="op">=</span> VQESolver({<span class="st">"molecule"</span>: glycine, <span class="op">**</span>vqe_options})</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>quantum_solver_gly.build()</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>e_quantum_gly <span class="op">=</span> quantum_solver_gly.simulate()</span>
@@ -622,7 +620,7 @@ window.Quarto = {
 <pre><code>The gas phase molecular energy of glycine (neutral) is -282.85661 Ha.</code></pre>
 </div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="8">
+<div id="cell-12" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>quantum_solver_zwit <span class="op">=</span> VQESolver({<span class="st">"molecule"</span>: zwitterion, <span class="op">**</span>vqe_options})</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>quantum_solver_zwit.build()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>e_quantum_zwit <span class="op">=</span> quantum_solver_zwit.simulate()</span>
@@ -638,7 +636,7 @@ window.Quarto = {
 <section id="preparing-the-qmmm-calculation-get-the-partial-charges-for-h_2o" class="level3">
 <h3 class="anchored" data-anchor-id="preparing-the-qmmm-calculation-get-the-partial-charges-for-h_2o">Preparing the QM/MM calculation: get the partial charges for <span class="math inline">\(H_2O\)</span></h3>
 <p>The supported QM/MM framework in Tangelo needs the partial charges for the part of the system described via molecular mechanics. This is what we do in the next code cell. Here, in summary: - A mean-field calculation is performed for a single water molecule; - The Mulliken atomic charges are retrived from the <code>analyze</code> method; - A function is defined to construct an array in the <code>[(partial_charge, (x, y, z)), ...]</code> format.</p>
-<div id="cell-13" class="cell" data-execution_count="9">
+<div id="cell-14" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>xyz_h2o <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.08448       -2.25652       -0.22848</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -2.35312       -3.17615       -0.12238</span></span>
@@ -657,9 +655,9 @@ window.Quarto = {
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"The Mulliken partial charges computed from an Hartree-Fock calculation in </span><span class="sc">{</span>basis<span class="sc">}</span><span class="ss"> are</span><span class="ch">\n</span><span class="ss">O = </span><span class="sc">{</span>mulliken_atomic_charges[<span class="dv">0</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">H1 = </span><span class="sc">{</span>mulliken_atomic_charges[<span class="dv">1</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">H2 = </span><span class="sc">{</span>mulliken_atomic_charges[<span class="dv">2</span>]<span class="sc">}</span><span class="ss">."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>The Mulliken partial charges computed from an Hartree-Fock calculation in cc-pvdz are
-O = -0.6346652155730794
-H1 = 0.3194372332962432
-H2 = 0.31522798227682913.</code></pre>
+O = -0.6346652155730617
+H1 = 0.31943723329624274
+H2 = 0.3152279822768107.</code></pre>
 </div>
 </div>
 </section>
@@ -673,7 +671,7 @@ H2 = 0.31522798227682913.</code></pre>
 <figcaption>Cluster of water molecules and glycine</figcaption>
 </figure>
 </div>
-<div id="cell-15" class="cell" data-execution_count="10">
+<div id="cell-16" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>xyz_waters_gly <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.08448       -2.25652       -0.22848</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -2.35312       -3.17615       -0.12238</span></span>
@@ -709,7 +707,7 @@ H2 = 0.31522798227682913.</code></pre>
 <pre><code>The hydration energy for glycine (neutral) is  -136 kJ/mol.</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="11">
+<div id="cell-17" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>xyz_waters_zwit <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="st">  O         -2.33478        0.43459        1.56814</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">  H         -1.65671       -0.25663        1.45580</span></span>
@@ -769,7 +767,6 @@ H2 = 0.31522798227682913.</code></pre>
 </ol>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -852,6 +849,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -886,7 +901,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,12 +485,10 @@ window.Quarto = {
 </header>
 
 
-<section id="state-preparation-using-quantum-signal-processing" class="level1">
-<h1>State preparation using quantum signal processing</h1>
 <p>We are going to apply a delta function to the Hamiltonian (<span class="math inline">\(H\)</span>), such that all states with eigenvalues outside a specific energy band (<span class="math inline">\(\lambda \pm \Delta/2\)</span>) are supressed. This is performed by applying the operation</p>
 <p><span class="math inline">\(f(H,\Delta,k)=\sum_{n=0}^{k}\frac{T_n(-1+2\frac{H^2-\Delta^2}{1-\Delta^2})}{T_n(-1+2\frac{-\Delta^2}{1-\Delta^2})}\)</span></p>
 <p>using quantum signal processing, where <span class="math inline">\(T_n\)</span> refers to the Chebyshev polynomial of the first kind, defined by <span class="math inline">\(T_n(cos(\theta)) = cos(n\theta)\)</span>.</p>
-<div id="cell-1" class="cell">
+<div id="cell-2" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -498,7 +496,7 @@ window.Quarto = {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As an example, we will use the polynomial with approximation order <span class="math inline">\(k=20\)</span> for <span class="math inline">\(\Delta = 0.1\)</span> which is depicted below</p>
-<div id="cell-3" class="cell" data-outputid="83cd80f9-3f5e-4a21-fb45-5e627a20ad2d" data-execution_count="2">
+<div id="cell-4" class="cell" data-outputid="83cd80f9-3f5e-4a21-fb45-5e627a20ad2d" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> eval_chebyt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -533,7 +531,7 @@ window.Quarto = {
 </div>
 </div>
 <p>This polynomial needs to be converted to phases to use Quantum Signal Processing. For convenience, here are the phases for <span class="math inline">\(k=20\)</span> and <span class="math inline">\(\Delta = 0.1\)</span>. At the end of the notebook, we show two ways to calculate the phases for a given polynomial.</p>
-<div id="cell-5" class="cell" data-execution_count="3">
+<div id="cell-6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># phases below are calculated using QSPPACK for n=20, delta = 0.1</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>phases <span class="op">=</span> [ <span class="fl">0.76974538</span>,  <span class="fl">0.00646461</span>, <span class="op">-</span><span class="fl">0.00773143</span>,  <span class="fl">0.00908568</span>, <span class="op">-</span><span class="fl">0.01051591</span>,  <span class="fl">0.01200849</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.01354772</span>,  <span class="fl">0.01511600</span>, <span class="op">-</span><span class="fl">0.01669402</span>,  <span class="fl">0.01826109</span>, <span class="op">-</span><span class="fl">0.01979540</span>,  <span class="fl">0.02127448</span>,</span>
@@ -547,7 +545,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="hydrogen-molecule-example">Hydrogen molecule example</h2>
 <p>We are going to prepare two different states using the phases above, as well as the Quantum Signal Processing circuit <code>get_qsp_circuit_no_anc</code> as defined in <a href="https://arxiv.org/abs/2002.11649">arXiv:2002.11649</a>.</p>
 <p>We are going to apply it to <span class="math inline">\(H_2\)</span> in a STO-3G basis with the “scbk” qubit mapping.</p>
-<div id="cell-7" class="cell" data-execution_count="4">
+<div id="cell-8" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -573,7 +571,7 @@ window.Quarto = {
 <p>We need to shift the Hamiltonian such that the desired eigenvalue (<span class="math inline">\(\lambda\)</span>) is centered at zero and the spectral range is in [-1, 1]. This is done by defining</p>
 <p><span class="math inline">\(\tilde{H} = \frac{H-\lambda}{\alpha + \left|\lambda\right|}\)</span></p>
 <p>where <span class="math inline">\(\alpha\)</span> is the approximation to the spectral range, defined in the previous cell.</p>
-<div id="cell-9" class="cell" data-execution_count="5">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, get_backend</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.qsp <span class="im">import</span> get_qsp_circuit_no_anc</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.lcu <span class="im">import</span> get_uprep_uselect, get_lcu_qubit_op_info</span>
@@ -602,7 +600,7 @@ window.Quarto = {
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Measure gate for the QSP qubit where the phases are applied</span></span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m_qs[<span class="op">-</span><span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-10" class="cell" data-outputid="d7cbcbb0-6e40-4934-8ebe-f441fed2156e" data-execution_count="6">
+<div id="cell-11" class="cell" data-outputid="d7cbcbb0-6e40-4934-8ebe-f441fed2156e" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>f, sv <span class="op">=</span> sim.simulate(full_circuit, desired_meas_result<span class="op">=</span><span class="st">"0"</span><span class="op">*</span>n_ancilla, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
@@ -625,7 +623,7 @@ final overlap = 0.9887577317376988</code></pre>
 <section id="second-excited-state" class="level3">
 <h3 class="anchored" data-anchor-id="second-excited-state">Second excited state</h3>
 <p>We can then reapply the same approach to the second excited state.</p>
-<div id="cell-12" class="cell" data-execution_count="7">
+<div id="cell-13" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lamb <span class="op">=</span> eigs[<span class="dv">2</span>]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shift Hamiltonian so that spectrum is in [-1, 1] and desired lambda is at 0</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>qu_op_tilde <span class="op">=</span> (qu_op <span class="op">-</span> lamb)<span class="op">/</span>(alpha<span class="op">+</span><span class="bu">abs</span>(lamb))</span>
@@ -646,7 +644,7 @@ final overlap = 0.9887577317376988</code></pre>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">=</span> init_circ <span class="op">+</span> eig_filt_circ <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m) <span class="cf">for</span> m <span class="kw">in</span> m_qs])</span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m_qs[<span class="op">-</span><span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="8">
+<div id="cell-14" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f, sv <span class="op">=</span> sim.simulate(full_circuit, desired_meas_result<span class="op">=</span><span class="st">"0"</span><span class="op">*</span>n_ancilla, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
@@ -658,7 +656,7 @@ final overlap = 0.9887577317376988</code></pre>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder statevector to correspond to openfermion ordering</span></span>
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>sv <span class="op">=</span> np.reshape(sv, (<span class="dv">2</span>,<span class="dv">2</span>)).T.flatten()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-14" class="cell" data-outputid="479076d4-f830-44df-c6e3-c907132bdd25" data-execution_count="9">
+<div id="cell-15" class="cell" data-outputid="479076d4-f830-44df-c6e3-c907132bdd25" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'initial overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">2</span>], init_state))<span class="sc">}</span><span class="ss">'</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'final overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">2</span>], sv))<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -756,7 +754,6 @@ final overlap = 0.9969619094421538</code></pre>
 
 </section>
 </section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -838,6 +835,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -872,7 +887,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

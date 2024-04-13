@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,8 +485,6 @@ window.Quarto = {
 </header>
 
 
-<section id="excited-states-in-tangelo" class="level1">
-<h1>Excited States in Tangelo</h1>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>One impactful application of quantum chemistry, in both academia and industry, is the study of the interaction of light with matter. Absorption (resp. emission) of a photon by a molecule can promote (resp. demote) an electron from a lower (resp. higher) electronic state to a higher (resp. lower) energy electronic state. The photon wavelength (i.e.&nbsp;energy) required for these transitions to occur is determined by the difference between the two respective electronic states. Therefore, it is imperative to be able to calculate accurate energies for both ground and excited states to study light/matter interations. These energy differences play a central role in many technologies such as solar panels, light-emitting diodes (LED), displays, and colorants.</p>
@@ -504,7 +502,7 @@ window.Quarto = {
 <section id="installation-background" class="level2">
 <h2 class="anchored" data-anchor-id="installation-background">Installation &amp; Background</h2>
 <p>In order to successfully run this notebook, you need to install Tangelo. It is also important to be somewhat familiar with the variational quantum eigensolver (VQE). Information about VQE can be found in our <a href="../../examples/variational_methods/vqe.html">VQE with Tangelo</a> notebook. Information about each algorithm can be found by following the references linked when each method is introduced. The cell below installs Tangelo in your environment, if it has not been done already.</p>
-<div id="cell-4" class="cell" data-execution_count="1">
+<div id="cell-5" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
@@ -543,7 +541,7 @@ window.Quarto = {
 <li><code>mol_li2</code> defined as the ground state configuration with 2 electrons in the HOMO.</li>
 <li><code>mol_li2_t</code> defined as the triplet configuration with an alpha electron in each of the HOMO and LUMO.</li>
 </ul>
-<div id="cell-7" class="cell" data-execution_count="2">
+<div id="cell-8" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule <span class="im">as</span> SQMol</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>li2<span class="op">=</span>  <span class="st">"""Li 0.  0. 0.</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="st">         Li 3.0 0. 0. """</span></span>
@@ -558,7 +556,7 @@ window.Quarto = {
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>mol_Li2_t <span class="op">=</span> SQMol(li2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>, basis<span class="op">=</span><span class="st">"6-31g(d,p)"</span>, frozen_orbitals<span class="op">=</span>fo, symmetry<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since we set <code>symmetry=True</code> in the initialization, the symmetry labels of all the orbitals have been populated in <code>mol_li2.mo_symm_labels</code>.</p>
-<div id="cell-9" class="cell" data-execution_count="3">
+<div id="cell-10" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Symmetry labels and occupations for frozen core and active orbitals</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  #  Energy  Symm Occ"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
@@ -586,7 +584,7 @@ Number of active orbtials: 2</code></pre>
 <section id="obtaining-excited-state-energies-classically" class="level2">
 <h2 class="anchored" data-anchor-id="obtaining-excited-state-energies-classically">1. Obtaining excited state energies classically <a class="anchor" id="1"></a></h2>
 <p>In order to compare the various quantum algorithms, it is useful to have the classically calculated values. Below we will calculate the two A1g and A2g states using PySCF CASCI implementation (https://pyscf.org/user/mcscf.html).</p>
-<div id="cell-12" class="cell" data-execution_count="4">
+<div id="cell-13" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyscf <span class="im">import</span> mcscf</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>myhf <span class="op">=</span> mol_Li2.mean_field</span>
@@ -628,7 +626,7 @@ CASCI state 1  E = -14.7840383314395  E(CI) = -0.489643275381141  S^2 = 0.000000
 <section id="vqe-for-lowest-singlet-and-triplet-states" class="level3">
 <h3 class="anchored" data-anchor-id="vqe-for-lowest-singlet-and-triplet-states">2.1 VQE for lowest singlet and triplet states <a class="anchor" id="21"></a></h3>
 <p>Both the lowest singlet (ground state) and lowest triplet (first excited state) can be computed using <code>VQESolver</code>. The <code>FCISolver</code> class can be used to produce a classically-computed reference value, to get a sense of the accuracy of VQE in this situation. Along the way, we capture the quantum computational resources required for each algorithm in the dictionary <code>algorithm_resources</code>.</p>
-<div id="cell-15" class="cell" data-execution_count="5">
+<div id="cell-16" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> VQESolver, BuiltInAnsatze</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> FCISolver</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -674,7 +672,7 @@ CASCI energy = -14.853462489027107</code></pre>
 <li>The keyword <code>"deflation_circuits"</code> allows the user to provide a list of circuits to use in the deflation process.</li>
 <li>Additionally, the keyword <code>"deflation_coeff"</code> allows a user to specify the weight in front of the penalty term. This coefficient must be larger than the difference in energy between the ground and the target excited state.</li>
 </ul>
-<div id="cell-17" class="cell" data-execution_count="6">
+<div id="cell-18" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Add initial VQE optimal circuit to the deflation circuits list</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>deflation_circuits <span class="op">=</span> [vqe_solver.optimal_circuit.copy()]</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -695,7 +693,7 @@ Excited state #2     VQE energy = -14.680196061799991</code></pre>
 </div>
 </div>
 <p>The deflation above generated the singlet states. Sometimes it is useful to use a different reference state. In the next example of deflation, we use a reference state with 2 alpha electrons and 0 beta electrons to calculate the triplet state. The reference state is defined by alternating up then down ordering, which yields <code>{"ref_state": [1, 0, 1, 0]}</code> for 2 alpha electrons in 2 orbitals for this situation.</p>
-<div id="cell-19" class="cell" data-execution_count="7">
+<div id="cell-20" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_Li2, <span class="st">"ansatz"</span>: BuiltInAnsatze.UpCCGSD, </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">"deflation_circuits"</span>: deflation_circuits,</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">"deflation_coeff"</span>: <span class="fl">0.4</span>, <span class="st">"ref_state"</span>: [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>]}</span>
@@ -717,7 +715,7 @@ Excited state #2     VQE energy = -14.680196061799991</code></pre>
 <p>For this example, we choose a pool of operators of the form <span class="math inline">\(O_p=a_i^{\dagger}a_j\)</span>.</p>
 <p>We then have to solve <span class="math inline">\(FU = SUE\)</span>, where <span class="math inline">\(F_{pq}=\left&lt;\psi\right|O_p^* H O_q\left|\psi\right&gt;\)</span> and <span class="math inline">\(S_{pq}=\left&lt;\psi\right|O_p^* O_q\left|\psi\right&gt;\)</span>.</p>
 <p>For simplicity here, we keep all wavefunction symmetry excitations. However, the matrix we need to diagonalize can be made smaller by only keeping excitations that respect the desired wavefunction symmetry of the excited state.</p>
-<div id="cell-22" class="cell" data-execution_count="8">
+<div id="cell-23" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> eigh</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion.utils <span class="im">import</span> hermitian_conjugated <span class="im">as</span> hc</span>
@@ -749,7 +747,7 @@ Excited state #2     VQE energy = -14.680196061799991</code></pre>
 <span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>algorithm_resources[label][<span class="st">"n_post_terms"</span>] <span class="op">=</span> <span class="bu">len</span>(op_list)<span class="op">**</span><span class="dv">2</span><span class="op">*</span>algorithm_resources[label][<span class="st">"qubit_hamiltonian_terms"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After generating the matrices on the quantum computer. We need to perform the classical post-processing to obtain the energies by solving the <span class="math inline">\(FU = SUE\)</span> eigenvalue problem.</p>
-<div id="cell-24" class="cell" data-execution_count="9">
+<div id="cell-25" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve FU = SUE</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>e, v <span class="op">=</span> eigh(h,s)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Quantum Subspace Expansion energies: </span><span class="ch">\n</span><span class="ss"> </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -764,7 +762,7 @@ Excited state #2     VQE energy = -14.680196061799991</code></pre>
 <h3 class="anchored" data-anchor-id="state-averaged-vqe">2.4 State-Averaged VQE <a class="anchor" id="24"></a></h3>
 <p>Another method to obtain excited states is to use the State-Averaged VQE Solver (SA-VQE). SA-VQE minimizes the average energy of multiple orthogonal reference states using the same ansatz circuit. As the reference states are orthogonal, using the same circuit transformation (a unitary), results in final states that are also orthogonal. This idea can be found in <a href="https://arxiv.org/pdf/2009.11417.pdf">arXiv:2009.11417</a>.</p>
 <p>Here, we target singlet states only. This can be accomplished by adding a penalty term with <code>"penalty_terms": {"S^2": [2, 0]}</code>. This means that the target Hamiltonian to be minimized is <span class="math inline">\(H = H_0 + 2 (\hat{S}^2 - 0)^2\)</span>, where <span class="math inline">\(H_0\)</span> is the original molecular Hamiltonian.</p>
-<div id="cell-27" class="cell" data-execution_count="10">
+<div id="cell-28" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> SA_VQESolver</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_Li2, <span class="st">"ref_states"</span>: [[<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>], [<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>], [<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>]],</span>
@@ -786,7 +784,7 @@ Singlet State 2 has energy -14.7795400653701</code></pre>
 </div>
 <p>The energies above are inaccurate, as the calculated states are restricted to linear combinations of the three lowest singlet states. We can use MC-VQE to generate the exact eigenvectors, as shown in the next section.</p>
 <p>However, the cell below shows the <span class="math inline">\(\hat{S}^2\)</span> expectation value is nearly zero for all states, so they are all singlet as expected when using the penalty term.</p>
-<div id="cell-29" class="cell" data-execution_count="11">
+<div id="cell-30" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.fermionic_operators <span class="im">import</span> spin2_operator</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>s2op <span class="op">=</span> f2q_mapping(spin2_operator(<span class="dv">2</span>), <span class="st">"jw"</span>)</span>
@@ -803,7 +801,7 @@ State 2 has S^2 = 7.838201587784255e-09</code></pre>
 <h3 class="anchored" data-anchor-id="multistate-contracted-vqe-mc-vqe">2.5 Multistate, contracted VQE (MC-VQE) <a class="anchor" id="25"></a></h3>
 <p>To obtain the energies of the individual states, we can use multistate contracted VQE (MC-VQE), as introduced in <a href="https://arxiv.org/abs/1901.01234">arXiv:1901.01234</a>. This process defines a small matrix by measuring the Hamiltonian expectation values of <span class="math inline">\((\left|\theta_i\right&gt;+\left|\theta_j\right&gt;)/\sqrt{2}\)</span> and <span class="math inline">\((\left|\theta_i\right&gt;-\left|\theta_j\right&gt;)/\sqrt{2}\)</span> for all combinations of our final states (<span class="math inline">\(\left|\theta_i\right&gt;\)</span>) resulting from the SA-VQE procedure.</p>
 <p>In general, the reference states are simple occupations so generating <span class="math inline">\((\left|\theta_i\right&gt;+\left|\theta_j\right&gt;)/\sqrt{2}\)</span> and <span class="math inline">\((\left|\theta_i\right&gt;-\left|\theta_j\right&gt;)/\sqrt{2}\)</span> by hand should be “fairly straightforward”. In this notebook, we use Tangelo to obtain these statevectors and then generate the expectation values.</p>
-<div id="cell-31" class="cell" data-execution_count="12">
+<div id="cell-32" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate individual statevectors</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ref_svs <span class="op">=</span> <span class="bu">list</span>()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> circuit <span class="kw">in</span> vqe_solver.reference_circuits:</span>
@@ -824,7 +822,7 @@ State 2 has S^2 = 7.838201587784255e-09</code></pre>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            h_theta_theta[i, j] <span class="op">=</span> vqe_solver.state_energies[i]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Accurate energies can be recovered by solving the resulting eigenproblem classically:</p>
-<div id="cell-33" class="cell" data-execution_count="13">
+<div id="cell-34" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>e, _ <span class="op">=</span> np.linalg.eigh(h_theta_theta)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, energy <span class="kw">in</span> <span class="bu">enumerate</span>(e):</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Singlet State </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> </span><span class="ch">\t</span><span class="ss"> MC-VQE energy = </span><span class="sc">{</span>energy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -838,7 +836,7 @@ Singlet State 2      MC-VQE energy = -14.68019492913796</code></pre>
 <section id="using-statevector-for-mc-vqe" class="level4">
 <h4 class="anchored" data-anchor-id="using-statevector-for-mc-vqe">Using StateVector for MC-VQE</h4>
 <p>The code below can be used obtain the same MC-VQE result by using <code>StateVector</code> to automatically generate circuits for <span class="math inline">\((\left|\theta_i\right&gt;+\left|\theta_j\right&gt;)/\sqrt{2}\)</span> and <span class="math inline">\((\left|\theta_i\right&gt;-\left|\theta_j\right&gt;)/\sqrt{2}\)</span>. However, the circuits created by StateVector are generally inefficient and one should try to create the circuits that generate these states by hand if running on a real quantum device.</p>
-<div id="cell-36" class="cell" data-execution_count="14">
+<div id="cell-37" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers <span class="im">import</span> StateVector</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate individual statevectors</span></span>
@@ -872,7 +870,7 @@ Singlet State 2      MC-VQE energy = -14.68019492913796</code></pre>
 <span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a>algorithm_resources[<span class="st">"mc_vqe"</span>] <span class="op">=</span> vqe_solver.get_resources()</span>
 <span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>algorithm_resources[<span class="st">"mc_vqe"</span>][<span class="st">"n_post_terms"</span>] <span class="op">=</span> <span class="bu">len</span>(ref_svs)<span class="op">**</span><span class="dv">2</span><span class="op">*</span>algorithm_resources[<span class="st">"mc_vqe"</span>][<span class="st">"qubit_hamiltonian_terms"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-37" class="cell" data-execution_count="15">
+<div id="cell-38" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>e, _ <span class="op">=</span> np.linalg.eigh(h_theta_theta)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, energy <span class="kw">in</span> <span class="bu">enumerate</span>(e):</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Singlet State </span><span class="sc">{</span>i<span class="sc">}</span><span class="ss"> </span><span class="ch">\t</span><span class="ss"> MC-VQE energy = </span><span class="sc">{</span>energy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -887,7 +885,7 @@ Singlet State 2      MC-VQE energy = -14.680194929137963</code></pre>
 <section id="state-averaged-vqe-with-deflation" class="level3">
 <h3 class="anchored" data-anchor-id="state-averaged-vqe-with-deflation">2.6 State-Averaged VQE with deflation <a class="anchor" id="26"></a></h3>
 <p>We can obtain the final excited state by using deflation for the three singlet states above and removing the penalty term. We define a reference state with <code>"ref_states": [[1, 0, 1, 0]]</code> that better targets the remaining triplet state. We can revert back to the UCCSD ansatz for this state as we do not need as expressive an ansatz anymore.</p>
-<div id="cell-39" class="cell" data-execution_count="16">
+<div id="cell-40" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_Li2, <span class="st">"ref_states"</span>: [[<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>]],</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>               <span class="st">"weights"</span>: [<span class="dv">1</span>], <span class="st">"deflation_circuits"</span>: [vqe_solver.reference_circuits[i]<span class="op">+</span>vqe_solver.optimal_circuit <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)],</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>               <span class="st">"qubit_mapping"</span>: <span class="st">"jw"</span>, <span class="st">"ansatz"</span>: BuiltInAnsatze.UCCSD,</span>
@@ -914,7 +912,7 @@ Singlet State 2      MC-VQE energy = -14.680194929137963</code></pre>
 <li>orbital optimization</li>
 </ul>
 <p>These iterations are called by using the <code>iterate()</code> call. The <code>simulate()</code> method from <code>SA_OO_Solver</code> only performs a State-Averated VQE simulation. The reference for this method is <a href="https://arxiv.org/pdf/2009.11417.pdf">arXiv:2009.11417</a>.</p>
-<div id="cell-42" class="cell" data-execution_count="17">
+<div id="cell-43" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> SA_OO_Solver</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>mol_Li2_nosym <span class="op">=</span> SQMol(li2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">'6-31g(d,p)'</span>,</span>
@@ -936,7 +934,7 @@ State 1 has energy -14.85178914846094</code></pre>
 </div>
 </div>
 <p>Comparing the <code>SA_OO_VQE</code> solution to CASSCF calculations from a library such as pyscf shows similar results.</p>
-<div id="cell-44" class="cell" data-execution_count="18">
+<div id="cell-45" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>mol_Li2_no_sym_copy <span class="op">=</span> SQMol(li2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">'6-31g(d,p)'</span>,</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                            frozen_orbitals<span class="op">=</span>fo, symmetry<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>mc <span class="op">=</span> mcscf.CASSCF(mol_Li2_no_sym_copy.mean_field, <span class="dv">2</span>, <span class="dv">2</span>).state_average([<span class="fl">0.5</span>, <span class="fl">0.5</span>])</span>
@@ -975,7 +973,7 @@ CASCI energy for each state
 </tr>
 </tbody></table>
 <p>Li <span class="math inline">\({_2}\)</span> is a molecule that requires CASSCF type optimization to exihibit the correct qualitative behavior when using a small active space. Below, we run <code>SA_OO_VQE</code> for multiple different bond lengths and compare to CASCI. This calculation can take more than one minute, depending on your computer.</p>
-<div id="cell-48" class="cell" data-execution_count="19">
+<div id="cell-49" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>sa_oo_eners <span class="op">=</span> <span class="bu">list</span>()</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>casci_eners <span class="op">=</span> <span class="bu">list</span>()</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>xvals <span class="op">=</span> np.array([<span class="dv">2</span>, <span class="fl">2.2</span>, <span class="fl">2.5</span>, <span class="fl">3.</span>, <span class="fl">3.5</span>, <span class="fl">4.</span>, <span class="fl">4.5</span>, <span class="fl">5.</span>, <span class="fl">6.</span>, <span class="fl">7.</span>, <span class="fl">9.</span>])</span>
@@ -1016,7 +1014,7 @@ Computing state-averaged orbital-optimized VQE energy for r=9.0</code></pre>
 </div>
 </div>
 <p>The plot below shows the resulting potential energy curves, and illustrates the impact of orbital optimization for our use case:</p>
-<div id="cell-50" class="cell" data-execution_count="20">
+<div id="cell-51" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>sa_oo_eners<span class="op">=</span>np.array(sa_oo_eners)</span>
@@ -1047,7 +1045,7 @@ Computing state-averaged orbital-optimized VQE energy for r=9.0</code></pre>
 <h3 class="anchored" data-anchor-id="multi-reference-selected-quantum-krylov-mrsqk">3.1 Multi-Reference Selected Quantum Krylov (MRSQK) <a class="anchor" id="31"></a></h3>
 <p>The multi-reference selected Quantum Krylov algorithm as outlined in <a href="https://arxiv.org/abs/1911.05163">arXiv:1911.05163</a> uses multiple reference states and performs multiple time evolutions <span class="math inline">\(U = e^{-iH\tau}\)</span> for time <span class="math inline">\(\tau\)</span>, to generate a Krylov representation of the system. The method relies on building two matrices <span class="math inline">\({\cal{H}}\)</span> and <span class="math inline">\(S\)</span>, whose elements are defined by <span class="math inline">\({\cal{H}_{ia,jb}} = \left&lt;\phi_a\right|U^i H U^j\left|\phi_b\right&gt;\)</span> and <span class="math inline">\(S_{ia,jb} = \left&lt;\phi_a\right|U^i U^j\left|\phi_b\right&gt;\)</span>, where <span class="math inline">\(\phi_a, \phi_b\)</span> denote different reference configurations. The matrix elements are measured using the procedure outlined in <a href="https://arxiv.org/abs/1911.05163">arXiv:1911.05163</a> and the energies obtained through solving <span class="math inline">\({\cal{H}}V = SVE\)</span>.</p>
 <p>In <a href="https://arxiv.org/abs/2109.06868">arXiv:2109.06868</a>, it was further noticed that one can use any function of <span class="math inline">\(\cal{H}\)</span> to obtain the eigenvalues. For example, one could use <span class="math inline">\(f({\cal{H}})=e^{-iH\tau}=U\)</span>. The same procedure results in the matrix elements <span class="math inline">\(f({\cal{H}})_{ia,jb} = \left&lt;\phi_a\right|U^i U U^j\left|\phi_b\right&gt;, S_{ia,jb} = \left&lt;\phi_a\right|U^i U^j\left|\phi_b\right&gt;\)</span> for the eigenvalue problem <span class="math inline">\(f({\cal{H}})V=SVf(E)\)</span>. As <span class="math inline">\(E\)</span> is a diagonal matrix, the correct energies can be obtained by calculating the phase of the eigenvalues (<span class="math inline">\(f(E)=e^{-iE\tau}\)</span>) and dividing by <span class="math inline">\(\tau\)</span>. (i.e.&nbsp;<span class="math inline">\(\arctan \left[\Im(f(E))/\Re(f(E)) \right]/\tau\)</span>). The resulting circuit is slightly longer but much fewer measurements are required. It is worth mentioning that <a href="https://arxiv.org/abs/1610.06546">qubitization</a>, which natively implements <span class="math inline">\(e^{i \arccos(H\tau)}\)</span>, can be used without issue. Qubitization is currently one of the most efficient algorithms that implements time-evolution.</p>
-<div id="cell-52" class="cell" data-execution_count="21">
+<div id="cell-53" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> eigh, eigvals</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1056,7 +1054,7 @@ Computing state-averaged orbital-optimized VQE energy for r=9.0</code></pre>
 <span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.statevector_mapping <span class="im">import</span> vector_to_circuit</span>
 <span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.ansatz_utils <span class="im">import</span> controlled_pauliwords, trotterize</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-53" class="cell" data-execution_count="22">
+<div id="cell-54" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of Krylov vectors</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>n_krylov <span class="op">=</span> <span class="dv">4</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulation time for each unitary</span></span>
@@ -1138,7 +1136,7 @@ The f(H)V=SVf(E) energies are [-14.86962029 -14.680196   -14.83876634 -14.784038
 <h3 class="anchored" data-anchor-id="rodeo-algorithm">3.2 Rodeo Algorithm <a class="anchor" id="32"></a></h3>
 <p>Another method based on Hamiltonian simulation that can be used to obtain energies is the Rodeo Algorithm. This simulates the Hamiltonian for many random lengths of time with different input energies. The probability of the ancilla qubit being 0 for a given energy <span class="math inline">\(E\)</span> is <span class="math inline">\(P_0(E) = \frac{1 + e^{-\sigma^2 (E_i - E)^2/2}}{2}\)</span> where <span class="math inline">\(E_i\)</span> is one of the eigenvalues of the Hamiltonian. The algorithm is outlined in <a href="https://arxiv.org/abs/2110.07747">arXiv:2110.07747</a>. When the energy <span class="math inline">\(E\)</span> is close to an eigenvalue <span class="math inline">\(E_i\)</span>, the probability is maximized. Therefore, one would observe peaks in success probability when the input energy <span class="math inline">\(E\)</span> is an eigenvalue.</p>
 <p>The cell illustrates this process over 10 iterations for each energy, for simplicity. We however show a plot resulting from 1,000 iterations afterwards. To reduce the computational complexity, we also use the <a href="https://arXiv.org/abs/1701.08213">symmetry-conserving Bravyi-Kitaev</a> mapping to reduce the number of qubits to 2 by remove qubits corresponding to spin and electron number. This means we can only obtain the singlet state energies. A separate calculation would be needed to calculate the triplet energy.</p>
-<div id="cell-56" class="cell" data-execution_count="23">
+<div id="cell-57" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One rodeo cycle as defined in Fig.1 of arXiv.2110.07747</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rodeo_cycle(hobj, energy, t, i):</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    circuit <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, i)])</span>
@@ -1146,7 +1144,7 @@ The f(H)V=SVf(E) energies are [-14.86962029 -14.680196   -14.83876634 -14.784038
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"PHASE"</span>, i, parameter<span class="op">=</span>energy<span class="op">*</span>t), Gate(<span class="st">"H"</span>, i)])</span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-57" class="cell" data-execution_count="24">
+<div id="cell-58" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.statevector_mapping <span class="im">import</span> do_scbk_transform</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>h_obj <span class="op">=</span>  f2q_mapping(mol_Li2.fermionic_hamiltonian, <span class="st">"scbk"</span>, mol_Li2.n_active_sos,</span>
@@ -1187,7 +1185,7 @@ The f(H)V=SVf(E) energies are [-14.86962029 -14.680196   -14.83876634 -14.784038
 <span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>algorithm_resources[<span class="st">"rodeo"</span>][<span class="st">"circuit_2qubit_gates"</span>] <span class="op">=</span> circuit.counts.get(<span class="st">"CNOT"</span>, <span class="dv">0</span>)</span>
 <span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>algorithm_resources[<span class="st">"rodeo"</span>][<span class="st">"n_post_terms"</span>] <span class="op">=</span> <span class="dv">30</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-58" class="cell" data-execution_count="25">
+<div id="cell-59" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>fig.patch.set_facecolor(<span class="st">'w'</span>)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>ax.set_facecolor(<span class="st">'w'</span>)</span>
@@ -1222,7 +1220,7 @@ The f(H)V=SVf(E) energies are [-14.86962029 -14.680196   -14.83876634 -14.784038
 <li><code># post measurements basis</code> is the number of measurements needed to successfully post-process the output of the algorithm.</li>
 </ul>
 <p>We note that <code># CNOT gates</code> for each variational algorithm could be improved greatly if an algorithm such as ADAPT-VQE was used to create an ansatz. Similarly, <code># CNOT gates</code> could be reduced for the time-evolution algorithms with more advanced approaches such as qubitization.</p>
-<div id="cell-61" class="cell" data-execution_count="26">
+<div id="cell-62" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="bu">format</span> <span class="op">=</span> <span class="st">"</span><span class="sc">{:&lt;40}</span><span class="st"> </span><span class="sc">{:&lt;20}</span><span class="st"> </span><span class="sc">{:&lt;20}</span><span class="st"> </span><span class="sc">{:&lt;20}</span><span class="st">"</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">format</span>.<span class="bu">format</span>(<span class="st">"Algorithm"</span>, <span class="st">"# measurements"</span>, <span class="st">"# CNOT gates"</span>, <span class="st">"# post measurements"</span>))</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> method, resources <span class="kw">in</span> algorithm_resources.items():</span>
@@ -1245,7 +1243,7 @@ rodeo                                    0                    320               
 </div>
 <p>These are the resource requirements that came out from calculations on our small Li<span class="math inline">\(_2\)</span> use case in minimal basis set, featuring two 2 electrons in 2 orbitals.</p>
 <p>But what of BODIPY ?</p>
-<div id="cell-63" class="cell" data-execution_count="27">
+<div id="cell-64" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>bodipy <span class="op">=</span> SQMol(<span class="st">"data/bodipy.xyz"</span>, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Active electrons = </span><span class="sc">{</span>bodipy<span class="sc">.</span>n_active_mos<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Active orbitals = </span><span class="sc">{</span>bodipy<span class="sc">.</span>n_active_electrons<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1260,7 +1258,6 @@ Active orbitals = 70</code></pre>
 <p>What will you do with Tangelo?</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1343,6 +1340,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1377,7 +1392,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

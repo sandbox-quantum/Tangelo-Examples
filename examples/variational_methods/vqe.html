@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,11 +485,9 @@ window.Quarto = {
 </header>
 
 
-<section id="vqe-with-tangelo" class="level1">
-<h1>VQE with Tangelo</h1>
 <p>Tangelo provides various toolboxes, which can be leveraged to build quantum chemistry workflows relying on quantum computing. One example of such a workflow is the Variational Quantum Eigensolver (VQE). We provide an implementation of VQE that supports several options, and may provide valuable help in your research and applications.</p>
 <p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -545,7 +543,7 @@ E = \langle \Psi(\vec{\theta}) \vert \hat{H} \vert \Psi(\vec{\theta}) \rangle =\
 <section id="vqesolver-class" class="level2">
 <h2 class="anchored" data-anchor-id="vqesolver-class">2. VQESolver class<a class="anchor" id="2"></a></h2>
 <p>In the following, we will demonstrate various features of the <code>VQESolver</code> class using a simple H2 molecule, defined with the <code>SecondQuantizedMolecule</code> class. This molecule is built below:</p>
-<div id="cell-6" class="cell" data-execution_count="2">
+<div id="cell-7" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>H2 <span class="op">=</span> [(<span class="st">'H'</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)),(<span class="st">'H'</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.74137727</span>))]</span>
@@ -558,7 +556,7 @@ E = \langle \Psi(\vec{\theta}) \vert \hat{H} \vert \Psi(\vec{\theta}) \rangle =\
 <h3 class="anchored" data-anchor-id="vqesolver-object-instantiation">VQESolver object instantiation<a class="anchor" id="21"></a></h3>
 <p>The <code>VQESolver</code> class can be instantiated by passing a dictionary. Currently, the <strong>molecule</strong> field <strong>must</strong> be provided, and everything else is optional. In the future, this constraint may be relaxed to support different workflows, relying directly on a precomputed qubit operator for example.</p>
 <p>In the cell below, we initiate a <code>VQESolver</code> object with this molecule, and display the various attributes of the objects. Notice that some of them have been filled with default values.</p>
-<div id="cell-8" class="cell" data-execution_count="3">
+<div id="cell-9" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H2}</span>
@@ -604,7 +602,7 @@ E = \langle \Psi(\vec{\theta}) \vert \hat{H} \vert \Psi(\vec{\theta}) \rangle =\
 <h3 class="anchored" data-anchor-id="vqesolver.build">VQESolver.build<a class="anchor" id="22"></a></h3>
 <p>This method builds all the internal objects required by VQE, based on the options provided during object instantiation. It will build the mean-field if necessary, the fermionic and qubit hamiltonians corresponding to your molecular system, as well as the ansatz circuit (for default values of variational parameters if none have been provided so far), and the backend performing quantum circuit simulation or execution (a classical simulator or quantum processor).</p>
 <p>After we run <code>build</code>, we can see that a number of objects have been built and are now populating the attributes of our <code>VQESolver</code> object.</p>
-<div id="cell-10" class="cell" data-execution_count="4">
+<div id="cell-11" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(vqe_solver)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
@@ -661,7 +659,7 @@ E = \langle \Psi(\vec{\theta}) \vert \hat{H} \vert \Psi(\vec{\theta}) \rangle =\
 <li><strong>backend</strong> is a <code>Simulator</code> object that was defined in a submodule called <code>linq</code>, allowing us to define how a quantum circuit should be run. Currently, the default option is to run using an exact simulation (no noise) using the <code>qulacs</code> classical simulator.</li>
 <li><strong>ansatz</strong>: is now an object that implements the UCCSD ansatz. We go into more details about builtin and custom ansatze in a separate notebook. For now, it is useful to notice that one can peek at the UCCSD quantum circuit that was built, or the value of the variational parameters for this ansatz. This quantum circuit is in the format implemented in <code>linq</code>.</li>
 </ul>
-<div id="cell-12" class="cell" data-execution_count="5">
+<div id="cell-13" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Variational parameters: </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>ansatz<span class="sc">.</span>var_params<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vqe_solver.ansatz.circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -839,7 +837,7 @@ H         target : [0]
 <p>After <code>VQE.build</code> has been run, we now have all the objects needed to run the VQE algorithm, which consists in a classical optimization loop over an energy estimation function. This energy estimation is obtained by computing the expectation value of our qubit Hamiltonian, with regards to the variational ansatz circuit.</p>
 <p>The classical loop is driven by the selected optimizer (we’ll see a bit later how you can choose that), as well as the initial variational parameters.</p>
 <p>This method returns the optimal energy computed during the optimization process. As a byproduct, the attributes <code>optimal_energy</code> and <code>optimal_var_params</code> of our <code>VQESolver</code> object have been updated. If you have turned on the <code>verbose</code> option, your output will print more information about energy during the optimization process.</p>
-<div id="cell-15" class="cell" data-execution_count="6">
+<div id="cell-16" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>energy_vqe <span class="op">=</span> vqe_solver.simulate()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Optimal energy: </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_vqe<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Optimal parameters: </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>optimal_var_params<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -851,7 +849,7 @@ Optimal parameters:      [-5.4412497e-05  5.6522190e-02]</code></pre>
 </div>
 <p>That’s it, we ran VQE ! We can quickly check whether or not it did well on this system, with the options we picked: let’s compare that to what classical approaches like CCSD or FCI can do. UCCSD captures single and double excitations, and should be exact for a system like H2, assuming the classical optimization of the variational parameters was succesful.</p>
 <p>The <code>CCSDSolver</code> and <code>FCISolver</code> objects have a slightly different interface than <code>VQESolver</code> but are very straightforward. As we can see, the energies are in agreement, indicating that VQE did a good job.</p>
-<div id="cell-17" class="cell" data-execution_count="7">
+<div id="cell-18" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver, CCSDSolver</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fci_solver <span class="op">=</span> FCISolver(mol_H2)</span>
@@ -876,7 +874,7 @@ VQE energy:      -1.1372704157729143</code></pre>
 <p>This would allow you to compare maybe different (initial?) variational parameters, or could be used to rebuild the underlying ansatz circuit for specific values of the variational parameters, without involving the classical optimization.</p>
 <p>The UCCSD ansatz supports a few “shortcut” keywords for some parameters, such as “MP2”, “ones” or “random” (don’t hesitate to explore the <code>ansatz</code> attribute of your <code>VQESolver</code> object, in particular the <code>n_var_params</code> value). We can compare the energy they return: we see below that the mp2 parameters are a much better pick as initial parameters, but not as good as the optimal ones found by <code>simulate</code> earlier.</p>
 <p>Since this method builds the ansatz circuit for the input parameter, you can then grab the corresponding circuit. If you know the optimal parameters (from maybe a previous call to <code>simulate</code>), you can then grab the optimal circuit. Check out the <code>linq</code> tutorials to get an idea of how you could explore, export and send this circuit to a collaborator or a compute backend !</p>
-<div id="cell-19" class="cell" data-execution_count="8">
+<div id="cell-20" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare energies associated to different variational parameters</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>energy <span class="op">=</span> vqe_solver.energy_estimation(<span class="st">"ones"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>energy<span class="sc">:.7f}</span><span class="ss"> (params = </span><span class="sc">{</span>vqe_solver<span class="sc">.</span>ansatz<span class="sc">.</span>var_params<span class="sc">}</span><span class="ss">)"</span>)</span>
@@ -902,7 +900,7 @@ VQE energy:      -1.1372704157729143</code></pre>
 <p>This method is able to grab the relevant information for our <code>VQESolver</code> by peeking into the underlying ansatz and qubit Hamiltonian objects. The information you receive is tied to the options you picked for VQE, and may not be true for all sets of variational parameters, depending on how the ansatz circuit is built, and potential optimizations done in the future to the circuit. We also return the number of variational parameters in VQE, as the difficulty of classical optimization plays an important role in the success of the algorithm.</p>
 <p>More features for estimating the number of measurements to run an experiment with a given accuracy are on our roadmap.</p>
 <p>Here’s what our current example returns:</p>
-<div id="cell-21" class="cell" data-execution_count="9">
+<div id="cell-22" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>resources <span class="op">=</span> vqe_solver.get_resources()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resources)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -914,7 +912,7 @@ VQE energy:      -1.1372704157729143</code></pre>
 <h3 class="anchored" data-anchor-id="vqe.get_rdm">VQE.get_rdm<a class="anchor" id="26"></a></h3>
 <p>The <code>get_rdm</code> method enables us to compute the one- and two-electron Reduced Density Matrices (RDM) using the ansatz circuit previously built by <code>VQESolver</code>, for some input variational parameters. This can come in handy, and is in particular used by the DMET problem decomposition technique, further detailed in another notebook.</p>
 <p>Below, we compute these RDMs using the optimal variational parameters found by a previous call to <code>simulate</code>, and only print the one-electron RDM.</p>
-<div id="cell-23" class="cell" data-execution_count="10">
+<div id="cell-24" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>onerdm, twordm <span class="op">=</span> vqe_solver.get_rdm(vqe_solver.optimal_var_params)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(onerdm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -929,13 +927,13 @@ VQE energy:      -1.1372704157729143</code></pre>
 <p>The <code>VQESolver</code> class supports a <code>frozen_orbitals</code> option, allowing a user to pass either a list of indices (integers) referring to the orbitals to freeze, or a single integer indicating that all orbitals up to that index (excluded) must be frozen. For instance, just passing <code>3</code> would be equivalent to passing <code>[0, 1, 2]</code>.</p>
 <p>Internally, this information is parsed and allows us to track which orbitals are active or frozen and occupied or virtual, through an object carrying molecular data which is an attribute of the <code>VQESolver</code>. By default, the option “frozen_core” is selected. If this string is detected, the function <code>tangelo.toolboxes.molecular_computation.frozen_orbitals.get_frozen_core</code> is called. It takes a <code>Molecule</code> or a <code>SecondQuantizedMolecule</code> object and returns an integer corresponding to the number of low-energy orbitals. In short, no orbital for each period 1 element, one orbital for each period 2 element and five orbitals for each period 3 element are summed up and frozen in the subsequent calculation. It is important to emphasize that this option does nothing if a custom qubit Hamiltonian is provided instead of a molecule.</p>
 <p>Let’s have a look at this quickly, taking a H4 molecule in sto-3g basis as an example. We can compare the results provided by VQE to our classical CCSD solver, which also support frozen orbitals with a slightly different interface.</p>
-<div id="cell-25" class="cell" data-execution_count="11">
+<div id="cell-26" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>H4 <span class="op">=</span> [[<span class="st">"H"</span>, [<span class="fl">0.7071067811865476</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span>]], [<span class="st">"H"</span>, [<span class="fl">0.0</span>, <span class="fl">0.7071067811865476</span>, <span class="fl">0.0</span>]],</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>      [<span class="st">"H"</span>, [<span class="op">-</span><span class="fl">1.0071067811865476</span>, <span class="fl">0.0</span>, <span class="fl">0.0</span>]], [<span class="st">"H"</span>, [<span class="fl">0.0</span>, <span class="op">-</span><span class="fl">1.0071067811865476</span>, <span class="fl">0.0</span>]]]</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>mol_H4 <span class="op">=</span> SecondQuantizedMolecule(H4, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>, frozen_orbitals<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-26" class="cell" data-execution_count="12">
+<div id="cell-27" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H4}</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>vqe_solver_h4_frozen <span class="op">=</span> VQESolver(vqe_options)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>vqe_solver_h4_frozen.build()</span>
@@ -956,7 +954,7 @@ CCSD energy:     -1.894360237665742
 </div>
 </div>
 <p>Frozen orbitals offer a trade-off between resource requirements and accuracy. By freezing orbitals that seem not to contribute significantly to the computation, we may drastically reduce resource requirements. In this example, we sacrificed a noticeable amount of accuracy but also drastically reduced resource requirements and ended up with a formulation that was much easier to solve. Notice how <code>simulate</code> takes longer to execute here, and compare both energies and resource requirements to the previous cell.</p>
-<div id="cell-28" class="cell" data-execution_count="13">
+<div id="cell-29" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mol_H4 <span class="op">=</span> SecondQuantizedMolecule(H4, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>)</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H4}</span>
@@ -979,7 +977,7 @@ CCSD energy:     -1.894360237665742
 <p>We can choose from a number of built-in ansatze (UCCSD, UCC1, UCC3…) and qubit mappings (Jordan-Wigner, Bravyi-Kitaev, symmetry-conserving Bravyi-Kitaev). In the previous examples, the default options for these two entities were selected. You may have noticed that the qubit mapping was Jordan-Wigner (<code>'jw'</code>), and the ansatz was UCCSD (<code>Ansatze.UCCSD</code>).</p>
 <p>The choice of qubit mapping and ansatz impacts resource requirements but also accuracy. Designing “shallow” ansatze with low resource requirements that yield accurate results is an active topic of research.</p>
 <p>Below, we show how the qubit mapping impacts our example on H2 using the UCCSD ansatz. Notice the difference in resource requirements, classical optimization, and the difference in accuracy.</p>
-<div id="cell-30" class="cell" data-execution_count="14">
+<div id="cell-31" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> BuiltInAnsatze <span class="im">as</span> Ansatze</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># VQE-UCCSD on H2 with different qubit mappings</span></span>
@@ -1009,7 +1007,7 @@ CCSD energy:     -1.894360237665742
 <p>:warning: Each ansatz works differently, or may not be compatible with all qubit mappings. We encourage you to check out the documentation. In particular, how the <code>Ansatz</code> class work and how to implement your own custom ansatz into VQE is covered in a separate notebook <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html"><code>vqe_custom_ansatz_hamiltonian.ipynb</code></a>.</p>
 </blockquote>
 <p>We can also try using the restricted UCC ansatze UCC1 and UCC3 to solve this problem:</p>
-<div id="cell-32" class="cell" data-execution_count="15">
+<div id="cell-33" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># VQE-UCCSD on H2 with ansatze UCC1 and UCC3</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> az <span class="kw">in</span> [Ansatze.UCC1, Ansatze.UCC3]:</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H2, <span class="st">"ansatz"</span>: az, <span class="st">"up_then_down"</span>: <span class="va">True</span>}</span>
@@ -1032,7 +1030,7 @@ CCSD energy:     -1.894360237665742
 <p>You also have full control over the classical optimization strategy you wish to follow. Earlier, we showed how the <code>initial_var_params</code> attribute of the <code>VQESolver</code> class could be used in different ways: check out the implementation of your <code>ansatz</code> object to see what is supported.</p>
 <p>Users can also provide their own optimizer, which will be called in <code>VQESolver.simulate</code> and be passed a handle to the <code>VQESolver.energy_estimation</code> function and the initial variational parameters. Below, we decide to use the COBYLA optimizer from scipy:</p>
 <p>It is required that both the resulting function value and resulting parameters (<code>result.fun</code> and <code>result.x</code> respectively for the example below) are returns for the user defined function. This allows easy access after optimization to the optimal energy from <code>vqe_solver.optimal_energy</code>, and optimal parameters from <code>vqe_solver.optimal_var_params</code>.</p>
-<div id="cell-34" class="cell" data-execution_count="16">
+<div id="cell-35" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cobyla_optimizer(func, var_params):</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">from</span> scipy.optimize <span class="im">import</span> minimize</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> minimize(func, var_params, method<span class="op">=</span><span class="st">"COBYLA"</span>, options<span class="op">=</span>{<span class="st">"disp"</span>: <span class="va">True</span>, <span class="st">"maxiter"</span>: <span class="dv">100</span>, <span class="st">'rhobeg'</span>:<span class="fl">0.1</span>})</span>
@@ -1065,7 +1063,7 @@ CCSD energy:     -1.894360237665742
 <p>For more information about the <code>backend</code> attribute of your <code>VQE_Solver</code> object, of type <code>tangelo.linq.Simulator</code>, we recommend you check the <code>linq</code> tutorial notebooks.</p>
 <p>This object allows you to pick from a number of different classical simulators, with significantly different performance, some supporting noisy simulation. The parameters <code>n_shots</code> introduces statistical noise in the computation, which correlates to accuracy of energy estimation, while <code>noise_model</code> enables us to model noise in the circuit to an extent. These parameters are provided to enable the modeling of experiments that may be closer to the behaviour of quantum hardware.</p>
 <p>Below, we specify that we’d like our <code>VQESolver</code> to use the simulator from the <code>cirq</code> Python package as a backend, and leave the two other parameters to <code>None</code> to signify that we want the simulation to be exact.</p>
-<div id="cell-36" class="cell" data-execution_count="17">
+<div id="cell-37" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>my_backend_options <span class="op">=</span> {<span class="st">"target"</span>: <span class="st">"cirq"</span>, <span class="st">"n_shots"</span>: <span class="va">None</span>, <span class="st">"noise_model"</span>: <span class="va">None</span>}</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H2, <span class="st">"backend_options"</span>: my_backend_options, <span class="st">"verbose"</span>: <span class="va">True</span>}</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
@@ -1090,7 +1088,7 @@ CCSD energy:     -1.894360237665742
 <p>Running VQE on a noisy backend is a challenge in itself, and it is hard to predict what will be the behavior on the algorithm when the output is based on drawing shots (samples), which reflects the probabilistic nature of a quantum processor.</p>
 <p>What optimizer should be used for a noisy function? How does it correlate with the number of shots (samples) we need to gather for each energy estimation ? Is there any hope for VQE to be useful on a quantum computer ? All of these are open questions.</p>
 <p>Below, we illustrate how one can see that the amount of shots (samples) taken for energy estimation leads to better accuracy:</p>
-<div id="cell-38" class="cell" data-execution_count="18">
+<div id="cell-39" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>my_backend_options <span class="op">=</span> {<span class="st">"target"</span>: <span class="st">"qulacs"</span>, <span class="st">"n_shots"</span>: <span class="dv">1</span>, <span class="st">"noise_model"</span>: <span class="va">None</span>}</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H2, <span class="st">"backend_options"</span>: my_backend_options}</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
@@ -1113,7 +1111,6 @@ Energy estimation with 1.0E+06 shots = -1.1372051734252862  (Error: 6.52E-05)</c
 <p>For a more in-depth discussion on these objects, please refer to the documentation and check out the other notebooks we have in this folder, or maybe the <code>linq</code> notebooks.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1196,6 +1193,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1230,7 +1245,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

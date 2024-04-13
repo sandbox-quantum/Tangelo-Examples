@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,17 +485,16 @@ window.Quarto = {
 </header>
 
 
-<section id="density-matrix-embedding-theory-dmet" class="level1">
-<h1>Density Matrix Embedding Theory (DMET)</h1>
 <p>This notebook introduces a problem-decomposition technique called DMET (Density-Matrix Embedding Technique), which enables us to break down a molecular systems into a collection of subproblems with lower computational resource requirements.</p>
 <p>Such approaches enable us to study how combining classical and quantum algorithms may play a role in the resolution of problems beyond toy models, and even maybe provide a configurable and scalable path forward in the future, towards much more ambitious molecular systems.</p>
 <p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
-<div id="cell-2" class="cell" data-execution_count="1">
+<div id="cell-3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of contents:</h2>
@@ -526,7 +525,7 @@ window.Quarto = {
 <section id="first-example-dmet-ccsd-on-butane" class="level2">
 <h2 class="anchored" data-anchor-id="first-example-dmet-ccsd-on-butane">3. First example: DMET-CCSD on Butane <a class="anchor" id="3"></a></h2>
 <p>Before we proceed, let’s import all the relevant data-structures and classes from <code>tangelo</code>:</p>
-<div id="cell-7" class="cell" data-execution_count="2">
+<div id="cell-8" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import for a pretty jupyter notebook.</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -543,7 +542,7 @@ window.Quarto = {
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The first example will show how to partition the system into fragments. A different method for solving electronic structures can be chosen for each fragment, but here we will stick with CCSD. The first thing to do is building the butane molecule object.</p>
-<div id="cell-9" class="cell" data-execution_count="3">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>butane <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">C   2.142   1.395  -8.932</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">H   1.604   0.760  -8.260              </span></span>
@@ -566,7 +565,7 @@ window.Quarto = {
 </div>
 <p>The options for the DMET decomposition method are stored in a python dictionary. * <strong>molecule</strong>: The SecondQuantizedMolecule object. * <strong>fragment_atoms</strong>: List for the number of atoms in each fragment. Each atoms are chosen with their order in the coordinates definition (variable <code>butane</code>). Also, the sum of all numbers must be equal to total number of atoms in the molecule. * <strong>fragment_solvers</strong>: A string or a list of string representing the solver for each fragment. The number of items in the list must be equal to the number of fragment. There is one exception: when a single string is defined, the solver is the same for all fragments. * <strong>verbose</strong>: Activate verbose output.</p>
 <p>The next step <code>dmet.build()</code> ensures that the fragments and environment orbitals are defined according to the electron localization scheme.</p>
-<div id="cell-11" class="cell" data-execution_count="4">
+<div id="cell-12" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>options_butane_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_butane,</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Fragment definition = CH3, CH2, CH2, CH3</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"fragment_atoms"</span>: [<span class="dv">4</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>],</span>
@@ -578,7 +577,7 @@ window.Quarto = {
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>dmet_butane.build()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we can call the <code>dmet_butane.simulate()</code> method to get the DMET-CCSD energy.</p>
-<div id="cell-13" class="cell" data-execution_count="5">
+<div id="cell-14" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>energy_butane_dmet <span class="op">=</span> dmet_butane.simulate()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DMET energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_butane_dmet<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -586,32 +585,32 @@ window.Quarto = {
     ----------------
  
     SCF Occupancy Eigenvalues for Fragment Number : # 0
-    [3.36931478e-16 9.72588938e-17 3.39641618e-16 8.75648287e-16
- 1.22377807e-15 1.18235557e-08 1.54788144e-03 7.95895352e-03
+    [1.82487248e-16 3.40840176e-16 3.59070274e-16 4.99955298e-16
+ 9.22624171e-16 1.18235549e-08 1.54788144e-03 7.95895352e-03
  9.86702530e-03 9.86001986e-01 1.99097470e+00 1.99252585e+00
  1.99774972e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 1
-    [5.24416832e-16 4.50229428e-16 8.21351598e-17 7.78415247e-16
- 8.99214435e-16 1.10760090e-15 9.76359001e-08 8.20538062e-03
+    [1.16903164e-15 1.11183331e-15 7.52485030e-16 5.22736543e-16
+ 7.79818221e-18 1.69035627e-15 9.76359001e-08 8.20538062e-03
  1.75395416e-02 9.84827613e-01 1.02687253e+00 1.98352646e+00
  1.99247854e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 2
-    [8.92591758e-16 6.44818871e-16 2.69760442e-16 7.77103779e-16
- 1.00962499e-15 1.42712260e-15 9.76668362e-08 8.22640158e-03
+    [1.56060164e-15 6.20248038e-16 1.18978374e-16 4.84445334e-17
+ 4.73991178e-16 1.04555603e-15 9.76668353e-08 8.22640158e-03
  1.76029681e-02 9.84556283e-01 1.02694084e+00 1.98350112e+00
  1.99247021e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 3
-    [4.22298270e-16 1.39910752e-16 2.40014929e-16 3.77173476e-16
- 6.91333956e-16 1.18120633e-08 1.54951494e-03 7.98766539e-03
+    [9.03575344e-16 8.87540759e-16 2.16642024e-16 2.31955731e-19
+ 9.78458964e-16 1.18120640e-08 1.54951494e-03 7.98766539e-03
  9.89989420e-03 9.86049455e-01 1.99090855e+00 1.99248962e+00
  1.99774109e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
@@ -619,50 +618,50 @@ window.Quarto = {
 
         Fragment Number : #  1
         ------------------------
-        Fragment Energy = -72.05405827697915
-        Number of Electrons in Fragment = 9.012005183942202
+        Fragment Energy = -72.05405827696023
+        Number of Electrons in Fragment = 9.012005183894376
         Fragment Number : #  2
         ------------------------
-        Fragment Energy = -72.40954115245789
-        Number of Electrons in Fragment = 7.989043831461051
+        Fragment Energy = -72.40954115241516
+        Number of Electrons in Fragment = 7.989043831448886
         Fragment Number : #  3
         ------------------------
-        Fragment Energy = -72.41729771227314
-        Number of Electrons in Fragment = 7.989177971762682
+        Fragment Energy = -72.41729771227239
+        Number of Electrons in Fragment = 7.989177971762945
         Fragment Number : #  4
         ------------------------
-        Fragment Energy = -72.06317456714274
-        Number of Electrons in Fragment = 9.012007209592664
+        Fragment Energy = -72.06317456727817
+        Number of Electrons in Fragment = 9.012007209626475
     Iteration =  2
     ----------------
  
     SCF Occupancy Eigenvalues for Fragment Number : # 0
-    [3.36931478e-16 9.72588938e-17 3.39641618e-16 8.75648287e-16
- 1.22377807e-15 1.18235557e-08 1.54788144e-03 7.95895352e-03
+    [1.82487248e-16 3.40840176e-16 3.59070274e-16 4.99955298e-16
+ 9.22624171e-16 1.18235549e-08 1.54788144e-03 7.95895352e-03
  9.86702530e-03 9.86001986e-01 1.99097470e+00 1.99252585e+00
  1.99774972e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 1
-    [5.24416832e-16 4.50229428e-16 8.21351598e-17 7.78415247e-16
- 8.99214435e-16 1.10760090e-15 9.76359001e-08 8.20538062e-03
+    [1.16903164e-15 1.11183331e-15 7.52485030e-16 5.22736543e-16
+ 7.79818221e-18 1.69035627e-15 9.76359001e-08 8.20538062e-03
  1.75395416e-02 9.84827613e-01 1.02687253e+00 1.98352646e+00
  1.99247854e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 2
-    [8.92591758e-16 6.44818871e-16 2.69760442e-16 7.77103779e-16
- 1.00962499e-15 1.42712260e-15 9.76668362e-08 8.22640158e-03
+    [1.56060164e-15 6.20248038e-16 1.18978374e-16 4.84445334e-17
+ 4.73991178e-16 1.04555603e-15 9.76668353e-08 8.22640158e-03
  1.76029681e-02 9.84556283e-01 1.02694084e+00 1.98350112e+00
  1.99247021e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 3
-    [4.22298270e-16 1.39910752e-16 2.40014929e-16 3.77173476e-16
- 6.91333956e-16 1.18120633e-08 1.54951494e-03 7.98766539e-03
+    [9.03575344e-16 8.87540759e-16 2.16642024e-16 2.31955731e-19
+ 9.78458964e-16 1.18120640e-08 1.54951494e-03 7.98766539e-03
  9.89989420e-03 9.86049455e-01 1.99090855e+00 1.99248962e+00
  1.99774109e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
@@ -670,50 +669,50 @@ window.Quarto = {
 
         Fragment Number : #  1
         ------------------------
-        Fragment Energy = -72.05448289255352
-        Number of Electrons in Fragment = 9.012106057806507
+        Fragment Energy = -72.05448289253454
+        Number of Electrons in Fragment = 9.012106057758682
         Fragment Number : #  2
         ------------------------
-        Fragment Energy = -72.41037312477995
-        Number of Electrons in Fragment = 7.989213886180624
+        Fragment Energy = -72.41037312477741
+        Number of Electrons in Fragment = 7.9892138861807895
         Fragment Number : #  3
         ------------------------
-        Fragment Energy = -72.41812944720778
-        Number of Electrons in Fragment = 7.98934795152628
+        Fragment Energy = -72.41812944720704
+        Number of Electrons in Fragment = 7.989347951526541
         Fragment Number : #  4
         ------------------------
-        Fragment Energy = -72.06359892277479
-        Number of Electrons in Fragment = 9.012107987700809
+        Fragment Energy = -72.06359892290051
+        Number of Electrons in Fragment = 9.012107987732685
     Iteration =  3
     ----------------
  
     SCF Occupancy Eigenvalues for Fragment Number : # 0
-    [3.36931478e-16 9.72588938e-17 3.39641618e-16 8.75648287e-16
- 1.22377807e-15 1.18235557e-08 1.54788144e-03 7.95895352e-03
+    [1.82487248e-16 3.40840176e-16 3.59070274e-16 4.99955298e-16
+ 9.22624171e-16 1.18235549e-08 1.54788144e-03 7.95895352e-03
  9.86702530e-03 9.86001986e-01 1.99097470e+00 1.99252585e+00
  1.99774972e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 1
-    [5.24416832e-16 4.50229428e-16 8.21351598e-17 7.78415247e-16
- 8.99214435e-16 1.10760090e-15 9.76359001e-08 8.20538062e-03
+    [1.16903164e-15 1.11183331e-15 7.52485030e-16 5.22736543e-16
+ 7.79818221e-18 1.69035627e-15 9.76359001e-08 8.20538062e-03
  1.75395416e-02 9.84827613e-01 1.02687253e+00 1.98352646e+00
  1.99247854e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 2
-    [8.92591758e-16 6.44818871e-16 2.69760442e-16 7.77103779e-16
- 1.00962499e-15 1.42712260e-15 9.76668362e-08 8.22640158e-03
+    [1.56060164e-15 6.20248038e-16 1.18978374e-16 4.84445334e-17
+ 4.73991178e-16 1.04555603e-15 9.76668353e-08 8.22640158e-03
  1.76029681e-02 9.84556283e-01 1.02694084e+00 1.98350112e+00
  1.99247021e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 3
-    [4.22298270e-16 1.39910752e-16 2.40014929e-16 3.77173476e-16
- 6.91333956e-16 1.18120633e-08 1.54951494e-03 7.98766539e-03
+    [9.03575344e-16 8.87540759e-16 2.16642024e-16 2.31955731e-19
+ 9.78458964e-16 1.18120640e-08 1.54951494e-03 7.98766539e-03
  9.89989420e-03 9.86049455e-01 1.99090855e+00 1.99248962e+00
  1.99774109e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
@@ -721,50 +720,50 @@ window.Quarto = {
 
         Fragment Number : #  1
         ------------------------
-        Fragment Energy = -72.0523069412512
-        Number of Electrons in Fragment = 9.011589139717747
+        Fragment Energy = -72.05230694128595
+        Number of Electrons in Fragment = 9.011589139682677
         Fragment Number : #  2
         ------------------------
-        Fragment Energy = -72.40610957186692
-        Number of Electrons in Fragment = 7.988342441325332
+        Fragment Energy = -72.40610957196985
+        Number of Electrons in Fragment = 7.988342441347075
         Fragment Number : #  3
         ------------------------
-        Fragment Energy = -72.4138671106591
-        Number of Electrons in Fragment = 7.988476890759629
+        Fragment Energy = -72.41386711076395
+        Number of Electrons in Fragment = 7.988476890781469
         Fragment Number : #  4
         ------------------------
-        Fragment Energy = -72.06142430323813
-        Number of Electrons in Fragment = 9.011591560247792
+        Fragment Energy = -72.06142430341777
+        Number of Electrons in Fragment = 9.011591560292484
     Iteration =  4
     ----------------
  
     SCF Occupancy Eigenvalues for Fragment Number : # 0
-    [3.36931478e-16 9.72588938e-17 3.39641618e-16 8.75648287e-16
- 1.22377807e-15 1.18235557e-08 1.54788144e-03 7.95895352e-03
+    [1.82487248e-16 3.40840176e-16 3.59070274e-16 4.99955298e-16
+ 9.22624171e-16 1.18235549e-08 1.54788144e-03 7.95895352e-03
  9.86702530e-03 9.86001986e-01 1.99097470e+00 1.99252585e+00
  1.99774972e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 1
-    [5.24416832e-16 4.50229428e-16 8.21351598e-17 7.78415247e-16
- 8.99214435e-16 1.10760090e-15 9.76359001e-08 8.20538062e-03
+    [1.16903164e-15 1.11183331e-15 7.52485030e-16 5.22736543e-16
+ 7.79818221e-18 1.69035627e-15 9.76359001e-08 8.20538062e-03
  1.75395416e-02 9.84827613e-01 1.02687253e+00 1.98352646e+00
  1.99247854e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 2
-    [8.92591758e-16 6.44818871e-16 2.69760442e-16 7.77103779e-16
- 1.00962499e-15 1.42712260e-15 9.76668362e-08 8.22640158e-03
+    [1.56060164e-15 6.20248038e-16 1.18978374e-16 4.84445334e-17
+ 4.73991178e-16 1.04555603e-15 9.76668353e-08 8.22640158e-03
  1.76029681e-02 9.84556283e-01 1.02694084e+00 1.98350112e+00
  1.99247021e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00]
 
     SCF Occupancy Eigenvalues for Fragment Number : # 3
-    [4.22298270e-16 1.39910752e-16 2.40014929e-16 3.77173476e-16
- 6.91333956e-16 1.18120633e-08 1.54951494e-03 7.98766539e-03
+    [9.03575344e-16 8.87540759e-16 2.16642024e-16 2.31955731e-19
+ 9.78458964e-16 1.18120640e-08 1.54951494e-03 7.98766539e-03
  9.89989420e-03 9.86049455e-01 1.99090855e+00 1.99248962e+00
  1.99774109e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
  2.00000000e+00 2.00000000e+00 2.00000000e+00 2.00000000e+00
@@ -772,36 +771,36 @@ window.Quarto = {
 
         Fragment Number : #  1
         ------------------------
-        Fragment Energy = -72.05230691612667
-        Number of Electrons in Fragment = 9.011589133749332
+        Fragment Energy = -72.05230691611968
+        Number of Electrons in Fragment = 9.011589133704355
         Fragment Number : #  2
         ------------------------
-        Fragment Energy = -72.40610952262412
-        Number of Electrons in Fragment = 7.988342431259673
+        Fragment Energy = -72.40610952264532
+        Number of Electrons in Fragment = 7.9883424312647175
         Fragment Number : #  3
         ------------------------
-        Fragment Energy = -72.41386706143031
-        Number of Electrons in Fragment = 7.9884768806983875
+        Fragment Energy = -72.41386706145339
+        Number of Electrons in Fragment = 7.9884768807035265
         Fragment Number : #  4
         ------------------------
-        Fragment Energy = -72.0614242781289
-        Number of Electrons in Fragment = 9.011591554285026
+        Fragment Energy = -72.06142427826688
+        Number of Electrons in Fragment = 9.011591554319814
     *** DMET Cycle Done *** 
-    DMET Energy ( a.u. ) =   -157.1137415226
+    DMET Energy ( a.u. ) =   -157.1137415228
     Chemical Potential   =     -0.0004124579
-DMET energy (hartree):   -157.11374152257955</code></pre>
+DMET energy (hartree):   -157.1137415227548</code></pre>
 </div>
 </div>
 <p>As seen below, the correlation energy <span class="math inline">\(E_{corr} = E_{DMET}-E_{HF}\)</span> retrieved from this calculation is significant.</p>
-<div id="cell-15" class="cell" data-execution_count="6">
+<div id="cell-16" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>energy_butane_hf <span class="op">=</span> dmet_butane.mean_field.e_tot</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>energy_corr_butane <span class="op">=</span> <span class="bu">abs</span>(energy_butane_dmet <span class="op">-</span> energy_butane_hf)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correlation energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_corr_butane<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Correlation energy (kcal/mol): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span><span class="fl">627.5</span><span class="op">*</span>energy_corr_butane<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Correlation energy (hartree):    0.26456371960301794
-Correlation energy (kcal/mol):   166.01373405089376</code></pre>
+<pre><code>Correlation energy (hartree):    0.2645637197780957
+Correlation energy (kcal/mol):   166.01373416075504</code></pre>
 </div>
 </div>
 </section>
@@ -811,7 +810,7 @@ Correlation energy (kcal/mol):   166.01373405089376</code></pre>
 <h3 class="anchored" data-anchor-id="why-not-only-using-vqe">4.1 Why not only using VQE?</h3>
 <p>We saw in the last section that the computation of DMET fragments is able to get back a significant amount of correlation energy. A valid question that can be asked is: “Why can’t we just directly tackle the initial problem without DMET?”. As stated earlier, DMET breaks the system into its constituent fragments; reducing the initial problem to a collection of subproblems requiring less computational resources. This can be crucial to making the problem tractable with classical simulators or nascent quantum computers.</p>
 <p>We have selected a ring of 10 hydrogen atoms as a simple example of a molecular system. The distance between adjacent hydrogen atoms has been set to 1<span class="math inline">\(~\)</span>Å.</p>
-<div id="cell-18" class="cell" data-execution_count="7">
+<div id="cell-19" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>H10<span class="op">=</span><span class="st">"""</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">H          1.6180339887          0.0000000000          0.0000000000</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">H          1.3090169944          0.9510565163          0.0000000000</span></span>
@@ -828,40 +827,24 @@ Correlation energy (kcal/mol):   166.01373405089376</code></pre>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>mol_h10 <span class="op">=</span> SecondQuantizedMolecule(H10, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"minao"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In the example below, we show resource requirements using standard parameters. Please note that other encodings could reduce the required resources, but resources would still be too much for current hardware.</p>
-<div id="cell-20" class="cell" data-execution_count="8">
+<div id="cell-21" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>options_h10_vqe <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h10, <span class="st">"qubit_mapping"</span>: <span class="st">"jw"</span>, <span class="st">"verbose"</span>: <span class="va">False</span>}</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>vqe_h10 <span class="op">=</span> VQESolver(options_h10_vqe)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>vqe_h10.build()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here are some resources estimation that would be needed for a direct VQE calculation on the initial problem, without DMET: for quantum computers in the NISQ era, tackling this head-on is a daunting task.</p>
-<div id="cell-22" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This can take up to 10 minutes.</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># resources_h10_vqe = vqe_h10.get_resources()</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>resources_h10_vqe <span class="op">=</span> {</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"qubit_hamiltonian_terms"</span>: <span class="dv">4039</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_width"</span>: <span class="dv">20</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_depth"</span>: <span class="dv">34696</span>,</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_2qubit_gates"</span>: <span class="dv">30784</span>,</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">"circuit_var_gates"</span>: <span class="dv">1900</span>,</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">"vqe_variational_parameters"</span>: <span class="dv">350</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(resources_h10_vqe, indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-23" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>resources_h10_vqe <span class="op">=</span> vqe_h10.get_resources()</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resources_h10_vqe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{
-  "qubit_hamiltonian_terms": 4039,
-  "circuit_width": 20,
-  "circuit_depth": 34696,
-  "circuit_2qubit_gates": 30784,
-  "circuit_var_gates": 1900,
-  "vqe_variational_parameters": 350
-}</code></pre>
+<pre><code>{'qubit_hamiltonian_terms': 4823, 'circuit_width': 20, 'circuit_depth': 46157, 'circuit_2qubit_gates': 40576, 'circuit_var_gates': 2540, 'vqe_variational_parameters': 350}</code></pre>
 </div>
 </div>
 </section>
 <section id="dmet-vqe" class="level3">
 <h3 class="anchored" data-anchor-id="dmet-vqe">4.2 DMET-VQE</h3>
 <p>Here, we demonstrate how to perform DMET-VQE calculations using Tangelo package. The aim is to obtain improved results (vs HF energy) when compairing to the Full CI method (without using problem decomposition) and also using a quantum algorithm (VQE).</p>
-<div id="cell-24" class="cell" data-execution_count="10">
+<div id="cell-25" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>options_h10_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h10,</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">10</span>,</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"fragment_solvers"</span>: <span class="st">"vqe"</span>,</span>
@@ -874,43 +857,36 @@ Correlation energy (kcal/mol):   166.01373405089376</code></pre>
 <p>The <code>dmet.build()</code> method creates fragments (10) from the H10 molecule. When we decompose the ring of atoms into fragments including only one hydrogen atom each, the DMET method creates a fragment orbital (left: the single orbital distribution is shown in both pink and blue, with the colours depicting the phases) and the bath orbital (right: the single orbital distribution of the remaining nine hydrogen atoms is shown in both pink and blue, with the colours depicting the phases).</p>
 <p><img src="../img/frag_and_bath.png" alt="fragment_and_bath_orbitals" width="450"></p>
 <p>Resource estimation is done by calling <code>dmet_h10.get_resources()</code>. Here, a list of ten dictionaries is returned and stored in <code>resources_h10_dmet</code>. Each dictionary refers to a fragment. As every fragment is the same in this system (a single hydrogen atom), we only print one.</p>
-<div id="cell-26" class="cell" data-execution_count="11">
+<div id="cell-27" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>resources_h10_dmet <span class="op">=</span> dmet_h10.get_resources()</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(resources_h10_dmet[<span class="dv">0</span>], indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(resources_h10_dmet[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{
-  "qubit_hamiltonian_terms": 27,
-  "circuit_width": 4,
-  "circuit_depth": 100,
-  "circuit_2qubit_gates": 64,
-  "circuit_var_gates": 12,
-  "vqe_variational_parameters": 2
-}</code></pre>
+<pre><code>{'qubit_hamiltonian_terms': 27, 'circuit_width': 4, 'circuit_depth': 100, 'circuit_2qubit_gates': 64, 'circuit_var_gates': 12, 'vqe_variational_parameters': 2}</code></pre>
 </div>
 </div>
 <p>Compared to a direct VQE algorithm, those resources are greatly reduced: from 20 qubits down to only 4 qubits in our case. Below, <code>dmet_h10.simulate()</code> computes the DMET-VQE energy.</p>
 <p>The options currently selected specify that VQE must be run for each fragment, at each iteration of DMET: as such, it may take 2-3 minutes for this cell to finish. The <code>verbose</code> option is turned off to hide the lengthy prints: feel free to turn it back on to track the progress of this cell, if you’d like.</p>
-<div id="cell-28" class="cell" data-execution_count="12">
+<div id="cell-29" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>dmet_h10.verbose <span class="op">=</span> <span class="va">False</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>energy_h10_dmet <span class="op">=</span> dmet_h10.simulate()</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"DMET energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_h10_dmet<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>DMET energy (hartree):   -5.367523534963826</code></pre>
+<pre><code>DMET energy (hartree):   -5.367548588351571</code></pre>
 </div>
 </div>
 <p>A comparison with an FCI calculation is then made.</p>
-<div id="cell-30" class="cell" data-execution_count="13">
+<div id="cell-31" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fci_h10 <span class="op">=</span> FCISolver(mol_h10)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>energy_h10_fci <span class="op">=</span> fci_h10.simulate()</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"FCI energy (hartree): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span>energy_h10_fci<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>FCI energy (hartree):    -5.380926000731037</code></pre>
+<pre><code>FCI energy (hartree):    -5.3809260007310336</code></pre>
 </div>
 </div>
 <p>Lastly, we note that the DMET energy is closer to the FCI energy than the HF energy. DMET-VQE results are an improvement but are still not at the FCI level. This discrepancy is attributable to missing three, four … many body interactions. When dismantling the system into fragments, we get a single hydrogen atom per fragment. Therefore, those fragments cannot propagate higher level (three and more) excitations. DMET user should have in mind this dilemma between fragment sizes and accuracy of the total electronic energy.</p>
-<div id="cell-32" class="cell" data-execution_count="14">
+<div id="cell-33" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>energy_h10_hf <span class="op">=</span> dmet_h10.mean_field.e_tot</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>delta_h10_fci_hf <span class="op">=</span> <span class="bu">abs</span>(energy_h10_fci <span class="op">-</span> energy_h10_hf)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>delta_h10_fci_dmet <span class="op">=</span> <span class="bu">abs</span>(energy_h10_fci <span class="op">-</span> energy_h10_dmet)</span>
@@ -921,9 +897,9 @@ Correlation energy (kcal/mol):   166.01373405089376</code></pre>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference FCI vs DMET-VQE energies (kcal/mol): </span><span class="ch">\t</span><span class="ss"> </span><span class="sc">{</span><span class="fl">627.5</span><span class="op">*</span>delta_h10_fci_dmet<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Difference FCI vs HF energies (hartree):         0.11680533556191364
-Difference FCI vs DMET-VQE energies (hartree):       0.013402465767210714
+Difference FCI vs DMET-VQE energies (hartree):       0.013377412379462328
 Difference FCI vs HF energies (kcal/mol):        73.29534806510081
-Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></pre>
+Difference FCI vs DMET-VQE energies (kcal/mol):      8.39432626811261</code></pre>
 </div>
 </div>
 </section>
@@ -931,7 +907,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <section id="dmet-features" class="level2">
 <h2 class="anchored" data-anchor-id="dmet-features">5. DMET features<a class="anchor" id="5"></a></h2>
 <p>In this section, some DMET features are shown. A four hydrogen atoms system is defined for this purpose.</p>
-<div id="cell-34" class="cell" data-execution_count="15">
+<div id="cell-35" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>H4 <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="st">H 0.7071 0. 0.</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="st">H 0. 0.7071 0.</span></span>
@@ -948,7 +924,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <li><code>Localization.meta_lowdin</code> (default): Described in Q. Sun et al., JCTC 10, 3784-3790 (2014).</li>
 <li><code>Localization.iao</code>: Described in G. Knizia, JCTC 9, 4834-4843 (2013). This algorithm maps the orbitals to an minao set. So, at least a double zeta basis set must be used with this localization method.</li>
 </ul>
-<div id="cell-36" class="cell" data-execution_count="16">
+<div id="cell-37" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"electron_localization"</span>: Localization.iao,</span>
@@ -956,13 +932,13 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x2a2a7f0d0&gt;,
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x7efc9f011160&gt;,
  'electron_localization': &lt;Localization.iao: 1&gt;,
  'fragment_atoms': [1, 1, 1, 1],
  'fragment_solvers': ['ccsd', 'ccsd', 'ccsd', 'ccsd'],
  'fragment_frozen_orbitals': [None, None, None, None],
- 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x2a2837e10&gt;&gt;,
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x7efc9f0117c0&gt;&gt;,
  'initial_chemical_potential': 0.0,
  'solvers_options': [{}, {}, {}, {}],
  'virtual_orbital_threshold': 1e-13,
@@ -972,7 +948,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
   &lt;Localization.nao: 2&gt;},
  'fragment_builder': tangelo.problem_decomposition.dmet.fragment.SecondQuantizedDMETFragment,
  'uhf': False,
- 'mean_field': &lt;pyscf.scf.hf.RHF at 0x2a2ab86d0&gt;,
+ 'mean_field': &lt;pyscf.scf.hf.RHF at 0x7efd0b4325b0&gt;,
  'chemical_potential': None,
  'dmet_energy': None,
  'orbitals': None,
@@ -987,7 +963,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <section id="fragment-solvers" class="level3">
 <h3 class="anchored" data-anchor-id="fragment-solvers">5.2 Fragment solvers</h3>
 <p>A list of solvers can be passed to the <code>DMETProblemDecomposition</code> class. If a single solver is detected, it will be applied to all fragments. Here is an example where the first fragment is solved with VQE, the second one with CCSD, the third one with FCI and the last one with VQE.</p>
-<div id="cell-38" class="cell" data-execution_count="17">
+<div id="cell-39" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_solvers"</span>: [<span class="st">"vqe"</span>, <span class="st">"ccsd"</span>, <span class="st">"fci"</span>, <span class="st">"vqe"</span>],</span>
@@ -995,13 +971,13 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
-<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x2a8344290&gt;,
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x7efc9f136130&gt;,
  'electron_localization': &lt;Localization.meta_lowdin: 0&gt;,
  'fragment_atoms': [1, 1, 1, 1],
  'fragment_solvers': ['vqe', 'ccsd', 'fci', 'vqe'],
  'fragment_frozen_orbitals': [None, None, None, None],
- 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x2a6b18110&gt;&gt;,
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x7efce75930a0&gt;&gt;,
  'initial_chemical_potential': 0.0,
  'solvers_options': [{'qubit_mapping': 'jw',
    'initial_var_params': 'ones',
@@ -1016,7 +992,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
   &lt;Localization.nao: 2&gt;},
  'fragment_builder': tangelo.problem_decomposition.dmet.fragment.SecondQuantizedDMETFragment,
  'uhf': False,
- 'mean_field': &lt;pyscf.scf.hf.RHF at 0x2a2ab86d0&gt;,
+ 'mean_field': &lt;pyscf.scf.hf.RHF at 0x7efd0b4325b0&gt;,
  'chemical_potential': None,
  'dmet_energy': None,
  'orbitals': None,
@@ -1031,7 +1007,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <section id="initial-chemical-potential" class="level3">
 <h3 class="anchored" data-anchor-id="initial-chemical-potential">5.3 Initial chemical potential</h3>
 <p>The DMET optimizes a parameter <span class="math inline">\(\mu\)</span>, the chemical potential. It ensures that the sum of all fragment electrons is consistent with the total number of electrons. As it is numerically optimized, the initial value can be important. Here is an example where the <code>initial_chemical_potential</code> is set to 0.1.</p>
-<div id="cell-40" class="cell" data-execution_count="18">
+<div id="cell-41" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"fragment_atoms"</span>: [<span class="dv">1</span>]<span class="op">*</span><span class="dv">4</span>,</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                   <span class="st">"initial_chemical_potential"</span> : <span class="fl">0.1</span>,</span>
@@ -1039,13 +1015,13 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x2a28cd7d0&gt;,
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x7efcf41d3130&gt;,
  'electron_localization': &lt;Localization.meta_lowdin: 0&gt;,
  'fragment_atoms': [1, 1, 1, 1],
  'fragment_solvers': ['ccsd', 'ccsd', 'ccsd', 'ccsd'],
  'fragment_frozen_orbitals': [None, None, None, None],
- 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x2a834ee10&gt;&gt;,
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x7efcf41d3190&gt;&gt;,
  'initial_chemical_potential': 0.1,
  'solvers_options': [{}, {}, {}, {}],
  'virtual_orbital_threshold': 1e-13,
@@ -1055,7 +1031,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
   &lt;Localization.nao: 2&gt;},
  'fragment_builder': tangelo.problem_decomposition.dmet.fragment.SecondQuantizedDMETFragment,
  'uhf': False,
- 'mean_field': &lt;pyscf.scf.hf.RHF at 0x2a2ab86d0&gt;,
+ 'mean_field': &lt;pyscf.scf.hf.RHF at 0x7efd0b4325b0&gt;,
  'chemical_potential': None,
  'dmet_energy': None,
  'orbitals': None,
@@ -1070,7 +1046,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <section id="solvers-options" class="level3">
 <h3 class="anchored" data-anchor-id="solvers-options">5.4 Solvers options</h3>
 <p>A list of options can be passed to the solvers. Each element of the list must be consistent with the appropriate value in <code>fragment_solvers</code>. If a single dictionary of options is detected, it is applied to all fragment solvers. Here is an example where one wants to set the qubit mapping to the Bravyi-Kitaev method when performing VQE.</p>
-<div id="cell-42" class="cell" data-execution_count="19">
+<div id="cell-43" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"qubit_mapping"</span>: <span class="st">"bk"</span>}</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>options_h4_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_h4,</span>
@@ -1081,13 +1057,13 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(dmet_h4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
-<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x2a28cf590&gt;,
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>{'molecule': &lt;pyscf.gto.mole.Mole at 0x7efc9f136a60&gt;,
  'electron_localization': &lt;Localization.meta_lowdin: 0&gt;,
  'fragment_atoms': [1, 1, 1, 1],
  'fragment_solvers': ['vqe', 'vqe', 'vqe', 'vqe'],
  'fragment_frozen_orbitals': [None, None, None, None],
- 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x2a28cfe90&gt;&gt;,
+ 'optimizer': &lt;bound method DMETProblemDecomposition._default_optimizer of &lt;tangelo.problem_decomposition.dmet.dmet_problem_decomposition.DMETProblemDecomposition object at 0x7efc9f136700&gt;&gt;,
  'initial_chemical_potential': 0.0,
  'solvers_options': [{'qubit_mapping': 'bk'},
   {'qubit_mapping': 'bk'},
@@ -1100,7 +1076,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
   &lt;Localization.nao: 2&gt;},
  'fragment_builder': tangelo.problem_decomposition.dmet.fragment.SecondQuantizedDMETFragment,
  'uhf': False,
- 'mean_field': &lt;pyscf.scf.hf.RHF at 0x2a2ab86d0&gt;,
+ 'mean_field': &lt;pyscf.scf.hf.RHF at 0x7efd0b4325b0&gt;,
  'chemical_potential': None,
  'dmet_energy': None,
  'orbitals': None,
@@ -1115,7 +1091,7 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <section id="restricting-the-fragment-active-space" class="level3">
 <h3 class="anchored" data-anchor-id="restricting-the-fragment-active-space">5.5 Restricting the fragment active space</h3>
 <p>Problem decomposition is successful at reducing the problem size, but the subproblems still can demand too much resources for a quantum computer. It is possible to define an active space in each DMET fragment, and an example is shown below.</p>
-<div id="cell-44" class="cell" data-execution_count="20">
+<div id="cell-45" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> define_dmet_frag_as(homo_minus_m<span class="op">=</span><span class="dv">0</span>, lumo_plus_n<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> callable_for_dmet_object(info_fragment):</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        mf_fragment, _, _, _, _, _, _ <span class="op">=</span> info_fragment</span>
@@ -1142,7 +1118,9 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 <span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a>dmet_h4 <span class="op">=</span> DMETProblemDecomposition(options_h4_dmet)</span>
 <span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a>dmet_h4.build()</span>
-<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(dmet_h4.get_resources(), indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-28"><a href="#cb31-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Use json to make the print format more readable</span></span>
+<span id="cb31-29"><a href="#cb31-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json.dumps(dmet_h4.get_resources(), indent<span class="op">=</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{
   "0": {
@@ -1200,7 +1178,6 @@ Difference FCI vs DMET-VQE energies (kcal/mol):      8.410047268924723</code></p
 </ul>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1283,6 +1260,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -1317,7 +1312,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

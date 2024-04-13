@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,17 +485,15 @@ window.Quarto = {
 </header>
 
 
-<section id="tangelo-vqe-custom-ansatz-and-qubit-hamiltonian-tutorial" class="level1">
-<h1>Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</h1>
 <p>Tangelo comes packaged with an implementation of several standard ansatz circuits for the user to take advantage of. In this tutorial, we’ll explore how you can incorporate the built in <code>VQESolver</code> into your own workflow, by introducing a user-defined custom ansatz circuit and/or a qubit Hamiltonian. We’ll base our work here on the <code>VQESolver</code> class, and take advantage of tools readily available through Tangelo.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-2" class="cell" data-execution_count="2">
+<div id="cell-3" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver, FCISolver</span>
@@ -509,7 +507,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="hardware-efficient-ansatz">Hardware Efficient Ansatz</h2>
 <p>For our example, we’re going to implement the so-called <a href="https://arxiv.org/pdf/1704.05018.pdf">Hardware Efficient Ansatz</a> (HEA), developed by Kandala et al at IBM. In this ansatz, a circuit is constructed with repeated layers of a simple structure. Each layer consists of entangling gates (e.g.&nbsp;CNOT or CZ) which couple neighbouring qubits, followed by a series of Euler rotations carried out as single-qubit rotations <span class="math inline">\(e^{i\theta_i^1 Z_i}e^{i\theta_i^2 X_i}e^{i\theta_i^3 Z_i}\)</span>. We’ll start by initializing our <code>Ansatz</code> class, and then fill in the functionality required to implement this ansatz in <code>VQESolver</code>.</p>
 <p>To construct our HEA ansatz, we’re going to make use of the three helper functions defined here. The first will go through a register of qubits and add a layer of Euler-rotations as prescribed above. The second adds two columns of alternating CNOT gates, establishing long-range entanglement. The third brings these together into a sequence of alternating entanglers and Euler rotations.</p>
-<div id="cell-4" class="cell" data-execution_count="3">
+<div id="cell-5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> EulerCircuit(n_qubits):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Construct a circuit applying an Euler Z-X-Z rotation to each qubit."""</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    circuit <span class="op">=</span> Circuit()</span>
@@ -549,7 +547,7 @@ window.Quarto = {
 <li><strong>build_circuit</strong>: instantiate the variational circuit object</li>
 </ol>
 <p>Below, we’re going to type out the entire class as we will use it. This is a lot of code in one place. So afterwards, we’ll break it down into each of the relevant member methods.</p>
-<div id="cell-6" class="cell" data-execution_count="4">
+<div id="cell-7" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HEA(Ansatz):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_spinorbitals, n_electrons, n_layers, mapping<span class="op">=</span><span class="st">'jw'</span>):</span>
@@ -636,25 +634,24 @@ window.Quarto = {
 <span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit <span class="op">=</span> hea_circuit</span>
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-</section>
 <section id="hea-vqe-on-an-h_2-dimer" class="level1">
 <h1>HEA-VQE on an H<span class="math inline">\(_2\)</span>-dimer</h1>
 <p>With the <code>Ansatz</code> so defined, we’re ready to go ahead and build our VQE solver class, and run a calculation on a molecule of interest. I’m going to use the <code>SecondQuantizedMolecule</code> class to build a hydrogen dimer and run VQE on it using my custom ansatz. In the next section, I will also show how to run VQE with a custom qubit Hamiltonian that did not require passing a molecule.</p>
 <section id="using-a-molecule-object-as-input" class="level2">
 <h2 class="anchored" data-anchor-id="using-a-molecule-object-as-input">Using a molecule object as input</h2>
-<div id="cell-9" class="cell" data-execution_count="6">
+<div id="cell-10" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>H2 <span class="op">=</span> [(<span class="st">'H'</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)),(<span class="st">'H'</span>, (<span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.74137727</span>))]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>mol_H2 <span class="op">=</span> SecondQuantizedMolecule(H2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With this molecule prepared, we’re ready to instantiate our ansatz, and feed it into VQE. I’ll access details of the molecule required to build our ansatz circuit (i.e.&nbsp;number of spin-orbitals and number of electrons) from the molecule object. Feel free to change the number of layers in the circuit, and explore how this changes VQE results, and timing.</p>
-<div id="cell-11" class="cell" data-execution_count="7">
+<div id="cell-12" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>n_spinorbitals <span class="op">=</span> mol_H2.n_active_sos</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n_electrons <span class="op">=</span> mol_H2.n_active_electrons</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>hea_layers <span class="op">=</span> <span class="dv">4</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>HEA_ansatz <span class="op">=</span> HEA(n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons, n_layers<span class="op">=</span>hea_layers)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, we can instantiate the <code>VQESolver</code>, and run. We have decided to initialize all the variational parameters to ones through an option supported in the <code>set_var_params</code> of our <code>HEA</code> ansatz class.</p>
-<div id="cell-13" class="cell" data-execution_count="8">
+<div id="cell-14" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol_H2, <span class="st">"qubit_mapping"</span>: <span class="st">'JW'</span>, <span class="st">'ansatz'</span>: HEA_ansatz, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>}</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE <span class="op">=</span> VQESolver(vqe_options)</span>
@@ -670,7 +667,7 @@ window.Quarto = {
 <p><code>VQESolver</code> can also directly take as input a custom qubit operator instead of computing a Hamiltonian starting from a molecule. This situation can be relevant in the case where one wants to perform VQE using a qubit Hamiltonian: * That does not correspond to a molecular system; * That has been tailored by the user (to reduce complexity or to study something specific); * That is too expensive to recompute.</p>
 <p>As written in the previous section, it is possible to get the same result by providing <code>VQESolver</code> with a qubit Hamiltonian instead of a molecule. First, let’s store the optimal variational parameters to use them as a starting point for comparison.</p>
 <p>Next step is to generate the qubit Hamiltonian. With the help of <code>MolecularData</code> and <code>fermion_to_qubit_mapping</code>, we are able to generate a fermionic Hamiltonian and transform it into operations doable on a quantum computer.</p>
-<div id="cell-17" class="cell" data-execution_count="9">
+<div id="cell-18" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fermionic_hamiltonian_H2 <span class="op">=</span> mol_H2.fermionic_hamiltonian</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>qubit_hamiltonian_H2 <span class="op">=</span> fermion_to_qubit_mapping(fermionic_hamiltonian_H2, mapping<span class="op">=</span><span class="st">"jw"</span>, n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qubit_hamiltonian_H2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -694,7 +691,7 @@ window.Quarto = {
 </div>
 <p><strong>Notes</strong>: Users can directly retrieve the qubit Hamiltonian object used in <code>VQESolver</code> by accessing its <code>qubit_hamiltonian</code> attribute.</p>
 <p>The dihydrogen molecule ground state energy is computed again from this qubit Hamiltonian (which is identical to the one used in the first part computed from the molecule).</p>
-<div id="cell-19" class="cell" data-execution_count="10">
+<div id="cell-20" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vqe_alternative_options <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qubit_hamiltonian_H2, <span class="st">'ansatz'</span>: HEA_ansatz, <span class="st">"initial_var_params"</span>: <span class="st">"ones"</span>}</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE_HAMILTONIAN <span class="op">=</span> VQESolver(vqe_alternative_options)</span>
@@ -705,7 +702,7 @@ window.Quarto = {
 </div>
 </div>
 <p>The behaviour of VQE is identical to the previous one. Regarding chemical accuracy, how well did we do here? Let’s compare against Hartree Fock and FCI.</p>
-<div id="cell-21" class="cell" data-execution_count="11">
+<div id="cell-22" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>energy_fci <span class="op">=</span> FCISolver(mol_H2).simulate()</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>energy_hf <span class="op">=</span> mol_H2.mf_energy</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>energy_vqe <span class="op">=</span> HEA_VQE.optimal_energy</span>
@@ -725,7 +722,7 @@ HEA-VQE ENERGY (from qubit Hamiltonian): -1.1372336 Ha</code></pre>
 <section id="using-a-custom-circuit-as-input" class="level2">
 <h2 class="anchored" data-anchor-id="using-a-custom-circuit-as-input">Using a custom circuit as input</h2>
 <p>Lastly, it is possible to pass a pre-built arbitrary circuit with variational gates as input to <code>VQESolver</code>. In that case, <code>VQESolver</code> will optimize the variational parameters of these gates in order to minimize the cost function, which still requires a qubit Hamiltonian. This situation can be relevant to users who wish to apply variational approaches to arbitrary circuits or a circuit they got from other collaborators.</p>
-<div id="cell-23" class="cell" data-execution_count="12">
+<div id="cell-24" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>circuit <span class="op">=</span> HEA_ansatz.build_circuit()</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(circuit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -809,7 +806,7 @@ RZ        target : [3]   parameter : 0.0     (variational)
 </div>
 </div>
 <p>The dihydrogen energy is recomputed for the third time by using its qubit Hamiltonian and the abstract circuit provided. We are here optimizing the variational parameters of the pre-built circuit, in an attempt to return the minimal energy for this ansatz.</p>
-<div id="cell-25" class="cell" data-execution_count="13">
+<div id="cell-26" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>vqe_second_alternative_options <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qubit_hamiltonian_H2, <span class="st">"ansatz"</span>: circuit, <span class="st">"initial_var_params"</span>: <span class="st">"random"</span>}</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>HEA_VQE_CIRCUIT <span class="op">=</span> VQESolver(vqe_second_alternative_options)</span>
@@ -820,7 +817,7 @@ RZ        target : [3]   parameter : 0.0     (variational)
 </div>
 </div>
 <p><strong>Note</strong>: Users may also give <code>VQESolver</code> a <code>SecondQuantizedMolecule</code> with a custom circuit. The energy at the end is the very same as the previous calculations with a molecule + custom ansatz and a qubit Hamiltonian.</p>
-<div id="cell-27" class="cell" data-execution_count="14">
+<div id="cell-28" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>energy_vqe_circuit <span class="op">=</span> HEA_VQE_CIRCUIT.optimal_energy</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'HEA-VQE ENERGY (from a circuit): </span><span class="sc">{</span>energy_vqe_circuit <span class="sc">:.7f}</span><span class="ss"> Ha'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -916,6 +913,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -950,7 +965,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

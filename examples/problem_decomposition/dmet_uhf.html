@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,8 +485,6 @@ window.Quarto = {
 </header>
 
 
-<section id="applying-unrestricted-density-matrix-embedding-theory-to-battery-chemistry" class="level1">
-<h1>Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</h1>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <!--- Approach with PD --->
@@ -503,7 +501,7 @@ window.Quarto = {
 <!--- UHF + DMET --->
 <p>While waiting for a hardware breakthrough towards fault-tolerant quantum computers, unrestricted DMET calculation (UHF-DMET) may help modelling more industrially-relevant molecules on Noisy Intermediate Scale Quantum (NISQ) devices. We have previously addressed this statement with restricted DMET calculations in a <a href="https://doi.org/10.1038/s42005-021-00751-9">Communcation Physics publication</a>, reproduced in the <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb">“overview of an end-to-end experiment” notebook</a>. In this notebook, we focus on a use case relevant for battery chemistry development using the UHF-DMET algorithm. The quantum resource estimation and experiment are intentionally left out of this notebook as they are already covered in the references above.</p>
 <p>But first, let’s install Tangelo in our environment.</p>
-<div id="cell-1" class="cell" data-execution_count="1">
+<div id="cell-2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="im">import</span> tangelo</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
@@ -517,7 +515,7 @@ window.Quarto = {
 <p>The stabilization of this compound could lead to a new type of batteries with improved energy density, as stated in this <a href="https://phys.org/news/2016-01-stable-superoxide-door-class-batteries.html">phys.org news article</a>. To study this compound, a wet chemistry analog of this process would be the <span class="math inline">\(\text{LiO}_2\)</span> synthesis from lithium electride dissolved in anhydrous ammonia.</p>
 <p>Via quantum chemistry theory, we know that the <span class="math inline">\(\text{LiO}_2\)</span> molecule is described by 42 molecular orbitals (in the STO-3G basis) and 19 electrons. This problem statement involves computational challenges due to the exponential scaling of the matrix and vector sizes for classical algorithms, like the Full Configuration Interaction (FCI) method. This aspect grows into a bigger issue as we move on to more complete basis sets, and this is one of the reasons why <a href="https://doi.org/10.1021/jacs.2c13042">quantum chemistry is so complicated</a>. This is a textbook example where a problem decomposition like UHF-DMET could shine.</p>
 <p>The remaining part of this notebook shows how UHF-DMET can be used in Tangelo. In the next cell, we build a <span class="math inline">\(\text{LiO}_2\)</span> molecule object with the <code>cc-pvdz</code> basis set, using a UHF mean-field calculation (by setting the <code>uhf</code> argument to <code>True</code>).</p>
-<div id="cell-3" class="cell" data-execution_count="2">
+<div id="cell-4" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>LiO2 <span class="op">=</span> [</span>
@@ -528,7 +526,7 @@ window.Quarto = {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>mol_lio2 <span class="op">=</span> SecondQuantizedMolecule(LiO2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">1</span>, basis<span class="op">=</span><span class="st">"cc-pvdz"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>, uhf<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By looking at the the <code>n_active_ab_electrons</code> and <code>active_mos</code> properties, we can confirm that an unrestricted self-consistent field has been generated. The alpha and beta spin orbitals are treated separately, therefore the orbitals properties are grouped in pairs, where the first (resp. last) element of the tuple refers to the alpha (resp. beta) spin orbitals.</p>
-<div id="cell-5" class="cell" data-execution_count="3">
+<div id="cell-6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_alpha, n_beta <span class="op">=</span> mol_lio2.n_active_ab_electrons</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mos_alpha, mos_beta <span class="op">=</span> mol_lio2.active_mos</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -540,7 +538,7 @@ window.Quarto = {
 </div>
 </div>
 <p>At the time of writing, only <code>CCSDSolver</code>, where CCSD refers to coupled-cluster singles and doubles, supports an unrestricted mean field in Tangelo. Since calculating the ground state of <span class="math inline">\(\text{LiO}_2\)</span> in the cc-pVDZ basis set with FCI is challenging (and even might be not possible) for most supercomputers, we use CCSD for the reference calculations.</p>
-<div id="cell-7" class="cell" data-execution_count="4">
+<div id="cell-8" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ccsd <span class="op">=</span> CCSDSolver(mol_lio2)</span>
@@ -553,7 +551,7 @@ Unrestricted CCSD energy: -157.4899499964378 Ha</code></pre>
 </div>
 </div>
 <p>Next, we define the DMET options and perform the simulation. - The molecular orbitals were localized via natural atomic orbitals (NAO); - DMET fragments are defined to contain 1 atom each; - The CCSD solver is used for every fragment.</p>
-<div id="cell-9" class="cell" data-execution_count="5">
+<div id="cell-10" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.dmet <span class="im">import</span> Localization</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> DMETProblemDecomposition</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -579,7 +577,7 @@ Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
 <p>This decomposition scheme comes at the cost of introducing an error of about 0.018 Ha when comparing to the full-molecule CCSD calculation. This is caused by a virtual orbital space truncation step done during the DMET fragment construction. This feature can be turned off by setting the <code>virtual_orbital_threshold</code> to 0 (default is <span class="math inline">\(1\times10^{-13}\)</span>), at the expense of a significant increase in the computational cost of the DMET calculation. On another note, when this DMET error is more or less constant across a set of calculations (this could be a reasonable statement for the same class of molecule with similar fragmentation), this is revealed to be a powerful tool for reducting computational cost.</p>
 <p>The last calculation has been made with a given geometry for the nuclei. If one is interested in the formation of <span class="math inline">\(\text{LiO}_2\)</span>, as described earlier in this notebook, the approach of a <span class="math inline">\(\text{Li}\)</span> atom towards an <span class="math inline">\(\text{O}_2\)</span> molecule should be modelled. As a consequence, geometry changes would be a necessary component of the study.</p>
 <p>The data below displays the energies of different <span class="math inline">\(\text{LiO}_2\)</span> geometries by varying the <span class="math inline">\(\text{Li}\)</span>-<span class="math inline">\(\text{O}_2\)</span> distance. Here unrestricted CCSD refers to the calculation of CCSD with an unrestricted mean-field starting point.</p>
-<div id="cell-11" class="cell" data-execution_count="6">
+<div id="cell-12" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -617,7 +615,7 @@ Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
 <h3 class="anchored" data-anchor-id="resource-estimation">Resource estimation</h3>
 <p>We shown in the previous section that a reduction of 84 qubits to 56 was possible when working in the <code>cc-pVDZ</code> basis set. However, working with this many qubits would require the accurate computation of expectation values (within 1 mHa) on deep quantum circuits.</p>
 <p>This is one of the reason quantum chemistry calculation on NISQ devices are often done using a minimal basis set, like <code>sto-3g</code> or <code>minao</code>. As most of the experiments serve as proofs of concept, scaling up problem size will occur accordingly to quantum hardware development. We show in the next cell a resource estimation for a DMET fragment mapping on quantum hardware, using the <code>sto-3g</code> basis set and the variational quantum eigensolver (VQE).</p>
-<div id="cell-13" class="cell" data-execution_count="7">
+<div id="cell-14" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> BuiltInAnsatze, VQESolver</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -705,7 +703,6 @@ DMET-VQE quantum resources:
 
 
 </section>
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -787,6 +784,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -821,7 +836,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

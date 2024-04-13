@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,8 +485,6 @@ window.Quarto = {
 </header>
 
 
-<section id="tangelo-hands-on-hardware-experiments" class="level1">
-<h1>Tangelo hands-on: hardware experiments</h1>
 <section id="before-you-jump-in" class="level2">
 <h2 class="anchored" data-anchor-id="before-you-jump-in">Before you jump in</h2>
 <p>This hands-on notebook complements existing tutorials, documentation and the developer notes available in the Tangelo GitHub repositories, which present content in much more depth.</p>
@@ -495,7 +493,7 @@ window.Quarto = {
 <p><strong>Getting started</strong></p>
 <p>Please have a look at the landing page of this repository for guidance about how to deploy these notebooks and get started easily.</p>
 <p>In order to complete this hands-on tutorial, we recommend you use the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
-<div id="a09e497d-b840-4f6c-b25a-f7092604a565" class="cell">
+<div id="a09e497d-b840-4f6c-b25a-f7092604a565" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -513,18 +511,18 @@ window.Quarto = {
 <section id="connecting-to-a-quantum-device" class="level3">
 <h3 class="anchored" data-anchor-id="connecting-to-a-quantum-device">1. Connecting to a quantum device</h3>
 <p>No experiment on quantum hardware would be possible without the ability to send a task to a quantum device. It is very straightforward with the connection objects in Tangelo. Let’s define a simple circuit as a use case:</p>
-<div id="06b3c83e" class="cell" data-outputid="7695684a-b8c6-48d5-e72b-3cf33f674f3e" data-execution_count="2">
+<div id="06b3c83e" class="cell" data-outputid="7695684a-b8c6-48d5-e72b-3cf33f674f3e" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circuit([Gate(<span class="st">'H'</span>, <span class="dv">0</span>), Gate(<span class="st">'X'</span>, <span class="dv">1</span>)])</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>c.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
-WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
-WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
-WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code></pre>
+<pre><code>findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <figure class="figure">
 <p><img src="T4_hardware_experiments_solved_files/figure-html/cell-3-output-2.svg" class="img-fluid figure-img"></p>
@@ -572,11 +570,11 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> vqe_solver.optimal_circuit</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>qb_ham <span class="op">=</span> vqe_solver.qubit_hamiltonian</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>/usr/local/lib/python3.10/dist-packages/pyscf/dft/libxc.py:772: UserWarning: Since PySCF-2.3, B3LYP (and B3P86) are changed to the VWN-RPA variant, the same to the B3LYP functional in Gaussian and ORCA (issue 1480). To restore the VWN5 definition, you can put the setting "B3LYP_WITH_VWN5 = True" in pyscf_conf.py
+<pre><code>/home/valentin/Desktop/virtualenvs/qce23/lib/python3.8/site-packages/pyscf/dft/libxc.py:772: UserWarning: Since PySCF-2.3, B3LYP (and B3P86) are changed to the VWN-RPA variant, the same to the B3LYP functional in Gaussian and ORCA (issue 1480). To restore the VWN5 definition, you can put the setting "B3LYP_WITH_VWN5 = True" in pyscf_conf.py
   warnings.warn('Since PySCF-2.3, B3LYP (and B3P86) are changed to the VWN-RPA variant, '</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>-1.1372701683419073</code></pre>
+<pre><code>-1.137270168341907</code></pre>
 </div>
 </div>
 </section>
@@ -587,14 +585,13 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <blockquote class="blockquote">
 <p><strong>Q</strong>: Take a look at the <a href="https://github.com/goodchemistryco/Tangelo/blob/main/tangelo/linq/circuit.py">Circuit class methods</a>. Can you try to simplify this circuit ? What happened ?</p>
 </blockquote>
-<div id="mIhrtAhNEvME" class="cell" data-outputid="444d2f47-238e-4f3d-97d1-6abe70f1a134" data-execution_count="15">
+<div id="mIhrtAhNEvME" class="cell" data-outputid="444d2f47-238e-4f3d-97d1-6abe70f1a134" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> c.copy()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>c2.remove_small_rotations(param_threshold<span class="op">=</span><span class="fl">1e-3</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>c2.remove_redundant_gates()</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.size, c2.size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>c2.simplify()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.size, c2.size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>158 110</code></pre>
 </div>
@@ -605,7 +602,7 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <section id="hamiltonian-factorization" class="level3">
 <h3 class="anchored" data-anchor-id="hamiltonian-factorization">Hamiltonian factorization</h3>
 <p>The qubit Hamiltonian resulting from the previous algorithm has 15 terms, printed in the cell below.</p>
-<div id="-BSW89-7kLA7" class="cell" data-outputid="21f2c259-788d-49b5-f01c-5c2a25c58ce5" data-execution_count="5">
+<div id="-BSW89-7kLA7" class="cell" data-outputid="21f2c259-788d-49b5-f01c-5c2a25c58ce5" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qb_ham)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(-0.0988639693354576+0j) [] +
@@ -631,7 +628,7 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Use the <code>group_qwc</code> function from the <code>measurements</code> toolbox to apply qubit-wise commutativity to the Hamiltonian. How many measurement bases are needed overall ? How many terms can be computed using the <code>Z0 Z1 Z2 Z3</code> basis ?</p>
 </blockquote>
-<div id="3BVRsjJzDNNt" class="cell" data-outputid="11f13184-fc0c-4603-c927-ba9e43657fa8" data-execution_count="6">
+<div id="3BVRsjJzDNNt" class="cell" data-outputid="11f13184-fc0c-4603-c927-ba9e43657fa8" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> group_qwc</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -657,23 +654,24 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 </div>
 </div>
 <p>In practice, you may have to recombine histograms of experimental results in order to compute the quantities that are relevant to you. Below, we show -using a simulator- that it is rather easy to generate all the necessary circuits in Tangelo and recombine the histograms afterwards in this situation:</p>
-<div id="O12whWzCG4Ho" class="cell" data-outputid="fb8cf5da-7c76-439b-f469-267b39553579" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> exp_value_from_measurement_bases, measurement_basis_gates</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, get_backend</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>histograms <span class="op">=</span> <span class="bu">dict</span>()</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate circuits corresponding to each measurement bassis required, compute the histogram</span></span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis, sub_op <span class="kw">in</span> grouped_ops.items():</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    c_full <span class="op">=</span> c <span class="op">+</span> Circuit(measurement_basis_gates(basis))</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    histograms[basis], _ <span class="op">=</span> sim.simulate(c_full)</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the expectation value by using the histograms and the measurement map</span></span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>exp_value <span class="op">=</span> exp_value_from_measurement_bases(grouped_ops, histograms)</span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exp_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="O12whWzCG4Ho" class="cell" data-outputid="fb8cf5da-7c76-439b-f469-267b39553579" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> exp_value_from_measurement_bases</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.helpers <span class="im">import</span> measurement_basis_gates</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, get_backend</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>histograms <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate circuits corresponding to each measurement bassis required, compute the histogram</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis, sub_op <span class="kw">in</span> grouped_ops.items():</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    c_full <span class="op">=</span> c <span class="op">+</span> Circuit(measurement_basis_gates(basis))</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    histograms[basis], _ <span class="op">=</span> sim.simulate(c_full)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the expectation value by using the histograms and the measurement map</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>exp_value <span class="op">=</span> exp_value_from_measurement_bases(grouped_ops, histograms)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exp_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(-1.1372701683419073+0j)</code></pre>
+<pre><code>(-1.1372701683419069+0j)</code></pre>
 </div>
 </div>
 </section>
@@ -684,7 +682,7 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Assume the 2 <code>freqs</code> objects are experimental results obtained on by simulating a 2-qubit circuit, with 1000 shots each. Can you define the two corresponding <code>Histogram</code> objects ?</p>
 </blockquote>
-<div id="63Uv3x3S4rDu" class="cell" data-execution_count="14">
+<div id="63Uv3x3S4rDu" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms, filter_hist</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>freqs1 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.3</span>, <span class="st">'00'</span>:<span class="fl">0.2</span>, <span class="st">'10'</span>: <span class="fl">0.5</span>}</span>
@@ -697,7 +695,7 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Assume the data coming from these histograms can be aggregated into a single histogram worth 2000 shots of data. How can you obtain such a histogram ?</p>
 </blockquote>
-<div id="LpMLmMBH5VJz" class="cell" data-outputid="581176b6-924b-4c78-b997-dcb818848980" data-execution_count="21">
+<div id="LpMLmMBH5VJz" class="cell" data-outputid="581176b6-924b-4c78-b997-dcb818848980" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>hist3 <span class="op">=</span> aggregate_histograms(hist1, hist2)</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -712,7 +710,7 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you find how to apply this predicate to remove undesired entries from the histogram ?</p>
 </blockquote>
-<div id="1l0qzB3V8JDG" class="cell" data-outputid="2162035d-001a-420e-899f-6c11ce5a025f" data-execution_count="23">
+<div id="1l0qzB3V8JDG" class="cell" data-outputid="2162035d-001a-420e-899f-6c11ce5a025f" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_predicate(bs):</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return True if a bitstring "bs" is acceptable, False otherwise</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> bs <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'00'</span>]</span>
@@ -734,7 +732,6 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <p><strong>Q:</strong> What if you tried to compute the expectation value for the <span class="math inline">\(H_2\)</span> use case with a backend running with a given amount of shots and a noise model of your choice ? You may be surprised at how much these parameters affect the results.</p>
 </blockquote>
 <p>Note: Noisy simulation cost is usually linear with the number of shots, which means execution time may increase linearly with it as well.</p>
-</section>
 </section>
 </section>
 <section id="final-words" class="level1">
@@ -825,6 +822,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -859,7 +874,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

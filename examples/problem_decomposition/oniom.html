@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,8 +485,6 @@ window.Quarto = {
 </header>
 
 
-<section id="oniom-problem-decomposition---a-use-case-for-an-acetic-acid-molecule-in-water" class="level1">
-<h1>ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</h1>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of contents:</h2>
 <ul>
@@ -510,12 +508,13 @@ window.Quarto = {
 <p>Where <span class="math inline">\(E_{\text{All}}\)</span>, <span class="math inline">\(E_{\text{Fragment}_i}\)</span> are respectively the energy of the whole system and the energy of a fragment labelled <span class="math inline">\(i\)</span>. The general procedure for ONIOM is as follows. The user identifies a system of interest and a low-cost method is used to compute its total energy (<span class="math inline">\(E_{\text{All}}^{\text{Low}}\)</span>). Subsequently, a subset of the molecule is defined as a model fragment and it is isolated by using an atom (or a functional group) to keep the valence shell fully populated. <span class="math inline">\(E_{\text{Fragment}_i}^{\text{Low}}\)</span> is computed for the fragment using the same low-cost method as used initially for the whole system, and a high-cost method (<span class="math inline">\(E_{\text{Fragment}_i}^{\text{High}}\)</span>). The difference in energy between the high-cost and low-cost methods (<span class="math inline">\(E_{\text{Fragment}_i}^{\text{High}} - E_{\text{Fragment}_i}^{\text{Low}}\)</span>) is then added to our total energy. This way, we can interpret the ONIOM method as an iterative procedure where the error associated with our low-cost solver is removed.</p>
 <p>The equation above is formulated to allow us to expand ONIOM beyond a single fragment. In principle, many such fragments can be defined to progressively improve the accuracy or efficiency of the calculations. This may apply to when we have more than one active site on our large molecule, or where an incremental strategy can be utilized to further mitigate errors associated with using our low-cost method in the vicinity of our active region.</p>
 <p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
-<div id="cell-2" class="cell" data-execution_count="1">
+<div id="cell-3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="use-case---an-acetic-acid-molecule-in-water" class="level2">
@@ -542,13 +541,13 @@ window.Quarto = {
 <p><img src="../img/ONIOM_example.png" width="700"></p>
 <p>We want to specifically target the H2O-COOH interaction. We will use the Variational Quantum Eigensolver (VQE) with a Unitary Coupled-Cluster Single and Double excitation (UCCSD) ansatz. The basis set for this fragment is 6-31G(d,p). The rest of the system is simulated using Hartree-Fock (HF) with a minimal basis set (STO-3G).</p>
 <p>First, we import the relevant dependencies:</p>
-<div id="cell-4" class="cell" data-execution_count="2">
+<div id="cell-5" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> ONIOMProblemDecomposition</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.oniom <span class="im">import</span> Fragment, Link</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> BuiltInAnsatze <span class="im">as</span> Ansatze</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The next thing to do is to define a geometry and some options for the desired solvers. As a side note, the quantum resources for this subsystem are still too demanding for Noisy Intermediate-Scale Quantum (NISQ) devices. We reduce the amount of resources by freezing molecular orbitals in the system: in our simple case, the fragment has been reduced to a HOMO-LUMO problem. This allows us to use UCC3 as the variational ansatz for VQE, as it is equivalent to UCCSD, but shallower (by removing redundant excitation terms) and can be applied to two-level systems. As progress is made in the development of more capable quantum devices, less agressive resource reduction could be chosen to increase the accuracy, at the cost of more challenging computation.</p>
-<div id="cell-6" class="cell" data-execution_count="3">
+<div id="cell-7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coordinates file</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"xyz/water_system.xyz"</span>,<span class="st">'r'</span>) <span class="im">as</span> f:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    xyz <span class="op">=</span> f.read()</span>
@@ -564,7 +563,7 @@ window.Quarto = {
 </div>
 <p>In the next cell, we build the <code>ONIOMProblemDecomposition</code> object from a multi-line string taken from the coordinate file and <code>Fragment</code> objects. Moreover, in our case, a chemical bond is broken: a <code>Link</code> object is also defined by passing the atom ids defining the broken bond.</p>
 <p><strong>Note</strong>: The following cell may take a couple minutes to execute, as instantiating the <code>ONIOMProblemDecomposition</code> object in this situation involves HF calculations in the 6-31G** basis set.</p>
-<div id="cell-8" class="cell" data-execution_count="5">
+<div id="cell-9" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Whole system to be computed with a low-accuracy method (HF, sto-3g)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>system <span class="op">=</span> Fragment(solver_low<span class="op">=</span><span class="st">"hf"</span>, options_low<span class="op">=</span>options_low, charge<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -580,7 +579,7 @@ window.Quarto = {
 <span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>oniom_solver <span class="op">=</span> ONIOMProblemDecomposition({<span class="st">"geometry"</span>: xyz, <span class="st">"fragments"</span>: [system, model], <span class="st">"verbose"</span>: <span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We estimate the amount of quantum resources by calling the <code>get_resources</code> method (this does not require any simulation).</p>
-<div id="cell-10" class="cell" data-execution_count="6">
+<div id="cell-11" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resources <span class="op">=</span> oniom_solver.get_resources()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Fragment Number : # 2 
@@ -590,15 +589,15 @@ window.Quarto = {
 </div>
 </div>
 <p>We call the <code>simulate</code> method to compute the ONIOM energy:</p>
-<div id="cell-12" class="cell" data-execution_count="7">
+<div id="cell-13" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>e_oniom <span class="op">=</span> oniom_solver.simulate()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>e_hf <span class="op">=</span> oniom_solver.fragments[<span class="dv">0</span>].mol_low.mf_energy</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ONIOM Energy: "</span>, e_oniom)</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hartree-Fock Energy: "</span>, e_hf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>ONIOM Energy:  -1278.2143431181958
-Hartree-Fock Energy:  -1274.4936842154443</code></pre>
+<pre><code>ONIOM Energy:  -1278.2143431182017
+Hartree-Fock Energy:  -1274.4936842154498</code></pre>
 </div>
 </div>
 <p>We can see that the ONIOM energy is in fact lower than the Hartree-Fock energy. However, we cannot compute the lower-bound energy for the entire system (VQE-UCCSD), as the computational requirements would be too high.</p>
@@ -606,7 +605,7 @@ Hartree-Fock Energy:  -1274.4936842154443</code></pre>
 <section id="potential-energy-scan-for-an-hydrogen-bond" class="level3">
 <h3 class="anchored" data-anchor-id="potential-energy-scan-for-an-hydrogen-bond">2.4 Potential energy scan for an hydrogen bond <a class="anchor" id="24"></a></h3>
 <p>The ONIOM energy computed in the previous section can be difficult to compare with known validated data. In this case, we can compare the hydrogen bond distance with experimental results. One way of getting this distance is to perform an energy scan on many configurations. We varied the water molecule - carboxylic acid distance from 1.0 to 3.5 angstrom. An energy calculation, with the same parameters as in the previous section, was performed for each of these distances. The minimal energy point should correspond to the experimental hydrogen bond distance for this system.</p>
-<div id="cell-16" class="cell" data-execution_count="8">
+<div id="cell-17" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> [<span class="fl">3.550862922159438</span>, <span class="fl">3.460762889964292</span>, <span class="fl">3.370670305757595</span>, <span class="fl">3.280585783157128</span>, <span class="fl">3.1905100050249016</span>, <span class="fl">3.1004437335081567</span>, <span class="fl">3.0103878218778832</span>, <span class="fl">2.9203432285513977</span>, <span class="fl">2.8303110337833894</span>, <span class="fl">2.740292459636501</span>, <span class="fl">2.650288894007595</span>, <span class="fl">2.5603019197028303</span>, <span class="fl">2.4703333498422166</span>, <span class="fl">2.3803852712588354</span>, <span class="fl">2.29046009807724</span>, <span class="fl">2.20056063836393</span>, <span class="fl">2.1106901777200746</span>, <span class="fl">2.020852585050676</span>, <span class="fl">1.9310524476726847</span>, <span class="fl">1.8412952456882081</span>, <span class="fl">1.7515875795688893</span>, <span class="fl">1.6619374708395822</span>, <span class="fl">1.572354764687664</span>, <span class="fl">1.4828516770284208</span>, <span class="fl">1.3934435500122229</span>, <span class="fl">1.3041499143311708</span>, <span class="fl">1.214996013163829</span>, <span class="fl">1.126015038057959</span>, <span class="fl">1.0372514935327881</span>, <span class="fl">0.9487664078760378</span>, <span class="fl">0.8606456724847144</span>]</span>
@@ -634,7 +633,6 @@ Hartree-Fock Energy:  -1274.4936842154443</code></pre>
 <p>Here we have used the ONIOM problem decomposition method as a way to investigate the applicability of quantum algorithms to more industrially-relevant problems. The results are in agreement with known experimental data.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -717,6 +715,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -751,7 +767,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

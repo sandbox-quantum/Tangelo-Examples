@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,14 +485,12 @@ window.Quarto = {
 </header>
 
 
-<section id="fault-tolerant-building-blocks" class="level1">
-<h1>Fault Tolerant Building blocks</h1>
 <section id="before-you-jump-in" class="level2">
 <h2 class="anchored" data-anchor-id="before-you-jump-in">Before you jump in</h2>
 <p>This hands-on notebook complements existing tutorials, documentation and the developer notes available in the Tangelo GitHub repositories, which present content in much more depth.</p>
 <p>You will come across code cells that require you to change code or fill in the blanks in order to achieve a desired outcome. There may be many ways to solve these small exercises, and you are encouraged to explore.</p>
 <p>In order to complete this hands-on tutorial, we recommend you install the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
-<div id="cell-3" class="cell">
+<div id="cell-4" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -514,7 +512,7 @@ window.Quarto = {
 <p>Likewise, this can be generalized to multiple controlled operations. For example, if we want to apply an operation <span class="math inline">\(U\)</span> only when the first 2-qubits are in state <span class="math inline">\(|1\rangle\)</span>. We can define</p>
 <p><span class="math inline">\(C_{11}U\big|11\big&gt;\big|s\big&gt;=\big|11\big&gt;U\big|s\big&gt;, \quad C_{11}U\big|10\big&gt;\big|s\big&gt;=\big|10\big&gt;\big|s\big&gt;, \quad C_{11}U\big|01\big&gt;\big|s\big&gt;=\big|01\big&gt;\big|s\big&gt;, \quad C_{00}U\big|00\big&gt;\big|s\big&gt;=\big|00\big&gt;\big|s\big&gt;\)</span></p>
 <p>Where the subscript <span class="math inline">\((11)\)</span> on the <span class="math inline">\(C\)</span> indicates that the first two qubits should be in state <span class="math inline">\(|1\rangle\)</span>. In general the operation can be controlled on many qubits and <span class="math inline">\(s\)</span> can be a many-qubit state.</p>
-<div id="cell-9" class="cell">
+<div id="cell-10" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, get_backend</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -524,7 +522,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you fill in the blanks in the cell below, to run the algorithm for a controlled-X gate? In Tangelo, adding “C” in front of the gate’s name indicates that a controlled operation is requested.</p>
 </blockquote>
-<div id="cell-11" class="cell">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cx <span class="op">=</span> Gate(<span class="st">""</span>, , control<span class="op">=</span>[])</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -537,7 +535,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you apply the operation controlled on qubits 1 and 2, such that the first qubit flips to state “1” only if qubits 1 and and 2 are in state “1” ? The <span class="math inline">\(C_{11}X\)</span> operation is also known as the Toffoli gate.</p>
 </blockquote>
-<div id="cell-13" class="cell">
+<div id="cell-14" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ccx <span class="op">=</span> Gate(<span class="st">""</span>, , control<span class="op">=</span>[, ])</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -552,7 +550,7 @@ window.Quarto = {
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"If qubits [0,1] are in state '11' then the frequencies are </span><span class="sc">{</span>sim<span class="sc">.</span>simulate(c11)[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If one wants to apply the operation <span class="math inline">\(C_{10}X\)</span>. The same operations can be used but sandwiched with <span class="math inline">\(X\)</span> gates. We flip second qubit using an <span class="math inline">\(X\big|0\big&gt;=\big|1\big&gt;\)</span> operation, apply the <span class="math inline">\(ccx\)</span> operation and apply <span class="math inline">\(X\big|1\big&gt;=\big|0\big&gt;\)</span> on the second qubit again. You can run the code below to obtain the same result.</p>
-<div id="cell-15" class="cell">
+<div id="cell-16" class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>flip_2nd_qubit <span class="op">=</span> Gate(<span class="st">"X"</span>, <span class="dv">1</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Run through all possible combinations of inputs and print the result</span></span>
@@ -580,7 +578,7 @@ window.Quarto = {
 <section id="a-building-qpe-from-scratch-with-fault-tolerant-building-blocks" class="level3">
 <h3 class="anchored" data-anchor-id="a-building-qpe-from-scratch-with-fault-tolerant-building-blocks">a) Building QPE from “scratch” with fault-tolerant building blocks</h3>
 <p>For our use case, we first generate the qubit Hamiltonian for molecular Hydrogen (<span class="math inline">\(H_2\)</span>) in a STO-3G basis. To show the algorithm is working as expected, we calculate all the eigenstates and select the two singlet states with 2 electrons. This is not possible for much larger systems but we can extrapolate the success demonstrated here to show that we can obtain good results.</p>
-<div id="cell-21" class="cell">
+<div id="cell-22" class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -605,7 +603,7 @@ window.Quarto = {
 <span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>first_sv <span class="op">=</span> eigenstates[:, <span class="dv">13</span>]  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to compare how close the initial approximate state is to the exact eigenstate, we are going to use the overlap (dot product) between the states. If the overlap is 1 then the states are equivalent.</p>
-<div id="cell-23" class="cell">
+<div id="cell-24" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Hartree-Fock reference state circuit</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hf_circuit <span class="op">=</span> get_reference_circuit(n_spinorbitals<span class="op">=</span>mol.n_active_sos, n_electrons<span class="op">=</span>mol.n_active_electrons, mapping<span class="op">=</span><span class="st">"JW"</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                                   up_then_down<span class="op">=</span><span class="va">False</span>, spin<span class="op">=</span>mol.spin)</span>
@@ -620,7 +618,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you fill in the blanks in the cell below, to run the algorithm originally illustrated in the circuit diagram ? It should return <code>"010"</code> with very-high probability (~98%), corresponding to an energy of 0.25. You may need to change the parameters used in the Trotter-Suzuki (<code>trotterize</code>) operation to obtain accurate enough time-evolution to get a good result.</p>
 </blockquote>
-<div id="cell-25" class="cell">
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.ansatz_utils <span class="im">import</span> trotterize, get_qft_circuit</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.histogram <span class="im">import</span> Histogram</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -650,7 +648,7 @@ window.Quarto = {
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>      <span class="bu">print</span>(<span class="ss">f"The measurement </span><span class="sc">{</span>key<span class="sc">}</span><span class="ss"> with probability </span><span class="sc">{</span>probability<span class="sc">:3.5f}</span><span class="ss"> converts to an energy=</span><span class="sc">{</span>energy<span class="sc">}</span><span class="ss"> "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In Tangelo, simulators can take the option <code>desired_measurement</code> to return the quantum state corresponding to the state preparation done under specific values of measurement gates. Assuming you are interested in a specific outcome - <code>"010"</code> for our use case - we can retrieve both the probability that such measurements are observed, and the corresponding quantum state and compute its overlap with the ground state:</p>
-<div id="cell-27" class="cell">
+<div id="cell-28" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>desired_measurement <span class="op">=</span> <span class="st">"010"</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pe_plus_measure <span class="op">=</span> pe_circuit <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> qubit_list])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>_, sv_new <span class="op">=</span> sim.simulate(pe_plus_measure, desired_meas_result<span class="op">=</span>desired_measurement, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
@@ -664,7 +662,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Q:</strong> By using the previous cell as an example, can you look into what happens for “111”, which is close to the energy of the first excited singlet state?</p>
 </blockquote>
-<div id="cell-30" class="cell">
+<div id="cell-31" class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>desired_measurement <span class="op">=</span> <span class="st">"111"</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>pe_plus_measure <span class="op">=</span> pe_circuit <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> qubit_list])</span>
@@ -681,7 +679,7 @@ window.Quarto = {
 <section id="b-ready-made-qpesolver-framework" class="level3">
 <h3 class="anchored" data-anchor-id="b-ready-made-qpesolver-framework">b) Ready-made QPESolver framework</h3>
 <p>Tangelo provides a <code>QPESolver</code> class allowing you to simulate QPE with built-in and user-defined unitaries, for time-evolution. If you are already familiar with <code>VQESolver</code> then its interface should feel straightforward (instantiate with options, <code>build</code>, <code>simulate</code>, <code>get_resources</code>). You can check out the <a href="https://github.com/goodchemistryco/Tangelo/blob/develop/tangelo/algorithms/projective/tests/test_qpe.py">source code</a> in the tests in Tangelo to see how one could provide a molecule, or built-in unitaries. Below, we reproduce the work done in the previous section by directly passing the qubit Hamiltonian we obtained for <span class="math inline">\(H_2\)</span> earlier.</p>
-<div id="cell-33" class="cell">
+<div id="cell-34" class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.projective.qpe <span class="im">import</span> QPESolver</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR PARAMETERS FROM ABOVE HERE</span></span>
@@ -706,7 +704,7 @@ window.Quarto = {
 <p>where <span class="math inline">\(\alpha\)</span> is the 1-norm of the coefficients <span class="math inline">\(|c_i|\)</span></p>
 <p>Applying the circuit <span class="math inline">\(U_{prep}U_{select}U_{prep}^{\dagger}\)</span> results in <span class="math inline">\(A\big|\psi\big&gt;\big|0\big&gt; + \sum_i \big|\psi^{\perp}\big&gt;\big|i\big&gt;\)</span> where <span class="math inline">\(\psi^{\perp}\)</span> are states orthogonal to <span class="math inline">\(A\psi\)</span>. This means that if we measure the ancilla qubits and the result is zero, we have successfully applied the desired operation <span class="math inline">\(A\)</span>.</p>
 <p>For example, let’s try to apply <span class="math inline">\(A=\frac{1}{\sqrt{2}}X+\frac{1}{\sqrt{2}}Y\)</span> which is equivalent to <span class="math inline">\(\left[\begin{array}{cc}0&amp;\frac{1-i}{\sqrt{2}}\\ \frac{1+i}{\sqrt{2}}&amp;0\end{array}\right]\)</span></p>
-<div id="cell-37" class="cell">
+<div id="cell-38" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits.statevector <span class="im">import</span> StateVector</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -726,7 +724,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you fill in the blanks in the cell below, to apply the <span class="math inline">\(U_{select}\)</span> operation <span class="math inline">\(A\)</span> defined as a linear combination of unitaries <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> ?</p>
 </blockquote>
-<div id="cell-39" class="cell">
+<div id="cell-40" class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Qubit 1 is the "prep" register with coefficients [1/sqrt(2), 1/sqrt(2)]</span></span>
@@ -735,7 +733,7 @@ window.Quarto = {
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>cx0 <span class="op">=</span> [Gate(<span class="st">""</span>, ), Gate(<span class="st">""</span>, target<span class="op">=</span>, control<span class="op">=</span>), Gate(<span class="st">""</span>, )]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now run the block-encoded circuit. If your code is correct, it will return the correct state with probability 0.5 and the overlap will be 1.</p>
-<div id="cell-41" class="cell">
+<div id="cell-42" class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Uselect</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>uselect <span class="op">=</span> Circuit(cx0 <span class="op">+</span> cy1)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -767,7 +765,7 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Note:</strong> The “trick” of adding and subtracting terms proportional to the identity operator is common in fault-tolerant algorithms to obtain a circuit that has a success probability close to 100%.</p>
 </blockquote>
-<div id="cell-44" class="cell">
+<div id="cell-45" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.lcu <span class="im">import</span> sign_flip, get_uprep_uselect</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate operator and make 1-norm equal to 2 to ensure that the operation applies with 100% success</span></span>
@@ -782,12 +780,12 @@ window.Quarto = {
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Can you fill in the blanks in the cell below to define the appropriate qubits and operation that the sign flip operations are applied to ? Remember that the amplifying circuit is <span class="math inline">\(F_{good}F_{full}\)</span>. Which qubits and what circuit generates the “good” <span class="math inline">\(|0\big&gt;^{ancilla}\)</span> state? Which qubits and what circuit generates the “full” <span class="math inline">\(A|\psi\big&gt;\)</span>?</p>
 </blockquote>
-<div id="cell-46" class="cell">
+<div id="cell-47" class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>amplifying_circuit <span class="op">=</span> flip_on_state(qubits<span class="op">=</span>, circuit<span class="op">=</span>) <span class="op">+</span> flip_on_state(qubits<span class="op">=</span>, circuit<span class="op">=</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now check when comparing the unamplified circuit and the amplified circuit that the resulting statevector is the same (i.e.&nbsp;overlap is still 1) but the probability of success is 100%.</p>
-<div id="cell-48" class="cell">
+<div id="cell-49" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>unamplified_circuit <span class="op">=</span> state_prep <span class="op">+</span> block_circuit <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, q) <span class="cf">for</span> q <span class="kw">in</span> ancilla_qubits])</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>amplified_circuit <span class="op">=</span> state_prep <span class="op">+</span> block_circuit <span class="op">+</span> amplifying_circuit <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, q) <span class="cf">for</span> q <span class="kw">in</span> ancilla_qubits])</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -809,7 +807,6 @@ window.Quarto = {
 <p>Here are some additional material implementing some other fault-tolerant approaches which may be relevant to you: * Block encoding used for <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/fault_tolerant/qsp_state_prep.ipynb">state preparation through Quantum Signal Processing</a>. * More <a href="https://github.com/goodchemistryco/Tangelo/blob/develop/tangelo/algorithms/projective/tests/test_qpe.py">QPESolver examples</a> * <a href="https://aws.amazon.com/blogs/quantum-computing/exploring-quantum-chemistry-applications-with-tangelo-and-qemist-cloud-using-amazon-braket/">AWS Blog post</a> that features a fault-tolerant simulation of a wavepacket</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -892,6 +889,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -926,7 +941,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');

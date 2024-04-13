@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -485,8 +485,6 @@ window.Quarto = {
 </header>
 
 
-<section id="tangelo-hands-on-hardware-experiments" class="level1">
-<h1>Tangelo hands-on: hardware experiments</h1>
 <section id="before-you-jump-in" class="level2">
 <h2 class="anchored" data-anchor-id="before-you-jump-in">Before you jump in</h2>
 <p>This hands-on notebook complements existing tutorials, documentation and the developer notes available in the Tangelo GitHub repositories, which present content in much more depth.</p>
@@ -495,7 +493,7 @@ window.Quarto = {
 <p><strong>Getting started</strong></p>
 <p>Please have a look at the landing page of this repository for guidance about how to deploy these notebooks and get started easily.</p>
 <p>In order to complete this hands-on tutorial, we recommend you use the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
-<div id="a09e497d-b840-4f6c-b25a-f7092604a565" class="cell">
+<div id="a09e497d-b840-4f6c-b25a-f7092604a565" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
@@ -513,48 +511,68 @@ window.Quarto = {
 <section id="connecting-to-a-quantum-device" class="level3">
 <h3 class="anchored" data-anchor-id="connecting-to-a-quantum-device">1. Connecting to a quantum device</h3>
 <p>No experiment on quantum hardware would be possible without the ability to send a task to a quantum device. It is very straightforward with the connection objects in Tangelo. Let’s define a simple circuit as a use case:</p>
-<div id="06b3c83e" class="cell" data-outputid="7695684a-b8c6-48d5-e72b-3cf33f674f3e">
+<div id="06b3c83e" class="cell" data-outputid="7695684a-b8c6-48d5-e72b-3cf33f674f3e" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circuit([Gate(<span class="st">'H'</span>, <span class="dv">0</span>), Gate(<span class="st">'X'</span>, <span class="dv">1</span>)])</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>c.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.
+findfont: Font family 'Arial' not found.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+<figure class="figure">
+<p><img src="T4_hardware_experiments_files/figure-html/cell-3-output-2.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
 </div>
 <p><strong>Example: IBM Quantum</strong></p>
 <p>If you have an account with <a href="https://quantum-computing.ibm.com/login">IBM Quantum</a>, you can log in and retrieve your API token in order to run the cell below. You should see the task pop up in your IBM Quantum dashboard. You just submitted an experiment on IBM Quantum using Tangelo !</p>
 <p>Submitting a task to an actual quantum device may take a long time, as your job will likely be queued. The cell below uses the <code>ibmq_qasm_simulator</code> backend, which should be available right away and fast.</p>
 <div id="rV-4loo8Kn5d" class="cell" data-outputid="19c7f9c8-95d8-4867-afaa-8385a2b05281">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IBMConnection</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> IBMConnection(ibm_quantum_token<span class="op">=</span><span class="st">''</span>)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> conn.job_submit(<span class="st">'sampler'</span>, <span class="st">'ibmq_qasm_simulator'</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">5</span>, c)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>job_results <span class="op">=</span> conn.job_results(job_id)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simulation results from IBM Quantum : </span><span class="sc">{</span>job_results<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IBMConnection</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> IBMConnection(ibm_quantum_token<span class="op">=</span><span class="st">''</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> conn.job_submit(<span class="st">'sampler'</span>, <span class="st">'ibmq_qasm_simulator'</span>, <span class="dv">10</span><span class="op">**</span><span class="dv">5</span>, c)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>job_results <span class="op">=</span> conn.job_results(job_id)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simulation results from IBM Quantum : </span><span class="sc">{</span>job_results<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="a-simple-experiment" class="level3">
 <h3 class="anchored" data-anchor-id="a-simple-experiment">2. A “simple experiment”</h3>
 <p>Remember VQE ? It is a NISQ algorithm that uses relatively shallow parameterized circuits and the variational principle to compute the energy of a molecule, as an expectation value. For this use case, let’s apply it to a simple <span class="math inline">\(H_2\)</span> molecule to generate a qubit Hamiltonian and a quantum circuit with optimized variational parameters.</p>
 <p>The optimized VQE energy is the expectation of the qubit Hamiltonian of the system, with regards to the state preparation define by the optimized circuit.</p>
-<div id="wA8v8-U8-mxG" class="cell" data-outputid="a90923f4-eaf2-441b-c793-8520c613be6f">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define H2 molecule</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xyz_H2 <span class="op">=</span> [(<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>)), (<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.7414</span>))]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>mol_H2_sto3g <span class="op">=</span> SecondQuantizedMolecule(xyz_H2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_sto3g</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Run VQE</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"qubit_mapping"</span>: <span class="st">'jw'</span>}</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>opt_energy <span class="op">=</span> vqe_solver.simulate()</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(opt_energy)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve optimal circuit and qubit Hamiltonian</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> vqe_solver.optimal_circuit</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>qb_ham <span class="op">=</span> vqe_solver.qubit_hamiltonian</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="wA8v8-U8-mxG" class="cell" data-outputid="a90923f4-eaf2-441b-c793-8520c613be6f" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define H2 molecule</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>xyz_H2 <span class="op">=</span> [(<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>)), (<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.7414</span>))]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>mol_H2_sto3g <span class="op">=</span> SecondQuantizedMolecule(xyz_H2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_sto3g</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Run VQE</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol, <span class="st">"qubit_mapping"</span>: <span class="st">'jw'</span>}</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>opt_energy <span class="op">=</span> vqe_solver.simulate()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(opt_energy)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve optimal circuit and qubit Hamiltonian</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> vqe_solver.optimal_circuit</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>qb_ham <span class="op">=</span> vqe_solver.qubit_hamiltonian</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>-1.1372701683419155</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/home/valentin/Desktop/virtualenvs/qce23/lib/python3.8/site-packages/pyscf/dft/libxc.py:772: UserWarning: Since PySCF-2.3, B3LYP (and B3P86) are changed to the VWN-RPA variant, the same to the B3LYP functional in Gaussian and ORCA (issue 1480). To restore the VWN5 definition, you can put the setting "B3LYP_WITH_VWN5 = True" in pyscf_conf.py
+  warnings.warn('Since PySCF-2.3, B3LYP (and B3P86) are changed to the VWN-RPA variant, '</code></pre>
+</div>
 </div>
 </section>
 <section id="quantum-circuit-simplification" class="level3">
@@ -565,13 +583,11 @@ window.Quarto = {
 <p><strong>Q</strong>: Take a look at the <a href="https://github.com/goodchemistryco/Tangelo/blob/main/tangelo/linq/circuit.py">Circuit class methods</a>. Can you try to simplify this circuit ? What happened ?</p>
 </blockquote>
 <div id="mIhrtAhNEvME" class="cell" data-outputid="444d2f47-238e-4f3d-97d1-6abe70f1a134">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> c.copy()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>c2.remove_small_rotations(param_threshold<span class="op">=</span><span class="fl">1e-3</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>c2.remove_redundant_gates()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.size, c2.size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> c.copy()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c.size, c2.size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>It is important to know that devices have a native gate set. In reality, the physical operations realized on the device may correspond to a different gate set. That is, your quantum circuit may be compiled to an equivalent one that may look very different. For instance, current IonQ devices do not directly apply the CNOT gate but instead entangle pairs of qubits with the XX gate. IBM devices do not compile circuits into Rx, Ry and Rz gates but instead use their U1, U2 and U3 rotations gates.</p>
 <p>Compilation for different gate sets and topologies are a topic of research, and multiple projects have been developed by the community during the years (cirq, pytket, …). Tangelo will provide tools to facilitate this step. In the meantime, the format conversion functions in Tangelo allow you to easily leverage these projects yourself.</p>
@@ -580,7 +596,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="hamiltonian-factorization">Hamiltonian factorization</h3>
 <p>The qubit Hamiltonian resulting from the previous algorithm has 15 terms, printed in the cell below.</p>
 <div id="-BSW89-7kLA7" class="cell" data-outputid="21f2c259-788d-49b5-f01c-5c2a25c58ce5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qb_ham)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qb_ham)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In order to compute the expectation value of a single term of this qubit Hamiltonian on a device, one would have to add additional gates at the end of the circuit to rotate the qubits in the right measurement basis (the gate depends on the Pauli operator involved).</p>
 <p>A naive approach would be to generate one circuit per term (here 15), and invidually compute the expectation value of each term using the corresponding circuit. A linear combination of these values, using the Hamiltonian’s coefficients, would then yield the desired expectation value.</p>
@@ -589,29 +605,30 @@ window.Quarto = {
 <p><strong>Q:</strong> Use the <code>group_qwc</code> function from the <code>measurements</code> toolbox to apply qubit-wise commutativity to the Hamiltonian. How many measurement bases are needed overall ? How many terms can be computed using the <code>Z0 Z1 Z2 Z3</code> basis ?</p>
 </blockquote>
 <div id="3BVRsjJzDNNt" class="cell" data-outputid="11f13184-fc0c-4603-c927-ba9e43657fa8">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> group_qwc</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>grouped_ops <span class="op">=</span> group_qwc(qb_ham)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>pprint(grouped_ops)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> group_qwc</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>grouped_ops <span class="op">=</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>pprint(grouped_ops)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In practice, you may have to recombine histograms of experimental results in order to compute the quantities that are relevant to you. Below, we show -using a simulator- that it is rather easy to generate all the necessary circuits in Tangelo and recombine the histograms afterwards in this situation:</p>
 <div id="O12whWzCG4Ho" class="cell" data-outputid="fb8cf5da-7c76-439b-f469-267b39553579">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> exp_value_from_measurement_bases, measurement_basis_gates</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, get_backend</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>histograms <span class="op">=</span> <span class="bu">dict</span>()</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate circuits corresponding to each measurement bassis required, compute the histogram</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis, sub_op <span class="kw">in</span> grouped_ops.items():</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    c_full <span class="op">=</span> c <span class="op">+</span> Circuit(measurement_basis_gates(basis))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    histograms[basis], _ <span class="op">=</span> sim.simulate(c_full)</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the expectation value by using the histograms and the measurement map</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>exp_value <span class="op">=</span> exp_value_from_measurement_bases(grouped_ops, histograms)</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exp_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> exp_value_from_measurement_bases</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.helpers <span class="im">import</span> measurement_basis_gates</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, get_backend</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>histograms <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate circuits corresponding to each measurement bassis required, compute the histogram</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis, sub_op <span class="kw">in</span> grouped_ops.items():</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    c_full <span class="op">=</span> c <span class="op">+</span> Circuit(measurement_basis_gates(basis))</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    histograms[basis], _ <span class="op">=</span> sim.simulate(c_full)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the expectation value by using the histograms and the measurement map</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>exp_value <span class="op">=</span> exp_value_from_measurement_bases(grouped_ops, histograms)</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exp_value)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="post-processing-of-histograms" class="level3">
@@ -622,23 +639,21 @@ window.Quarto = {
 <p><strong>Q:</strong> Assume the 2 <code>freqs</code> objects are experimental results obtained on by simulating a 2-qubit circuit, with 1000 shots each. Can you define the two corresponding <code>Histogram</code> objects ?</p>
 </blockquote>
 <div id="63Uv3x3S4rDu" class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms, filter_hist</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>freqs1 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.3</span>, <span class="st">'00'</span>:<span class="fl">0.2</span>, <span class="st">'10'</span>: <span class="fl">0.5</span>}</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>freqs2 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.6</span>, <span class="st">'10'</span>: <span class="fl">0.4</span>}</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>hist1 <span class="op">=</span> Histogram(freqs1, <span class="dv">1000</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>hist2 <span class="op">=</span> Histogram(freqs2, <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> Histogram, aggregate_histograms, filter_hist</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>freqs1 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.3</span>, <span class="st">'00'</span>:<span class="fl">0.2</span>, <span class="st">'10'</span>: <span class="fl">0.5</span>}</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>freqs2 <span class="op">=</span> {<span class="st">'01'</span>: <span class="fl">0.6</span>, <span class="st">'10'</span>: <span class="fl">0.4</span>}</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <blockquote class="blockquote">
 <p><strong>Q:</strong> Assume the data coming from these histograms can be aggregated into a single histogram worth 2000 shots of data. How can you obtain such a histogram ?</p>
 </blockquote>
 <div id="LpMLmMBH5VJz" class="cell" data-outputid="581176b6-924b-4c78-b997-dcb818848980">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hist3 <span class="op">=</span> aggregate_histograms(hist1, hist2)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hist3.n_shots, hist3.frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>hist3 <span class="op">=</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hist3.n_shots, hist3.frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Sometimes, we can predict in advance what bitstrings should not be found in our histograms, and thus are caused by noise. For example, circuits may feature additional qubits with the role to detect errors (<code>0</code> if no error, <code>1</code> otherwise), or certain properties in the use case itself may give us those insights.</p>
 <p>In these situation, removing those entries from our histograms can significantly improve the results of our calculation. It is a form of error-mitigation called post-selection.</p>
@@ -647,14 +662,14 @@ window.Quarto = {
 <p><strong>Q:</strong> Can you find how to apply this predicate to remove undesired entries from the histogram ?</p>
 </blockquote>
 <div id="1l0qzB3V8JDG" class="cell" data-outputid="2162035d-001a-420e-899f-6c11ce5a025f">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_predicate(bs):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return True if a bitstring "bs" is acceptable, False otherwise</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> bs <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'00'</span>]</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>hist4 <span class="op">=</span> filter_hist(hist3, my_predicate)</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hist4.frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> my_predicate(bs):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Return True if a bitstring "bs" is acceptable, False otherwise</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> bs <span class="kw">not</span> <span class="kw">in</span> [<span class="st">'00'</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT YOUR CODE HERE</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>hist4 <span class="op">=</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hist4.frequencies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If you’ve looked into the documentation, you may have noticed there is more you can do with <code>Histogram</code> objects ! In past quantum experiments the Tangelo team has used <code>post_select</code>, <code>remove_qubits</code>, <code>resample</code> and other methods in order to obtain numerical results and compute their statistical uncertainty. We encourage you to further explore !</p>
 </section>
@@ -665,7 +680,6 @@ window.Quarto = {
 <p><strong>Q:</strong> What if you tried to compute the expectation value for the <span class="math inline">\(H_2\)</span> use case with a backend running with a given amount of shots and a noise model of your choice ? You may be surprised at how much these parameters affect the results.</p>
 </blockquote>
 <p>Note: Noisy simulation cost is usually linear with the number of shots, which means execution time may increase linearly with it as well.</p>
-</section>
 </section>
 </section>
 <section id="final-words" class="level1">
@@ -756,6 +770,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -790,7 +822,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
