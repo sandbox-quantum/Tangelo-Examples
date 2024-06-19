@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -194,6 +194,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/nuccsd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -667,7 +673,7 @@ DMET-VQE quantum resources:
 <section id="trade-off-between-energy-accuracy-and-virtual-orbital-truncation-in-dmet-fragments" class="level3">
 <h3 class="anchored" data-anchor-id="trade-off-between-energy-accuracy-and-virtual-orbital-truncation-in-dmet-fragments">Trade-off between energy accuracy and virtual orbital truncation in DMET fragments</h3>
 <p>We briefly touched the <code>virtual_orbital_threshold</code> parameter earlier when we discussed the DMET energy error. This discussion is even more relevant when constructing quantum circuits, as we work with minimal basis sets to restrain the number of qubits. Changing the <code>virtual_orbital_threshold</code> while dealing with smaller basis sets can have a significant impact on the DMET energy, as shown in the table below. This is due to the truncation of a few virtual orbitals having proportionally greater impact on small virtual orbital spaces than on larger ones.</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">

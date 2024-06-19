@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg border-bottom" data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/nuccsd.html">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Examples</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Chemistry</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/nuccsd.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/qchem_modelling_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quantum Chemistry: Modelling Basics</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Fault Tolerant</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/fault_tolerant/qsp_state_prep.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">State preparation using quantum signal processing</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Hardware Experiments</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/berylium_ibm_quantum.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Combining Tangelo, QEMIST Cloud and IBM Quantum for quantum experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/overview_endtoend.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">End-to-end Quantum Chemistry Workflow on Quantum Hardware with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/qemist_cloud_hardware_experiments_braket.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Submitting quantum hardware experiments with Tangelo and QEMIST Cloud</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/hardware_experiments/umbrella_inversion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the umbrella inversion with quantum computers</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Measurement Reduction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/measurement_reduction/classical_shadows.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Classical Shadows</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Problem Decomposition</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Density Matrix Embedding Theory (DMET)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/dmet_uhf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/ifci_mifno.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploring the Method of Increments with QEMIST Cloud and Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/oniom.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/problem_decomposition/qmmm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">The QM/MM method: Solvation of the Glycine Amino Acid</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Variational Methods</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/adapt.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ADAPT-VQE</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/iqcc_using_clifford.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Iterative Qubit Coupled Cluster using only Clifford circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VQE with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/variational_methods/vqe_custom_ansatz_hamiltonian.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo VQE: Custom Ansatz and qubit Hamiltonian Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Workflow Basics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/1.the_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: the basics</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/2.qpu_connection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Connecting to quantum services with Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/3.noisy_simulation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linq: noisy simulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/workflow_basics/symbolic_simulator.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Performing symbolic simulation in Tangelo</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+ <span class="menu-text">Hands On</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T1_circuits.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T1_circuits_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: gates and circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T2_simulators.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T2_simulators_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: simulating quantum circuits</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T3_VQE.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T3_VQE_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: VQE framework</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T4_hardware_experiments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T4_hardware_experiments_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tangelo hands-on: hardware experiments</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T5_fault_tolerant_build_blocks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fault Tolerant Building blocks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../hands_on/T5_fault_tolerant_build_blocks_solved.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Fault Tolerant Building blocks</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/nuccsd.html">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>This companion notebook is intended to provide access to the code used to generate results in the publication titled “Non-unitary Coupled Clusters on Gate-based Quantum Computers,” as published in <a href="https://arxiv.org/abs/2406.11574">arXiv:2406.11574</a> in June 2024. It is possible that by the time you read this, the work below may have been streamlined thanks to additional features in Tangelo. Please check the documentation. Also, the notebook was executed with the packages <code>tangelo==0.4.3</code>, <code>qulacs==0.6.4.1</code> and <code>pyscf==2.6.1</code>.</p>
+<p>This work focuses on state preparation, aiming to efficiently prepare quantum states using both classical and quantum methods. Many quantum algorithms rely on high-quality initial states for optimal performance. Efficiently preparing these states can significantly reduce the computational cost of probabilistic algorithms such as quantum phase estimation (QPE). Fortunately, in quantum chemistry applications, generating approximate wave functions for molecular systems is well-studied. Quantum computing stands to benefit from directly importing these classical methods into quantum circuits. In this work, we propose a state preparation method based on coupled cluster (CC) theory, a cornerstone of quantum chemistry on classical computers. Our approach incorporates mid-circuit measurements into the circuit construction.</p>
+<p>This state preparation protocol involves:</p>
+<ol type="1">
+<li>Computing coupled cluster amplitudes using a classical quantum chemistry package,</li>
+<li>Converting these amplitudes into rotation angles, described in Equation 9 of the paper,</li>
+<li>Executing the circuit as illustrated in Figure 3 of the paper until all measurement outcomes are 0.</li>
+</ol>
+<p>This notebook includes the code necessary to replicate the results presented in the publication.</p>
+<section id="nuccsd-code" class="level2">
+<h2 class="anchored" data-anchor-id="nuccsd-code">NUCCSD code</h2>
+<p>The primary goal of this method is to implement the state transformation:</p>
+<p><span class="math display">\[
+  \ket{\psi} \rightarrow \frac{e^{\alpha \hat{a}^{\dagger}_p \hat{a}_q} \ket{\psi}}{\|e^{\alpha \hat{a}^{\dagger}_p \hat{a}_q} \ket{\psi} \|}
+\]</span></p>
+<p>where <span class="math inline">\(\alpha\)</span> represents the classically computed CC amplitude. The full CC state is constructed using sequences of exponentiated cluster operators, achieved through trotterization.</p>
+<p>Initially, the CC amplitudes are computed classically, as illustrated in the code cell below. This work specifically focuses on treating single and double excitation terms comprehensively, starting from unrestricted mean fields due to their compatibility with subsequent Jordan-Wigner mapping.</p>
+<div id="iCpBIkchmQRO" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of dependencies.</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qulacs <span class="op">--</span>quiet</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="71310bf5-4b72-494a-8559-bfdd22eeed8a" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> unrestricted_ccsd_params(mol):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Compute the classical CCSD energy and amplitudes.</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">        mol (SecondQuantizedMolecule): Self-explanatory.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">        (array of floats, float): CC amplitudes and energy.</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    solver <span class="op">=</span> CCSDSolver(mol)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    e_uccsd <span class="op">=</span> solver.simulate()</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    t1, t2 <span class="op">=</span> solver.solver.cc_fragment.t1, solver.solver.cc_fragment.t2</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    params <span class="op">=</span> uccsd_openshell_get_packed_amplitudes(</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        t2[<span class="dv">0</span>], <span class="co"># alpha-alpha terms.</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        t2[<span class="dv">2</span>], <span class="co"># beta-beta terms.</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        t2[<span class="dv">1</span>], <span class="co"># alpa-beta terms.</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        mol.n_active_ab_electrons[<span class="dv">0</span>],</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        mol.n_active_ab_electrons[<span class="dv">1</span>],</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        mol.n_active_mos[<span class="dv">0</span>],</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        mol.n_active_mos[<span class="dv">1</span>],</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>        alpha_single_amplitudes<span class="op">=</span>t1[<span class="dv">0</span>],</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        beta_single_amplitudes<span class="op">=</span>t1[<span class="dv">1</span>]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> params, e_uccsd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We first define the functions to create the circuit primitives, as defined in the article. Their purposes can be found in their respective docstrings.</p>
+<div id="0eeb15ab-6367-40fc-b9b6-1a16da99e587" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> math <span class="im">import</span> pi</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> single_exc(pq, plus_qubits, coeff_qubit, theta):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Single excitation CCSD circuit.</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">    The operator applied is a_p^{\dagger} a_q, assuming p &gt; q.</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">        pq (iterable of int): Indices representing the unoccupied and occupied spinorbitals.</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">        plus_qubits (iterable of int): Qubit indices of the |+&gt; qubits.</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">        coeff_qubit (iterable of int): Qubit index for the coefficient.</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">        theta (float): Rotation angle to apply the proper amplitude.</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">        Circuit: Quantum circuit representing a single excitation term in CCSD.</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    sign <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> theta <span class="op">&lt;</span> <span class="fl">0.</span> <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    rot <span class="op">=</span> <span class="bu">abs</span>(theta)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    p, q <span class="op">=</span> pq</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    plus_p, plus_q <span class="op">=</span> plus_qubits</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We are working in the single-reference CC. The reference state is expected</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to be a single reference state where lowest lying orbitals are filled</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># first.</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> p <span class="op">&gt;</span> q</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">=</span> [Gate(<span class="st">"H"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> plus_qubits]</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"RY"</span>, coeff_qubit, parameter<span class="op">=</span>rot, is_variational<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"PHASE"</span>, coeff_qubit, parameter<span class="op">=</span>sign<span class="op">*</span>pi, is_variational<span class="op">=</span><span class="va">True</span>)]</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CPHASE"</span>, p, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_p),</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, q, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_q)]</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PQ excitation.</span></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CX"</span>, p, control<span class="op">=</span>coeff_qubit)]</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CZ"</span>, i, control<span class="op">=</span>coeff_qubit) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(q<span class="op">+</span><span class="dv">1</span>, p)]</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CX"</span>, q, control<span class="op">=</span>coeff_qubit)]</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CPHASE"</span>, p, control<span class="op">=</span>plus_p, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>),</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, q, control<span class="op">=</span>plus_q, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>),</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, plus_p, control<span class="op">=</span>coeff_qubit, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>),</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, plus_q, control<span class="op">=</span>coeff_qubit, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>)]</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"H"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> plus_qubits]</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"RY"</span>, coeff_qubit, parameter<span class="op">=-</span>rot, is_variational<span class="op">=</span><span class="va">True</span>)]</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"MEASURE"</span>, q) <span class="cf">for</span> q <span class="kw">in</span> coeff_qubit<span class="op">+</span>plus_qubits]</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Circuit(gates)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_exc(pqrs, plus_qubits, coeff_qubit, theta):</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Double excitation CCSD circuit.</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">    The operator applied is a_p^{\dagger} a_q a_r^{\dagger} a_s, assuming p &gt; q and r &gt; s.</span></span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a><span class="co">        pqrs (iterable of int): Indices representing the occupied and unoccupied spinorbitals (twice).</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co">        plus_qubits (iterable of int): Qubit indices of the |+&gt; qubits.</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="co">        coeff_qubit (int): Qubit index for the coefficient.</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="co">        theta (float): Rotation angle to apply the proper amplitude.</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="co">        Circuit: Quantum circuit representing a double excitation term in CCSD.</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>    sign <span class="op">=</span> <span class="dv">1</span> <span class="cf">if</span> theta <span class="op">&lt;</span> <span class="fl">0.</span> <span class="cf">else</span> <span class="dv">0</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a>    rot <span class="op">=</span> <span class="bu">abs</span>(theta)</span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>    p, q, r, s <span class="op">=</span> pqrs</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a>    plus_p, plus_q, plus_r, plus_s <span class="op">=</span> plus_qubits</span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We are working in the single-reference CC. The reference state is expected</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>    <span class="co"># to be a single reference state where lowest lying orbitals are filled</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>    <span class="co"># first.</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> (p <span class="op">&gt;</span> q) <span class="kw">and</span> (r <span class="op">&gt;</span> s)</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">=</span> [Gate(<span class="st">"H"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> plus_qubits]</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"RY"</span>, coeff_qubit, parameter<span class="op">=</span>rot, is_variational<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"PHASE"</span>, coeff_qubit, parameter<span class="op">=</span>sign<span class="op">*</span>pi, is_variational<span class="op">=</span><span class="va">True</span>)]</span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CPHASE"</span>, p, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_p),</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, q, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_q),</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, r, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_r),</span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, s, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_s)]</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>    <span class="co"># RS excitation.</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CX"</span>, s, control<span class="op">=</span>coeff_qubit)]</span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CZ"</span>, i, control<span class="op">=</span>coeff_qubit) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(s<span class="op">+</span><span class="dv">1</span>, r)]</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CX"</span>, r, control<span class="op">=</span>coeff_qubit)]</span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a>    <span class="co"># PQ excitation.</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CX"</span>, q, control<span class="op">=</span>coeff_qubit)]</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CZ"</span>, i, control<span class="op">=</span>coeff_qubit) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(q<span class="op">+</span><span class="dv">1</span>, p)]</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CX"</span>, p, control<span class="op">=</span>coeff_qubit)]</span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CPHASE"</span>, s, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_s),</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, r, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_r),</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, q, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_q),</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, p, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>, control<span class="op">=</span>plus_p)]</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"CPHASE"</span>, plus_p, control<span class="op">=</span>coeff_qubit, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>),</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, plus_q, control<span class="op">=</span>coeff_qubit, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>),</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, plus_r, control<span class="op">=</span>coeff_qubit, parameter<span class="op">=-</span>pi<span class="op">/</span><span class="dv">2</span>),</span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a>              Gate(<span class="st">"CPHASE"</span>, plus_s, control<span class="op">=</span>coeff_qubit, parameter<span class="op">=</span>pi<span class="op">/</span><span class="dv">2</span>)]</span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"H"</span>, i) <span class="cf">for</span> i <span class="kw">in</span> plus_qubits]</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"RY"</span>, coeff_qubit, parameter<span class="op">=-</span>rot, is_variational<span class="op">=</span><span class="va">True</span>)]</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>    gates <span class="op">+=</span> [Gate(<span class="st">"MEASURE"</span>, q) <span class="cf">for</span> q <span class="kw">in</span> coeff_qubit<span class="op">+</span>plus_qubits]</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Circuit(gates)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, the CC amplitudes can be converted to rotation parameters <span class="math inline">\(\theta\)</span> through the equation</p>
+<p><span class="math display">\[
+  \frac{\cos^2{(\theta/2)} \ket{\psi} \pm \sin^2{(\theta/2)} \hat{a}_{p}^{\dagger} \hat{a}_q \ket{\psi}}{\sqrt{\cos^4{(\theta/2)} + \sin^4{(\theta/2)}}} \approx \left(I + \alpha \hat{a}_{p}^{\dagger} \hat{a}_q\right) \ket{\psi}.
+\]</span></p>
+<div id="7a73763d-c044-4de1-bcae-959c7a2ef6ba" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> map_amps_to_ry_thetas(amps):</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Convert CC amplitudes to RY rotation angles.</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">        amps (float or array of float): CC amplitudes.</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">        float or array of float: RY rotation angles corresponding to the CC amplitudes.</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    amplitudes <span class="op">=</span> np.array(amps, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    coeff <span class="op">=</span> (amplitudes<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>amplitudes<span class="op">**</span><span class="dv">2</span>))<span class="op">**</span>(<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sign(amplitudes)<span class="op">*</span><span class="dv">2</span><span class="op">*</span>np.arctan(coeff)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For example, the operator <span class="math inline">\(e^{0.001 \hat{a}_6\hat{a}_3}\)</span> can be mapped to a quantum circuit using the <code>map_amps_to_ry_thetas</code> and <code>single_exc</code> functions.</p>
+<div id="baebd670-1bbe-4cc1-a9fb-18cfbf6852fa" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> map_amps_to_ry_thetas(<span class="fl">0.001</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>single_exc_circ <span class="op">=</span> single_exc(pq<span class="op">=</span>(<span class="dv">6</span>,<span class="dv">3</span>), plus_qubits<span class="op">=</span>(<span class="dv">1</span>,<span class="dv">2</span>), coeff_qubit<span class="op">=</span>(<span class="dv">0</span>,), theta<span class="op">=</span>theta)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>single_exc_circ.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<figure class="figure">
+<p><img src="nuccsd_files/figure-html/cell-6-output-1.svg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This circuit describes the scenario where a cluster operator contains only a single operator. However, in routine quantum chemistry calculations, this situation is uncommon, and practitioners typically employ the first-order Suzuki-Trotter approximation:</p>
+<p><span class="math display">\[
+  \ket{\psi} = e^{T_1+T_2} \ket{\psi_0} \approx e^{T_1}e^{T_2} \ket{\psi_0},
+\]</span></p>
+<p>to decompose the exponentiated sum of operators into a product of exponentiated operators. While not mathematically exact, the errors resulting from this approximation are generally small. This approximation holds well in practice for cluster operators, where a corresponding ground state typically yields small amplitudes.</p>
+<p>In the following code cell, we define an ansatz <code>NUCCSD</code> that utilizes mid-circuit measurements to implement single and double cluster operators. Most of the code below is copy-pasted from other examples of <a href="https://github.com/goodchemistryco/Tangelo/tree/main/tangelo/toolboxes/ansatz_generator">ansatz classes in Tangelo</a>.</p>
+<div id="ec180990-30b2-4874-bcfb-21928a4b79ea" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> OrderedDict</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator <span class="im">import</span> Ansatz</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.statevector_mapping <span class="im">import</span> get_reference_circuit</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._unitary_cc_openshell <span class="im">import</span> uccsd_openshell_paramsize, uccsd_openshell_generator, uccsd_openshell_get_packed_amplitudes</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> NUCCSD(Ansatz):</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Construct non-unitary CC states on quantum circuits.</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">    Uses mid-circuit measurements to implement fermionic creation and annihilation</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">    operators, as well as performing amplitude injections. Only supports the Jordan-Wigner (JW)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="co">    occupation mapping.</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">        n_sos (int): Number of spin-orbitals.</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">        n_electrons (int): Number of electrons.</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">        up_then_down (bool): Flag indicating spin-orbital ordering.</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">        verbose (bool): Flag for verbose output.</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, n_sos, n_electrons, up_then_down<span class="op">=</span><span class="va">False</span>, verbose<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set the number of alpha/beta spinorbitals according to the input "n_sos".</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(n_sos, (<span class="bu">tuple</span>, <span class="bu">list</span>)) <span class="kw">and</span> <span class="bu">len</span>(n_sos) <span class="op">==</span>  <span class="dv">2</span>:</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_sos_a, <span class="va">self</span>.n_sos_b <span class="op">=</span> n_sos</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_alpha, <span class="va">self</span>.n_beta <span class="op">=</span> n_electrons</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(n_sos, <span class="bu">int</span>):</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> n_sos <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span>, <span class="st">"The total number of spin-orbitals should be even when reference is RHF or ROHF."</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_sos_a <span class="op">=</span> <span class="va">self</span>.n_sos_b <span class="op">=</span> n_sos <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Set the number of alpha/beta electrons according to the input "n_electrons".</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(n_electrons, (<span class="bu">tuple</span>, <span class="bu">list</span>)) <span class="kw">and</span> <span class="bu">len</span>(n_electrons) <span class="op">==</span>  <span class="dv">2</span>:</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.uhf <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_alpha, <span class="va">self</span>.n_beta <span class="op">=</span> n_electrons</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_singles, <span class="va">self</span>.n_doubles, _, _, _, _, _ <span class="op">=</span> uccsd_openshell_paramsize(</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.n_alpha, <span class="va">self</span>.n_beta, <span class="va">self</span>.n_sos_a, <span class="va">self</span>.n_sos_b)</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(n_electrons, <span class="bu">int</span>):</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.uhf <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_alpha <span class="op">=</span> <span class="va">self</span>.n_beta <span class="op">=</span> n_electrons <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_alpha <span class="op">+=</span> n_electrons <span class="op">%</span> <span class="dv">2</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">NotImplementedError</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_singles, <span class="va">self</span>.n_doubles, _, _, _, _, _ <span class="op">=</span> uccsd_openshell_paramsize(</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.n_alpha, <span class="va">self</span>.n_beta, <span class="va">self</span>.n_sos_a, <span class="va">self</span>.n_sos_b)</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.spin <span class="op">=</span> <span class="va">self</span>.n_alpha <span class="op">-</span> <span class="va">self</span>.n_beta</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.up_then_down <span class="op">=</span> up_then_down</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.n_var_params <span class="op">=</span> <span class="va">self</span>.n_singles <span class="op">+</span> <span class="va">self</span>.n_doubles</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.supported_reference_state <span class="op">=</span> {<span class="st">"HF"</span>}</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.supported_initial_var_params <span class="op">=</span> {<span class="st">"zeros"</span>}</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.var_params_default <span class="op">=</span> <span class="st">"zeros"</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.reference_state <span class="op">=</span> <span class="st">"HF"</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.var_params <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit <span class="op">=</span> Circuit()</span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.verbose <span class="op">=</span> verbose</span>
+<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-68"><a href="#cb6-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">@property</span></span>
+<span id="cb6-69"><a href="#cb6-69" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> n_spinorbitals(<span class="va">self</span>):</span>
+<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.n_sos_a <span class="op">+</span> <span class="va">self</span>.n_sos_b</span>
+<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a>    <span class="at">@property</span></span>
+<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> n_electrons(<span class="va">self</span>):</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.n_alpha <span class="op">+</span> <span class="va">self</span>.n_beta</span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>    <span class="at">@property</span></span>
+<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> n_measure_gates(<span class="va">self</span>):</span>
+<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.circuit.counts.get(<span class="st">"MEASURE"</span>, <span class="dv">0</span>)</span>
+<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>    <span class="at">@property</span></span>
+<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> max_n_measure_gates(<span class="va">self</span>):</span>
+<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">3</span><span class="op">*</span><span class="va">self</span>.n_singles <span class="op">+</span> <span class="dv">5</span><span class="op">*</span><span class="va">self</span>.n_doubles</span>
+<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> set_var_params(<span class="va">self</span>, var_params<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Initialize variational parameters as ones, zeros, random numbers, or</span></span>
+<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a><span class="co">        any other values.</span></span>
+<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> var_params <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>            var_params <span class="op">=</span> <span class="va">self</span>.var_params_default</span>
+<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(var_params, <span class="bu">str</span>):</span>
+<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>            var_params <span class="op">=</span> var_params.lower()</span>
+<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> (var_params <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.supported_initial_var_params):</span>
+<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Supported keywords for initializing variational parameters: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>supported_initial_var_params<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>            applied_var_params <span class="op">=</span> np.zeros((<span class="va">self</span>.n_var_params,), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>            applied_var_params <span class="op">=</span> np.array(var_params)</span>
+<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> applied_var_params.size <span class="op">!=</span> <span class="va">self</span>.n_var_params:</span>
+<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Expected </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>n_var_params<span class="sc">}</span><span class="ss"> variational parameters but "</span></span>
+<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>                                 <span class="ss">f"received </span><span class="sc">{</span>applied_var_params<span class="sc">.</span>size<span class="sc">}</span><span class="ss">."</span>)</span>
+<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.var_params <span class="op">=</span> applied_var_params</span>
+<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.var_params</span>
+<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> prepare_reference_state(<span class="va">self</span>):</span>
+<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Return circuit preparing the desired reference wavefunction (HF)."""</span></span>
+<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.reference_state <span class="kw">not</span> <span class="kw">in</span> <span class="va">self</span>.supported_reference_state:</span>
+<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Only supported reference state methods are: </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>supported_reference_state<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> get_reference_circuit(n_spinorbitals<span class="op">=</span><span class="va">self</span>.n_spinorbitals,</span>
+<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>                                     n_electrons<span class="op">=</span><span class="va">self</span>.n_electrons,</span>
+<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>                                     mapping<span class="op">=</span><span class="st">"JW"</span>,</span>
+<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>                                     up_then_down<span class="op">=</span><span class="va">self</span>.up_then_down,</span>
+<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>                                     spin<span class="op">=</span><span class="va">self</span>.spin)</span>
+<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> build_circuit(<span class="va">self</span>, var_params<span class="op">=</span><span class="va">None</span>, cc_op<span class="op">=</span><span class="va">None</span>, ccop_order<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Build and return the quantum circuit implementing the ansatz."""</span></span>
+<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.set_var_params(var_params)</span>
+<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>        n_qubits <span class="op">=</span> <span class="va">self</span>.n_spinorbitals</span>
+<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ancilla qubit indices.</span></span>
+<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>        single_coeff_qubit <span class="op">=</span> (n_qubits,)</span>
+<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>        single_plus_qubits <span class="op">=</span> (n_qubits <span class="op">+</span> <span class="dv">1</span>, n_qubits <span class="op">+</span> <span class="dv">2</span>)</span>
+<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>        double_coeff_qubit <span class="op">=</span> (n_qubits,)</span>
+<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>        double_plus_qubits <span class="op">=</span> (n_qubits <span class="op">+</span> <span class="dv">1</span>, n_qubits <span class="op">+</span> <span class="dv">2</span>, n_qubits <span class="op">+</span> <span class="dv">3</span>, n_qubits <span class="op">+</span> <span class="dv">4</span>)</span>
+<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> cc_op <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Last argument to False gives the non-unitary variant.</span></span>
+<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>            cc_op <span class="op">=</span> uccsd_openshell_generator(<span class="va">self</span>.var_params,</span>
+<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>                                              <span class="va">self</span>.n_alpha, <span class="va">self</span>.n_beta,</span>
+<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a>                                              <span class="va">self</span>.n_sos_a, <span class="va">self</span>.n_sos_b,</span>
+<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a>                                              anti_hermitian<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Initial HF circuit.</span></span>
+<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.circuit <span class="op">=</span> <span class="va">self</span>.prepare_reference_state()</span>
+<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.var_param_to_gate_index <span class="op">=</span> <span class="bu">dict</span>()</span>
+<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Here we can change the cluster operator trotterization ordering.</span></span>
+<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ccop_order <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a>            cc_op_dict <span class="op">=</span> OrderedDict()</span>
+<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> term <span class="kw">in</span> ccop_order:</span>
+<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a>                cc_op_dict[term] <span class="op">=</span> cc_op.terms[term]</span>
+<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a>            cc_op_dict <span class="op">=</span> OrderedDict(cc_op.terms)</span>
+<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, (term, param) <span class="kw">in</span> <span class="bu">enumerate</span>(cc_op_dict.items()):</span>
+<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>            theta <span class="op">=</span> map_amps_to_ry_thetas(param).real</span>
+<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(term) <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a>                pq <span class="op">=</span> term[<span class="dv">0</span>][<span class="dv">0</span>], term[<span class="dv">1</span>][<span class="dv">0</span>]</span>
+<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.circuit <span class="op">+=</span> single_exc(pq, single_plus_qubits, single_coeff_qubit, theta)</span>
+<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a>                <span class="cf">pass</span></span>
+<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> <span class="bu">len</span>(term) <span class="op">==</span> <span class="dv">4</span>:</span>
+<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>                pqrs <span class="op">=</span> term[<span class="dv">0</span>][<span class="dv">0</span>], term[<span class="dv">1</span>][<span class="dv">0</span>], term[<span class="dv">2</span>][<span class="dv">0</span>], term[<span class="dv">3</span>][<span class="dv">0</span>]</span>
+<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.circuit <span class="op">+=</span> double_exc(pqrs, double_plus_qubits, double_coeff_qubit, theta)</span>
+<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a>                <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">"Unrecognized FermionOperator term."</span>)</span>
+<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Will keep track of the first RY gate, the second one is at the</span></span>
+<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a>            <span class="co"># index i+2. Index is at len(circuit._variational_gates) - 3 because</span></span>
+<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a>            <span class="co"># 1 RY + PHASE + 1RYdag gates.</span></span>
+<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.var_param_to_gate_index[i] <span class="op">=</span> <span class="bu">len</span>(<span class="va">self</span>.circuit._variational_gates) <span class="op">-</span> <span class="dv">3</span></span>
+<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.verbose:</span>
+<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a>            resources <span class="op">=</span> <span class="va">self</span>.circuit.counts <span class="op">|</span> {<span class="st">"n_qubits"</span>: <span class="va">self</span>.circuit.width}</span>
+<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Resource estimation: </span><span class="sc">{</span>resources<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.circuit</span>
+<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_var_params(<span class="va">self</span>, var_params):</span>
+<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Updating the value of variational parameters could be possible</span></span>
+<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a><span class="co">        to do here, but it is out of scope for this work.</span></span>
+<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a><span class="co">        """</span></span>
+<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="test-set" class="level2">
+<h2 class="anchored" data-anchor-id="test-set">Test set</h2>
+<p>The molecular set selected consists of small molecules, chosen specifically for testing the algorithm on emulators (classical computers). These simple molecules were also selected to verify the algorithm’s accuracy on both closed-shell and open-shell systems.</p>
+<div id="f340251c-de81-4849-8055-827385d20aa7" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>molecules <span class="op">=</span> {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"H2"</span>:  {<span class="st">"xyz"</span>: <span class="st">"H 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 0.7414"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"H3"</span>:  {<span class="st">"xyz"</span>: <span class="st">"H 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 1.</span><span class="ch">\n</span><span class="st">H 0.0 0.0 2."</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">1</span>},</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"H4"</span>:  {<span class="st">"xyz"</span>: <span class="st">"H 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 1.</span><span class="ch">\n</span><span class="st">H 0.0 0.0 2.</span><span class="ch">\n</span><span class="st">H 0.0 0.0 3."</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LiH"</span>: {<span class="st">"xyz"</span>: <span class="st">"Li 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 1.5949"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BeH2"</span>:{<span class="st">"xyz"</span>: <span class="st">"Be 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 1.3264</span><span class="ch">\n</span><span class="st">H 0.0 0.0 -1.3264"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"BH3"</span>: {<span class="st">"xyz"</span>: <span class="st">"B 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 1.19 0.0</span><span class="ch">\n</span><span class="st">H 1.0306 -0.5950 0.0</span><span class="ch">\n</span><span class="st">H -1.0306 -0.5950 0.0"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"NH3"</span>: {<span class="st">"xyz"</span>: <span class="st">"N 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 -0.9377 -0.3816</span><span class="ch">\n</span><span class="st">H 0.8121 0.4689 -0.3816</span><span class="ch">\n</span><span class="st">H -0.8121 0.4689 -0.3816"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"H2O"</span>: {<span class="st">"xyz"</span>: <span class="st">"O 0.0 0.0 0.1173</span><span class="ch">\n</span><span class="st">H 0.0 0.7572 -0.4692</span><span class="ch">\n</span><span class="st">H 0.0 -0.7572 -0.4692"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"HF"</span>:  {<span class="st">"xyz"</span>: <span class="st">"F 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 0.9168"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">0</span>},</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"OH"</span>:  {<span class="st">"xyz"</span>: <span class="st">"O 0.0 0.0 0.0</span><span class="ch">\n</span><span class="st">H 0.0 0.0 0.9697"</span>, <span class="st">"q"</span>: <span class="dv">0</span>, <span class="st">"spin"</span>: <span class="dv">1</span>},</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In the next cell, for each molecule, the CCSD solution is computed, the amplitudes are converted into rotation angles, circuits are constructed, and energy evaluations are performed.</p>
+<div id="7e6a227d-ee57-4ee8-b256-07350588c98a" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Qulacs is a fast emulator we can use with Tangelo.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> get_backend(<span class="st">"qulacs"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, data <span class="kw">in</span> molecules.items():</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generate the qubit Hamiltonian.</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    mol <span class="op">=</span> SecondQuantizedMolecule(data[<span class="st">"xyz"</span>], q<span class="op">=</span>data[<span class="st">"q"</span>], spin<span class="op">=</span>data[<span class="st">"spin"</span>], basis<span class="op">=</span><span class="st">"sto-3g"</span>, uhf<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Mean-field energy: </span><span class="sc">{</span>mol<span class="sc">.</span>mf_energy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the classical CC amplitudes, and map them to rotation parameters.</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    initial_params, e_unrestricted_ccsd <span class="op">=</span> unrestricted_ccsd_params(mol)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"CCSD energy: </span><span class="sc">{</span>e_unrestricted_ccsd<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    mapping <span class="op">=</span> {</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>      <span class="st">"mapping"</span>: <span class="st">"JW"</span>,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>      <span class="st">"up_then_down"</span>: <span class="va">False</span>,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>      <span class="st">"n_spinorbitals"</span>: mol.n_active_sos,</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>      <span class="st">"n_electrons"</span>: mol.n_active_electrons,</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>      <span class="st">"spin"</span>: mol.active_spin</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Instantiate the ansatz, pass the rotation parameters</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    ansatz <span class="op">=</span> NUCCSD(mol.n_active_sos, mol.n_active_ab_electrons, up_then_down<span class="op">=</span>mapping[<span class="st">"up_then_down"</span>], verbose<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    circ <span class="op">=</span> ansatz.build_circuit(var_params<span class="op">=</span>initial_params)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Number of mid-circuit measurements: </span><span class="sc">{</span>ansatz<span class="sc">.</span>n_measure_gates<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Perform an energy evaluation for the case where all mid-circuit measurement output state \ket{0}.</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    quop <span class="op">=</span> fermion_to_qubit_mapping(mol.fermionic_hamiltonian, <span class="op">**</span>mapping)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> backend.get_expectation_value(quop, circ, desired_meas_result<span class="op">=</span><span class="st">"0"</span><span class="op">*</span>ansatz.n_measure_gates)</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    sucess_probability <span class="op">=</span> circ._probabilities[<span class="st">"0"</span><span class="op">*</span>ansatz.n_measure_gates]</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Print results.</span></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Circuit energy: </span><span class="sc">{</span>e<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Delta with the classical CC: </span><span class="sc">{</span>e_unrestricted_ccsd<span class="op">-</span>e<span class="sc">:.1e}</span><span class="ss">"</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Probability of measuring all 0 in mid-circuit measurements: </span><span class="sc">{</span>sucess_probability<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>H2
+Mean-field energy: -1.1167
+CCSD energy: -1.1373
+Resource estimation: {'X': 2, 'H': 16, 'RY': 6, 'PHASE': 3, 'CPHASE': 24, 'CX': 8, 'CZ': 4, 'MEASURE': 11, 'n_qubits': 9}
+Number of mid-circuit measurements: 11
+Circuit energy: -1.1373
+Delta with the classical CC: -8.6e-07
+Probability of measuring all 0 in mid-circuit measurements: 0.82
+
+
+H3
+Mean-field energy: -1.5414
+CCSD energy: -1.5684
+Resource estimation: {'X': 3, 'H': 24, 'RY': 8, 'PHASE': 4, 'CPHASE': 36, 'CX': 12, 'CZ': 14, 'MEASURE': 16, 'n_qubits': 11}
+Number of mid-circuit measurements: 16
+Circuit energy: -1.5683
+Delta with the classical CC: -2.3e-06
+Probability of measuring all 0 in mid-circuit measurements: 0.57
+
+
+H4
+Mean-field energy: -2.0985
+CCSD energy: -2.1664
+Resource estimation: {'X': 4, 'H': 128, 'RY': 40, 'PHASE': 20, 'CPHASE': 192, 'CX': 64, 'CZ': 92, 'MEASURE': 84, 'n_qubits': 13}
+Number of mid-circuit measurements: 84
+Circuit energy: -2.1663
+Delta with the classical CC: -8.6e-05
+Probability of measuring all 0 in mid-circuit measurements: 0.28
+
+
+LiH
+Mean-field energy: -7.8620
+CCSD energy: -7.8822
+Resource estimation: {'X': 2, 'H': 80, 'RY': 24, 'PHASE': 12, 'CPHASE': 120, 'CX': 40, 'CZ': 80, 'MEASURE': 52, 'n_qubits': 15}
+Number of mid-circuit measurements: 52
+Circuit energy: -7.8822
+Delta with the classical CC: -6.3e-07
+Probability of measuring all 0 in mid-circuit measurements: 0.45
+
+
+BeH2
+Mean-field energy: -15.5603
+CCSD energy: -15.5945
+Resource estimation: {'X': 4, 'H': 160, 'RY': 44, 'PHASE': 22, 'CPHASE': 240, 'CX': 80, 'CZ': 216, 'MEASURE': 102, 'n_qubits': 17}
+Number of mid-circuit measurements: 102
+Circuit energy: -15.5945
+Delta with the classical CC: 1.1e-05
+Probability of measuring all 0 in mid-circuit measurements: 0.34
+
+
+BH3
+Mean-field energy: -26.0690
+CCSD energy: -26.1215
+Resource estimation: {'X': 6, 'H': 488, 'RY': 132, 'PHASE': 66, 'CPHASE': 732, 'CX': 244, 'CZ': 822, 'MEASURE': 310, 'n_qubits': 19}
+Number of mid-circuit measurements: 310
+Circuit energy: -26.1215
+Delta with the classical CC: -2.5e-06
+Probability of measuring all 0 in mid-circuit measurements: 0.14
+
+
+NH3
+Mean-field energy: -55.4541
+CCSD energy: -55.5188
+Resource estimation: {'X': 8, 'H': 776, 'RY': 208, 'PHASE': 104, 'CPHASE': 1164, 'CX': 388, 'CZ': 1170, 'MEASURE': 492, 'n_qubits': 19}
+Number of mid-circuit measurements: 492
+Circuit energy: -55.5189
+Delta with the classical CC: 3.8e-05
+Probability of measuring all 0 in mid-circuit measurements: 0.08
+
+
+H2O
+Mean-field energy: -74.9630
+CCSD energy: -75.0124
+Resource estimation: {'X': 8, 'H': 216, 'RY': 60, 'PHASE': 30, 'CPHASE': 324, 'CX': 108, 'CZ': 306, 'MEASURE': 138, 'n_qubits': 17}
+Number of mid-circuit measurements: 138
+Circuit energy: -75.0124
+Delta with the classical CC: 1.5e-05
+Probability of measuring all 0 in mid-circuit measurements: 0.25
+
+
+HF
+Mean-field energy: -98.5708
+CCSD energy: -98.5966
+Resource estimation: {'X': 8, 'H': 80, 'RY': 24, 'PHASE': 12, 'CPHASE': 120, 'CX': 40, 'CZ': 88, 'MEASURE': 52, 'n_qubits': 15}
+Number of mid-circuit measurements: 52
+Circuit energy: -98.5966
+Delta with the classical CC: -7.0e-07
+Probability of measuring all 0 in mid-circuit measurements: 0.60
+
+
+OH
+Mean-field energy: -74.3626
+CCSD energy: -74.3871
+Resource estimation: {'X': 7, 'H': 72, 'RY': 22, 'PHASE': 11, 'CPHASE': 108, 'CX': 36, 'CZ': 90, 'MEASURE': 47, 'n_qubits': 15}
+Number of mid-circuit measurements: 47
+Circuit energy: -74.3871
+Delta with the classical CC: -7.3e-07
+Probability of measuring all 0 in mid-circuit measurements: 0.57
+
+</code></pre>
+</div>
+</div>
+</section>
+<section id="closing-words" class="level2">
+<h2 class="anchored" data-anchor-id="closing-words">Closing words</h2>
+<p>Our notebook introduces an exciting way to adapt classical coupled cluster theory to improve quantum state preparation. This approach blends proven techniques from quantum chemistry with cutting-edge quantum circuit design, making it easier and faster to create the initial states needed for advanced quantum algorithms, like refining energies with phase estimation or computing spectroscopic molecular properties. By including mid-circuit measurements, we not only save computational resources but also show how classical and quantum methods can work together seamlessly. If you’re curious about the future of quantum computing, especially in fields like quantum chemistry, we invite you to dive into <a href="https://arxiv.org/abs/2406.11574">our publication</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/goodchemistryco\.github\.io\/Tangelo-Examples\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

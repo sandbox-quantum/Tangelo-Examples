@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -197,6 +197,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../../examples/chemistry/excited_states.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Excited States in Tangelo</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../examples/chemistry/nuccsd.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -557,7 +563,7 @@ window.Quarto = {
 <p>Connection classes are here for convenience, to provide a simple, more generic way to connect to various platforms and manage experiments programmatically. We recommend that you do not hesitate to leverage whatever graphic interface / dashboard the target quantum service provider offers, as it is usually a more comfortable way to access and visualize a lot of information about the systems available or your jobs.</p>
 <p>The connection classes spare you a number of lines of code and having to figure out a bunch of APIs, but you still have to install whatever your environment needs and provide your own valid credentials to the target services. Not all quantum services offer the same functionalities, or handle authentication similarly: we recommend you have a look at the <a href="https://github.com/goodchemistryco/Tangelo/tree/main/tangelo/linq/qpu_connection">classes themselves</a> (the <code>develop</code> branch may have additional features) to see what they have to offer or how they accomplish it.</p>
 <p>Here’s how it typically works:</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 57%">
 <col style="width: 42%">
@@ -673,10 +679,9 @@ window.Quarto = {
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>res <span class="co"># to display the dataframe neatly in this notebook</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -719,7 +724,6 @@ window.Quarto = {
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
 </div>
@@ -773,10 +777,9 @@ window.Quarto = {
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>job_history[:<span class="dv">5</span>] <span class="co"># Here we only display info of the last 5 jobs run</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -822,7 +825,6 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</div>
 </section>
 <section id="job-results" class="level4">
 <h4 class="anchored" data-anchor-id="job-results">Job results</h4>
@@ -851,10 +853,9 @@ window.Quarto = {
 </div>
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
-<div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -957,7 +958,6 @@ window.Quarto = {
 </tbody>
 </table>
 
-</div>
 </div>
 </div>
 </div>
