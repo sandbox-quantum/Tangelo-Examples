@@ -6,7 +6,7 @@ import os
 def run_notebook_as_test(notebook_path):
     """ Convert python notebook into equivalent script, and run it. Return error if any. """
     try:
-        subprocess.run(['jupyter', 'nbconvert', '--to', 'python', notebook_path])
+        subprocess.run(['jupyter', 'nbconvert', '--to', 'script', notebook_path])
         script_path = './'+os.path.splitext(notebook_path)[0] + '.py'
         directory = os.path.split(notebook_path)[0]
         filename = os.path.split(notebook_path)[1]
