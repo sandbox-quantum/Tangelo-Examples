@@ -15,7 +15,7 @@
 Get started immediately with a click, no install: |colab|
 
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/
+   :target: https://colab.research.google.com/github/sandbox-quantum/Tangelo-Examples/blob/main/
 
 In order to help you find content relevant to your interests, this page provides a table that associates each resource with a few tags describing the main topics they relate to. If you are new to Tangelo, we suggest you start with those tagged with |tag_intro|. Please enjoy your stay. |tangerine|
 
