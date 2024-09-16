@@ -52,11 +52,6 @@ Tutorials
 .. |nbspc| unicode:: U+00A0 .. non-breaking space
 .. |tangerine| unicode:: U+1F34A .. tangerine emoji
 
-Get started immediately with a click, no install: |colab|
-
-.. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/sandbox-quantum/Tangelo-Examples/blob/main/
-
 Tags
 ====
 
