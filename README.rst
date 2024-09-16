@@ -16,7 +16,7 @@ Get started immediately with a click, no install: |colab|
 .. |binder| image:: https://mybinder.org/badge_logo.svg
    :target: https://mybinder.org/v2/gh/goodchemistryco/Tangelo-Examples/main
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/goodchemistryco/Tangelo-Examples/blob/main/
+   :target: https://colab.research.google.com/github/sandbox-quantum/Tangelo-Examples/blob/main/ 
 
 --------------------------------
 
