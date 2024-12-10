@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</title>
+<title>Code for “Nonunitary Coupled Cluster Enabled by Midcircuit Measurements on Quantum Computers”</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,10 +69,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-aaf675189272076cab5501e304195e12.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -160,7 +160,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/nuccsd.html">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/nuccsd.html">Code for “Nonunitary Coupled Cluster Enabled by Midcircuit Measurements on Quantum Computers”</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -199,7 +199,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../examples/chemistry/nuccsd.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</span></a>
+ <span class="menu-text">Code for “Nonunitary Coupled Cluster Enabled by Midcircuit Measurements on Quantum Computers”</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -472,9 +472,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/nuccsd.html">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Examples</li><li class="breadcrumb-item"><a href="../../examples/chemistry/excited_states.html">Chemistry</a></li><li class="breadcrumb-item"><a href="../../examples/chemistry/nuccsd.html">Code for “Nonunitary Coupled Cluster Enabled by Midcircuit Measurements on Quantum Computers”</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Code for “Non-unitary Coupled Cluster on Gate-based Quantum Computers”</h1>
+<h1 class="title">Code for “Nonunitary Coupled Cluster Enabled by Midcircuit Measurements on Quantum Computers”</h1>
 </div>
 
 
@@ -491,7 +491,7 @@ window.Quarto = {
 </header>
 
 
-<p>This companion notebook is intended to provide access to the code used to generate results in the publication titled “Non-unitary Coupled Clusters on Gate-based Quantum Computers,” as published in <a href="https://arxiv.org/abs/2406.11574">arXiv:2406.11574</a> in June 2024. It is possible that by the time you read this, the work below may have been streamlined thanks to additional features in Tangelo. Please check the documentation. Also, the notebook was executed with the packages <code>tangelo==0.4.3</code>, <code>qulacs==0.6.4.1</code> and <code>pyscf==2.6.1</code>.</p>
+<p>This companion notebook is intended to provide access to the code used to generate results in the publication titled “Nonunitary Coupled Cluster Enabled by Midcircuit Measurements on Quantum Computers”, as published in <a href="https://arxiv.org/abs/2406.11574">arXiv:2406.11574</a> in June 2024, and in the Journal of Chemical Theory and Computation (DOI: <a href="https://doi.org/10.1021/acs.jctc.4c00837">10.1021/acs.jctc.4c00837</a>) in December 2024. It is possible that by the time you read this, the work below may have been streamlined thanks to additional features in Tangelo. Please check the documentation. Also, the notebook was executed with the packages <code>tangelo==0.4.3</code>, <code>qulacs==0.6.10</code> and <code>pyscf==2.6.2</code>.</p>
 <p>This work focuses on state preparation, aiming to efficiently prepare quantum states using both classical and quantum methods. Many quantum algorithms rely on high-quality initial states for optimal performance. Efficiently preparing these states can significantly reduce the computational cost of probabilistic algorithms such as quantum phase estimation (QPE). Fortunately, in quantum chemistry applications, generating approximate wave functions for molecular systems is well-studied. Quantum computing stands to benefit from directly importing these classical methods into quantum circuits. In this work, we propose a state preparation method based on coupled cluster (CC) theory, a cornerstone of quantum chemistry on classical computers. Our approach incorporates mid-circuit measurements into the circuit construction.</p>
 <p>This state preparation protocol involves:</p>
 <ol type="1">
@@ -500,8 +500,8 @@ window.Quarto = {
 <li>Executing the circuit as illustrated in Figure 3 of the paper until all measurement outcomes are 0.</li>
 </ol>
 <p>This notebook includes the code necessary to replicate the results presented in the publication.</p>
-<section id="nuccsd-code" class="level2">
-<h2 class="anchored" data-anchor-id="nuccsd-code">NUCCSD code</h2>
+<section id="nucc-code" class="level2">
+<h2 class="anchored" data-anchor-id="nucc-code">NUCC code</h2>
 <p>The primary goal of this method is to implement the state transformation:</p>
 <p><span class="math display">\[
   \ket{\psi} \rightarrow \frac{e^{\alpha \hat{a}^{\dagger}_p \hat{a}_q} \ket{\psi}}{\|e^{\alpha \hat{a}^{\dagger}_p \hat{a}_q} \ket{\psi} \|}
@@ -553,7 +553,7 @@ window.Quarto = {
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> single_exc(pq, plus_qubits, coeff_qubit, theta):</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Single excitation CCSD circuit.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">r"""Single excitation CCSD circuit.</span></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">    The operator applied is a_p^{\dagger} a_q, assuming p &gt; q.</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
@@ -604,7 +604,7 @@ window.Quarto = {
 <span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double_exc(pqrs, plus_qubits, coeff_qubit, theta):</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Double excitation CCSD circuit.</span></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>    <span class="co">r"""Double excitation CCSD circuit.</span></span>
 <span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a><span class="co">    The operator applied is a_p^{\dagger} a_q a_r^{\dagger} a_s, assuming p &gt; q and r &gt; s.</span></span>
 <span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
@@ -982,7 +982,7 @@ Resource estimation: {'X': 2, 'H': 80, 'RY': 24, 'PHASE': 12, 'CPHASE': 120, 'CX
 Number of mid-circuit measurements: 52
 Circuit energy: -7.8822
 Delta with the classical CC: -6.3e-07
-Probability of measuring all 0 in mid-circuit measurements: 0.45
+Probability of measuring all 0 in mid-circuit measurements: 0.44
 
 
 BeH2
@@ -992,7 +992,7 @@ Resource estimation: {'X': 4, 'H': 160, 'RY': 44, 'PHASE': 22, 'CPHASE': 240, 'C
 Number of mid-circuit measurements: 102
 Circuit energy: -15.5945
 Delta with the classical CC: 1.1e-05
-Probability of measuring all 0 in mid-circuit measurements: 0.34
+Probability of measuring all 0 in mid-circuit measurements: 0.33
 
 
 BH3
@@ -1032,7 +1032,7 @@ Resource estimation: {'X': 8, 'H': 80, 'RY': 24, 'PHASE': 12, 'CPHASE': 120, 'CX
 Number of mid-circuit measurements: 52
 Circuit energy: -98.5966
 Delta with the classical CC: -7.0e-07
-Probability of measuring all 0 in mid-circuit measurements: 0.60
+Probability of measuring all 0 in mid-circuit measurements: 0.62
 
 
 OH
@@ -1138,8 +1138,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1250,7 +1248,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
