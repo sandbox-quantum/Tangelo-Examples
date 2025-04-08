@@ -64,6 +64,8 @@ def train_one_batch(model: nn.Module, hamiltonian: nn.Module, optimizer: torch.o
         bs = samples.shape[0]
         samples = torch.tensor(samples).float().to(device)
         weight = torch.ones([bs]).to(samples.device) / bs
+    if hamiltonian.name in ['surrogate']:
+        hamiltonian.obtain_log_entries(samples, model, global_rank, world_size, mini_bs)
     # get the corresponding batch for each GPU device
     partition = world_size - global_rank - 1
     if global_rank == 0:

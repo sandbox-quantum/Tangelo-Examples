@@ -8,6 +8,11 @@ from .base import Base
 class MADE(Base):
     '''
     Class implements MADE-based NQS ansatz
+    Parent class args:
+        num_sites: number of qubits in the ansatz system
+        num_spin_up: total occupancy number of spin-up spin-orbitals
+        num_spin_down: total occupancy number of spin-down spin-orbitals
+        device: Device (CPU or Cuda) to store model
     Child class specific args:
         made_width: width of modulus and phase network hidden layers
         made_depth: number of hidden layers in modulus and phase networks
@@ -15,7 +20,7 @@ class MADE(Base):
         **kwargs: nonspecific kwargs
     '''
     def __init__(self, num_sites: int, num_spin_up: int, num_spin_down: int, made_width: int=64, made_depth: int=2, temperature: float=1.0, device: str=None, **kwargs):
-        super(MADE, self).__init__(num_sites, num_spin_up, num_spin_down, device)
+        super(MADE, self).__init__('MADE', num_sites, num_spin_up, num_spin_down, device)
         self.temperature = temperature
         # construct model
         self.net = []

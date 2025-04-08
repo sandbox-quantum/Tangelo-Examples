@@ -10,7 +10,7 @@ class NaiveSampler(Hamiltonian):
         '''
         A variation of the Automatic class that stochastically estimates the input Hamiltonian with Pauli strings sampled from the distribution proportional to the absolute values of the scalar coefficients (simple to construct because the Pauli string coefficients are real for Hamiltonians). This estimated Hamiltonian can be used to create local energy estimates during NQS training for (ideally) lower computational cost.
         '''
-        super(NaiveSampler, self).__init__(hamiltonian_string, num_sites)
+        super(NaiveSampler, self).__init__('naive_sampler', hamiltonian_string, num_sites)
         self.flip_bs = flip_bs
         # product of identity operators by default, encoded as 0
         self.coefficients = torch.stack((self.coefficients.real, self.coefficients.imag), dim=-1)

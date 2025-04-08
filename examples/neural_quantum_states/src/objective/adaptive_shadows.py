@@ -19,7 +19,7 @@ class AdaptiveShadows(Hamiltonian):
         flip_bs: Number of unique bit flip patterns processed at a time on each GPU
     '''
     def __init__(self, hamiltonian_string: str, num_sites: int, sample_count: int, total_unique_samples: int, reset_prob: float, flip_bs: int, **kwargs):
-        super(AdaptiveShadows, self).__init__(hamiltonian_string, num_sites)
+        super(AdaptiveShadows, self).__init__('adaptive_shadows', hamiltonian_string, num_sites)
         # product of identity operators by default, encoded as 0
         self.coefficients = torch.stack((self.coefficients.real, self.coefficients.imag), dim=-1)
         self.coefficients_square = norm_square(self.coefficients)

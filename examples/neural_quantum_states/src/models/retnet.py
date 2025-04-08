@@ -10,6 +10,11 @@ class NNQSRetNet(Base):
     def __init__(self, num_sites: int, num_spin_up: int, num_spin_down: int, made_width: int=64, made_depth: int=2, embedding_dim: int=16, nhead: int=2, dim_feedforward: int=64, num_layers: int=1, temperature: float=1.0, device: str=None, **kwargs):
         '''
         Retentive network (RetNet) NQS ansatz
+        Parent class args:
+            num_sites: number of qubits in the ansatz system
+            num_spin_up: total occupancy number of spin-up spin-orbitals
+            num_spin_down: total occupancy number of spin-down spin-orbitals
+            device: Device (CPU or Cuda) to store model
         Child class specific args:
             made_width: width of phase network hidden layers
             made_depth: number of phase network hidden layers
@@ -20,7 +25,7 @@ class NNQSRetNet(Base):
             temperature: RetNet softmax temperature parameter
             device: device on which the model is stored
         '''
-        super(NNQSRetNet, self).__init__(num_sites, num_spin_up, num_spin_down, device)
+        super(NNQSRetNet, self).__init__('RetNet', num_sites, num_spin_up, num_spin_down, device)
 
         # construct model
         self.num_in, self.num_out = num_sites, num_sites*2

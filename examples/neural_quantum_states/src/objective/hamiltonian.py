@@ -4,8 +4,9 @@ import torch.nn as nn
 from src.complex import scalar_mult, real, imag
 
 class Hamiltonian(nn.Module):
-    def __init__(self, hamiltonian_string, num_sites):
+    def __init__(self, choice, hamiltonian_string, num_sites):
         super().__init__()
+        self.name = choice
         self.operators, self.coefficients = self.parse_hamiltonian_string(hamiltonian_string, num_sites)
         self.num_terms, self.input_dim = self.operators.shape
         print("Number of terms is {}.".format(self.num_terms))
@@ -83,6 +84,9 @@ def get_hamiltonian(hamiltonian_choice: str, hamiltonian_data: dict) -> nn.Modul
     elif hamiltonian_choice in ['exact']:
         from .automatic import Automatic
         return Automatic(**hamiltonian_data)
+    elif hamiltonian_choice in ['surrogate']:
+        from .surrogate import Surrogate
+        return Surrogate(**hamiltonian_data)
     else:
         raise Exception('Hamiltonian choice not recognized!')
 

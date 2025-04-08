@@ -14,7 +14,7 @@ class Automatic(Hamiltonian):
             num_sites: qubit number of system
             flip_bs: largest batch size of model input tensors that each GPU is expected to handle at once
         '''
-        super(Automatic, self).__init__(hamiltonian_string, num_sites)
+        super(Automatic, self).__init__('automatic', hamiltonian_string, num_sites)
         # product of identity operators by default, encoded as 0
         self.coefficients = torch.stack((self.coefficients.real, self.coefficients.imag), dim=-1)
         self.flip_bs = flip_bs

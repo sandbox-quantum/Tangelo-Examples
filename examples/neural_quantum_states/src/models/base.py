@@ -9,14 +9,16 @@ class Base(nn.Module):
     '''
     Base template for all autoregressive NQS ansatze.
     Args:
+        name: name of specific model type
         num_sites: qubit number
         num_spin_up: number of spin up electrons
         num_spin_down: number of spin down electrons
         device: Device (CPU or Cuda) to store model
         **kwargs: nonspecific kwargs
     '''
-    def __init__(self, num_sites: int, num_spin_up: int, num_spin_down: int, device: str, **kwargs):
+    def __init__(self, name: str, num_sites: int, num_spin_up: int, num_spin_down: int, device: str, **kwargs):
         super().__init__()
+        self.name = name
         self.num_sites = num_sites
         self.num_spin_up = num_spin_up
         self.num_spin_down = num_spin_down
@@ -154,6 +156,9 @@ def get_model(model_name: str, device: str, print_model_info: bool, **kwargs) ->
     elif model_name == 'retnet':
         from .retnet import NNQSRetNet
         model = NNQSRetNet(**kwargs)
+    elif model_name == 'alt_transformer':
+        from .alt_transformer import AltTransformer
+        model = AltTransformer(**kwargs)
     else:
         raise ValueError(f"Unknown model_name: {model_name}")
     if print_model_info:

@@ -46,6 +46,8 @@ def test(model: torch.nn.Module, hamiltonian: torch.nn.Module, batch_size: int, 
         if isinstance(samples, (np.ndarray, np.generic)):
             samples = torch.tensor(samples).float().to(device)
         num_uniq = samples.shape[0]
+        if hamiltonian.name in ['surrogate']:
+            hamiltonian.obtain_log_entries(samples, model, global_rank, world_size, mini_bs)
         partition = world_size - global_rank - 1
         if global_rank == 0:
             samples = samples[partition*batch_size:]
