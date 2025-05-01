@@ -24,7 +24,7 @@ Get started immediately with a click, no install: |colab|
 
 Welcome traveler!
 
-You have found the Github repository featuring the tutorials / examples notebooks and scripts created by the `Tangelo <https://github.com/sandbox-quantum/Tangelo>`_ community. Most tutorials are not just about "code", but were designed to provide you with knowledge, references and insights about applying quantum computing to the simulation of electronic systems. Feel free to use any of these resources for educational purposes, or as a basis for your own projects. Any user can contribute to this repository and showcase their cool work, including you!
+You have found the Github repository featuring the tutorials / examples notebooks and scripts created by the `Tangelo <https://github.com/sandbox-quantum/Tangelo>`_ community. Most tutorials are not just about "code", but were designed to provide you with knowledge, references and insights about applying quantum computing to the simulation of electronic systems. Feel free to use any of these resources for educational purposes, or as a basis for your own projects. Any user can contribute to this repository and showcase their cool work, including you !
 
 Getting started
 ---------------
