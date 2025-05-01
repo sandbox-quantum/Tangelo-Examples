@@ -9,10 +9,10 @@
 Get started immediately with a click, no install: |colab|
 
 .. |licence| image:: https://img.shields.io/badge/License-Apache_2.0-green
-   :target: https://github.com/goodchemistryco/Tangelo/blob/main/LICENSE
+   :target: https://github.com/sandbox-quantum/Tangelo/blob/main/LICENSE
 .. |systems| image:: https://img.shields.io/badge/OS-Linux%20MacOS%20Windows-7373e3
 .. |binder| image:: https://mybinder.org/badge_logo.svg
-   :target: https://mybinder.org/v2/gh/goodchemistryco/Tangelo-Examples/main
+   :target: https://mybinder.org/v2/gh/sandbox-quantum/Tangelo-Examples/main
 .. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
    :target: https://colab.research.google.com/github/sandbox-quantum/Tangelo-Examples/blob/main/ 
 
