@@ -1,7 +1,7 @@
 How to generate and update the GitHub-pages documentation
 =========================================================
 
-This document is here to assist this project maintainers in updating the `documentation <https://goodchemistryco.github.io/Tangelo-Examples/>`_ of this repository.
+This document is here to assist this project maintainers in updating the `documentation <https://sandbox-quantum.github.io/Tangelo-Examples/>`_ of this repository.
 Notebooks are rendered using `Quarto <https://quarto.org/>`_, and the source files are deployed via github-pages.
 We describe below how to re-generate this documentation after changes in the repository, such as the modification or addition of new notebooks.
 
