@@ -160,7 +160,7 @@
     "href": "examples/workflow_basics/3.noisy_simulation.html#requirements",
     "title": "Linq: noisy simulation",
     "section": "Requirements",
-    "text": "Requirements\nIn order to run the contents of this notebook, I simply recommend that you install tangelo as per the installation instructions, as well as one or several backends supporting noisy simulation (cirq, qiskit, qulacs…). You can install them with pip. Executing the cell below provides a quick way of installing Tangelo, as well as the minimal set of backends to execute code cells in this notebook.\n\n# Installation of tangelo if not already installed.\ntry:\n    import tangelo\nexcept ModuleNotFoundError:\n    !pip install git+https://github.com/sandbox-quantum/Tangelo.git@develop  --quiet\n    !pip install qiskit qulacs amazon-braket-sdk --quiet",
+    "text": "Requirements\nIn order to run the contents of this notebook, I simply recommend that you install tangelo as per the installation instructions, as well as one or several backends supporting noisy simulation (cirq, qiskit, qulacs…). You can install them with pip. Executing the cell below provides a quick way of installing Tangelo, as well as the minimal set of backends to execute code cells in this notebook.\n\n# Installation of tangelo if not already installed.\ntry:\n    import tangelo\nexcept ModuleNotFoundError:\n    !pip install git+https://github.com/sandbox-quantum/Tangelo.git@develop  --quiet\n    !pip install qiskit qiskit-aer qulacs amazon-braket-sdk --quiet",
     "crumbs": [
       "Home",
       "Examples",
