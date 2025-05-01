@@ -499,7 +499,7 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="table-of-contents" class="level2">
@@ -538,7 +538,7 @@ window.Quarto = {
 <p>The analysis of natural products is an efficient way of quickly getting inspiration for the design of new materials, while taking into account the million years of evolution that nature had to optimize a biochemical process. For instance, one difficult thing to do in the laboratory is to change the spin state of a compound during a chemical reaction. Nature circumvents this problem by leveraging transition metals to achieve this challenging task: the oxygen fixation process is achieved by the heme biomolecule, where a Fe(II) atom is involved in the spin state change mechanism (see figure below) [<a href="https://doi.org/10.1074/jbc.M314007200">10.1074/jbc.M314007200</a>].</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/img/FeIIPorImO2.png?raw=1" class="img-fluid figure-img"></p>
+<p><img src="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/examples/img/FeIIPorImO2.png?raw=1" class="img-fluid figure-img"></p>
 <figcaption>FeIIPorImO2 system</figcaption>
 </figure>
 </div>
@@ -678,7 +678,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <section id="resource-reduction" class="level2">
 <h2 class="anchored" data-anchor-id="resource-reduction">Resource Reduction<a class="anchor" id="4"></a></h2>
 <p>Resource reduction refers to lowering the computational requirements to run an algorithm. This applies to both classical and quantum computing. In conventional computing, this translates to less bits required to store information and less operations to do on these bits. For the gate-model quantum computing, this translates to reducing the number of qubits and the number of gates in quantum circuits.</p>
-<p>Our starting point is the O<span class="math inline">\(_2\)</span> molecule in the <code>6-311G(d,p)</code> basis. We focus on reducing resource requirements before choosing an algorithm to compute the ground state. For approaches relying on choosing a different ansatz or fragmenting a molecule into smaller subproblems (problem decomposition), the user can refer to the relevant notebooks in the <a href="https://github.com/goodchemistryco/Tangelo-Examples">Tangelo-Examples repository</a>.</p>
+<p>Our starting point is the O<span class="math inline">\(_2\)</span> molecule in the <code>6-311G(d,p)</code> basis. We focus on reducing resource requirements before choosing an algorithm to compute the ground state. For approaches relying on choosing a different ansatz or fragmenting a molecule into smaller subproblems (problem decomposition), the user can refer to the relevant notebooks in the <a href="https://github.com/sandbox-quantum/Tangelo-Examples">Tangelo-Examples repository</a>.</p>
 <div id="cell-12" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>o2_6311gdp <span class="op">=</span> SecondQuantizedMolecule(o2_xyz, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">2</span>,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                                     basis<span class="op">=</span><span class="st">"6-311G(d,p)"</span>, </span>
@@ -751,7 +751,7 @@ E_{\text{corr}} = E - E_{\text{HF}}
 <span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># The molecular object attributes have to be updated.</span></span>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>o2_6311gdp_uhf_frozen <span class="op">=</span> o2_6311gdp_uhf.freeze_mos(frozen_orbitals_uhf, inplace<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>o2_6311gdp_uhf_frozen.mo_coeff <span class="op">=</span> fno.mo_coeff</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Beyond the built-in options available in Tangelo, such as frozen core or FNO, users can use external tools to compute frozen orbitals or integrals such as <a href="https://github.com/qcscine/autocas">SCINE autoCAS</a>, as described in this <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/examples/chemistry/autocas.py">example script</a>.</p>
+<p>Beyond the built-in options available in Tangelo, such as frozen core or FNO, users can use external tools to compute frozen orbitals or integrals such as <a href="https://github.com/qcscine/autocas">SCINE autoCAS</a>, as described in this <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/examples/chemistry/autocas.py">example script</a>.</p>
 </section>
 <section id="considering-symmetries" class="level3">
 <h3 class="anchored" data-anchor-id="considering-symmetries">Considering Symmetries<a class="anchor" id="42"></a></h3>
@@ -896,7 +896,7 @@ Dipole moment(X, Y, Z, Debye):  0.00000, -0.00000, -0.00000</code></pre>
 <h2 class="anchored" data-anchor-id="closing-words">Closing Words<a class="anchor" id="6"></a></h2>
 <p>This notebook glanced over the first steps of modelling a chemical system for quantum computing exploration. One of the challenges of quantum chemistry is the ever-present trade-off between computational resources requirements and accuracy of calculations. We emphasized how the choice of a basis set and frozen orbitals can greatly affect this trade-off.</p>
 <p>Quantum computing is a nascent technology, and the capabilities of current devices are limited. Efficient modelling of the system can be therefore crucial to sucessfully design experiments on quantum computers, and even simulators.</p>
-<p>In our <a href="https://github.com/goodchemistryco/Tangelo-Examples/blob/main/contents.rst">VQE notebook tutorials</a>, we show how the modelling choices can greatly impact the quantum computational resources required by this quantum algorithm, and how the algorithm options themselves can further affect both resource requirements and accuracy.</p>
+<p>In our <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/contents.rst">VQE notebook tutorials</a>, we show how the modelling choices can greatly impact the quantum computational resources required by this quantum algorithm, and how the algorithm options themselves can further affect both resource requirements and accuracy.</p>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References<a class="anchor" id="7"></a></h2>

@@ -512,7 +512,7 @@ window.Quarto = {
 <p>Initially, the CC amplitudes are computed classically, as illustrated in the code cell below. This work specifically focuses on treating single and double excitation terms comprehensively, starting from unrestricted mean fields due to their compatibility with subsequent Jordan-Wigner mapping.</p>
 <div id="iCpBIkchmQRO" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of dependencies.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>goodchemistryco<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qulacs <span class="op">--</span>quiet</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -706,7 +706,7 @@ window.Quarto = {
   \ket{\psi} = e^{T_1+T_2} \ket{\psi_0} \approx e^{T_1}e^{T_2} \ket{\psi_0},
 \]</span></p>
 <p>to decompose the exponentiated sum of operators into a product of exponentiated operators. While not mathematically exact, the errors resulting from this approximation are generally small. This approximation holds well in practice for cluster operators, where a corresponding ground state typically yields small amplitudes.</p>
-<p>In the following code cell, we define an ansatz <code>NUCCSD</code> that utilizes mid-circuit measurements to implement single and double cluster operators. Most of the code below is copy-pasted from other examples of <a href="https://github.com/goodchemistryco/Tangelo/tree/main/tangelo/toolboxes/ansatz_generator">ansatz classes in Tangelo</a>.</p>
+<p>In the following code cell, we define an ansatz <code>NUCCSD</code> that utilizes mid-circuit measurements to implement single and double cluster operators. Most of the code below is copy-pasted from other examples of <a href="https://github.com/sandbox-quantum/Tangelo/tree/main/tangelo/toolboxes/ansatz_generator">ansatz classes in Tangelo</a>.</p>
 <div id="ec180990-30b2-4874-bcfb-21928a4b79ea" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> OrderedDict</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
