@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>State preparation using quantum signal processing</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -497,15 +503,15 @@ window.Quarto = {
 <p><span class="math inline">\(f(H,\Delta,k)=\sum_{n=0}^{k}\frac{T_n(-1+2\frac{H^2-\Delta^2}{1-\Delta^2})}{T_n(-1+2\frac{-\Delta^2}{1-\Delta^2})}\)</span></p>
 <p>using quantum signal processing, where <span class="math inline">\(T_n\)</span> refers to the Chebyshev polynomial of the first kind, defined by <span class="math inline">\(T_n(cos(\theta)) = cos(n\theta)\)</span>.</p>
 <div id="cell-2" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As an example, we will use the polynomial with approximation order <span class="math inline">\(k=20\)</span> for <span class="math inline">\(\Delta = 0.1\)</span> which is depicted below</p>
 <div id="cell-4" class="cell" data-outputid="83cd80f9-3f5e-4a21-fb45-5e627a20ad2d" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:447}}" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> eval_chebyt</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> eval_chebyt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -529,7 +535,7 @@ window.Quarto = {
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, x <span class="kw">in</span> <span class="bu">enumerate</span>(xs):</span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    ys[i] <span class="op">=</span> filter_func(x, delta, k)</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.plot(xs, ys)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>plt.plot(xs, ys)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -540,21 +546,21 @@ window.Quarto = {
 </div>
 <p>This polynomial needs to be converted to phases to use Quantum Signal Processing. For convenience, here are the phases for <span class="math inline">\(k=20\)</span> and <span class="math inline">\(\Delta = 0.1\)</span>. At the end of the notebook, we show two ways to calculate the phases for a given polynomial.</p>
 <div id="cell-6" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># phases below are calculated using QSPPACK for n=20, delta = 0.1</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># phases below are calculated using QSPPACK for n=20, delta = 0.1</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>phases <span class="op">=</span> [ <span class="fl">0.76974538</span>,  <span class="fl">0.00646461</span>, <span class="op">-</span><span class="fl">0.00773143</span>,  <span class="fl">0.00908568</span>, <span class="op">-</span><span class="fl">0.01051591</span>,  <span class="fl">0.01200849</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.01354772</span>,  <span class="fl">0.01511600</span>, <span class="op">-</span><span class="fl">0.01669402</span>,  <span class="fl">0.01826109</span>, <span class="op">-</span><span class="fl">0.01979540</span>,  <span class="fl">0.02127448</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.02267559</span>,  <span class="fl">0.02397626</span>, <span class="op">-</span><span class="fl">0.02515479</span>,  <span class="fl">0.02619086</span>, <span class="op">-</span><span class="fl">0.02706603</span>,  <span class="fl">0.02776435</span>,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.02827282</span>,  <span class="fl">0.02858185</span>, <span class="op">-</span><span class="fl">0.02868552</span>,  <span class="fl">0.02858185</span>, <span class="op">-</span><span class="fl">0.02827282</span>,  <span class="fl">0.02776435</span>,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.02706603</span>,  <span class="fl">0.02619086</span>, <span class="op">-</span><span class="fl">0.02515479</span>,  <span class="fl">0.02397626</span>, <span class="op">-</span><span class="fl">0.02267559</span>,  <span class="fl">0.02127448</span>,</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.01979540</span>,  <span class="fl">0.01826109</span>, <span class="op">-</span><span class="fl">0.01669402</span>,  <span class="fl">0.01511600</span>, <span class="op">-</span><span class="fl">0.01354772</span>,  <span class="fl">0.01200849</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.01051591</span>,  <span class="fl">0.00908568</span>, <span class="op">-</span><span class="fl">0.00773143</span>,  <span class="fl">0.00646461</span>,  <span class="fl">0.76974538</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>          <span class="op">-</span><span class="fl">0.01051591</span>,  <span class="fl">0.00908568</span>, <span class="op">-</span><span class="fl">0.00773143</span>,  <span class="fl">0.00646461</span>,  <span class="fl">0.76974538</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="hydrogen-molecule-example" class="level2">
 <h2 class="anchored" data-anchor-id="hydrogen-molecule-example">Hydrogen molecule example</h2>
 <p>We are going to prepare two different states using the phases above, as well as the Quantum Signal Processing circuit <code>get_qsp_circuit_no_anc</code> as defined in <a href="https://arxiv.org/abs/2002.11649">arXiv:2002.11649</a>.</p>
 <p>We are going to apply it to <span class="math inline">\(H_2\)</span> in a STO-3G basis with the “scbk” qubit mapping.</p>
 <div id="cell-8" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2_sto3g</span>
@@ -572,7 +578,7 @@ window.Quarto = {
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>init_state <span class="op">/=</span> np.linalg.norm(init_state)</span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>sv <span class="op">=</span> StateVector(init_state)</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>init_circ <span class="op">=</span> sv.initializing_circuit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>init_circ <span class="op">=</span> sv.initializing_circuit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="first-excited-state" class="level3">
 <h3 class="anchored" data-anchor-id="first-excited-state">First excited state</h3>
@@ -580,7 +586,7 @@ window.Quarto = {
 <p><span class="math inline">\(\tilde{H} = \frac{H-\lambda}{\alpha + \left|\lambda\right|}\)</span></p>
 <p>where <span class="math inline">\(\alpha\)</span> is the approximation to the spectral range, defined in the previous cell.</p>
 <div id="cell-10" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, get_backend</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, get_backend</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.qsp <span class="im">import</span> get_qsp_circuit_no_anc</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.lcu <span class="im">import</span> get_uprep_uselect, get_lcu_qubit_op_info</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -606,10 +612,10 @@ window.Quarto = {
 <span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Measure gates for LCU ancilla qubits</span></span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">=</span> init_circ <span class="op">+</span> eig_filt_circ <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m) <span class="cf">for</span> m <span class="kw">in</span> m_qs])</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Measure gate for the QSP qubit where the phases are applied</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m_qs[<span class="op">-</span><span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m_qs[<span class="op">-</span><span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-11" class="cell" data-outputid="d7cbcbb0-6e40-4934-8ebe-f441fed2156e" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>f, sv <span class="op">=</span> sim.simulate(full_circuit, desired_meas_result<span class="op">=</span><span class="st">"0"</span><span class="op">*</span>n_ancilla, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder statevector to "msq_first" if statevector in backend is "lsq_first"</span></span>
@@ -621,7 +627,7 @@ window.Quarto = {
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>sv <span class="op">=</span> np.reshape(sv, (<span class="dv">2</span>,<span class="dv">2</span>)).T.flatten()</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'initial overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">1</span>], init_state))<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'final overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">1</span>], sv))<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'final overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">1</span>], sv))<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>initial overlap = 0.18367656363390905
 final overlap = 0.9887577317376988</code></pre>
@@ -632,7 +638,7 @@ final overlap = 0.9887577317376988</code></pre>
 <h3 class="anchored" data-anchor-id="second-excited-state">Second excited state</h3>
 <p>We can then reapply the same approach to the second excited state.</p>
 <div id="cell-13" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lamb <span class="op">=</span> eigs[<span class="dv">2</span>]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lamb <span class="op">=</span> eigs[<span class="dv">2</span>]</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Shift Hamiltonian so that spectrum is in [-1, 1] and desired lambda is at 0</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>qu_op_tilde <span class="op">=</span> (qu_op <span class="op">-</span> lamb)<span class="op">/</span>(alpha<span class="op">+</span><span class="bu">abs</span>(lamb))</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -650,10 +656,10 @@ final overlap = 0.9887577317376988</code></pre>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>eig_filt_circ <span class="op">=</span> get_qsp_circuit_no_anc(cua, m_qs, phases)</span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">=</span> init_circ <span class="op">+</span> eig_filt_circ <span class="op">+</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m) <span class="cf">for</span> m <span class="kw">in</span> m_qs])</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m_qs[<span class="op">-</span><span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>full_circuit <span class="op">+=</span> Circuit([Gate(<span class="st">"MEASURE"</span>, m_qs[<span class="op">-</span><span class="dv">1</span>]<span class="op">+</span><span class="dv">1</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-14" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>f, sv <span class="op">=</span> sim.simulate(full_circuit, desired_meas_result<span class="op">=</span><span class="st">"0"</span><span class="op">*</span>n_ancilla, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder statevector to "msq_first" if statevector in backend is "lsq_first"</span></span>
@@ -662,11 +668,11 @@ final overlap = 0.9887577317376988</code></pre>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Pick out part of wavefunction that corresponds to "0000" on ancilla qubits</span></span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>sv <span class="op">=</span> np.reshape(sv, (<span class="dv">2</span><span class="op">**</span><span class="dv">4</span>, <span class="dv">4</span>))[<span class="dv">0</span>, :]</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder statevector to correspond to openfermion ordering</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>sv <span class="op">=</span> np.reshape(sv, (<span class="dv">2</span>,<span class="dv">2</span>)).T.flatten()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>sv <span class="op">=</span> np.reshape(sv, (<span class="dv">2</span>,<span class="dv">2</span>)).T.flatten()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-15" class="cell" data-outputid="479076d4-f830-44df-c6e3-c907132bdd25" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'initial overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">2</span>], init_state))<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'final overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">2</span>], sv))<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'initial overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">2</span>], init_state))<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'final overlap = </span><span class="sc">{</span><span class="bu">abs</span>(np.dot(vecs[:,<span class="dv">2</span>], sv))<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>initial overlap = 0.18413991077227115
 final overlap = 0.9969619094421538</code></pre>
@@ -680,7 +686,7 @@ final overlap = 0.9969619094421538</code></pre>
 <p>The cells are formatted in markdown as additional dependencies are required to run the following phase calculations, but the code below can be run once they are installed.</p>
 <section id="using-qsppack" class="level4">
 <h4 class="anchored" data-anchor-id="using-qsppack">Using QSPPACK</h4>
-<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.abc <span class="im">import</span> x</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.abc <span class="im">import</span> x</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> Rational</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.functions.special.polynomials <span class="im">import</span> chebyshevt</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -696,9 +702,9 @@ final overlap = 0.9969619094421538</code></pre>
 <span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>        arg <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">+</span> <span class="dv">2</span><span class="op">*</span>(<span class="op">-</span>delta<span class="op">**</span><span class="dv">2</span><span class="op">/</span>(<span class="dv">1</span><span class="op">-</span>delta<span class="op">**</span><span class="dv">2</span>))</span>
 <span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>        botk <span class="op">=</span> chebyshevt(k, arg)</span>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>        val <span class="op">+=</span> topk<span class="op">/</span>botk</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> val</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We need to convert the <code>filter_func</code> polynomial to coefficients of expansion in Chebyshev polynomials to use with QSPPACK</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use chebyshev interpolation ak=2/(n+1)*sum_{j=0}^n p(x_j)T_k(x_j), x_j = cos(\frac{2*j+1}{2*n+2}\pi)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use chebyshev interpolation ak=2/(n+1)*sum_{j=0}^n p(x_j)T_k(x_j), x_j = cos(\frac{2*j+1}{2*n+2}\pi)</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>poly <span class="op">=</span> filter_func(x, delta, k).as_poly()</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">2</span><span class="op">*</span>k</span>
@@ -714,20 +720,20 @@ final overlap = 0.9969619094421538</code></pre>
 <span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>aks <span class="op">/=</span> k<span class="op">*</span>np.sqrt(<span class="dv">2</span>)</span>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>aks[<span class="dv">0</span>] <span class="op">/=</span><span class="dv">2</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>aks <span class="op">=</span> aks[<span class="dv">0</span>: n<span class="op">+</span><span class="dv">1</span>: <span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>aks <span class="op">=</span> aks[<span class="dv">0</span>: n<span class="op">+</span><span class="dv">1</span>: <span class="dv">2</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>We can then obtain the phases using <code>oct2py</code> (with octave installed) and the folder location of <code>QSPPACK</code> cloned from https://github.com/qsppack/QSPPACK.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> oct2py <span class="im">import</span> octave</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> oct2py <span class="im">import</span> octave</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="fl">0.01</span></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>folder <span class="op">=</span> <span class="st">'path to QSPPACK'</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>octave.addpath(folder)</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>opts <span class="op">=</span> octave.struct(<span class="st">"criteria"</span>, eps)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>phases, _ <span class="op">=</span> octave.QSP_solver(aks, <span class="dv">0</span>, opts, nout<span class="op">=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>phases, _ <span class="op">=</span> octave.QSP_solver(aks, <span class="dv">0</span>, opts, nout<span class="op">=</span><span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="using-pyqsp" class="level4">
 <h4 class="anchored" data-anchor-id="using-pyqsp">Using pyqsp</h4>
 <p>For <span class="math inline">\(k=20\)</span>, pyqsp with the <code>laurent</code> method works properly. However, it often fails for higher order polynomials. In that case, you can install tensorflow and use <code>method=tf</code>. It however seemed much slower than <code>QSPPACK</code>.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyqsp</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyqsp</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyqsp <span class="im">import</span> angle_sequence</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyqsp.angle_sequence <span class="im">import</span> AngleFindingError</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.polys.polytools <span class="im">import</span> primitive</span>
@@ -757,7 +763,7 @@ final overlap = 0.9969619094421538</code></pre>
 <span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
 <span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"Attempt </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">2</span><span class="sc">}</span><span class="ss"> for the real coefficients"</span>)</span>
 <span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">break</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
@@ -815,13 +821,14 @@ final overlap = 0.9969619094421538</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

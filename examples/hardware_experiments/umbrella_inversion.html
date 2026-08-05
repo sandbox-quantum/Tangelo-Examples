@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Exploring the umbrella inversion with quantum computers</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -494,17 +500,17 @@ window.Quarto = {
 
 
 <div id="IW30pAKK4Rm0" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download data files and images for this notebook</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Download data files and images for this notebook</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo<span class="op">-</span>Examples<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>examples<span class="op">/</span>img<span class="op">/</span>umbrella_inversion_H3Op.png <span class="op">--</span>quiet</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>wget https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo<span class="op">-</span>Examples<span class="op">/</span>raw<span class="op">/</span>main<span class="op">/</span>examples<span class="op">/</span>hardware_experiments<span class="op">/</span>data<span class="op">/</span>umbrella_inversion.<span class="bu">zip</span> <span class="op">--</span>quiet</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip <span class="op">-</span>qq umbrella_inversion.<span class="bu">zip</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>unzip <span class="op">-</span>qq umbrella_inversion.<span class="bu">zip</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="rrAgDGaTScaX" class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Tangelo with pip, from the develop branch on Github</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Install Tangelo with pip, from the develop branch on Github</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install an optional simulator backend (ex: Qulacs)</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qulacs <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install qulacs <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of contents:</h2>
@@ -528,7 +534,7 @@ window.Quarto = {
 <p>In this notebook we present an experimental study of the umbrella inversion on a quantum computer using <a href="https://github.com/sandbox-quantum/Tangelo">Tangelo</a>, <a href="https://aws.amazon.com/braket/">Amazon Braket</a>, and <a href="https://goodchemistry.com">QEMIST Cloud</a>. A blog post about this study is available on <a href="https://aws.amazon.com/blogs/quantum-computing/exploring-quantum-chemistry-applications-with-tangelo-and-qemist-cloud-using-amazon-braket/">Amazon’s Quantum Blog</a>.</p>
 <p>The umbrella inversion is a quantum effect related to tunnelling, that can be that can be observed in many organic molecules with a free electron pair residing on a trivalent atom. These include amines containing a nitrogen centre but it can also be observed in hydronium H<span class="math inline">\(_3\)</span>O<span class="math inline">\(^+\)</span>, in which the central atom is oxygen. We start our experiment setup by defining the hydronium molecule, and choosing a the chemical basis cc-pVDZ for our calculation.</p>
 <div id="b283c9ef" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>atoms <span class="op">=</span> <span class="st">"""</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>atoms <span class="op">=</span> <span class="st">"""</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">O    -0.63100    1.21783    0.07611</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">H     0.34564    1.31652   -0.02093</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">H    -0.97483    1.78491    0.80631</span></span>
@@ -537,14 +543,14 @@ window.Quarto = {
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>charge <span class="op">=</span> <span class="dv">1</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>spin <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> <span class="st">"cc-pVDZ"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>basis <span class="op">=</span> <span class="st">"cc-pVDZ"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="the-umbrella-inversion" class="level2">
 <h2 class="anchored" data-anchor-id="the-umbrella-inversion">2 The umbrella inversion <a class="anchor" id="2"></a></h2>
 <p>Let’s illustrate the umbrella inversion using the hydronium molecule. We first define a function that can vary the molecular geometry as the positions of the hydrogen atoms change around the oxygen centre. This can be parameterized in terms of a single angle between the H-O bond and the molecule’s main rotational axis. To simplify the problem, we assume the bond length does not depend on the angle, and is equal to 0.986<span class="math inline">\(\overset{\circ}{A}\)</span>.</p>
 <div id="1eCuqrTBp-jK" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> H3O_angle(theta):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> H3O_angle(theta):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> <span class="fl">0.986</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> theta<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    C, S <span class="op">=</span> np.cos(theta), np.sin(theta)</span>
@@ -552,11 +558,11 @@ window.Quarto = {
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    H_pos <span class="op">=</span> d<span class="op">*</span>np.array([[   S,    <span class="dv">0</span>, C],</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c,  S<span class="op">*</span>s, C],</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c, <span class="op">-</span>S<span class="op">*</span>s, C]])</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [[<span class="st">"O"</span>, (<span class="fl">0.</span>,<span class="fl">0.</span>,<span class="fl">0.</span>)], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">0</span>])], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">1</span>])], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">2</span>])]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [[<span class="st">"O"</span>, (<span class="fl">0.</span>,<span class="fl">0.</span>,<span class="fl">0.</span>)], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">0</span>])], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">1</span>])], [<span class="st">"H"</span>, <span class="bu">tuple</span>(H_pos[<span class="dv">2</span>])]]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We calculate the energy of the molecule for a range of angles. Here, we limit ourselves to the Hartree-Fock solution. We build the system as a <code>SecondQuantizedMolecule</code> object, which automatically calculates the mean-field energy.</p>
 <div id="406235f6" class="cell" data-scrolled="true" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -565,22 +571,19 @@ window.Quarto = {
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> theta:</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    mol_theta <span class="op">=</span> SecondQuantizedMolecule(H3O_angle(t), q<span class="op">=</span>charge, spin<span class="op">=</span>spin, basis<span class="op">=</span>basis)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rhf.append(mol_theta.mean_field.e_tot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    rhf.append(mol_theta.mean_field.e_tot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Plotting the results below we see the double well potential of the umbrella curve, showing two geometries with optimal ground state energies the system may tunnel between. This tunelling corresponds to the electron pair flipping from one side of the oxygen atom to the other - or equivalenty, the hydrogen atoms moving from one side to the other.</p>
 <div id="f2f112a1" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:466}}" data-outputid="9eef1c37-6afd-4ba2-c7c2-159dca96ed98" data-scrolled="true" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pylab <span class="im">as</span> plt</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pylab <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.plot(theta, rhf)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Angle [deg]"</span>)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Energy [Ha]"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
-<pre><code>Text(0, 0.5, 'Energy [Ha]')</code></pre>
-</div>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Energy [Ha]"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="umbrella_inversion_files/figure-html/cell-7-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="umbrella_inversion_files/figure-html/cell-7-output-1.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -598,52 +601,52 @@ window.Quarto = {
 <p>The following code excerpt illustrates how QEMIST Cloud users can perform a MI-FNO decomposition using our client library, and obtain reference results computed with our classical solvers.</p>
 <p>Here we define a molecule object, and then our approach, based on combining the Heat-Bath Configuration interaction (HBCI) classical solver, the Method of Increments (MI) and the Frozen Natural Orbitals (FNO) method for the virtual space cutoff. We request an estimate of the cost of the simulation and then perform it.</p>
 <p>To simplify this notebook, the results of this simulation have been precomputed and provided. The code snippets are available below, but were not designed to be run in this notebook as QEMIST Cloud is not yet publically available at the time of writing.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_PROJECT_ID'</span>] <span class="op">=</span> <span class="st">"your-project-ID"</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_AUTH_TOKEN'</span>] <span class="op">=</span> <span class="st">"your-authentication-token"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.molecule <span class="im">import</span> Molecule</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.problem_decomposition <span class="im">import</span> IncrementalDecomposition</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.problem_reduction <span class="im">import</span> FNO</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.electronic_structure_solvers <span class="im">import</span> HBCI</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.util <span class="im">import</span> get_results, check_problem_cost</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>qemist_mol <span class="op">=</span> Molecule(atoms, basis<span class="op">=</span>basis, charge<span class="op">=</span>charge, spin<span class="op">=</span>spin)</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>hbci_solver <span class="op">=</span> HBCI()</span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>fno <span class="op">=</span> FNO(hbci_solver, export_fragment_data<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>mi_solver <span class="op">=</span> IncrementalDecomposition(electronic_structure_solver<span class="op">=</span>fno, </span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                                     truncation_order<span class="op">=</span><span class="dv">3</span>, </span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                                     method_of_truncation_threshold<span class="op">=</span><span class="fl">5e-3</span>)</span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Request a cost estimate of the simulation beforehand</span></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>cost <span class="op">=</span> check_problem_cost(qemist_mol, mi_solver)</span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit the problem to QEMIST Cloud</span></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>handle <span class="op">=</span> mi_solver.simulate(system<span class="op">=</span>qemist_mol)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_PROJECT_ID'</span>] <span class="op">=</span> <span class="st">"your-project-ID"</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'QEMIST_AUTH_TOKEN'</span>] <span class="op">=</span> <span class="st">"your-authentication-token"</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.molecule <span class="im">import</span> Molecule</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.problem_decomposition <span class="im">import</span> IncrementalDecomposition</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.problem_reduction <span class="im">import</span> FNO</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.electronic_structure_solvers <span class="im">import</span> HBCI</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qemist_client.util <span class="im">import</span> get_results, check_problem_cost</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>qemist_mol <span class="op">=</span> Molecule(atoms, basis<span class="op">=</span>basis, charge<span class="op">=</span>charge, spin<span class="op">=</span>spin)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>hbci_solver <span class="op">=</span> HBCI()</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>fno <span class="op">=</span> FNO(hbci_solver, export_fragment_data<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>mi_solver <span class="op">=</span> IncrementalDecomposition(electronic_structure_solver<span class="op">=</span>fno, </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                                     truncation_order<span class="op">=</span><span class="dv">3</span>, </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                                     method_of_truncation_threshold<span class="op">=</span><span class="fl">5e-3</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Request a cost estimate of the simulation beforehand</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>cost <span class="op">=</span> check_problem_cost(qemist_mol, mi_solver)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Submit the problem to QEMIST Cloud</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>handle <span class="op">=</span> mi_solver.simulate(system<span class="op">=</span>qemist_mol)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The following code exports the fragment data resulting from the QEMIST Cloud simulation, later to be imported into Tangelo.</p>
 <div id="a958adcb" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data_H3O_ccpvdz_mifno_hbci/"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>jfile <span class="op">=</span> <span class="st">"H3O_CCPVDZ_MIFNO_HBCI.json"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> <span class="st">"./data_H3O_ccpvdz_mifno_hbci/"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>jfile <span class="op">=</span> <span class="st">"H3O_CCPVDZ_MIFNO_HBCI.json"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results using handle</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>qemist_res <span class="op">=</span> get_results(handle)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Export subproblem data to individual files</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path <span class="op">+</span> jfile, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    json.dump(qemist_res, f)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_trunc, frags <span class="kw">in</span> qemist_res[<span class="st">"subproblem_data"</span>].items():</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> frag_id, frag <span class="kw">in</span> frags.items():</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        prob_handle <span class="op">=</span> frag[<span class="st">"problem_handle"</span>]</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> prob_handle:</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>            frag_res <span class="op">=</span> get_results(prob_handle)</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> <span class="bu">open</span>(path <span class="op">+</span> <span class="ss">f"/</span><span class="sc">{</span>prob_handle<span class="sc">}</span><span class="ss">.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                json.dump(frag_res, f)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results using handle</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>qemist_res <span class="op">=</span> get_results(handle)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Export subproblem data to individual files</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path <span class="op">+</span> jfile, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    json.dump(qemist_res, f)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n_trunc, frags <span class="kw">in</span> qemist_res[<span class="st">"subproblem_data"</span>].items():</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> frag_id, frag <span class="kw">in</span> frags.items():</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        prob_handle <span class="op">=</span> frag[<span class="st">"problem_handle"</span>]</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> prob_handle:</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>            frag_res <span class="op">=</span> get_results(prob_handle)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">with</span> <span class="bu">open</span>(path <span class="op">+</span> <span class="ss">f"/</span><span class="sc">{</span>prob_handle<span class="sc">}</span><span class="ss">.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> f:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                json.dump(frag_res, f)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="import-fragment-data" class="level2">
 <h2 class="anchored" data-anchor-id="import-fragment-data">3.2 Import fragment data <a class="anchor" id="32"></a></h2>
@@ -652,14 +655,14 @@ window.Quarto = {
 <p>These subproblems contribute differently to the total energy of the system and their computational complexity vary. This information can guide us in selecting subproblems that are relevant to current quantum devices or quantum algorithms.</p>
 <p>This exploration is currently done manually, with the purpose of research in mind. As advances in quantum hardware and algorithms are made, automated scheduling and streamlined execution of relevant subproblems on quantum devices through QEMIST Cloud could become a reality.</p>
 <div id="c1c647ae" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="29cf70bd-d5be-487d-8a2a-cf49389308ea" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> MIFNOHelper</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the results from the json files</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fno_fragments <span class="op">=</span> MIFNOHelper(mi_json_file<span class="op">=</span>path<span class="op">+</span>jfile, fno_json_folder<span class="op">=</span>path)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fno_fragments)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Import MO coeffs</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>fno_fragments.retrieve_mo_coeff(path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> MIFNOHelper</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read the results from the json files</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>fno_fragments <span class="op">=</span> MIFNOHelper(mi_json_file<span class="op">=</span>path<span class="op">+</span>jfile, fno_json_folder<span class="op">=</span>path)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fno_fragments)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Import MO coeffs</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>fno_fragments.retrieve_mo_coeff(path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(All the energy values are in hartree)
 Total MI-FNO energy = -76.52019103159677
@@ -685,28 +688,28 @@ Mean-field energy = -76.31082623608856
 <p>We choose fragment <code>(2,)</code>, one of the one-body fragments listed above, as the focus of our quantum experiment. The code cell below constructs its Hamiltonian and maps it into qubit form using the scBK mapping. This yields a two-qubit problem which can be easily fitted on any quantum device. The Hamiltonian only involves X and Z Pauli operators, which means we only need to run simulations in a handful of measurement bases, as shown below.</p>
 <p>You can try selecting a different fragment and see what qubit Hamiltonian comes out of it. For instance, some 3-body fragments yield Hamiltonians mapped to 12 qubits (10 if using scBK for the mapping).</p>
 <div id="839b8e88" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="92e08618-3e5f-4eed-8521-6823d82c158e" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Select fragment of interest.</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>selected_fragment <span class="op">=</span> <span class="st">"(2,)"</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>frozen_orbitals <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"frozen_orbitals_truncated"</span>]</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>correction <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"correction"</span>]</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>e_tot_frag <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"energy_total"</span>]</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create molecule object for fragment, and compute the molecular integrals.</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> SecondQuantizedMolecule(atoms, q<span class="op">=</span>charge, spin<span class="op">=</span>spin, basis<span class="op">=</span>basis, frozen_orbitals<span class="op">=</span>frozen_orbitals)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Selection of a fragment and computing the related FermionOperator.</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>ferm_op <span class="op">=</span> fno_fragments.compute_fermionoperator(mol, selected_fragment)</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>ferm_op.n_electrons, ferm_op.n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(selected_fragment)</span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>ferm_op.spin <span class="op">=</span> spin</span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Map FermionOperator to QubitOperator.</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>n_electrons, n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(selected_fragment)</span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>qu_op <span class="op">=</span> fermion_to_qubit_mapping(ferm_op, mapping<span class="op">=</span><span class="st">"scbk"</span>, n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons)</span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qu_op)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Select fragment of interest.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>selected_fragment <span class="op">=</span> <span class="st">"(2,)"</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>frozen_orbitals <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"frozen_orbitals_truncated"</span>]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>correction <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"correction"</span>]</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>e_tot_frag <span class="op">=</span> fno_fragments[selected_fragment][<span class="st">"energy_total"</span>]</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create molecule object for fragment, and compute the molecular integrals.</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> SecondQuantizedMolecule(atoms, q<span class="op">=</span>charge, spin<span class="op">=</span>spin, basis<span class="op">=</span>basis, frozen_orbitals<span class="op">=</span>frozen_orbitals)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Selection of a fragment and computing the related FermionOperator.</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>ferm_op <span class="op">=</span> fno_fragments.compute_fermionoperator(mol, selected_fragment)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>ferm_op.n_electrons, ferm_op.n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(selected_fragment)</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>ferm_op.spin <span class="op">=</span> spin</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Map FermionOperator to QubitOperator.</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>n_electrons, n_spinorbitals <span class="op">=</span> fno_fragments.n_electrons_spinorbs(selected_fragment)</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>qu_op <span class="op">=</span> fermion_to_qubit_mapping(ferm_op, mapping<span class="op">=</span><span class="st">"scbk"</span>, n_spinorbitals<span class="op">=</span>n_spinorbitals, n_electrons<span class="op">=</span>n_electrons)</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qu_op)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-75.03707306024805 [] +
 0.025894296540557086 [X0] +
@@ -729,29 +732,29 @@ Mean-field energy = -76.31082623608856
 <p>Here we use the <a href="https://doi.org/10.1038/s41467-019-10988-2">ADAPT</a> ansatz with a pool of operators defined using Qubit Coupled Cluster (<a href="https://arxiv.org/pdf/1906.11192.pdf">QCC</a>) by constructing a Direct Inversion Set (DIS) from a qubit Hamiltonian. For our use case, this approach results in a shallow circuit that is within current quantum devices capabilities.</p>
 <p>More algorithms are available in Tangelo, each supporting a number of built-in options and user customization: we invite you to explore them.</p>
 <div id="972e24d1" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_cc <span class="im">import</span> construct_dis</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_mf <span class="im">import</span> init_qmf_from_hf</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qcc_pool(mol: SecondQuantizedMolecule, mapping, up_then_down, qubit_hamiltonian):</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    qmf_var_params <span class="op">=</span> init_qmf_from_hf(mol.n_active_sos, mol.n_active_electrons, </span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                      mapping, up_then_down, mol.spin)</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    dis <span class="op">=</span> construct_dis(qubit_hamiltonian, qmf_var_params, <span class="fl">0.</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    dis_flat <span class="op">=</span> [item <span class="cf">for</span> sublist <span class="kw">in</span> dis <span class="cf">for</span> item <span class="kw">in</span> sublist]</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dis_flat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_cc <span class="im">import</span> construct_dis</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator._qubit_mf <span class="im">import</span> init_qmf_from_hf</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qcc_pool(mol: SecondQuantizedMolecule, mapping, up_then_down, qubit_hamiltonian):</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    qmf_var_params <span class="op">=</span> init_qmf_from_hf(mol.n_active_sos, mol.n_active_electrons, </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>                                      mapping, up_then_down, mol.spin)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    dis <span class="op">=</span> construct_dis(qubit_hamiltonian, qmf_var_params, <span class="fl">0.</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    dis_flat <span class="op">=</span> [item <span class="cf">for</span> sublist <span class="kw">in</span> dis <span class="cf">for</span> item <span class="kw">in</span> sublist]</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dis_flat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="adbca295" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="8298e8ff-04c1-461c-a750-a3fdb2169c35" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> ADAPTSolver</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>pool_args <span class="op">=</span> {<span class="st">"mol"</span>: mol, <span class="st">"mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"qubit_hamiltonian"</span>: qu_op}</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>opt_dict <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qu_op, <span class="st">"tol"</span>: <span class="fl">0.01</span>, <span class="st">"max_cycles"</span>: <span class="dv">5</span>,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"qubit_mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"n_spinorbitals"</span>: n_spinorbitals, <span class="st">"n_electrons"</span>: n_electrons, </span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"spin"</span>: spin, <span class="st">"pool"</span>: qcc_pool, <span class="st">"pool_args"</span>: pool_args}</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>adapt_solver <span class="op">=</span> ADAPTSolver(opt_dict)</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>adapt_solver.build()</span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>adapt_solver.simulate()</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>adapt_circ <span class="op">=</span> adapt_solver.vqe_solver.optimal_circuit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> ADAPTSolver</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>pool_args <span class="op">=</span> {<span class="st">"mol"</span>: mol, <span class="st">"mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"up_then_down"</span>: <span class="va">True</span>, <span class="st">"qubit_hamiltonian"</span>: qu_op}</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>opt_dict <span class="op">=</span> {<span class="st">"qubit_hamiltonian"</span>: qu_op, <span class="st">"tol"</span>: <span class="fl">0.01</span>, <span class="st">"max_cycles"</span>: <span class="dv">5</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>            <span class="st">"qubit_mapping"</span>: <span class="st">"scbk"</span>, <span class="st">"n_spinorbitals"</span>: n_spinorbitals, <span class="st">"n_electrons"</span>: n_electrons, </span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            <span class="st">"spin"</span>: spin, <span class="st">"pool"</span>: qcc_pool, <span class="st">"pool_args"</span>: pool_args}</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>adapt_solver <span class="op">=</span> ADAPTSolver(opt_dict)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>adapt_solver.build()</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>adapt_solver.simulate()</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>adapt_circ <span class="op">=</span> adapt_solver.vqe_solver.optimal_circuit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>/usr/local/lib/python3.9/dist-packages/tangelo/toolboxes/qubit_mappings/statevector_mapping.py:149: RuntimeWarning: Symmetry-conserving Bravyi-Kitaev enforces all spin-up followed by all spin-down ordering.
   warnings.warn("Symmetry-conserving Bravyi-Kitaev enforces all spin-up followed by all spin-down ordering.", RuntimeWarning)</code></pre>
@@ -759,7 +762,7 @@ Mean-field energy = -76.31082623608856
 </div>
 <p>A quick look at the ADAPT circuit resulting from the code above. It is shallow enough for the current quantum devices.</p>
 <div id="b9528094" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:342}}" data-outputid="62255182-3c4c-4bcc-a726-ebe98dc00147" data-scrolled="true" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>adapt_circ.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>adapt_circ.draw()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
 WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
@@ -789,53 +792,53 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <p>We can run the circuit on a noisy simulator and recompute the fragment energy to get some idea of what to expect before we commit to running a full experiment, which costs money and time.</p>
 <p>Below we define a noise model based on specifications of the IonQ Harmony device, which is the machine we considered for running our experiment. The data used came from the Amazon Braket device page, during summer 2022.</p>
 <div id="2ee1fbc0" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define 1- and 2-qubit gate error  (Based on Braket dashboard)</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>n1q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="fl">0.9953</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>n2q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="fl">0.9394</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a simple depolarization model using the gates in our circuit</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>nmd <span class="op">=</span> NoiseModel()</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>nmd.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">"depol"</span>, n2q)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gate <span class="kw">in</span> [<span class="st">"RX"</span>, <span class="st">"RZ"</span>, <span class="st">"X"</span>, <span class="st">"H"</span>]:</span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    nmd.add_quantum_error(gate, <span class="st">"depol"</span>, n1q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define 1- and 2-qubit gate error  (Based on Braket dashboard)</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>n1q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="fl">0.9953</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>n2q <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> <span class="fl">0.9394</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Build a simple depolarization model using the gates in our circuit</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>nmd <span class="op">=</span> NoiseModel()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>nmd.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">"depol"</span>, n2q)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gate <span class="kw">in</span> [<span class="st">"RX"</span>, <span class="st">"RZ"</span>, <span class="st">"X"</span>, <span class="st">"H"</span>]:</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    nmd.add_quantum_error(gate, <span class="st">"depol"</span>, n1q)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>As with quantum hardware, we need to append the circuit with measurement basis gates before submitting them to a device or simulator. In the case of the selected 1-body fragment, we would need to acquire measurements in the four bases specified below, as the terms in the Hamiltonian only commute with these.</p>
 <div id="5700ec33" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> measurement_basis_gates, pauli_string_to_of</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>circs <span class="op">=</span> []</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>basis_list <span class="op">=</span> [<span class="st">"ZZ"</span>, <span class="st">"XZ"</span>, <span class="st">"ZX"</span>, <span class="st">"XX"</span>]</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> basis_list:</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> adapt_circ.copy()</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    c <span class="op">+=</span> Circuit(measurement_basis_gates(pauli_string_to_of(b)))</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    circs.append(c)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> measurement_basis_gates, pauli_string_to_of</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>circs <span class="op">=</span> []</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>basis_list <span class="op">=</span> [<span class="st">"ZZ"</span>, <span class="st">"XZ"</span>, <span class="st">"ZX"</span>, <span class="st">"XX"</span>]</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> basis_list:</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> adapt_circ.copy()</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    c <span class="op">+=</span> Circuit(measurement_basis_gates(pauli_string_to_of(b)))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    circs.append(c)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We perform a noisy simulation of the four circuits and obtain the corresponding frequency histograms, here using Cirq as a backend.</p>
 <div id="7ae8f7fe" class="cell" data-scrolled="true" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend(<span class="st">"cirq"</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>hists <span class="op">=</span> [sim.simulate(c)[<span class="dv">0</span>] <span class="cf">for</span> c <span class="kw">in</span> circs]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend(<span class="st">"cirq"</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>hists <span class="op">=</span> [sim.simulate(c)[<span class="dv">0</span>] <span class="cf">for</span> c <span class="kw">in</span> circs]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We can then use them to compute the expectation value for the energy of the fragment. We employ histogram aggregation to use all available data for the terms that can be computed from more than one measurement basis. The <code>Histogram</code> class facilitates these steps.</p>
 <div id="431bcce6" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="478057d9-b23c-46df-d1d9-181f237f7187" data-scrolled="true" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.histogram <span class="im">import</span> Histogram, aggregate_histograms</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> pauli_of_to_string, get_compatible_bases</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>hist_dict <span class="op">=</span> {b: Histogram(h, <span class="dv">10</span><span class="op">**</span><span class="dv">6</span>) <span class="cf">for</span> b,h <span class="kw">in</span> <span class="bu">zip</span>(basis_list, hists)}</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>en <span class="op">=</span> <span class="fl">0.</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t,c <span class="kw">in</span> qu_op.terms.items():</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> pauli_of_to_string(t,<span class="dv">2</span>)</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    bl <span class="op">=</span> get_compatible_bases(p, basis_list)</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    en <span class="op">+=</span> aggregate_histograms(<span class="op">*</span>[hist_dict[b] <span class="cf">for</span> b <span class="kw">in</span> bl]).get_expectation_value(t,c)</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MI-FNO energy:     "</span>, e_tot_frag)</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Aggregated energy: "</span>, en <span class="op">+</span> correction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.histogram <span class="im">import</span> Histogram, aggregate_histograms</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> pauli_of_to_string, get_compatible_bases</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>hist_dict <span class="op">=</span> {b: Histogram(h, <span class="dv">10</span><span class="op">**</span><span class="dv">6</span>) <span class="cf">for</span> b,h <span class="kw">in</span> <span class="bu">zip</span>(basis_list, hists)}</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>en <span class="op">=</span> <span class="fl">0.</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t,c <span class="kw">in</span> qu_op.terms.items():</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> pauli_of_to_string(t,<span class="dv">2</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    bl <span class="op">=</span> get_compatible_bases(p, basis_list)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    en <span class="op">+=</span> aggregate_histograms(<span class="op">*</span>[hist_dict[b] <span class="cf">for</span> b <span class="kw">in</span> bl]).get_expectation_value(t,c)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MI-FNO energy:     "</span>, e_tot_frag)</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Aggregated energy: "</span>, en <span class="op">+</span> correction)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MI-FNO energy:      -76.33817036745623
 Aggregated energy:  -76.16544280598923</code></pre>
@@ -843,12 +846,12 @@ Aggregated energy:  -76.16544280598923</code></pre>
 </div>
 <p>We can use the computed fragment energy to recalculate the full system energy to get an idea of the impact on overall total energy:</p>
 <div id="da6df16f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="936a51c7-8c75-45b3-c7ae-d7eacf3f40af" data-scrolled="false" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Energy resummation</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>e_mifno <span class="op">=</span> fno_fragments.e_tot</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>e_sim<span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: en})</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MI-FNO energy:     "</span>, e_mifno)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Simulated energy: "</span>, e_sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Energy resummation</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>e_mifno <span class="op">=</span> fno_fragments.e_tot</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>e_sim<span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: en})</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"MI-FNO energy:     "</span>, e_mifno)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Simulated energy: "</span>, e_sim)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MI-FNO energy:      -76.52019103159677
 Simulated energy:  -76.34746347012977</code></pre>
@@ -862,10 +865,10 @@ Simulated energy:  -76.34746347012977</code></pre>
 <p>The second mitigation strategy we employ is symmetry post-selection. The idea is to apply a symmetry operator corresponding to a Pauli word that commutes with the Hamiltonian and entangle the system with an ancilla acting as a symmetry verification qubit. We then select only the samples that are associated with the correct symmetry eigenvalue: the other samples are discarded.</p>
 <p>In this experiment, we examine how well these two techniques perform, separately and together. We apply this approach using a <span class="math inline">\(ZZ\)</span> symmetry operator and construct a randomized classical shadow, which is necessary to reconstruct the reduced density matrices required to post-process the results. As illustrated in the cell below, applying this approach to our ADAPT circuit would entangle our 2 qubits with an additional ancilla qubit.</p>
 <div id="Bisz1XBTkzwi" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:477}}" data-outputid="fc2108bd-3bf1-43b3-c41e-8481a8b8a72f" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> ancilla_symmetry_circuit</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>adapt_symmpostselect_circ <span class="op">=</span> ancilla_symmetry_circuit(adapt_circ, <span class="st">"ZZ"</span>)</span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>adapt_symmpostselect_circ.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing <span class="im">import</span> ancilla_symmetry_circuit</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>adapt_symmpostselect_circ <span class="op">=</span> ancilla_symmetry_circuit(adapt_circ, <span class="st">"ZZ"</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>adapt_symmpostselect_circ.draw()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
 WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.
@@ -898,53 +901,53 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <h2 class="anchored" data-anchor-id="running-on-amazon-braket">5.1 Running on Amazon Braket <a class="anchor" id="51"></a></h2>
 <p>Tangelo provides tools to construct a randomized shadow. For simplicity here, since for a two qubit system there are very few measurement bases, we excplitly specify them to expose more clearly how we use Braket. We define all the possible measurement bases below, and for each of these we append first the symmetry verification circuit and then transform the system qubits into the corresponding measurement basis. QEMIST Cloud users can leverage the Tangelo integration to submit the experiments to Amazon Braket, as shown below. Since QEMIST Cloud is not yet publically available, we simply provide the code snippets and their outputs.</p>
 <div id="313f154f" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>n_shots <span class="op">=</span> <span class="dv">10</span><span class="op">**</span><span class="dv">5</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># All 2-qubit measurement bases needed for the classical shadow</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>cs_basis_list <span class="op">=</span> [<span class="st">"ZZ"</span>, <span class="st">"XZ"</span>, <span class="st">"ZX"</span>, <span class="st">"XX"</span>, <span class="st">"YZ"</span>, <span class="st">"ZY"</span>, <span class="st">"YY"</span>, <span class="st">"XY"</span>, <span class="st">"YX"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>n_shots <span class="op">=</span> <span class="dv">10</span><span class="op">**</span><span class="dv">5</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># All 2-qubit measurement bases needed for the classical shadow</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>cs_basis_list <span class="op">=</span> [<span class="st">"ZZ"</span>, <span class="st">"XZ"</span>, <span class="st">"ZX"</span>, <span class="st">"XX"</span>, <span class="st">"YZ"</span>, <span class="st">"ZY"</span>, <span class="st">"YY"</span>, <span class="st">"XY"</span>, <span class="st">"YX"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> QEMISTCloudConnection</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>qemcl <span class="op">=</span> QEMISTCloudConnection()</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>qemcl.job_estimate(adapt_circ, n_shots)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> QEMISTCloudConnection</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>qemcl <span class="op">=</span> QEMISTCloudConnection()</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>qemcl.job_estimate(adapt_circ, n_shots)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The code cell above returns the prices for running 10,000 shots of the circuit provided, on the supported quantum devices and simulators, here part of Amazon Braket’s selection. Here’s the output from back then:</p>
 <pre class="text"><code>{'arn:aws:braket:::device/qpu/ionq/ionQdevice': 100.3,
  'arn:aws:braket:::device/quantum-simulator/amazon/sv1': 0.038,
  'arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-1': 3.8}</code></pre>
 <p>The code below adds the symmetry post-selection gates and the measurement gates to define our quantum circuit for each of the measurement bases, and submits them to Braket, using their QEMIST Cloud credits. It is however possible for Braket users to submit these jobs using the Braket API or our convenience wrappers, with their own Braket credentials.</p>
 <p>We submit overall 9 quantum circuits, differing by their final measurement gates.</p>
-<div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> <span class="st">'arn:aws:braket:::device/qpu/ionq/ionQdevice'</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>job_ids <span class="op">=</span> {}</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Build circuits and submit to Amazon Braket</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis <span class="kw">in</span> cs_basis_list:</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    meas_circ <span class="op">=</span> Circuit(measurement_basis_gates(pauli_string_to_of(basis)))</span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    final_circ <span class="op">=</span> adapt_symmpostselect_circ <span class="op">+</span> meas_circ</span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    job_id <span class="op">=</span> qemcl.job_submit(final_circ, n_shots<span class="op">=</span>n_shots, backend<span class="op">=</span>backend)</span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    job_ids[basis] <span class="op">=</span> job_id</span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results and save to json file</span></span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> {basis: qemcl.job_result(job_id)[<span class="dv">0</span>] <span class="cf">for</span> basis, job_id <span class="kw">in</span> job_ids.items()}</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ionq_data/H3Op_sym_postselect_10000_ionq.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>    json.dump(res, <span class="bu">file</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>backend <span class="op">=</span> <span class="st">'arn:aws:braket:::device/qpu/ionq/ionQdevice'</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>job_ids <span class="op">=</span> {}</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Build circuits and submit to Amazon Braket</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> basis <span class="kw">in</span> cs_basis_list:</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>    meas_circ <span class="op">=</span> Circuit(measurement_basis_gates(pauli_string_to_of(basis)))</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    final_circ <span class="op">=</span> adapt_symmpostselect_circ <span class="op">+</span> meas_circ</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>    job_id <span class="op">=</span> qemcl.job_submit(final_circ, n_shots<span class="op">=</span>n_shots, backend<span class="op">=</span>backend)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>    job_ids[basis] <span class="op">=</span> job_id</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Retrieve results and save to json file</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> {basis: qemcl.job_result(job_id)[<span class="dv">0</span>] <span class="cf">for</span> basis, job_id <span class="kw">in</span> job_ids.items()}</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ionq_data/H3Op_sym_postselect_10000_ionq.json"</span>, <span class="st">"w"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    json.dump(res, <span class="bu">file</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Replacing job submission by cost estimation in the code above is a way to assess the total cost of the experiment before submitting anything. As experiments are usually done on a budget, this information is still rather central in its design. Here we’d get an estimate of about $900.</p>
 <p>Below we read in the data that we obtained from our experiment on IonQ Harmony during the Summer of 2022, and perform full symmetry post-selection.</p>
 <div id="450dd09d" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="f2ce1cea-c95f-4c6d-d61b-93fb0feb7bc1" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data coming from our quantum experiment on Harmony</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ionq_data/H3Op_sym_postselect_10000_ionq.json"</span>, <span class="st">"r"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> json.load(<span class="bu">file</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform post-selection</span></span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>res_post <span class="op">=</span> {}</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> base, hist <span class="kw">in</span> res.items():</span>
-<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> Histogram(hist)</span>
-<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    h.post_select({<span class="dv">2</span>: <span class="st">"0"</span>})</span>
-<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>    res_post[base] <span class="op">=</span> h</span>
-<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_post)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the data coming from our quantum experiment on Harmony</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"./ionq_data/H3Op_sym_postselect_10000_ionq.json"</span>, <span class="st">"r"</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> json.load(<span class="bu">file</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform post-selection</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>res_post <span class="op">=</span> {}</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> base, hist <span class="kw">in</span> res.items():</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> Histogram(hist)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    h.post_select({<span class="dv">2</span>: <span class="st">"0"</span>})</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    res_post[base] <span class="op">=</span> h</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_post)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'ZZ': {'00': 0.0087, '01': 0.0056, '10': 0.0053, '11': 0.9136}, 'XZ': {'00': 0.0101, '01': 0.5165, '10': 0.0051, '11': 0.4167}, 'ZX': {'00': 0.0049, '01': 0.0103, '10': 0.4553, '11': 0.4728}, 'XX': {'00': 0.1809, '01': 0.2659, '10': 0.2629, '11': 0.2281}, 'YZ': {'00': 0.0051, '01': 0.5002, '10': 0.0104, '11': 0.4106}, 'ZY': {'00': 0.0033, '01': 0.0101, '10': 0.4859, '11': 0.4321}, 'YY': {'00': 0.2659, '01': 0.185, '10': 0.2278, '11': 0.2549}, 'XY': {'00': 0.1904, '01': 0.1958, '10': 0.2416, '11': 0.2919}, 'YX': {'00': 0.2233, '01': 0.2413, '10': 0.221, '11': 0.2388}}</code></pre>
 </div>
@@ -954,33 +957,33 @@ WARNING:matplotlib.font_manager:findfont: Font family 'Arial' not found.</code><
 <h2 class="anchored" data-anchor-id="post-processing-construct-classical-shadow-and-purify">5.2 Post-processing: construct classical shadow and purify <a class="anchor" id="52"></a></h2>
 <p>We can now construct a classical shadow and purify the state.</p>
 <div id="44843fc7" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> RandomizedClassicalShadow</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>bitstrings, unitaries <span class="op">=</span> [], []</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b, hist <span class="kw">in</span> res_post.items():</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s,f <span class="kw">in</span> hist.frequencies.items():</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>        factor <span class="op">=</span> <span class="bu">round</span>(f<span class="op">*</span>(n_shots))</span>
-<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>        bitstrings.extend([s]<span class="op">*</span>factor)</span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>        unitaries.extend([b]<span class="op">*</span>factor)</span>
-<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>ionq_cs_post <span class="op">=</span> RandomizedClassicalShadow(unitaries<span class="op">=</span>unitaries, bitstrings<span class="op">=</span>bitstrings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.measurements <span class="im">import</span> RandomizedClassicalShadow</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>bitstrings, unitaries <span class="op">=</span> [], []</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b, hist <span class="kw">in</span> res_post.items():</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s,f <span class="kw">in</span> hist.frequencies.items():</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>        factor <span class="op">=</span> <span class="bu">round</span>(f<span class="op">*</span>(n_shots))</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>        bitstrings.extend([s]<span class="op">*</span>factor)</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>        unitaries.extend([b]<span class="op">*</span>factor)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>ionq_cs_post <span class="op">=</span> RandomizedClassicalShadow(unitaries<span class="op">=</span>unitaries, bitstrings<span class="op">=</span>bitstrings)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>After constructing the shadow, we can use convenience functions provided by Tangelo to compute the 1- and 2-RDM. Since this is a small, two qubit system, we can use the McWeeny technique to purify the 2-RDM and calculate the purified energy. Below we show a comparison of the difference between the purified and non-purified energies and suggests that purification mitigates the noise efficiently.</p>
 <div id="874781d4" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.mc_weeny_rdm_purification <span class="im">import</span> mcweeny_purify_2rdm</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.rdms <span class="im">import</span> compute_rdms, energy_from_rdms</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>rdm1_p, rdm2_p, rdm1_ss_p, rdm2_ss_p <span class="op">=</span> compute_rdms(ferm_op, <span class="st">"scbk"</span>, <span class="va">True</span>, exp_data<span class="op">=</span>res)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>rdm1_p_pur, rdm2_p_pur <span class="op">=</span> mcweeny_purify_2rdm(rdm2_p.real)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.post_processing.mc_weeny_rdm_purification <span class="im">import</span> mcweeny_purify_2rdm</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.rdms <span class="im">import</span> compute_rdms, energy_from_rdms</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>rdm1_p, rdm2_p, rdm1_ss_p, rdm2_ss_p <span class="op">=</span> compute_rdms(ferm_op, <span class="st">"scbk"</span>, <span class="va">True</span>, exp_data<span class="op">=</span>res)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>rdm1_p_pur, rdm2_p_pur <span class="op">=</span> mcweeny_purify_2rdm(rdm2_p.real)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="20f1472f" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="a97051fd-bbf9-4361-9706-96592ee3cf25" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>e_p_exp <span class="op">=</span> energy_from_rdms(ferm_op, rdm1_ss_p, rdm2_ss_p)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>e_p_pur <span class="op">=</span> energy_from_rdms(ferm_op, rdm1_p_pur, rdm2_p_pur)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Experiment energy:"</span>, e_p_exp)</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Purified energy:  "</span>, e_p_pur)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Diff from MI-FNO:   "</span>, e_p_pur<span class="op">-</span>(e_tot_frag<span class="op">-</span>correction))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>e_p_exp <span class="op">=</span> energy_from_rdms(ferm_op, rdm1_ss_p, rdm2_ss_p)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>e_p_pur <span class="op">=</span> energy_from_rdms(ferm_op, rdm1_p_pur, rdm2_p_pur)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Experiment energy:"</span>, e_p_exp)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Purified energy:  "</span>, e_p_pur)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Diff from MI-FNO:   "</span>, e_p_pur<span class="op">-</span>(e_tot_frag<span class="op">-</span>correction))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Experiment energy: -76.2369464417231
 Purified energy:   -76.3276400895683
@@ -989,32 +992,32 @@ Diff from MI-FNO:    0.001410481713961076</code></pre>
 </div>
 <p>A similar calculation can be performed for non-post-selected data, which one can obtain by removing the ancilla qubit and adding together the corresponding frequencies. This data can also be purified to see the effect of the two mitigation techniques separately. For brevity, we present the final results:</p>
 <div id="d03aed4b" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>e_exp <span class="op">=</span> <span class="op">-</span><span class="fl">76.2685</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>e_pur <span class="op">=</span> <span class="op">-</span><span class="fl">76.3138</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>e_exp <span class="op">=</span> <span class="op">-</span><span class="fl">76.2685</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>e_pur <span class="op">=</span> <span class="op">-</span><span class="fl">76.3138</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Finally, we can estimate the error of the energy by using a technique called bootstrapping. This consists in generating an ensemble of new histograms by resampling from the experimental data and calculating a standard devition of the resulting energies. For brevity, here we only present the results of those calculations. You can find more details about bootstrapping in <a href="https://github.com/sandbox-quantum/Tangelo/blob/develop/examples/overview_endtoend.ipynb">this notebook</a>.</p>
 <div id="0eabcc89" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>e_exp_err <span class="op">=</span> <span class="fl">0.0037</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>e_pur_err <span class="op">=</span> <span class="fl">0.0019</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>e_p_exp_err <span class="op">=</span> <span class="fl">0.0037</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>e_p_pur_err <span class="op">=</span> <span class="fl">0.0007</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>e_exp_err <span class="op">=</span> <span class="fl">0.0037</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>e_pur_err <span class="op">=</span> <span class="fl">0.0019</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>e_p_exp_err <span class="op">=</span> <span class="fl">0.0037</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>e_p_pur_err <span class="op">=</span> <span class="fl">0.0007</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="energy-resummation-and-plot" class="level2">
 <h2 class="anchored" data-anchor-id="energy-resummation-and-plot">5.3 Energy resummation and plot <a class="anchor" id="53"></a></h2>
 <p>Finally, we need to recalculate the energy of the full system using this fragment energy to see the final result. We plot the whole data set, including the Hartree-Fock and MI-FNO umbrella curve, and the four total energies calculated below. In the inset we show the lower portion of the whole plot to emphasize the impact of the error mitigation techniques. The shaded region around the curve indicates the regime of chemical accuracy.</p>
 <div id="92c11a19" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="4ba98cfd-bb57-48f3-b322-6c92414a4fbf" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recompute total energy, overriding the fragment enregy with the different experimental results </span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>et_exp <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_exp})</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>et_pur <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_pur})</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>et_post_exp <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_p_exp})</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>et_post_pur <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_p_pur})</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Classical:"</span>, fno_fragments.e_tot)</span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Raw:"</span>, et_exp)</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Raw purified:"</span>, et_pur)</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Post-selected:"</span>, et_post_exp)</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Post-selected purified:"</span>, et_post_pur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Recompute total energy, overriding the fragment enregy with the different experimental results </span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>et_exp <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_exp})</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>et_pur <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_pur})</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>et_post_exp <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_p_exp})</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>et_post_pur <span class="op">=</span> fno_fragments.mi_summation({<span class="st">"(2,)"</span>: e_p_pur})</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Classical:"</span>, fno_fragments.e_tot)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Raw:"</span>, et_exp)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Raw purified:"</span>, et_pur)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Post-selected:"</span>, et_post_exp)</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Post-selected purified:"</span>, et_post_pur)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Classical: -76.52019103159677
 Raw: -76.4596404603145
@@ -1025,37 +1028,37 @@ Post-selected purified: -76.5187805498828</code></pre>
 </div>
 <p>We load the MI-FNO data precomputed with QEMIST Cloud for various geometries of the system of interest, in order to better illustrate where the results sit compared to Hartree-Fock and the MI-FNO resolution.</p>
 <div id="abc50416" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>mifno_curve <span class="op">=</span> np.loadtxt(<span class="st">"H3Oplus_MIFNO_CCPVDZ.csv"</span>, delimiter<span class="op">=</span><span class="st">","</span>)[:,<span class="dv">1</span>:].T</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>mifno_curve <span class="op">=</span> np.loadtxt(<span class="st">"H3Oplus_MIFNO_CCPVDZ.csv"</span>, delimiter<span class="op">=</span><span class="st">","</span>)[:,<span class="dv">1</span>:].T</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="c510ad55" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:682}}" data-outputid="e2a22048-65a3-4c16-b9b5-d6b8f42d794c" data-scrolled="false" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pylab <span class="im">as</span> plt</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>,<span class="dv">6</span>), dpi<span class="op">=</span><span class="dv">120</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.axes([<span class="fl">0.02</span>,<span class="fl">0.02</span>,<span class="fl">0.98</span>,<span class="fl">0.98</span>])</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>ax.plot(theta, rhf, label<span class="op">=</span><span class="st">"RHF"</span>)</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>ax.plot(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"MIFNO"</span>)</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.0016</span>, mifno_curve[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.0016</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">.1</span>)</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_exp, e_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Raw"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_pur, e_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_post_exp, e_p_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_post_pur, e_p_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected + purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
-<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Energy [Ha]"</span>)</span>
-<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Angle [deg]"</span>)</span>
-<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.axes([<span class="fl">0.5</span>,<span class="fl">0.4</span>,<span class="fl">0.48</span>,<span class="fl">0.48</span>])</span>
-<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>ax2.plot([],[])</span>
-<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>ax2.plot(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"MIFNO"</span>)</span>
-<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>ax2.fill_between(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.0016</span>, mifno_curve[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.0016</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">.1</span>)</span>
-<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>ax2.plot([],[])</span>
-<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_pur, e_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_post_exp, e_p_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
-<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_post_pur, e_p_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected + purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pylab <span class="im">as</span> plt</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">9</span>,<span class="dv">6</span>), dpi<span class="op">=</span><span class="dv">120</span>)</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plt.axes([<span class="fl">0.02</span>,<span class="fl">0.02</span>,<span class="fl">0.98</span>,<span class="fl">0.98</span>])</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>ax.plot(theta, rhf, label<span class="op">=</span><span class="st">"RHF"</span>)</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>ax.plot(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"MIFNO"</span>)</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>ax.fill_between(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.0016</span>, mifno_curve[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.0016</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">.1</span>)</span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_exp, e_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Raw"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_pur, e_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_post_exp, e_p_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>ax.errorbar(<span class="dv">70</span>, et_post_pur, e_p_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected + purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>ax.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Energy [Ha]"</span>)</span>
+<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Angle [deg]"</span>)</span>
+<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> plt.axes([<span class="fl">0.5</span>,<span class="fl">0.4</span>,<span class="fl">0.48</span>,<span class="fl">0.48</span>])</span>
+<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>ax2.plot([],[])</span>
+<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a>ax2.plot(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>], label<span class="op">=</span><span class="st">"MIFNO"</span>)</span>
+<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>ax2.fill_between(mifno_curve[<span class="dv">0</span>], mifno_curve[<span class="dv">1</span>]<span class="op">-</span><span class="fl">0.0016</span>, mifno_curve[<span class="dv">1</span>]<span class="op">+</span><span class="fl">0.0016</span>, color<span class="op">=</span><span class="st">'orange'</span>, alpha<span class="op">=</span><span class="fl">.1</span>)</span>
+<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>ax2.plot([],[])</span>
+<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_pur, e_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb43-27"><a href="#cb43-27" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_post_exp, e_p_exp_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb43-28"><a href="#cb43-28" aria-hidden="true" tabindex="-1"></a>ax2.errorbar(<span class="dv">70</span>, et_post_pur, e_p_pur_err, fmt<span class="op">=</span><span class="st">"."</span>, label<span class="op">=</span><span class="st">"Post-selected + purified"</span>, capsize<span class="op">=</span><span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1070,159 +1073,159 @@ Post-selected purified: -76.5187805498828</code></pre>
 <p>To examine the umbrella inversion in action, we can perform a quantum simulation of the nuclear motion. This is not possible on current quantum devices: we run the following fault-tolerant approach on a simulator.</p>
 <p>We start with calculating the coordinate change in mass-weighted coordinates.</p>
 <div id="fg-RWANXkOIL" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define constants for unit conversion, and hydrogen / oxygen atom mass</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>angstrom2bohr <span class="op">=</span> <span class="fl">1.8897259886</span></span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>me2amu <span class="op">=</span> <span class="fl">1822.888486209</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>hm <span class="op">=</span> <span class="fl">1.00784</span> <span class="op">*</span> me2amu</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>om <span class="op">=</span> <span class="fl">15.999</span> <span class="op">*</span> me2amu</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduced mass for simulation</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>hm<span class="op">*</span>om<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>hm<span class="op">+</span>om)<span class="op">/</span>me2amu</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="co"># OH bond length</span></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="fl">0.986</span> <span class="op">*</span> angstrom2bohr</span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_mw_coords(theta):</span>
-<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate mass-weighted cartesian coordinates"""</span></span>
-<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> theta<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span></span>
-<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>    C, S <span class="op">=</span> np.cos(theta), np.sin(theta)</span>
-<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a>    c, s <span class="op">=</span> np.cos(np.pi<span class="op">/</span><span class="dv">3</span>), np.sin(np.pi<span class="op">/</span><span class="dv">3</span>)</span>
-<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a>    h_pos <span class="op">=</span> d<span class="op">*</span>np.array([[   S,    <span class="dv">0</span>, C],</span>
-<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c,  S<span class="op">*</span>s, C],</span>
-<span id="cb45-20"><a href="#cb45-20" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c, <span class="op">-</span>S<span class="op">*</span>s, C]])</span>
-<span id="cb45-21"><a href="#cb45-21" aria-hidden="true" tabindex="-1"></a>    o_pos <span class="op">=</span> np.zeros(<span class="dv">3</span>)</span>
-<span id="cb45-22"><a href="#cb45-22" aria-hidden="true" tabindex="-1"></a>    cmass <span class="op">=</span> (hm<span class="op">*</span>h_pos[<span class="dv">0</span>] <span class="op">+</span> hm<span class="op">*</span>h_pos[<span class="dv">1</span>] <span class="op">+</span> hm<span class="op">*</span>h_pos[<span class="dv">2</span>])<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>hm<span class="op">+</span>om)</span>
-<span id="cb45-23"><a href="#cb45-23" aria-hidden="true" tabindex="-1"></a>    mw_coords <span class="op">=</span> np.zeros((<span class="dv">4</span>,<span class="dv">3</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb45-24"><a href="#cb45-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb45-25"><a href="#cb45-25" aria-hidden="true" tabindex="-1"></a>        mw_coords[i] <span class="op">=</span> (h_pos[i] <span class="op">-</span> cmass)<span class="op">*</span>np.sqrt(hm)  </span>
-<span id="cb45-26"><a href="#cb45-26" aria-hidden="true" tabindex="-1"></a>    mw_coords[<span class="dv">3</span>] <span class="op">=</span> (o_pos<span class="op">-</span>cmass)<span class="op">*</span>np.sqrt(om)  </span>
-<span id="cb45-27"><a href="#cb45-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mw_coords</span>
-<span id="cb45-28"><a href="#cb45-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-29"><a href="#cb45-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Reference configuration </span></span>
-<span id="cb45-30"><a href="#cb45-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (Case where all atoms of H3O+ are on the same plane)</span></span>
-<span id="cb45-31"><a href="#cb45-31" aria-hidden="true" tabindex="-1"></a>ref_config <span class="op">=</span> calc_mw_coords(theta<span class="op">=</span><span class="dv">90</span>)</span>
-<span id="cb45-32"><a href="#cb45-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-33"><a href="#cb45-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_qs(theta, ref_config):</span>
-<span id="cb45-34"><a href="#cb45-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return displacement in mass-weighted coordinates"""</span></span>
-<span id="cb45-35"><a href="#cb45-35" aria-hidden="true" tabindex="-1"></a>    new_config <span class="op">=</span> calc_mw_coords(theta)</span>
-<span id="cb45-36"><a href="#cb45-36" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb45-37"><a href="#cb45-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
-<span id="cb45-38"><a href="#cb45-38" aria-hidden="true" tabindex="-1"></a>        diff <span class="op">+=</span> np.dot(ref_config[i] <span class="op">-</span> new_config[i], ref_config[i] <span class="op">-</span> new_config[i])</span>
-<span id="cb45-39"><a href="#cb45-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(diff)</span>
-<span id="cb45-40"><a href="#cb45-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-41"><a href="#cb45-41" aria-hidden="true" tabindex="-1"></a>thetas <span class="op">=</span> np.linspace(<span class="dv">60</span>, <span class="dv">120</span>, <span class="dv">31</span>)</span>
-<span id="cb45-42"><a href="#cb45-42" aria-hidden="true" tabindex="-1"></a>mass_weighted <span class="op">=</span> np.zeros(<span class="dv">31</span>)</span>
-<span id="cb45-43"><a href="#cb45-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-44"><a href="#cb45-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, theta <span class="kw">in</span> <span class="bu">enumerate</span>(thetas):</span>
-<span id="cb45-45"><a href="#cb45-45" aria-hidden="true" tabindex="-1"></a>    mass_weighted[i] <span class="op">=</span> calc_qs(theta, ref_config)</span>
-<span id="cb45-46"><a href="#cb45-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-47"><a href="#cb45-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Only returns absolute value of displacement so need to assign negative value </span></span>
-<span id="cb45-48"><a href="#cb45-48" aria-hidden="true" tabindex="-1"></a><span class="co"># to one direction</span></span>
-<span id="cb45-49"><a href="#cb45-49" aria-hidden="true" tabindex="-1"></a>mass_weighted[:<span class="dv">16</span>] <span class="op">*=</span> <span class="op">-</span><span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define constants for unit conversion, and hydrogen / oxygen atom mass</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>angstrom2bohr <span class="op">=</span> <span class="fl">1.8897259886</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>me2amu <span class="op">=</span> <span class="fl">1822.888486209</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>hm <span class="op">=</span> <span class="fl">1.00784</span> <span class="op">*</span> me2amu</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>om <span class="op">=</span> <span class="fl">15.999</span> <span class="op">*</span> me2amu</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Reduced mass for simulation</span></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>hm<span class="op">*</span>om<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>hm<span class="op">+</span>om)<span class="op">/</span>me2amu</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="co"># OH bond length</span></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="fl">0.986</span> <span class="op">*</span> angstrom2bohr</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_mw_coords(theta):</span>
+<span id="cb44-14"><a href="#cb44-14" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate mass-weighted cartesian coordinates"""</span></span>
+<span id="cb44-15"><a href="#cb44-15" aria-hidden="true" tabindex="-1"></a>    theta <span class="op">=</span> theta<span class="op">*</span>np.pi<span class="op">/</span><span class="dv">180</span></span>
+<span id="cb44-16"><a href="#cb44-16" aria-hidden="true" tabindex="-1"></a>    C, S <span class="op">=</span> np.cos(theta), np.sin(theta)</span>
+<span id="cb44-17"><a href="#cb44-17" aria-hidden="true" tabindex="-1"></a>    c, s <span class="op">=</span> np.cos(np.pi<span class="op">/</span><span class="dv">3</span>), np.sin(np.pi<span class="op">/</span><span class="dv">3</span>)</span>
+<span id="cb44-18"><a href="#cb44-18" aria-hidden="true" tabindex="-1"></a>    h_pos <span class="op">=</span> d<span class="op">*</span>np.array([[   S,    <span class="dv">0</span>, C],</span>
+<span id="cb44-19"><a href="#cb44-19" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c,  S<span class="op">*</span>s, C],</span>
+<span id="cb44-20"><a href="#cb44-20" aria-hidden="true" tabindex="-1"></a>                        [<span class="op">-</span>S<span class="op">*</span>c, <span class="op">-</span>S<span class="op">*</span>s, C]])</span>
+<span id="cb44-21"><a href="#cb44-21" aria-hidden="true" tabindex="-1"></a>    o_pos <span class="op">=</span> np.zeros(<span class="dv">3</span>)</span>
+<span id="cb44-22"><a href="#cb44-22" aria-hidden="true" tabindex="-1"></a>    cmass <span class="op">=</span> (hm<span class="op">*</span>h_pos[<span class="dv">0</span>] <span class="op">+</span> hm<span class="op">*</span>h_pos[<span class="dv">1</span>] <span class="op">+</span> hm<span class="op">*</span>h_pos[<span class="dv">2</span>])<span class="op">/</span>(<span class="dv">3</span><span class="op">*</span>hm<span class="op">+</span>om)</span>
+<span id="cb44-23"><a href="#cb44-23" aria-hidden="true" tabindex="-1"></a>    mw_coords <span class="op">=</span> np.zeros((<span class="dv">4</span>,<span class="dv">3</span>), dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb44-24"><a href="#cb44-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb44-25"><a href="#cb44-25" aria-hidden="true" tabindex="-1"></a>        mw_coords[i] <span class="op">=</span> (h_pos[i] <span class="op">-</span> cmass)<span class="op">*</span>np.sqrt(hm)  </span>
+<span id="cb44-26"><a href="#cb44-26" aria-hidden="true" tabindex="-1"></a>    mw_coords[<span class="dv">3</span>] <span class="op">=</span> (o_pos<span class="op">-</span>cmass)<span class="op">*</span>np.sqrt(om)  </span>
+<span id="cb44-27"><a href="#cb44-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mw_coords</span>
+<span id="cb44-28"><a href="#cb44-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-29"><a href="#cb44-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Reference configuration </span></span>
+<span id="cb44-30"><a href="#cb44-30" aria-hidden="true" tabindex="-1"></a><span class="co"># (Case where all atoms of H3O+ are on the same plane)</span></span>
+<span id="cb44-31"><a href="#cb44-31" aria-hidden="true" tabindex="-1"></a>ref_config <span class="op">=</span> calc_mw_coords(theta<span class="op">=</span><span class="dv">90</span>)</span>
+<span id="cb44-32"><a href="#cb44-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-33"><a href="#cb44-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc_qs(theta, ref_config):</span>
+<span id="cb44-34"><a href="#cb44-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return displacement in mass-weighted coordinates"""</span></span>
+<span id="cb44-35"><a href="#cb44-35" aria-hidden="true" tabindex="-1"></a>    new_config <span class="op">=</span> calc_mw_coords(theta)</span>
+<span id="cb44-36"><a href="#cb44-36" aria-hidden="true" tabindex="-1"></a>    diff <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb44-37"><a href="#cb44-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb44-38"><a href="#cb44-38" aria-hidden="true" tabindex="-1"></a>        diff <span class="op">+=</span> np.dot(ref_config[i] <span class="op">-</span> new_config[i], ref_config[i] <span class="op">-</span> new_config[i])</span>
+<span id="cb44-39"><a href="#cb44-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(diff)</span>
+<span id="cb44-40"><a href="#cb44-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-41"><a href="#cb44-41" aria-hidden="true" tabindex="-1"></a>thetas <span class="op">=</span> np.linspace(<span class="dv">60</span>, <span class="dv">120</span>, <span class="dv">31</span>)</span>
+<span id="cb44-42"><a href="#cb44-42" aria-hidden="true" tabindex="-1"></a>mass_weighted <span class="op">=</span> np.zeros(<span class="dv">31</span>)</span>
+<span id="cb44-43"><a href="#cb44-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-44"><a href="#cb44-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, theta <span class="kw">in</span> <span class="bu">enumerate</span>(thetas):</span>
+<span id="cb44-45"><a href="#cb44-45" aria-hidden="true" tabindex="-1"></a>    mass_weighted[i] <span class="op">=</span> calc_qs(theta, ref_config)</span>
+<span id="cb44-46"><a href="#cb44-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-47"><a href="#cb44-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Only returns absolute value of displacement so need to assign negative value </span></span>
+<span id="cb44-48"><a href="#cb44-48" aria-hidden="true" tabindex="-1"></a><span class="co"># to one direction</span></span>
+<span id="cb44-49"><a href="#cb44-49" aria-hidden="true" tabindex="-1"></a>mass_weighted[:<span class="dv">16</span>] <span class="op">*=</span> <span class="op">-</span><span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Calculate interpolation of data for any coordinate length to use for nuclear dynamics.</p>
 <div id="FuZh9ZLUkZgB" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> CubicSpline</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>spl <span class="op">=</span> CubicSpline(mass_weighted, mifno_curve[<span class="dv">1</span>])</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 8 qubits, corresponding to 64 grid pts for simulation</span></span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> <span class="dv">8</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>n_pts <span class="op">=</span> <span class="dv">2</span><span class="op">**</span>n_qubits</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>xdata <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">114.75</span>, <span class="fl">114.75</span>, n_pts, endpoint<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> xdata[<span class="dv">1</span>] <span class="op">-</span> xdata[<span class="dv">0</span>]</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>interpolated_curve <span class="op">=</span> spl(xdata)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.interpolate <span class="im">import</span> CubicSpline</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>spl <span class="op">=</span> CubicSpline(mass_weighted, mifno_curve[<span class="dv">1</span>])</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Use 8 qubits, corresponding to 64 grid pts for simulation</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>n_qubits <span class="op">=</span> <span class="dv">8</span></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>n_pts <span class="op">=</span> <span class="dv">2</span><span class="op">**</span>n_qubits</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>xdata <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">114.75</span>, <span class="fl">114.75</span>, n_pts, endpoint<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> xdata[<span class="dv">1</span>] <span class="op">-</span> xdata[<span class="dv">0</span>]</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>interpolated_curve <span class="op">=</span> spl(xdata)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We convert the interpolated data into an equivalent <code>QubitOperator</code> object.</p>
 <div id="GpTjHrfakg7z" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.sparse <span class="im">import</span> diags</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qu_vpot(vals, order<span class="op">=</span><span class="st">'lsq_first'</span>):</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Return representation of diagonal matrix as a QubitOperator where vals are the diagonal elements of the matrix."</span></span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>    n_qubits<span class="op">=</span><span class="bu">round</span>(math.log2(<span class="bu">len</span>(vals)))</span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    new_vals <span class="op">=</span> vals.copy()</span>
-<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> order <span class="op">==</span> <span class="st">"msq_first"</span>:</span>
-<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>        new_vals <span class="op">=</span> new_vals.reshape([<span class="dv">2</span>]<span class="op">*</span>n_qubits).transpose(<span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(n_qubits)))).flatten() </span>
-<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>    v_op <span class="op">=</span> QubitOperator()</span>
-<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> product([<span class="st">"I"</span>, <span class="st">"Z"</span>], repeat<span class="op">=</span>n_qubits):</span>
-<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>        tup <span class="op">=</span> <span class="bu">tuple</span>([(j, op) <span class="cf">for</span> j, op <span class="kw">in</span> <span class="bu">enumerate</span>(i) <span class="cf">if</span> op <span class="op">!=</span> <span class="st">"I"</span>])</span>
-<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>        qu_op <span class="op">=</span> QubitOperator(tup)</span>
-<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> get_sparse_operator(qu_op, n_qubits<span class="op">=</span>n_qubits)</span>
-<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>        v_op <span class="op">+=</span> (diags(new_vals).dot(v)).trace()<span class="op">*</span>QubitOperator(tup)</span>
-<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    v_op <span class="op">/=</span> <span class="dv">2</span><span class="op">**</span>n_qubits</span>
-<span id="cb47-22"><a href="#cb47-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v_op   </span>
-<span id="cb47-23"><a href="#cb47-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-24"><a href="#cb47-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose qubit order so bitstrings are directly converted to data</span></span>
-<span id="cb47-25"><a href="#cb47-25" aria-hidden="true" tabindex="-1"></a>qubit_order <span class="op">=</span> <span class="st">"lsq_first"</span> </span>
-<span id="cb47-26"><a href="#cb47-26" aria-hidden="true" tabindex="-1"></a>qu_op_v <span class="op">=</span> qu_vpot(interpolated_curve, qubit_order)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> product</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion <span class="im">import</span> get_sparse_operator</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.sparse <span class="im">import</span> diags</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> qu_vpot(vals, order<span class="op">=</span><span class="st">'lsq_first'</span>):</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>    <span class="co">"Return representation of diagonal matrix as a QubitOperator where vals are the diagonal elements of the matrix."</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>    n_qubits<span class="op">=</span><span class="bu">round</span>(math.log2(<span class="bu">len</span>(vals)))</span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    new_vals <span class="op">=</span> vals.copy()</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> order <span class="op">==</span> <span class="st">"msq_first"</span>:</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>        new_vals <span class="op">=</span> new_vals.reshape([<span class="dv">2</span>]<span class="op">*</span>n_qubits).transpose(<span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(n_qubits)))).flatten() </span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>    v_op <span class="op">=</span> QubitOperator()</span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> product([<span class="st">"I"</span>, <span class="st">"Z"</span>], repeat<span class="op">=</span>n_qubits):</span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>        tup <span class="op">=</span> <span class="bu">tuple</span>([(j, op) <span class="cf">for</span> j, op <span class="kw">in</span> <span class="bu">enumerate</span>(i) <span class="cf">if</span> op <span class="op">!=</span> <span class="st">"I"</span>])</span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>        qu_op <span class="op">=</span> QubitOperator(tup)</span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>        v <span class="op">=</span> get_sparse_operator(qu_op, n_qubits<span class="op">=</span>n_qubits)</span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>        v_op <span class="op">+=</span> (diags(new_vals).dot(v)).trace()<span class="op">*</span>QubitOperator(tup)</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>    v_op <span class="op">/=</span> <span class="dv">2</span><span class="op">**</span>n_qubits</span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v_op   </span>
+<span id="cb46-23"><a href="#cb46-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb46-24"><a href="#cb46-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Choose qubit order so bitstrings are directly converted to data</span></span>
+<span id="cb46-25"><a href="#cb46-25" aria-hidden="true" tabindex="-1"></a>qubit_order <span class="op">=</span> <span class="st">"lsq_first"</span> </span>
+<span id="cb46-26"><a href="#cb46-26" aria-hidden="true" tabindex="-1"></a>qu_op_v <span class="op">=</span> qu_vpot(interpolated_curve, qubit_order)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We initialize the wavefunction to the gaussian <span class="math inline">\(\sqrt{\frac{2}{\sigma \sqrt{2\pi}}}e^{-\left(\frac{x-x0}{\sigma}\right)^2}\)</span> in left configuration, with <span class="math inline">\(\sigma\)</span> as the normalization factor.</p>
 <div id="d8wBXbPPkj96" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits.statevector <span class="im">import</span> StateVector</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>init_vec <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">/</span>sigma<span class="op">/</span>np.sqrt(<span class="dv">2</span><span class="op">*</span>np.pi)) <span class="op">*</span> np.exp(<span class="op">-</span>((xdata <span class="op">-</span> x0)<span class="op">/</span>sigma)<span class="op">**</span><span class="dv">2</span>)<span class="op">*</span>np.sqrt(dx)</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>initial_density <span class="op">=</span> init_vec<span class="op">**</span><span class="dv">2</span></span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> StateVector(init_vec, order<span class="op">=</span>qubit_order)</span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>init_circuit <span class="op">=</span> state.initializing_circuit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits.statevector <span class="im">import</span> StateVector</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>sigma <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> <span class="op">-</span><span class="dv">50</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>init_vec <span class="op">=</span> np.sqrt(<span class="dv">2</span><span class="op">/</span>sigma<span class="op">/</span>np.sqrt(<span class="dv">2</span><span class="op">*</span>np.pi)) <span class="op">*</span> np.exp(<span class="op">-</span>((xdata <span class="op">-</span> x0)<span class="op">/</span>sigma)<span class="op">**</span><span class="dv">2</span>)<span class="op">*</span>np.sqrt(dx)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>initial_density <span class="op">=</span> init_vec<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>state <span class="op">=</span> StateVector(init_vec, order<span class="op">=</span>qubit_order)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>init_circuit <span class="op">=</span> state.initializing_circuit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We use the split operator method <span class="math inline">\(e^{-i H \Delta t}\approx e^{-i p^2/2/m \Delta t}e^{-i v \Delta t}e^{-i p^2/2/m \Delta t}\)</span>. The kinetic energy term is calculated using the centered fast fourier transform for which the circuit can easily be generated using <code>get_psquared_circuit</code>. The potential evolution can be generated by calling <code>trotterize</code>. We run the simulation for about 1.2 ps.</p>
 <div id="oeH2eUovl2dy" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.grid_circuits <span class="im">import</span> get_psquared_circuit</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.ansatz_utils <span class="im">import</span> trotterize</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify qubit order to define psquared circuit (depends on statevector ordering)</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>qubit_list <span class="op">=</span> <span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(n_qubits))) </span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Build split operator with n_trotter_steps</span></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> trotter_func(n_trotter_steps, time):</span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>    p2_circ <span class="op">=</span> get_psquared_circuit(time<span class="op">/</span>n_trotter_steps<span class="op">/</span><span class="dv">2</span>, dx<span class="op">=</span>dx, mass<span class="op">=</span>m, qubit_list<span class="op">=</span>qubit_list)</span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>    vcirc <span class="op">=</span> trotterize(operator<span class="op">=</span>qu_op_v, time<span class="op">=</span>time<span class="op">/</span>n_trotter_steps, n_trotter_steps<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (p2_circ <span class="op">+</span> vcirc <span class="op">+</span> p2_circ) <span class="op">*</span> n_trotter_steps</span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Time evolution for about 1.2 picoseconds</span></span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> <span class="dv">50000</span></span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>f, _ <span class="op">=</span> sim.simulate(init_circuit <span class="op">+</span> trotter_func(<span class="dv">200</span>, time))</span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>final_density <span class="op">=</span> np.zeros(n_pts)</span>
-<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, prob <span class="kw">in</span> f.items():</span>
-<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>    final_density[<span class="bu">int</span>(key, base<span class="op">=</span><span class="dv">2</span>)] <span class="op">=</span> prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.circuits.grid_circuits <span class="im">import</span> get_psquared_circuit</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator.ansatz_utils <span class="im">import</span> trotterize</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify qubit order to define psquared circuit (depends on statevector ordering)</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>qubit_list <span class="op">=</span> <span class="bu">list</span>(<span class="bu">reversed</span>(<span class="bu">range</span>(n_qubits))) </span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Build split operator with n_trotter_steps</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> trotter_func(n_trotter_steps, time):</span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>    p2_circ <span class="op">=</span> get_psquared_circuit(time<span class="op">/</span>n_trotter_steps<span class="op">/</span><span class="dv">2</span>, dx<span class="op">=</span>dx, mass<span class="op">=</span>m, qubit_list<span class="op">=</span>qubit_list)</span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>    vcirc <span class="op">=</span> trotterize(operator<span class="op">=</span>qu_op_v, time<span class="op">=</span>time<span class="op">/</span>n_trotter_steps, n_trotter_steps<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (p2_circ <span class="op">+</span> vcirc <span class="op">+</span> p2_circ) <span class="op">*</span> n_trotter_steps</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Time evolution for about 1.2 picoseconds</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> <span class="dv">50000</span></span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend()</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>f, _ <span class="op">=</span> sim.simulate(init_circuit <span class="op">+</span> trotter_func(<span class="dv">200</span>, time))</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>final_density <span class="op">=</span> np.zeros(n_pts)</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> key, prob <span class="kw">in</span> f.items():</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>    final_density[<span class="bu">int</span>(key, base<span class="op">=</span><span class="dv">2</span>)] <span class="op">=</span> prob</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now let’s plot the initial and final densities, as well as our interpolated curve.</p>
 <div id="IgvBlARhl8tE" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;,&quot;height&quot;:646}}" data-outputid="5389826e-6299-452a-ec1a-3107e0cbd951" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.image <span class="im">as</span> image</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.offsetbox <span class="im">import</span> OffsetImage, AnnotationBbox</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay H3O+ molecule image</span></span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="bu">file</span> <span class="op">=</span> <span class="st">"umbrella_inversion_H3Op.png"</span></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>inversion <span class="op">=</span> image.imread(<span class="bu">file</span>)</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>imagebox <span class="op">=</span> OffsetImage(inversion, zoom<span class="op">=</span><span class="fl">0.4</span>)</span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>ab <span class="op">=</span> AnnotationBbox(imagebox, (<span class="dv">0</span>, <span class="op">-</span><span class="fl">76.49</span>), pad<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize <span class="op">=</span> (<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Main plot</span></span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax.twinx()</span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>ax2.add_artist(ab)</span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>ax.plot(xdata, initial_density, xdata, final_density)</span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>ax2.plot(xdata, interpolated_curve, <span class="st">'g-'</span>)</span>
-<span id="cb50-19"><a href="#cb50-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Length along inversion $(</span><span class="er">\</span><span class="st">sqrt</span><span class="sc">{m_u}</span><span class="st"> a_0)$"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb50-20"><a href="#cb50-20" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb50-21"><a href="#cb50-21" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Energy (Hartree)"</span>, color<span class="op">=</span><span class="st">'g'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb50-22"><a href="#cb50-22" aria-hidden="true" tabindex="-1"></a>ax.legend([<span class="st">"Initial Density"</span>, <span class="st">"Final Density"</span>], fontsize<span class="op">=</span><span class="dv">16</span>, loc<span class="op">=</span><span class="st">"upper center"</span>)</span>
-<span id="cb50-23"><a href="#cb50-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylim([<span class="op">-</span><span class="fl">0.05</span>, <span class="fl">0.08</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.image <span class="im">as</span> image</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.offsetbox <span class="im">import</span> OffsetImage, AnnotationBbox</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlay H3O+ molecule image</span></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="bu">file</span> <span class="op">=</span> <span class="st">"umbrella_inversion_H3Op.png"</span></span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>inversion <span class="op">=</span> image.imread(<span class="bu">file</span>)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>imagebox <span class="op">=</span> OffsetImage(inversion, zoom<span class="op">=</span><span class="fl">0.4</span>)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>ab <span class="op">=</span> AnnotationBbox(imagebox, (<span class="dv">0</span>, <span class="op">-</span><span class="fl">76.49</span>), pad<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize <span class="op">=</span> (<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Main plot</span></span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>ax2 <span class="op">=</span> ax.twinx()</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>ax2.add_artist(ab)</span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>ax.plot(xdata, initial_density, xdata, final_density)</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>ax2.plot(xdata, interpolated_curve, <span class="st">'g-'</span>)</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Length along inversion $(</span><span class="er">\</span><span class="st">sqrt</span><span class="sc">{m_u}</span><span class="st"> a_0)$"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Probability"</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"Energy (Hartree)"</span>, color<span class="op">=</span><span class="st">'g'</span>, fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb49-22"><a href="#cb49-22" aria-hidden="true" tabindex="-1"></a>ax.legend([<span class="st">"Initial Density"</span>, <span class="st">"Final Density"</span>], fontsize<span class="op">=</span><span class="dv">16</span>, loc<span class="op">=</span><span class="st">"upper center"</span>)</span>
+<span id="cb49-23"><a href="#cb49-23" aria-hidden="true" tabindex="-1"></a>ax.set_ylim([<span class="op">-</span><span class="fl">0.05</span>, <span class="fl">0.08</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -1295,13 +1298,14 @@ Post-selected purified: -76.5187805498828</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

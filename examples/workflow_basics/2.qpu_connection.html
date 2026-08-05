@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Connecting to quantum services with Tangelo</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -58,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -102,12 +108,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -120,7 +126,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -530,11 +536,11 @@ window.Quarto = {
 <li>The requirements specific to the target quantum services are detailed below, in the corresponding section. It’s usually about setting up your environment and obtaining valid credentials.</li>
 </ul>
 <div id="cell-4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 </section>
@@ -544,11 +550,11 @@ window.Quarto = {
 <p>Tangelo expresses quantum circuits and operators in its own generic format, in order to keep the library compatible with various technologies, and ready to accomodate the quantum platforms of tomorrow. The <code>linq</code> module contains a collection of translation functions to convert from the Tangelo format to popular formats (and sometimes the other way around). If you haven’t, check out <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/examples/workflow_basics/1.the_basics.ipynb">this notebook</a> for examples.</p>
 <p>Here is a simple example with IonQ, but there are various different formats supported in Tangelo. IonQ’s hardware is available through several cloud services, but they also have their own <a href="https://cloud.ionq.com/">cloud portal</a>. The following shows how to translate a Tangelo circuit into the json IonQ format detailed in <a href="https://docs.ionq.co">their documentation</a>.</p>
 <div id="cell-6" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, translate_circuit</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit, Gate, translate_circuit</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>circ1 <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">1</span>)])</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>json_circ1 <span class="op">=</span> translate_circuit(circ1, target<span class="op">=</span><span class="st">"ionq"</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json_circ1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(json_circ1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'qubits': 2, 'circuit': [{'gate': 'h', 'targets': [0]}, {'gate': 'x', 'targets': [1]}]}</code></pre>
 </div>
@@ -608,11 +614,11 @@ window.Quarto = {
 <p>Install the <a href="https://github.com/aws/amazon-braket-sdk-python/">Braket python SDK</a> provided by Amazon (<code>pip install amazon-braket-sdk</code>). You also need to install the AWS CLI, and assumes you have an IAM user with proper permissions (Braket, S3 buckets). The Braket services can also be accessed through your web browser, which gives you access to managed python notebooks. These actions may require assistance from whoever manages cloud access in your organization.</p>
 <p>Before you are able to use the service, some environment variables should be set. Depending on how you use Braket (managed notebooks, etc), you may or may have not to set all of these variables yourself. The following should be enough, replace the dots by the appropriate strings. Some of these information may be in your <code>~/.aws/credentials</code> file.</p>
 <div id="cell-12" class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up credentials [clear before pushing to public repo]</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up credentials [clear before pushing to public repo]</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_REGION"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_ACCESS_KEY_ID"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_SECRET_ACCESS_KEY"</span>] <span class="op">=</span> <span class="st">"..."</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_SESSION_TOKEN"</span>] <span class="op">=</span> <span class="st">"..."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"AWS_SESSION_TOKEN"</span>] <span class="op">=</span> <span class="st">"..."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In order to submit experiments through Braket or retrieve results, you need to provide the name of a S3 bucket your account has access to, as well as a folder for the results. We recommend you ensure that is set up before proceeding.</p>
 </section>
@@ -620,9 +626,9 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="instantiate-the-connection-object">1.2 Instantiate the connection object</h3>
 <p>As long as the Braket python package is found in your environment, instantiation will be successful. Your environment variables or S3 bucket / folder come into play later, as you attempt to make requests to the service. You can set up your S3 bucket name and folder during instantiation (or change their value manually later using the <code>s3_bucket</code> and <code>folder</code> attributes).</p>
 <div id="cell-14" class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection.braket_connection <span class="im">import</span> BraketConnection</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection.braket_connection <span class="im">import</span> BraketConnection</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> BraketConnection(s3_bucket<span class="op">=</span><span class="st">"your_bucket_name"</span>, folder<span class="op">=</span><span class="st">"your_folder_name"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> BraketConnection(s3_bucket<span class="op">=</span><span class="st">"your_bucket_name"</span>, folder<span class="op">=</span><span class="st">"your_folder_name"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="submit-and-manage-jobs-additional-features." class="level3">
@@ -653,8 +659,8 @@ window.Quarto = {
 </ul>
 <p>Here’s an example of what it could look like for you (make sure you use a valid key, or you’ll get an “unauthorized” error :) )</p>
 <div id="cell-18" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"IONQ_APIKEY"</span>] <span class="op">=</span> <span class="st">'2T14z1YQEzMLCwuYM110oXPDT2h850E4'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">"IONQ_APIKEY"</span>] <span class="op">=</span> <span class="st">'2T14z1YQEzMLCwuYM110oXPDT2h850E4'</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="instantiate-the-connection-object-1" class="level3">
@@ -662,9 +668,9 @@ window.Quarto = {
 <p>The <code>IonQConnection</code> class encapsulates a collection of wrappers to the IonQ REST API. Internally, it stores information about the endpoint and the authorization header, containing your identification token. This class only is instantiated succesfully if your ID token has been set properly, otherwise you’ll get an error.</p>
 <p>More generally speaking, all calls to the REST API are checked for errors, and would return the IonQ error message corresponding to the unsuccessful request.</p>
 <div id="cell-20" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IonQConnection</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.qpu_connection <span class="im">import</span> IonQConnection</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ionq_connection <span class="op">=</span> IonQConnection()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ionq_connection <span class="op">=</span> IonQConnection()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
@@ -677,13 +683,13 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="backend-info">Backend info</h4>
 <p>The <code>get_backend_info</code> method returns some information about all the devices listed on IonQ’s platform. Tangelo currently returns this info inside a <code>pandas.DataFrame</code> object, to help with visualization.</p>
 <div id="cell-23" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> ionq_connection.get_backend_info()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>res <span class="co"># to display the dataframe neatly in this notebook</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> ionq_connection.get_backend_info()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>res <span class="co"># to display the dataframe neatly in this notebook</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -697,7 +703,7 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>qpu.harmony</td>
 <td>11</td>
 <td>available</td>
@@ -706,7 +712,7 @@ window.Quarto = {
 <td>None</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>simulator</td>
 <td>19</td>
 <td>available</td>
@@ -715,7 +721,7 @@ window.Quarto = {
 <td>None</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>qpu.s11</td>
 <td>11</td>
 <td>available</td>
@@ -732,9 +738,9 @@ window.Quarto = {
 <p>This information can help users to filter or sort devices according to their needs. For example, filtering out devices who do not have enough qubits for the target experiment, as well as the unavailable devices.</p>
 <p>We can also retrieve “characterizations”: a snapshot of the IonQ platform’s performance at a moment in time. We can use the <code>get_characterization</code> method with either a backend string (ex: <code>qpu.harmony</code> or <code>simulator</code>) or a characterization url, if available (see dataframe above).</p>
 <div id="cell-25" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>charac_dict <span class="op">=</span> ionq_connection.get_characterization(<span class="st">'qpu.s11'</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>charac_dict <span class="op">=</span> ionq_connection.get_characterization(<span class="st">'qpu.s11'</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'fidelity'</span>])</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'timing'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(charac_dict[<span class="st">'timing'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'1q': {'mean': 0.9979}, '2q': {'mean': 0.961}, 'spam': {'mean': 0.99752}}
 {'t1': 10000, 't2': 0.2, '1q': 1e-05, '2q': 0.0002, 'readout': 0.00013, 'reset': 2e-05}</code></pre>
@@ -755,7 +761,7 @@ window.Quarto = {
 </ul>
 <p>Assuming a valid API key, we here submit a simple job targeting their statevector simulator. The status of the job may be in various states (queued, ready, running …).</p>
 <div id="cell-29" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> ionq_connection.job_submit(<span class="st">'simulator'</span>, circ1, <span class="dv">100</span>, <span class="st">'test_json_job'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>job_id <span class="op">=</span> ionq_connection.job_submit(<span class="st">'simulator'</span>, circ1, <span class="dv">100</span>, <span class="st">'test_json_job'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job submission  ID :: dfb38687-8c70-4b40-833d-c6166a902efe   status :: ready</code></pre>
 </div>
@@ -766,8 +772,8 @@ window.Quarto = {
 <p>Users can access their job history and info through the <code>job_get_history</code> and <code>job_status</code> methods, shown as below. But IonQ also provides an <a href="https://cloud.ionq.com/">online dashboard</a>, which may be more convenient to you.</p>
 <p>Depending on the timing of your REST requests, the job info may differ widely, from a failed job to a completed job with results included.</p>
 <div id="cell-31" class="cell" data-scrolled="true" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>job_status <span class="op">=</span> ionq_connection.job_status(job_id)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(job_status)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>job_status <span class="op">=</span> ionq_connection.job_status(job_id)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(job_status)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job info    ID:: dfb38687-8c70-4b40-833d-c6166a902efe    status :: completed 
 {'status': 'completed', 'name': 'test_json_job', 'target': 'simulator', 'predicted_execution_time': 4, 'execution_time': 19, 'id': 'dfb38687-8c70-4b40-833d-c6166a902efe', 'qubits': 2, 'type': 'circuit', 'request': 1659075527, 'start': 1659075529, 'response': 1659075529, 'gate_counts': {'1q': 2}, 'data': {'histogram': {'2': 0.5, '3': 0.5}, 'registers': None}}</code></pre>
@@ -775,13 +781,13 @@ window.Quarto = {
 </div>
 <p>The output of <code>job_get_history</code> should at least feature the job we just submitted, and can also show a number of previous jobs run under your account. The output is a <code>pandas</code> dataframe, in order to facilitate parsing of information:</p>
 <div id="cell-33" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>job_history[:<span class="dv">5</span>] <span class="co"># Here we only display info of the last 5 jobs run</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>job_history[:<span class="dv">5</span>] <span class="co"># Here we only display info of the last 5 jobs run</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -792,31 +798,31 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>dfb38687-8c70-4b40-833d-c6166a902efe</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>b486e66a-2ae2-4275-8c9e-015a751dcbbe</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>5dea41e0-ce02-4193-8e50-e48fc0cd0c22</td>
 <td>canceled</td>
 <td>qpu.harmony</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>34cc2763-f617-427a-8b3a-621086946a3b</td>
 <td>completed</td>
 <td>qpu.harmony</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>777237b4-79e8-44d0-8ac6-762f24864e7a</td>
 <td>completed</td>
 <td>simulator</td>
@@ -835,8 +841,8 @@ window.Quarto = {
 <p>For our example circuit, IonQ’s raw results would return <code>{'2': 0.5, '3': 0.5}</code> with an exact simulator. - 2 is ‘10’ in binary, indicating <span class="math inline">\(q_0\)</span> mesured in state <span class="math inline">\(|0\rangle\)</span>, and <span class="math inline">\(q_1\)</span> in state <span class="math inline">\(|1\rangle\)</span> - 3 is ‘11’ in binary, indicating <span class="math inline">\(q_0\)</span> mesured in state <span class="math inline">\(|1\rangle\)</span>, and <span class="math inline">\(q_1\)</span> in state <span class="math inline">\(|1\rangle\)</span></p>
 <p>Tangelo returns <code>{'01': 0.5, '11': 0.5}</code>.</p>
 <div id="cell-35" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> ionq_connection.job_results(job_id)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>results <span class="op">=</span> ionq_connection.job_results(job_id)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(results)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job info    ID:: dfb38687-8c70-4b40-833d-c6166a902efe    status :: completed 
 {'01': 0.5, '11': 0.5}</code></pre>
@@ -847,9 +853,9 @@ window.Quarto = {
 <h4 class="anchored" data-anchor-id="job-cancel-delete">Job cancel / delete</h4>
 <p>A wrapper called <code>job_cancel</code> provides a method to cancel before execution (if the job hasn’t run yet), or delete a job from the history. The cell below cancels / deletes the previously-submitted job: it therefore should not appear in the history anymore.</p>
 <div id="cell-37" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ionq_connection.job_cancel(job_id)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ionq_connection.job_cancel(job_id)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>job_history <span class="op">=</span> ionq_connection.job_get_history()</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>job_history</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>job_history</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Job cancel  ID :: dfb38687-8c70-4b40-833d-c6166a902efe   status :: deleted </code></pre>
 </div>
@@ -857,7 +863,7 @@ window.Quarto = {
 <div>
 
 
-<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -868,91 +874,91 @@ window.Quarto = {
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
+<th data-quarto-table-cell-role="th">0</th>
 <td>b486e66a-2ae2-4275-8c9e-015a751dcbbe</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
+<th data-quarto-table-cell-role="th">1</th>
 <td>5dea41e0-ce02-4193-8e50-e48fc0cd0c22</td>
 <td>canceled</td>
 <td>qpu.harmony</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
+<th data-quarto-table-cell-role="th">2</th>
 <td>34cc2763-f617-427a-8b3a-621086946a3b</td>
 <td>completed</td>
 <td>qpu.harmony</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
+<th data-quarto-table-cell-role="th">3</th>
 <td>777237b4-79e8-44d0-8ac6-762f24864e7a</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
+<th data-quarto-table-cell-role="th">4</th>
 <td>9da8401b-5334-4358-ab3f-ddcd3e2f1ff4</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">5</td>
+<th data-quarto-table-cell-role="th">5</th>
 <td>9dd67d5f-aa29-46fb-a707-1858d022aacc</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">6</td>
+<th data-quarto-table-cell-role="th">6</th>
 <td>45e33c7e-33bd-43d6-aef3-87b78e7bdd77</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">7</td>
+<th data-quarto-table-cell-role="th">7</th>
 <td>be130388-8daf-49dd-8e17-5b4c5274d69f</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">8</td>
+<th data-quarto-table-cell-role="th">8</th>
 <td>2c3526c0-44d4-4573-9bc1-c39a5c0135ae</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">9</td>
+<th data-quarto-table-cell-role="th">9</th>
 <td>373f3175-e7be-48cd-bf47-ac5e331a0eb0</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">10</td>
+<th data-quarto-table-cell-role="th">10</th>
 <td>b567e71c-fa20-4fb9-9ce9-62521de7a1ec</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">11</td>
+<th data-quarto-table-cell-role="th">11</th>
 <td>b1743e6d-359c-4175-bf56-99b8662fdcaf</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">12</td>
+<th data-quarto-table-cell-role="th">12</th>
 <td>f9865e17-25d8-4d84-b8f8-dc31e07a8fae</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="even">
-<td data-quarto-table-cell-role="th">13</td>
+<th data-quarto-table-cell-role="th">13</th>
 <td>e54a5d12-65e4-4fef-8774-68584ccad94c</td>
 <td>completed</td>
 <td>simulator</td>
 </tr>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">14</td>
+<th data-quarto-table-cell-role="th">14</th>
 <td>be0c8bc7-5539-4e4f-b12c-5370a525076d</td>
 <td>completed</td>
 <td>simulator</td>
@@ -1028,13 +1034,14 @@ window.Quarto = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

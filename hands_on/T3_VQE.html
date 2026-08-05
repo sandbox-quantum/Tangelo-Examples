@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Tangelo hands-on: VQE framework</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -502,13 +508,13 @@ window.Quarto = {
 <p>Please have a look at the landing page of this repository for guidance about how to deploy these notebooks and get started easily.</p>
 <p>In order to complete this hands-on tutorial, we recommend you use the latest version of Tangelo. If you encounter errors related to missing Python packages (classical chemistry backend, quantum circuit simulator…), you can install them on-the-fly by typing <code>!pip install &lt;package-name&gt;</code> in a new code cell, and then restart the Jupyter notebook kernel.</p>
 <div id="d3kXtsxtpUED" class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># If Tangelo is not found in your current environment, this cell installs all dependencies required for this hands-on</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install pyscf</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs qiskit qiskit<span class="op">-</span>aer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qulacs qiskit qiskit<span class="op">-</span>aer</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <hr>
 <p>For this hands-on, we recommend you consider the following resources: - the VQE <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/examples/variational_methods/vqe.ipynb">tutorial notebook</a> - Optional: <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/contents.rst">Other tutorials tagged with VQA</a>. VQE can be used to compute excited states, or take as input a user-defined ansatz or Hamtiltonian. Moreover, there are quite a few variants of VQE available in Tangelo (ADAPT, etc). - Optional: <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/examples/chemistry/qchem_modelling_basics.ipynb">Introduction notebook on the basics of modelling a chemical system</a> (Second Quantized molecule, Hartree-Fock, FCI, CCSD, active space selection …)</p>
@@ -520,17 +526,17 @@ window.Quarto = {
 <p>We’ll start with the iconic second quantized <span class="math inline">\(H_2\)</span> molecule in <code>sto-3g</code> basis as an initial use case for this hands-on. We’ll quickly ramp up in higher basis sets and also play with <span class="math inline">\(H_2O\)</span>.</p>
 <p>The cell below defines the molecule explicitly, specifying a geometry, charge, spin and basis set. Under the hood, a classical chemistry library (pyscf, psi4…) is used to create this object and compute its mean-field, which will enable more advanced calculations.</p>
 <div id="c9f73f3a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="3add8d0d-9e45-45a5-e19e-8b21922b9519">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define H2 molecule in minimal basis set</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define H2 molecule in minimal basis set</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>xyz_H2 <span class="op">=</span> [(<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>)), (<span class="st">"H"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">0.7414</span>))]</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mol_H2_sto3g <span class="op">=</span> SecondQuantizedMolecule(xyz_H2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">0</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>)</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_sto3g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_sto3g</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Before we delve into quantum algorithms implementing variational approaches, let’s use classical solvers such as FCI and CCSD to compute references results for the ground state energy of our molecule. These classical solvers can be used to benchmark the accuracy of our variational algorithms later in this hands-on. The results are computed in Hartrees, and in practice an accuracy of 3 digits of precision (e.g about <code>1 mHa</code>) is considered satisfying.</p>
 <div id="lRhu78uBsZDa" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="ed0a93c1-9804-4ea1-8b86-4954db0540a2" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver, CCSDSolver</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> FCISolver, CCSDSolver</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The FCI solver is the reference for chemists, but computational cost scales badly.</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>fci_solver <span class="op">=</span> FCISolver(mol)</span>
@@ -540,7 +546,7 @@ window.Quarto = {
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># The CCSD solver has better scaling, but is less accurate.</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>ccsd_solver <span class="op">=</span> CCSDSolver(mol)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>ccsd_energy <span class="op">=</span> ccsd_solver.simulate()</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'CCSD energy for H2 =</span><span class="sc">{</span>ccsd_energy<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'CCSD energy for H2 =</span><span class="sc">{</span>ccsd_energy<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>FCI  energy for H2 =-1.1372701746609042
 CCSD energy for H2 =-1.1372701746673048</code></pre>
@@ -554,14 +560,14 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <p><strong>Q:</strong> Can you use the <code>VQESolver</code> class to compute the ground state energy of our <span class="math inline">\(H_2\)</span> molecule? Use the default <code>vqe_options</code> below. You should find a result of about <code>-1.137270168 Ha</code>.</p>
 </blockquote>
 <div id="ec8ff26a" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="84aaf10e-2fce-435e-cc57-0551838e312b">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> VQESolver</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol}</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the optimal energy found by VQE and how far it is from FCI</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'VQE energy = </span><span class="sc">{</span>opt_energy<span class="sc">}</span><span class="ss"> (difference with FCI = </span><span class="sc">{</span><span class="bu">abs</span>(opt_energy <span class="op">-</span> fci_energy)<span class="sc">}</span><span class="ss">)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'VQE energy = </span><span class="sc">{</span>opt_energy<span class="sc">}</span><span class="ss"> (difference with FCI = </span><span class="sc">{</span><span class="bu">abs</span>(opt_energy <span class="op">-</span> fci_energy)<span class="sc">}</span><span class="ss">)'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A lot has happened under the hood, let’s highlight a few of them:</p>
 <ul>
@@ -575,8 +581,8 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <p><strong>Q:</strong> Using the output of the cell below, can you find what qubit mapping, ansatz, backend and classical optimizer were used in your previous simulation ?</p>
 </blockquote>
 <div id="aac2244c" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="3921c7bd-7454-4581-dd5e-64ed02bbea9b" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pprint(<span class="bu">vars</span>(vqe_solver))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pprint(<span class="bu">vars</span>(vqe_solver))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'ansatz': &lt;tangelo.toolboxes.ansatz_generator.uccsd.UCCSD object at 0x7fe03f9bee30&gt;,
  'ansatz_options': {},
@@ -650,13 +656,13 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <p><strong>Q:</strong> Now that you’ve taken a peek inside the <code>vqe_solver</code> object, can you print: - the optimal parameters values found by VQE ? - the optimal circuit ?</p>
 </blockquote>
 <div id="d1f59d6b" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="ad42342a-eabc-4cff-8e4d-aa3405d49f59">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <blockquote class="blockquote">
 <p><strong>Q:</strong> The <code>simulate</code> method runs the entire VQE algorithm, which performed many energy estimations along the way, driven by the classical optimizer. Can you instead perform a single energy estimation, using <code>vqe_solver</code> ? If you pass the optimal parameters as input, you should see that the output is the optimal energy.</p>
 </blockquote>
 <div id="wT5TOBAD2TQ0" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="1f8ab0c8-ddca-4273-8a2d-97c7a872aa78">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSERT CODE HERE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="level-2-impact-of-some-of-the-options-in-vqe" class="level2">
@@ -670,7 +676,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <p><strong>Q:</strong> Can you instantiate <code>VQESolver</code> objects using a few of these different qubit mappings, and see how they impact the complexity of the algorithm using the <code>get_resources</code> method and printing the <code>qubit_hamiltonian</code>?</p>
 </blockquote>
 <div id="cd889622" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="874a9429-75aa-4562-eab5-243ebc88591b">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> qb_mapping <span class="kw">in</span> [<span class="st">"JW"</span>, <span class="st">"SCBK"</span>, <span class="st">"JKMN"</span>]:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> qb_mapping <span class="kw">in</span> [<span class="st">"JW"</span>, <span class="st">"SCBK"</span>, <span class="st">"JKMN"</span>]:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># INSERT CODE HERE</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    vqe_options <span class="op">=</span> </span>
@@ -679,7 +685,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    vqe_solver.build()</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    opt_energy <span class="op">=</span> vqe_solver.simulate()</span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># INSERT PRINT INSTRUCTIONS HERE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># INSERT PRINT INSTRUCTIONS HERE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="b-compute-backends" class="level3">
@@ -687,27 +693,27 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <p>Algorithms in Tangelo are backend-agnostic. That means that you do not have to rewrite your code if you want to run it on a different simulator or quantum device, switching between them is rather effortless. There’s a lot of quantum simulators out there, with different tradeoffs between speed, accuracy, maximal circuit size or ability to simulate noise.</p>
 <p>Let’s revisit <span class="math inline">\(H_2\)</span> in a bigger basis set (this means a more accurate representation, but more intensive calculations), and see what impact the choice of backend has on our experience.</p>
 <div id="97a5a42a" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tangelo has some built-in molecules that are often reused in tests and tutorials.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Tangelo has some built-in molecules that are often reused in tests and tutorials.</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2_321g</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_321g</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2_321g</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We’ll use FCI to get the exact value of the ground state of this molecule, for reference:</p>
 <div id="vrDyYOBUA0Hj" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="2207c4b0-c6d3-456a-94a7-85185fd5aa12" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fci_energy <span class="op">=</span> FCISolver(mol).simulate()</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fci_energy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fci_energy <span class="op">=</span> FCISolver(mol).simulate()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fci_energy)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-1.1478303189235124</code></pre>
 </div>
 </div>
 <div id="aca9e218" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="ee600577-907d-4be2-83f6-21c6f2ae2357" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we attempt to simulate anything: let's get an idea of the compute requirements</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Before we attempt to simulate anything: let's get an idea of the compute requirements</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We'd rather not try to simulate something that we think is not worth it.</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>vqe_options <span class="op">=</span> {<span class="st">"molecule"</span>: mol}</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>vqe_solver <span class="op">=</span> VQESolver(vqe_options)</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>vqe_solver.build()</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vqe_solver.get_resources())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vqe_solver.get_resources())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'qubit_hamiltonian_terms': 185, 'circuit_width': 8, 'circuit_depth': 586, 'circuit_2qubit_gates': 432, 'circuit_var_gates': 52, 'vqe_variational_parameters': 9}</code></pre>
 </div>
@@ -717,7 +723,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 </blockquote>
 <p>This cell may take a few minutes to run, depending on the machine used. Feel free to continue reading, interrupt the execution of the cell, or revert the molecule to our smaller original use case <code>mol_H2_sto3g</code>.</p>
 <div id="f8b577a2" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="6f79aaa2-9c79-4ac3-c83f-dbae5c354db2" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> b <span class="kw">in</span> [<span class="st">"qulacs"</span>, <span class="st">"cirq"</span>, <span class="st">"qiskit"</span>]:</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -734,7 +740,7 @@ CCSD energy for H2 =-1.1372701746673048</code></pre>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Stop timer, print elapsed time</span></span>
 <span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    t_stop <span class="op">=</span> time.time()</span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">:10}</span><span class="ss"> :: </span><span class="sc">{</span>t_stop <span class="op">-</span> t_start<span class="sc">:6.3f}</span><span class="ss"> s </span><span class="ch">\t</span><span class="ss"> (energy = </span><span class="sc">{</span>opt_energy<span class="sc">}</span><span class="ss">)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">:10}</span><span class="ss"> :: </span><span class="sc">{</span>t_stop <span class="op">-</span> t_start<span class="sc">:6.3f}</span><span class="ss"> s </span><span class="ch">\t</span><span class="ss"> (energy = </span><span class="sc">{</span>opt_energy<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>qulacs     ::  2.059 s   (energy = -1.1478302233980724)
 cirq       :: 69.248 s   (energy = -1.1478302233982864)
@@ -750,11 +756,11 @@ qiskit     :: 246.155 s      (energy = -1.147830223398106)</code></pre>
 <p><span class="math inline">\(H_2O\)</span> is a humble molecule, but already quite a challenge with VQE. Assume you want to compute the ground state energy of <span class="math inline">\(H_2O\)</span> in the <code>sto-3g</code> basis set using VQE. Use everything at your disposal here, and don’t be afraid to explore (but maybe use <code>get_resources</code> before blindly jumping into <code>simulate</code>).</p>
 <p>It’s still pretty easy for FCI on a laptop though, and we can get a reference value:</p>
 <div id="3445c8f9" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="784402fc-ddc8-4ecf-9b7a-fb6c2441583b" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2O_sto3g</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2O_sto3g</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>mol <span class="op">=</span> mol_H2O_sto3g</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>fci_H2O_energy <span class="op">=</span> FCISolver(mol_H2O_sto3g).simulate()</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"H2O FCI energy = </span><span class="sc">{</span>fci_H2O_energy<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"H2O FCI energy = </span><span class="sc">{</span>fci_H2O_energy<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>H2O FCI energy = -75.01277542934052</code></pre>
 </div>
@@ -764,7 +770,7 @@ qiskit     :: 246.155 s      (energy = -1.147830223398106)</code></pre>
 <p><strong>Q:</strong> Can you compute the ground state energy of this molecule ? - How close can you get to FCI reference results ? - How much can you reduce computational requirements ? - How low can you bring your time-to-solution ?</p>
 </blockquote>
 <div id="cc16eeb3" class="cell" data-quarto-private-1="{&quot;key&quot;:&quot;colab&quot;,&quot;value&quot;:{&quot;base_uri&quot;:&quot;https://localhost:8080/&quot;}}" data-outputid="663c9cbd-b94c-491a-b612-251b909c977e">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CHANGE CODE AND EXPLORE</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># CHANGE CODE AND EXPLORE</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="st">"qulacs"</span></span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>backend_options <span class="op">=</span> {<span class="st">"target"</span>:<span class="st">'qulacs'</span>}</span>
@@ -783,7 +789,7 @@ qiskit     :: 246.155 s      (energy = -1.147830223398106)</code></pre>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Stop timer, print elapsed time</span></span>
 <span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>t_stop <span class="op">=</span> time.time()</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">:10}</span><span class="ss"> :: </span><span class="sc">{</span>t_stop <span class="op">-</span> t_start<span class="sc">:3.3f}</span><span class="ss"> s </span><span class="ch">\t</span><span class="ss"> (energy = </span><span class="sc">{</span>opt_energy<span class="sc">}</span><span class="ss">)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>b<span class="sc">:10}</span><span class="ss"> :: </span><span class="sc">{</span>t_stop <span class="op">-</span> t_start<span class="sc">:3.3f}</span><span class="ss"> s </span><span class="ch">\t</span><span class="ss"> (energy = </span><span class="sc">{</span>opt_energy<span class="sc">}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="final-words" class="level1">
@@ -846,13 +852,14 @@ qiskit     :: 246.155 s      (energy = -1.147830223398106)</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

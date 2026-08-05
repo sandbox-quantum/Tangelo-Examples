@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Applying Unrestricted Density-Matrix Embedding Theory to battery chemistry</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -510,10 +516,10 @@ window.Quarto = {
 <p>While waiting for a hardware breakthrough towards fault-tolerant quantum computers, unrestricted DMET calculation (UHF-DMET) may help modelling more industrially-relevant molecules on Noisy Intermediate Scale Quantum (NISQ) devices. We have previously addressed this statement with restricted DMET calculations in a <a href="https://doi.org/10.1038/s42005-021-00751-9">Communcation Physics publication</a>, reproduced in the <a href="https://github.com/sandbox-quantum/Tangelo-Examples/blob/main/examples/hardware_experiments/overview_endtoend.ipynb">“overview of an end-to-end experiment” notebook</a>. In this notebook, we focus on a use case relevant for battery chemistry development using the UHF-DMET algorithm. The quantum resource estimation and experiment are intentionally left out of this notebook as they are already covered in the references above.</p>
 <p>But first, let’s install Tangelo in our environment.</p>
 <div id="cell-2" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="im">import</span> tangelo</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ImportError</span>:</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="tackling-the-textlio_2-molecule-with-dmet-and-classical-solvers" class="level2">
@@ -524,22 +530,22 @@ window.Quarto = {
 <p>Via quantum chemistry theory, we know that the <span class="math inline">\(\text{LiO}_2\)</span> molecule is described by 42 molecular orbitals (in the STO-3G basis) and 19 electrons. This problem statement involves computational challenges due to the exponential scaling of the matrix and vector sizes for classical algorithms, like the Full Configuration Interaction (FCI) method. This aspect grows into a bigger issue as we move on to more complete basis sets, and this is one of the reasons why <a href="https://doi.org/10.1021/jacs.2c13042">quantum chemistry is so complicated</a>. This is a textbook example where a problem decomposition like UHF-DMET could shine.</p>
 <p>The remaining part of this notebook shows how UHF-DMET can be used in Tangelo. In the next cell, we build a <span class="math inline">\(\text{LiO}_2\)</span> molecule object with the <code>cc-pvdz</code> basis set, using a UHF mean-field calculation (by setting the <code>uhf</code> argument to <code>True</code>).</p>
 <div id="cell-4" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>LiO2 <span class="op">=</span> [</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"Li"</span>, (<span class="fl">0.</span>, <span class="fl">0.</span>, <span class="fl">1.380605</span>)),</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"O"</span>, (<span class="fl">0.</span>, <span class="fl">0.676045</span>, <span class="op">-</span><span class="fl">0.258863</span>)),</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"O"</span>, (<span class="fl">0.</span>, <span class="op">-</span><span class="fl">0.676045</span>, <span class="op">-</span><span class="fl">0.258863</span>))</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>mol_lio2 <span class="op">=</span> SecondQuantizedMolecule(LiO2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">1</span>, basis<span class="op">=</span><span class="st">"cc-pvdz"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>, uhf<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>mol_lio2 <span class="op">=</span> SecondQuantizedMolecule(LiO2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">1</span>, basis<span class="op">=</span><span class="st">"cc-pvdz"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>, uhf<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>By looking at the the <code>n_active_ab_electrons</code> and <code>active_mos</code> properties, we can confirm that an unrestricted self-consistent field has been generated. The alpha and beta spin orbitals are treated separately, therefore the orbitals properties are grouped in pairs, where the first (resp. last) element of the tuple refers to the alpha (resp. beta) spin orbitals.</p>
 <div id="cell-6" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_alpha, n_beta <span class="op">=</span> mol_lio2.n_active_ab_electrons</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n_alpha, n_beta <span class="op">=</span> mol_lio2.n_active_ab_electrons</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>mos_alpha, mos_beta <span class="op">=</span> mol_lio2.active_mos</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n_alpha<span class="sc">}</span><span class="ss"> alpha electrons in </span><span class="sc">{</span><span class="bu">len</span>(mos_alpha)<span class="sc">}</span><span class="ss"> molecular orbitals."</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n_beta<span class="sc">}</span><span class="ss"> beta electrons in </span><span class="sc">{</span><span class="bu">len</span>(mos_beta)<span class="sc">}</span><span class="ss"> molecular orbitals."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>n_beta<span class="sc">}</span><span class="ss"> beta electrons in </span><span class="sc">{</span><span class="bu">len</span>(mos_beta)<span class="sc">}</span><span class="ss"> molecular orbitals."</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10 alpha electrons in 42 molecular orbitals.
 9 beta electrons in 42 molecular orbitals.</code></pre>
@@ -547,12 +553,12 @@ window.Quarto = {
 </div>
 <p>At the time of writing, only <code>CCSDSolver</code>, where CCSD refers to coupled-cluster singles and doubles, supports an unrestricted mean field in Tangelo. Since calculating the ground state of <span class="math inline">\(\text{LiO}_2\)</span> in the cc-pVDZ basis set with FCI is challenging (and even might be not possible) for most supercomputers, we use CCSD for the reference calculations.</p>
 <div id="cell-8" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> CCSDSolver</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ccsd <span class="op">=</span> CCSDSolver(mol_lio2)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>e_ccsd <span class="op">=</span> ccsd.simulate()</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Mean-field energy: </span><span class="sc">{</span>mol_lio2<span class="sc">.</span>mf_energy<span class="sc">}</span><span class="ss"> Ha"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unrestricted CCSD energy: </span><span class="sc">{</span>e_ccsd<span class="sc">}</span><span class="ss"> Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unrestricted CCSD energy: </span><span class="sc">{</span>e_ccsd<span class="sc">}</span><span class="ss"> Ha"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean-field energy: -157.10964086805075 Ha
 Unrestricted CCSD energy: -157.4899499964378 Ha</code></pre>
@@ -560,7 +566,7 @@ Unrestricted CCSD energy: -157.4899499964378 Ha</code></pre>
 </div>
 <p>Next, we define the DMET options and perform the simulation. - The molecular orbitals were localized via natural atomic orbitals (NAO); - DMET fragments are defined to contain 1 atom each; - The CCSD solver is used for every fragment.</p>
 <div id="cell-10" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.dmet <span class="im">import</span> Localization</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.dmet <span class="im">import</span> Localization</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> DMETProblemDecomposition</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>opt_dmet <span class="op">=</span> {<span class="st">"molecule"</span>: mol_lio2,</span>
@@ -575,7 +581,7 @@ Unrestricted CCSD energy: -157.4899499964378 Ha</code></pre>
 <span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>dmet_solver.build()</span>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>e_dmet_ccsd <span class="op">=</span> dmet_solver.simulate()</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Unrestricted DMET-CCSD energy: </span><span class="sc">{</span>e_dmet_ccsd<span class="sc">}</span><span class="ss"> Ha"</span>)</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference vs the unrestricted CCSD: </span><span class="sc">{</span><span class="bu">abs</span>(e_ccsd <span class="op">-</span> e_dmet_ccsd)<span class="sc">:.4f}</span><span class="ss"> Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Difference vs the unrestricted CCSD: </span><span class="sc">{</span><span class="bu">abs</span>(e_ccsd <span class="op">-</span> e_dmet_ccsd)<span class="sc">:.4f}</span><span class="ss"> Ha"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unrestricted DMET-CCSD energy: -157.47151520319153 Ha
 Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
@@ -586,7 +592,7 @@ Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
 <p>The last calculation has been made with a given geometry for the nuclei. If one is interested in the formation of <span class="math inline">\(\text{LiO}_2\)</span>, as described earlier in this notebook, the approach of a <span class="math inline">\(\text{Li}\)</span> atom towards an <span class="math inline">\(\text{O}_2\)</span> molecule should be modelled. As a consequence, geometry changes would be a necessary component of the study.</p>
 <p>The data below displays the energies of different <span class="math inline">\(\text{LiO}_2\)</span> geometries by varying the <span class="math inline">\(\text{Li}\)</span>-<span class="math inline">\(\text{O}_2\)</span> distance. Here unrestricted CCSD refers to the calculation of CCSD with an unrestricted mean-field starting point.</p>
 <div id="cell-12" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> io <span class="im">import</span> StringIO</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="st">"""</span></span>
@@ -605,7 +611,7 @@ Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
 <span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span></span>
 <span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_table(StringIO(data), sep<span class="op">=</span><span class="st">","</span>, skipinitialspace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>df.plot(x<span class="op">=</span><span class="st">"r"</span>, y<span class="op">=</span>[<span class="st">"Unrestricted CCSD"</span>, <span class="st">"UHF"</span>, <span class="st">"ROHF"</span>, <span class="st">"UHF-DMET+CCSD"</span>], xlabel<span class="op">=</span><span class="st">"Li-O2 distance / Angstrom"</span>, ylabel<span class="op">=</span><span class="st">"Energy / Ha"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>df.plot(x<span class="op">=</span><span class="st">"r"</span>, y<span class="op">=</span>[<span class="st">"Unrestricted CCSD"</span>, <span class="st">"UHF"</span>, <span class="st">"ROHF"</span>, <span class="st">"UHF-DMET+CCSD"</span>], xlabel<span class="op">=</span><span class="st">"Li-O2 distance / Angstrom"</span>, ylabel<span class="op">=</span><span class="st">"Energy / Ha"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -624,7 +630,7 @@ Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
 <p>We shown in the previous section that a reduction of 84 qubits to 56 was possible when working in the <code>cc-pVDZ</code> basis set. However, working with this many qubits would require the accurate computation of expectation values (within 1 mHa) on deep quantum circuits.</p>
 <p>This is one of the reason quantum chemistry calculation on NISQ devices are often done using a minimal basis set, like <code>sto-3g</code> or <code>minao</code>. As most of the experiments serve as proofs of concept, scaling up problem size will occur accordingly to quantum hardware development. We show in the next cell a resource estimation for a DMET fragment mapping on quantum hardware, using the <code>sto-3g</code> basis set and the variational quantum eigensolver (VQE).</p>
 <div id="cell-14" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.variational <span class="im">import</span> BuiltInAnsatze, VQESolver</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>mol_lio2 <span class="op">=</span> SecondQuantizedMolecule(LiO2, q<span class="op">=</span><span class="dv">0</span>, spin<span class="op">=</span><span class="dv">1</span>, basis<span class="op">=</span><span class="st">"sto-3g"</span>, frozen_orbitals<span class="op">=</span><span class="va">None</span>, uhf<span class="op">=</span><span class="va">True</span>)</span>
@@ -651,7 +657,7 @@ Difference vs the unrestricted CCSD: 0.0184 Ha</code></pre>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>dmet_solver <span class="op">=</span> DMETProblemDecomposition(opt_dmet)</span>
 <span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>dmet_solver.build()</span>
 <span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">DMET-VQE quantum resources:"</span>)</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>pprint(dmet_solver.get_resources()[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>pprint(dmet_solver.get_resources()[<span class="dv">0</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Full VQE quantum resources:
 {'circuit_2qubit_gates': 3804,
@@ -764,13 +770,14 @@ DMET-VQE quantum resources:
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

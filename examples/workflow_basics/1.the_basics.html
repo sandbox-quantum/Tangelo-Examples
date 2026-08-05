@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Linq: the basics</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -511,12 +517,12 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
 <p>In order to run the contents of this notebook, you need to have <code>tangelo</code> installed in your python environment. Some cells may require that a specific backend (such as <code>qiskit</code>, <code>qulacs</code>…) is installed to run. Please have a look at their installation instructions, if needed. Executing the cell below provides a quick way of installing the requirements of this notebook.</p>
 <div id="cell-4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qiskit qiskit<span class="op">-</span>aer qulacs amazon<span class="op">-</span>braket<span class="op">-</span>sdk Pennylane <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qiskit qiskit<span class="op">-</span>aer qulacs amazon<span class="op">-</span>braket<span class="op">-</span>sdk Pennylane <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="abstract-gate-class" class="level2">
@@ -533,7 +539,7 @@ window.Quarto = {
 <p>Let’s have a look at how someone can define a gate and print it. You can see below that at instantiation, you can skip some fields or omit their name if the call is non-ambiguous. We always start with the name and the index of the target qubit, as all gates have them.</p>
 <p><strong>Note</strong>: qubit indexing starts at 0.</p>
 <div id="cell-6" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a Hadamard gate acting on qubit 2</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>H_gate <span class="op">=</span> Gate(<span class="st">"H"</span>, <span class="dv">2</span>)</span>
@@ -547,7 +553,7 @@ window.Quarto = {
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>POTATO_gate <span class="op">=</span> Gate(<span class="st">"POTATO"</span>, <span class="dv">3</span>)</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> gate <span class="kw">in</span> [H_gate, CNOT_gate, RX_gate, RZ_gate, POTATO_gate]:</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(gate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(gate)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>H         target : [2]   
 CNOT      target : [1]   control : [0]   
@@ -568,7 +574,7 @@ POTATO    target : [3]   </code></pre>
 <p>The number of qubits required by your circuit is automatically computed, based on the highest qubit index appearing in your gates. It is however possible to enforce a fixed-sized for your quantum circuit, that goes beyond this number.</p>
 <p>We’re all grown-ups, and technically you could perform surgery on your quantum circuit, to directly modify the fields of some of its gates. This can be useful for instance, to change the parameters used in “variational gates” (i.e gates tagged as variational) in the context of variational algorithms. Use responsibly.</p>
 <div id="cell-9" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Here's a list of abstract gates</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>mygates <span class="op">=</span> [Gate(<span class="st">"H"</span>, <span class="dv">2</span>), Gate(<span class="st">"CNOT"</span>, <span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>), Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span><span class="dv">2</span>, control<span class="op">=</span><span class="dv">1</span>),</span>
@@ -598,7 +604,7 @@ POTATO    target : [3]   </code></pre>
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Dark magic: update the parameters of the first variational gate in the circuit</span></span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>circuit3._variational_gates[<span class="dv">0</span>].parameter <span class="op">=</span> <span class="fl">777.</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>circuit3<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>circuit3<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Circuit object. Size 6 
 
@@ -635,7 +641,7 @@ RZ        target : [4]   parameter : 777.0   (variational)
 <p>Below, an example of how we can design a function to easily produce <code>Circuit</code> objects implementing a parameter sweep, working for any pauli measurement basis, which is not uncommon in hardware experiments: just a combination of loops and helper functions.</p>
 <p>The measurement basis is assumed to be passed as a list of 2-tuples of the form <code>(i, K)</code> where <code>i</code> is an integer denoting the qubit index and <code>K</code> a letter (string) that can take the value ‘I’, ‘X’, ‘Y’, or ‘Z’; which also happens to be the format encountered while traversing a <code>QubitOperator</code> object in <code>Openfermion</code>.</p>
 <div id="cell-13" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> measurement_basis_gates, pauli_string_to_of</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.helpers.circuits <span class="im">import</span> measurement_basis_gates, pauli_string_to_of</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> theta_sweep(theta, m_basis):</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">""" A single-parameter circuit, with change of basis at the end if needed """</span></span>
@@ -648,7 +654,7 @@ RZ        target : [4]   parameter : 777.0   (variational)
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># It is easy with linq to move between string or Openfermion-style representations for Pauli words</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> theta, m_basis <span class="kw">in</span> [(<span class="fl">0.1</span>, <span class="st">'ZZ'</span>), (<span class="fl">0.2</span>, <span class="st">'ZZ'</span>), (<span class="fl">0.3</span>, <span class="st">'XY'</span>)]:</span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> theta_sweep(theta, m_basis)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>c<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>c<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Circuit object. Size 3 
 
@@ -684,10 +690,10 @@ RX        target : [1]   parameter : 1.5707963267948966
 <p>The <code>translator</code> module defines how the content of your abstract gates should be parsed, what gates are supported, the convention used, and is subject to error-checking: the contents must make sense for the target backend, otherwise you will get errors. At that point, your gates must be supported and their parameters correct.</p>
 <p>You can find in the translator module the dictionaries telling you what backends are supported, and what gates they currently support. As you can see, the exceptional <code>POTATO</code> gate is not yet supported by any available backend. You’d most certainly get an error if you tried to translate an abstract circuit containing such a gate into a given backend’s format, unless a major breakthrough in toaster-oven technology happens and we integrate this disruptive compute platform.</p>
 <div id="cell-15" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_supported_gates</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_supported_gates</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> backend, gates <span class="kw">in</span> get_supported_gates().items():</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss"> : </span><span class="sc">{</span>gates<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss"> : </span><span class="sc">{</span>gates<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>projectq : ['CNOT', 'H', 'MEASURE', 'PHASE', 'RX', 'RY', 'RZ', 'S', 'T', 'X', 'Y', 'Z']
 ionq : ['CNOT', 'CPHASE', 'CRX', 'CRY', 'CRZ', 'CX', 'CY', 'CZ', 'H', 'PHASE', 'RX', 'RY', 'RZ', 'S', 'SWAP', 'T', 'X', 'XX', 'Y', 'Z']
@@ -705,7 +711,7 @@ braket : ['CNOT', 'CPHASE', 'CRZ', 'CSWAP', 'CX', 'CY', 'CZ', 'H', 'PHASE', 'RX'
 <p>Below, we show how <code>translate_circuit</code> returns backend-specific objects, all with their usual built-in functionalities. See how the print function behaves differently for each of them for instance, and remember that you can use their built-in methods to accomplish many things (ex: after translating your circuit into a <code>Qiskit.QuantumCircuit</code> object, you can use the <code>draw</code> method to export it in a nice format: https://qiskit.org/documentation/stubs/qiskit.circuit.QuantumCircuit.draw.html).</p>
 <p>Here are a few examples. Some cells may fail depending on what packages you have installed.</p>
 <div id="cell-17" class="cell" data-scrolled="true" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> translate_circuit</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> translate_circuit</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the Tangelo format as an intermediate, many combinations of source and target</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># formats are available. </span></span>
@@ -718,7 +724,7 @@ braket : ['CNOT', 'CPHASE', 'CRZ', 'CSWAP', 'CX', 'CY', 'CZ', 'H', 'PHASE', 'RX'
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_projectq<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>circ3_projectq <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qdk"</span>)</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_projectq<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_projectq<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Allocate | Qureg[0]
 Allocate | Qureg[1]
@@ -798,11 +804,11 @@ operation MyQsharpOperation() : Result[] {
 </div>
 </div>
 <div id="cell-18" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>circ3_qiskit <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qiskit"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>circ3_qiskit <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qiskit"</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_qiskit<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>circ3_openqasm <span class="op">=</span> translate_circuit(circuit3, <span class="st">"openqasm"</span>)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_openqasm<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_openqasm<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                ┌───┐         
 q_0: ─────■─────┤ Y ├─────────
@@ -841,8 +847,8 @@ rz(777) q[4];
 </div>
 </div>
 <div id="cell-19" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>circ3_qulacs <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qulacs"</span>)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_qulacs<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>circ3_qulacs <span class="op">=</span> translate_circuit(circuit3, <span class="st">"qulacs"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_qulacs<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>*** Quantum Circuit Info ***
 # of qubit: 5
@@ -858,8 +864,8 @@ Gaussian  : no
 </div>
 </div>
 <div id="cell-20" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>circ3_braket <span class="op">=</span> translate_circuit(circuit3, <span class="st">"braket"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_braket<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>circ3_braket <span class="op">=</span> translate_circuit(circuit3, <span class="st">"braket"</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_braket<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>T  : |    0     |1|   2    |
                             
@@ -875,8 +881,8 @@ T  : |    0     |1|   2    |</code></pre>
 </div>
 </div>
 <div id="cell-21" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>circ3_cirq <span class="op">=</span> translate_circuit(circuit3, <span class="st">"cirq"</span>)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_cirq<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>circ3_cirq <span class="op">=</span> translate_circuit(circuit3, <span class="st">"cirq"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>circ3_cirq<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0: ───I───@─────────────Y────────────────
           │
@@ -903,10 +909,10 @@ T  : |    0     |1|   2    |</code></pre>
 <p>The backend object handles all translation and quantum circuit simulation steps, directly returning the results to the user. Some post-processing methods, such as the computation of the expectation value of a qubit operator, are available as well.</p>
 <p>Not all backends provide the same features: some of them do not give access to a state-vector representation of the quantum state, or do not support noisy simulation for instance. Just like the <code>translator</code> module, the <code>simulator</code> module provides a data-structure containing the currently supported features and characteristics of some backends.</p>
 <div id="cell-24" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, backend_info</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, backend_info</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> backend, info <span class="kw">in</span> backend_info.items():</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss"> : </span><span class="sc">{</span>info<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss"> : </span><span class="sc">{</span>info<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>qdk : {'statevector_available': False, 'statevector_order': None, 'noisy_simulation': False}
 qiskit : {'statevector_available': True, 'statevector_order': 'msq_first', 'noisy_simulation': True}
@@ -924,7 +930,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 </ul>
 <p>The <code>simulate</code> method can also take the optional parameter <code>initial_statevector</code>, which allows to start the system in a given state and “resume” a simulation. It can in particular be useful to avoid resimulating something again and again, when the result is already known and could just be loaded instead. This is one of the perks of statevector simulators !</p>
 <div id="cell-26" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a circuit object in abstract format</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a circuit object in abstract format</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> Circuit([Gate(<span class="st">"RX"</span>, <span class="dv">0</span>, parameter<span class="op">=</span><span class="fl">2.</span>), Gate(<span class="st">"RY"</span>, <span class="dv">1</span>, parameter<span class="op">=-</span><span class="fl">1.</span>)])</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Qiskit noiseless simulator (no shot count or noise model specified)</span></span>
@@ -938,7 +944,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Qulacs noiseless simulator (no shot count or noise model specified)</span></span>
 <span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Ask to return the state vector as well (exposes the complex amplitudes)</span></span>
 <span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>sim_qulacs <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"qulacs"</span>)</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>sim_qulacs<span class="sc">.</span>simulate(c, return_statevector<span class="op">=</span><span class="va">True</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>sim_qulacs<span class="sc">.</span>simulate(c, return_statevector<span class="op">=</span><span class="va">True</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>({'00': 0.2248275934887112, '10': 0.5453235594453588, '01': 0.06709898823771769, '11': 0.16274985882821247}, None)
 ({'00': 0.2248275934887112, '01': 0.06709898823771769, '10': 0.5453235594453588, '11': 0.16274985882821247}, None)
@@ -956,7 +962,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 </ul>
 <p>In the cell below, we can see how instantiating a shot-based backend and increasing shot count yields results that are getting closer to the exact theoretical distribution.</p>
 <div id="cell-29" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exact probabilities</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Exact probabilities</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>sim_qulacs <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"cirq"</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>exact_freqs, _ <span class="op">=</span> sim_qulacs.simulate(c)</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(exact_freqs)</span>
@@ -972,7 +978,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>sim_qulacs_shots.n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span></span>
 <span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>freqs, _ <span class="op">=</span> sim_qulacs_shots.simulate(c)</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(freqs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(freqs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'00': 0.2248275934887112, '01': 0.06709898823771769, '10': 0.5453235594453588, '11': 0.16274985882821247}
 {'10': 0.58, '00': 0.2, '01': 0.05, '11': 0.17}
@@ -986,13 +992,13 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <p>The abstract circuit format provides a <code>MEASURE</code> instruction, supported by most compute backends, with the intent of simulating mixed states / mid-circuit measurements in the computational basis (e.g along the Z axis). As mixed states cannot be represented by a statevector, the statevector simulator backends default to simulating the quantum circuit with shots, in order to return a histogram of frequencies. Users thus must ensure the <code>n_shots</code> attribute of their <code>Backend</code> object has been set.</p>
 <p>Simulating a mixed state can be considerably slower than simulating a pure state (some backends are particularly <strong>not</strong> good at this). Including final measurements in your state-preparation circuit is not recommended, if you intend to use <code>linq</code> to simulate it.</p>
 <div id="cell-31" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This circuit prepares a Bell pair (superposition of states |00&gt; and |11&gt;), then measures and flips qubit 0.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This circuit prepares a Bell pair (superposition of states |00&gt; and |11&gt;), then measures and flips qubit 0.</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Depending on the result of the measurement, the statevector describing the quantum state would be different.</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>circuit_mixed <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span><span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>), Gate(<span class="st">"MEASURE"</span>, <span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">0</span>)])</span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">"cirq"</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">5</span>)</span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>freqs, _ <span class="op">=</span> sim.simulate(circuit_mixed)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(freqs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(freqs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'01': 0.50089, '10': 0.49911}</code></pre>
 </div>
@@ -1004,7 +1010,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <p>The <code>get_expectation_value</code>method can be used to compute the expectation value of a qubit / Pauli operator with regards to a state-preparation circuit, and <code>get_expectation_value_from_frequencies_oneterm</code> can directly take a sparse histogram of frequencies obtained by executing or simulating a quantum circuit on a backend (which could be resulting from a QPU experiment).</p>
 <p><strong>Note</strong>: For now, users are to manually loop over terms and corresponding histograms if they intend to compute the expectation value of a linear combination of operators.</p>
 <div id="cell-34" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Openfermion operators can be used</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Openfermion operators can be used</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> openfermion.ops <span class="im">import</span> QubitOperator</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>op <span class="op">=</span> <span class="fl">1.0</span> <span class="op">*</span> QubitOperator(<span class="st">'Z0'</span>)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -1017,7 +1023,7 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
 <span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>freqs, _ <span class="op">=</span> sim.simulate(c)  <span class="co"># circuit c must be consistent with operator, regarding measurement along non-z axes</span></span>
 <span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>term, coef <span class="op">=</span> <span class="bu">tuple</span>(op.terms.items())[<span class="dv">0</span>]  <span class="co"># This yields ((0, 'Z'),), 1.0</span></span>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>expval2 <span class="op">=</span> coef <span class="op">*</span> sim.get_expectation_value_from_frequencies_oneterm(term, freqs)</span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(expval2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(expval2)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-0.4161468365471424
 -0.4161468365471424</code></pre>
@@ -1085,13 +1091,14 @@ cirq : {'statevector_available': True, 'statevector_order': 'lsq_first', 'noisy_
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>ONIOM Problem Decomposition - A use case for an acetic acid molecule in water</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -517,12 +523,12 @@ window.Quarto = {
 <p>The equation above is formulated to allow us to expand ONIOM beyond a single fragment. In principle, many such fragments can be defined to progressively improve the accuracy or efficiency of the calculations. This may apply to when we have more than one active site on our large molecule, or where an incremental strategy can be utilized to further mitigate errors associated with using our low-cost method in the vicinity of our active region.</p>
 <p>This notebook assumes that you already have installed Tangelo in your Python environment, or have updated your Python path so that the imports can be resolved. If not, executing the cell below installs the minimal requirements for this notebook.</p>
 <div id="cell-3" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install pyscf <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="use-case---an-acetic-acid-molecule-in-water" class="level2">
@@ -550,13 +556,13 @@ window.Quarto = {
 <p>We want to specifically target the H2O-COOH interaction. We will use the Variational Quantum Eigensolver (VQE) with a Unitary Coupled-Cluster Single and Double excitation (UCCSD) ansatz. The basis set for this fragment is 6-31G(d,p). The rest of the system is simulated using Hartree-Fock (HF) with a minimal basis set (STO-3G).</p>
 <p>First, we import the relevant dependencies:</p>
 <div id="cell-5" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> ONIOMProblemDecomposition</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition <span class="im">import</span> ONIOMProblemDecomposition</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.problem_decomposition.oniom <span class="im">import</span> Fragment, Link</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> BuiltInAnsatze <span class="im">as</span> Ansatze</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> BuiltInAnsatze <span class="im">as</span> Ansatze</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The next thing to do is to define a geometry and some options for the desired solvers. As a side note, the quantum resources for this subsystem are still too demanding for Noisy Intermediate-Scale Quantum (NISQ) devices. We reduce the amount of resources by freezing molecular orbitals in the system: in our simple case, the fragment has been reduced to a HOMO-LUMO problem. This allows us to use UCC3 as the variational ansatz for VQE, as it is equivalent to UCCSD, but shallower (by removing redundant excitation terms) and can be applied to two-level systems. As progress is made in the development of more capable quantum devices, less agressive resource reduction could be chosen to increase the accuracy, at the cost of more challenging computation.</p>
 <div id="cell-7" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coordinates file</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coordinates file</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">"xyz/water_system.xyz"</span>,<span class="st">'r'</span>) <span class="im">as</span> f:</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    xyz <span class="op">=</span> f.read()</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Removing first 2 lines (number of atoms and a comment line)</span></span>
@@ -567,12 +573,12 @@ window.Quarto = {
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>                <span class="st">"qubit_mapping"</span>: <span class="st">"jw"</span>, </span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>                <span class="st">"ansatz"</span>: Ansatze.UCC3, </span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>                <span class="st">"up_then_down"</span>: <span class="va">True</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">"frozen_orbitals"</span>: [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">76</span>) <span class="cf">if</span> i <span class="kw">not</span> <span class="kw">in</span> (<span class="dv">16</span>, <span class="dv">17</span>)]}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>                <span class="st">"frozen_orbitals"</span>: [i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">76</span>) <span class="cf">if</span> i <span class="kw">not</span> <span class="kw">in</span> (<span class="dv">16</span>, <span class="dv">17</span>)]}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In the next cell, we build the <code>ONIOMProblemDecomposition</code> object from a multi-line string taken from the coordinate file and <code>Fragment</code> objects. Moreover, in our case, a chemical bond is broken: a <code>Link</code> object is also defined by passing the atom ids defining the broken bond.</p>
 <p><strong>Note</strong>: The following cell may take a couple minutes to execute, as instantiating the <code>ONIOMProblemDecomposition</code> object in this situation involves HF calculations in the 6-31G** basis set.</p>
 <div id="cell-9" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Whole system to be computed with a low-accuracy method (HF, sto-3g)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Whole system to be computed with a low-accuracy method (HF, sto-3g)</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>system <span class="op">=</span> Fragment(solver_low<span class="op">=</span><span class="st">"hf"</span>, options_low<span class="op">=</span>options_low, charge<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fragment to be computed with a high-accuracy method (VQE-UCC3, 6-31G**).</span></span>
@@ -584,11 +590,11 @@ window.Quarto = {
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>                 charge<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Construction of the ONIOM solver.</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>oniom_solver <span class="op">=</span> ONIOMProblemDecomposition({<span class="st">"geometry"</span>: xyz, <span class="st">"fragments"</span>: [system, model], <span class="st">"verbose"</span>: <span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>oniom_solver <span class="op">=</span> ONIOMProblemDecomposition({<span class="st">"geometry"</span>: xyz, <span class="st">"fragments"</span>: [system, model], <span class="st">"verbose"</span>: <span class="va">True</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We estimate the amount of quantum resources by calling the <code>get_resources</code> method (this does not require any simulation).</p>
 <div id="cell-11" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resources <span class="op">=</span> oniom_solver.get_resources()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>resources <span class="op">=</span> oniom_solver.get_resources()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        Fragment Number : # 2 
         ------------------------
@@ -598,11 +604,11 @@ window.Quarto = {
 </div>
 <p>We call the <code>simulate</code> method to compute the ONIOM energy:</p>
 <div id="cell-13" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>e_oniom <span class="op">=</span> oniom_solver.simulate()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>e_oniom <span class="op">=</span> oniom_solver.simulate()</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>e_hf <span class="op">=</span> oniom_solver.fragments[<span class="dv">0</span>].mol_low.mf_energy</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"ONIOM Energy: "</span>, e_oniom)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hartree-Fock Energy: "</span>, e_hf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Hartree-Fock Energy: "</span>, e_hf)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ONIOM Energy:  -1278.2143431182017
 Hartree-Fock Energy:  -1274.4936842154498</code></pre>
@@ -614,7 +620,7 @@ Hartree-Fock Energy:  -1274.4936842154498</code></pre>
 <h3 class="anchored" data-anchor-id="potential-energy-scan-for-an-hydrogen-bond">2.4 Potential energy scan for an hydrogen bond <a class="anchor" id="24"></a></h3>
 <p>The ONIOM energy computed in the previous section can be difficult to compare with known validated data. In this case, we can compare the hydrogen bond distance with experimental results. One way of getting this distance is to perform an energy scan on many configurations. We varied the water molecule - carboxylic acid distance from 1.0 to 3.5 angstrom. An energy calculation, with the same parameters as in the previous section, was performed for each of these distances. The minimal energy point should correspond to the experimental hydrogen bond distance for this system.</p>
 <div id="cell-17" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>distances <span class="op">=</span> [<span class="fl">3.550862922159438</span>, <span class="fl">3.460762889964292</span>, <span class="fl">3.370670305757595</span>, <span class="fl">3.280585783157128</span>, <span class="fl">3.1905100050249016</span>, <span class="fl">3.1004437335081567</span>, <span class="fl">3.0103878218778832</span>, <span class="fl">2.9203432285513977</span>, <span class="fl">2.8303110337833894</span>, <span class="fl">2.740292459636501</span>, <span class="fl">2.650288894007595</span>, <span class="fl">2.5603019197028303</span>, <span class="fl">2.4703333498422166</span>, <span class="fl">2.3803852712588354</span>, <span class="fl">2.29046009807724</span>, <span class="fl">2.20056063836393</span>, <span class="fl">2.1106901777200746</span>, <span class="fl">2.020852585050676</span>, <span class="fl">1.9310524476726847</span>, <span class="fl">1.8412952456882081</span>, <span class="fl">1.7515875795688893</span>, <span class="fl">1.6619374708395822</span>, <span class="fl">1.572354764687664</span>, <span class="fl">1.4828516770284208</span>, <span class="fl">1.3934435500122229</span>, <span class="fl">1.3041499143311708</span>, <span class="fl">1.214996013163829</span>, <span class="fl">1.126015038057959</span>, <span class="fl">1.0372514935327881</span>, <span class="fl">0.9487664078760378</span>, <span class="fl">0.8606456724847144</span>]</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>energies <span class="op">=</span> [<span class="op">-</span><span class="fl">1278.051959731282</span>, <span class="op">-</span><span class="fl">1278.057229408819</span>, <span class="op">-</span><span class="fl">1278.0643608792661</span>, <span class="op">-</span><span class="fl">1278.073141506658</span>, <span class="op">-</span><span class="fl">1278.0833167826524</span>, <span class="op">-</span><span class="fl">1278.0945967737384</span>, <span class="op">-</span><span class="fl">1278.1066656511987</span>, <span class="op">-</span><span class="fl">1278.119193003125</span>, <span class="op">-</span><span class="fl">1278.1316621874737</span>, <span class="op">-</span><span class="fl">1278.1441348500723</span>, <span class="op">-</span><span class="fl">1278.1561527375766</span>, <span class="op">-</span><span class="fl">1278.1674486239667</span>, <span class="op">-</span><span class="fl">1278.1778145272128</span>, <span class="op">-</span><span class="fl">1278.1870878716404</span>, <span class="op">-</span><span class="fl">1278.1951499219097</span>, <span class="op">-</span><span class="fl">1278.201919599394</span>, <span class="op">-</span><span class="fl">1278.2073419570033</span>, <span class="op">-</span><span class="fl">1278.2113710433855</span>, <span class="op">-</span><span class="fl">1278.2139489568763</span>, <span class="op">-</span><span class="fl">1278.214985604411</span>, <span class="op">-</span><span class="fl">1278.2143431181898</span>, <span class="op">-</span><span class="fl">1278.21182121378</span>, <span class="op">-</span><span class="fl">1278.2071290776098</span>, <span class="op">-</span><span class="fl">1278.19982995337</span>, <span class="op">-</span><span class="fl">1278.1892617407693</span>, <span class="op">-</span><span class="fl">1278.1744445322772</span>, <span class="op">-</span><span class="fl">1278.153955355375</span>, <span class="op">-</span><span class="fl">1278.1257011700952</span>, <span class="op">-</span><span class="fl">1278.086488264795</span>, <span class="op">-</span><span class="fl">1278.0312418159333</span>, <span class="op">-</span><span class="fl">1277.95164876962</span>]</span>
@@ -623,7 +629,7 @@ Hartree-Fock Energy:  -1274.4936842154498</code></pre>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"Potential energy scan for an hydrogen bond"</span>)</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"O-H distance / Angstrom"</span>)</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">"Energy / Hartree"</span>)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(distances, energies)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>plt.scatter(distances, energies)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -695,13 +701,14 @@ Hartree-Fock Energy:  -1274.4936842154498</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

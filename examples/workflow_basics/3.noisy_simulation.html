@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Linq: noisy simulation</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -511,12 +517,12 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
 <p>In order to run the contents of this notebook, I simply recommend that you install <code>tangelo</code> as per the installation instructions, as well as one or several backends supporting noisy simulation (cirq, qiskit, qulacs…). You can install them with <code>pip</code>. Executing the cell below provides a quick way of installing Tangelo, as well as the minimal set of backends to execute code cells in this notebook.</p>
 <div id="cell-4" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop  <span class="op">--</span>quiet</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qiskit qiskit<span class="op">-</span>aer qulacs amazon<span class="op">-</span>braket<span class="op">-</span>sdk <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install qiskit qiskit<span class="op">-</span>aer qulacs amazon<span class="op">-</span>braket<span class="op">-</span>sdk <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="noisemodel-class" class="level2">
@@ -526,7 +532,7 @@ window.Quarto = {
 <p>This representation tells the simulation backend that whenever one of the gates listed in this dictionary is encountered at runtime, the corresponding additional noise(s) should be applied to the quantum state afterwards.</p>
 <p>Below, we show the available noise models as well as how users can instantiate a <code>NoiseModel</code> object and then specify noise for any gate relevant to them (here, a Pauli noise with uniform probability distribution over X, Y and Z) using the <code>add_quantum_error</code> method.</p>
 <div id="cell-6" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel, SUPPORTED_NOISE_MODELS</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> NoiseModel, SUPPORTED_NOISE_MODELS</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Supported noise models: </span><span class="sc">{</span>SUPPORTED_NOISE_MODELS<span class="sc">}</span><span class="ch">\n</span><span class="ss">'</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -534,7 +540,7 @@ window.Quarto = {
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"X"</span>, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>])</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>nmp.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>, <span class="dv">1</span><span class="op">/</span><span class="dv">3</span>])</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Noisy gates: </span><span class="sc">{</span>nmp<span class="sc">.</span>noisy_gates<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>nmp<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Noisy gates: </span><span class="sc">{</span>nmp<span class="sc">.</span>noisy_gates<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>nmp<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Supported noise models: {'pauli', 'depol'}
 
@@ -545,7 +551,7 @@ Noisy gates: {'CNOT', 'X'}
 <p>As you can see above, attempting to print a <code>NoiseModel</code> object prints the underlying dictionary. Each noisy gate is associated with a list of 2-tuples, corresponding to the noise model and its parameters.</p>
 <p>Using <code>add_quantum_error</code> several times on the same gate allows users to specify potentially complex noise models, cumulating <strong>different</strong> types of error channels. Combined with variables spanning sets of gates and the Python syntax, we can quickly express rather complete noise models, such as the arbitrary one below:</p>
 <div id="cell-8" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> ONE_QUBIT_GATES, TWO_QUBIT_GATES</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> ONE_QUBIT_GATES, TWO_QUBIT_GATES</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>nm <span class="op">=</span> NoiseModel()</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -553,7 +559,7 @@ Noisy gates: {'CNOT', 'X'}
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    nm.add_quantum_error(g, <span class="st">'pauli'</span>, [<span class="dv">1</span><span class="op">/</span><span class="dv">4</span>]<span class="op">*</span><span class="dv">3</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'CNOT'</span>, <span class="st">'pauli'</span>, [<span class="fl">1.</span>, <span class="fl">0.</span>, <span class="fl">0.</span>])</span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'CNOT'</span>, <span class="st">'depol'</span>, <span class="fl">0.72</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(nm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'PHASE': [('pauli', [0.25, 0.25, 0.25])], 'T': [('pauli', [0.25, 0.25, 0.25])], 'RX': [('pauli', [0.25, 0.25, 0.25])], 'S': [('pauli', [0.25, 0.25, 0.25])], 'Z': [('pauli', [0.25, 0.25, 0.25])], 'Y': [('pauli', [0.25, 0.25, 0.25])], 'RY': [('pauli', [0.25, 0.25, 0.25])], 'H': [('pauli', [0.25, 0.25, 0.25])], 'X': [('pauli', [0.25, 0.25, 0.25])], 'RZ': [('pauli', [0.25, 0.25, 0.25])], 'CNOT': [('pauli', [1.0, 0.0, 0.0]), ('depol', 0.72)]}</code></pre>
 </div>
@@ -565,10 +571,10 @@ Noisy gates: {'CNOT', 'X'}
 <h2 class="anchored" data-anchor-id="noisy-simulation">2. Noisy Simulation <a class="anchor" id="2"></a></h2>
 <p>Once a noise model has been created, it can be passed to a simulator (preferably at instantiation). Not all simulators can perform noisy simulation: check out the <code>backend_info</code> dictionary to see which targets shows <code>noisy_simulation</code> set to <code>True</code>. Qiskit and qulacs should be among the available options.</p>
 <div id="cell-11" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> backend_info</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> backend_info</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pprint <span class="im">import</span> pprint </span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>pprint(backend_info)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>pprint(backend_info)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'cirq': {'noisy_simulation': True,
           'statevector_available': True,
@@ -587,7 +593,7 @@ Noisy gates: {'CNOT', 'X'}
 <p>You can then instantiate a <code>Simulator</code> object for the target of your choice, and provide both the number of shots and noise model required. We recommend to set these parameters at instantiation and avoid modifying them later.</p>
 <p>Assuming you have defined an abstract circuit (e.g an object of the <code>Circuit</code> class), the <code>simulate</code> method can then be used to perform the noisy simulation for the desired target and number of shots. It returns a 2-tuple whose second entry is <code>None</code>, which we will disregard as a noisy simulation does not return a statevector.</p>
 <div id="cell-13" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a noise model</span></span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>nmp <span class="op">=</span> NoiseModel()</span>
@@ -601,7 +607,7 @@ Noisy gates: {'CNOT', 'X'}
 <span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Simulate and look at the results</span></span>
 <span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>res_pauli1, _ <span class="op">=</span> s_nmp.simulate(c1)</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_pauli1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_pauli1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'0': 0.665706, '1': 0.334294}</code></pre>
 </div>
@@ -635,12 +641,12 @@ Noisy gates: {'CNOT', 'X'}
 </ul>
 <p>The cell below shows that calculations for our “X-gate circuit” align with this formula. In particular, the case where <span class="math inline">\(\lambda=\frac{4}{3}\)</span> yields the same error channel than the Pauli error channel introduced in the previous section.</p>
 <div id="cell-18" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> [<span class="fl">0.</span>, <span class="fl">1.</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">3</span>]:</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l <span class="kw">in</span> [<span class="fl">0.</span>, <span class="fl">1.</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">3</span>]:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    nmd <span class="op">=</span> NoiseModel()</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    nmd.add_quantum_error(<span class="st">"X"</span>, <span class="st">'depol'</span>, l)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    s_nmd <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">'qulacs'</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    res_depol1, _ <span class="op">=</span> s_nmd.simulate(c1) <span class="co"># This circuit only contains a single X gate</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'lambda = </span><span class="sc">{</span>l<span class="sc">:.2f}</span><span class="ss"> :: </span><span class="sc">{</span>res_depol1<span class="sc">}</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'lambda = </span><span class="sc">{</span>l<span class="sc">:.2f}</span><span class="ss"> :: </span><span class="sc">{</span>res_depol1<span class="sc">}</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>lambda = 0.00 :: {'1': 1.0}
 lambda = 1.00 :: {'0': 0.500183, '1': 0.499817}
@@ -649,14 +655,14 @@ lambda = 1.33 :: {'0': 0.666488, '1': 0.333512}</code></pre>
 </div>
 <p>Similarly, we verify that in the example below, the results coincide with the mathematical formula above, and yield <span class="math inline">\(\frac{1}{2}\rho + \frac{1}{8}I\)</span>, <span class="math inline">\(\rho\)</span> being the density matrix of the system, still left in state <span class="math inline">\(|00\rangle\)</span> after the CNOT gate has been applied.</p>
 <div id="cell-20" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A circuit with a single CNOT gate</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A circuit with a single CNOT gate</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>c2 <span class="op">=</span> Circuit([Gate(<span class="st">"CNOT"</span>, target<span class="op">=</span><span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>)])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>nmd <span class="op">=</span> NoiseModel()</span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>nmd.add_quantum_error(<span class="st">"CNOT"</span>, <span class="st">'depol'</span>, <span class="fl">0.5</span>)</span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>s_nmd <span class="op">=</span> get_backend(target<span class="op">=</span><span class="st">'qulacs'</span>, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmd)</span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>res_depol1, _ <span class="op">=</span> s_nmd.simulate(c2)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_depol1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(res_depol1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'11': 0.124993, '00': 0.624951, '01': 0.125071, '10': 0.124985}</code></pre>
 </div>
@@ -676,7 +682,7 @@ lambda = 1.33 :: {'0': 0.666488, '1': 0.333512}</code></pre>
 <li><p>In particular all rotations gates may map into <code>u3</code> gates ar runtime, since it can apply any single-qubit unitary with the right parameters. This means that specifying different noise channel for the different rotation gates (which may make sense according to some researchers) is ill-defined: what noise should then be applied to <code>u3</code> ? Our package limits cumulating quantum error channels of different natures only to avoid stacking redundant noise to mitigate the issue, but it is better to probably switch to another backend to stay true to your research.</p></li>
 </ul>
 <div id="cell-23" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> get_qiskit_noise_model</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.noisy_simulation <span class="im">import</span> get_qiskit_noise_model</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>nm <span class="op">=</span> NoiseModel()</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>nm.add_quantum_error(<span class="st">'RX'</span>, <span class="st">'depol'</span>, <span class="dv">4</span><span class="op">/</span><span class="dv">3</span>)</span>
@@ -686,7 +692,7 @@ lambda = 1.33 :: {'0': 0.666488, '1': 0.333512}</code></pre>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Any rotation gate will have its quantum error channel applied to u1, u2, u3 as we do not know</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># which one the transpiler will generate and need to apply noise to. </span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Qiskit always shows a warning when several noise channels are composed onto the same basis gate</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qnm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(qnm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>WARNING: all-qubit error already exists for instruction "u1", composing with additional error.
 WARNING: all-qubit error already exists for instruction "u2", composing with additional error.
@@ -722,7 +728,7 @@ WARNING: all-qubit error already exists for instruction "u3", composing with add
 <p>We recommend proceeding on a case-by-case basis. Below, a quick example on our both of them perform on a circuit repeating <code>CNOT</code> ladders a few times. Feel free to change some parameters.</p>
 <p><strong>Note</strong>: Jupyter notebooks may be considerably slower than running Python scripts directly, depending on your environment. They may not be the most reliable when it comes to making a choice. In the future, there may be a <strong>benchmark</strong> folder available in this package, which could help you figure out quickly what is best in your environment and how fast things can go.</p>
 <div id="cell-27" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> time</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> <span class="fl">2.1</span></span>
@@ -751,7 +757,7 @@ WARNING: all-qubit error already exists for instruction "u3", composing with add
 <span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>    sim <span class="op">=</span> get_backend(backend, n_shots<span class="op">=</span><span class="dv">10</span><span class="op">**</span><span class="dv">6</span>, noise_model<span class="op">=</span>nmb)</span>
 <span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>    tstart <span class="op">=</span> time.time()</span>
 <span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    res, _ <span class="op">=</span> sim.simulate(c_base)</span>
-<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss">:: </span><span class="sc">{</span>res<span class="sc">}</span><span class="ss"> </span><span class="ch">\t</span><span class="ss"> (elapsed: </span><span class="sc">{</span>time<span class="sc">.</span>time()<span class="op">-</span>tstart<span class="sc">:.1f}</span><span class="ss"> s)</span><span class="ch">\n</span><span class="ss">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'</span><span class="sc">{</span>backend<span class="sc">}</span><span class="ss">:: </span><span class="sc">{</span>res<span class="sc">}</span><span class="ss"> </span><span class="ch">\t</span><span class="ss"> (elapsed: </span><span class="sc">{</span>time<span class="sc">.</span>time()<span class="op">-</span>tstart<span class="sc">:.1f}</span><span class="ss"> s)</span><span class="ch">\n</span><span class="ss">'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Circuit object. Size 42 
 
@@ -867,13 +873,14 @@ qulacs:: {'10110': 0.031455, '00100': 0.031153, '11111': 0.030975, '10001': 0.03
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

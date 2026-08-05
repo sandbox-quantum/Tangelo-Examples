@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Performing symbolic simulation in Tangelo</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -104,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -117,7 +123,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -495,7 +501,7 @@ window.Quarto = {
 
 <p>Tangelo has the capability of simulating a quantum circuit with symbolic simulation. The symbolic backend, based on <a href="https://www.sympy.org/en/index.html">SymPy</a>, could be a great educational tool and play an important role in quantum computing research workflows. We illustrate this statement on three use cases.</p>
 <div id="cell-3" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The SymPy package is a python library for symbolic mathematics, able to perform algebraic operations on mathematical expressions. We show in this notebook some use cases where using symbolic simulation might be useful for quantum computing research purposes. But first, let us introduce how quantum computing experiments are modelled mathematically.</p>
 <p>Linear algebra is an essential tool for predicting quantum experiment outcomes. In quantum computing, the computer state is described by quantum dits (qudits), i.e.&nbsp;the unit of quantum information described by a superposition of <span class="math inline">\(d\)</span> states. Customarily, quantum computing algorithms are constructed with quantum bits (qubits) in mind, that is to say the <span class="math inline">\(d=2\)</span> case. A many-qubit state can be represented by either a vector of size <span class="math inline">\(2^n\)</span> elements for a pure state, or a square matrix of size <span class="math inline">\(2^n \times 2^n\)</span> for a mixed state, where <span class="math inline">\(n\)</span> is the number of qubits. Quantum operations (gates) are represented by unitary matrices of consistent size. Time evolution of a state is modeled mathematically by matrix multiplication with a given set of unitaries, each representing quantum gates. One can empirically set a single qubit into a superposition of states described by</p>
@@ -507,7 +513,7 @@ window.Quarto = {
 <p>In this section, some use cases are summarized with goal-oriented discussions. The first one shows how one can analyze the output state after applying a parametrized unitary. The second one is showing the effect of a parameter on the qubit entanglement and the resulting measured eigenvalue. This example exhibits a “single-entangler” circuit, widely used in chemistry simulation ansatze to represent an electronic excitation. The third and last one displays an example where all the results can be revealed with a single calculation. This is shown with an amplitude amplification circuit, aiming at amplifying the measurement probability of a given state.</p>
 <p>In the next cell, we gathered the execution of the imports, the variable definitions and the creation of the symbolic backend object. As a side note, one must be aware of the limited performance of this simulator, compared to the other ones present in Tangelo. It handles symbolic expressions instead of performing highly efficient calculations on floatting-point values. In practice, scaling to eight-qubit systems and beyond may incur long simulation times.</p>
 <div id="cell-5" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> pi, Symbol</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> pi, Symbol</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.plotting.plot <span class="im">import</span> plot</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Gate, Circuit, get_backend</span>
@@ -517,16 +523,16 @@ window.Quarto = {
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>phi <span class="op">=</span> Symbol(<span class="st">"phi"</span>, real<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Instantiate a symbolic backend</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>symbolic_backend <span class="op">=</span> get_backend(<span class="st">"sympy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>symbolic_backend <span class="op">=</span> get_backend(<span class="st">"sympy"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="recompilation-of-a-unitary" class="level3">
 <h3 class="anchored" data-anchor-id="recompilation-of-a-unitary">Recompilation of a unitary</h3>
 <p>One of the fundamental tasks performed by quantum computer scientists is the design of quantum circuits. This design is subject to constraints coming from a target device, an algorithm, or for efficiency purposes. We show in this section two equivalent circuits representing a universal single-qubit state on the <a href="https://en.wikipedia.org/wiki/Bloch_sphere#Definition">Bloch sphere</a>, i.e.&nbsp;<span class="math inline">\(|\psi\rangle = \cos{(\theta/2)}|0\rangle + e^{i\phi'} \sin{(\theta/2)}|1\rangle\)</span>, where <span class="math inline">\(\theta\)</span> and <span class="math inline">\(\phi'\)</span> are real numbers.</p>
 <p>The first circuit is using <span class="math inline">\(R_X\)</span> and <span class="math inline">\(R_Z\)</span> rotation gates to prepare the state <span class="math inline">\(|\psi\rangle\)</span> empirically.</p>
 <div id="cell-7" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rx_rz_circuit <span class="op">=</span> Circuit([Gate(<span class="st">"RX"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>theta), Gate(<span class="st">"RZ"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>phi)])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>rx_rz_circuit <span class="op">=</span> Circuit([Gate(<span class="st">"RX"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>theta), Gate(<span class="st">"RZ"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>phi)])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>_, sv <span class="op">=</span> symbolic_backend.simulate(rx_rz_circuit, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
 <p><span class="math inline">\(\displaystyle \left[\begin{matrix}e^{- \frac{i \phi}{2}} \cos{\left(\frac{\theta}{2} \right)}\\- i e^{\frac{i \phi}{2}} \sin{\left(\frac{\theta}{2} \right)}\end{matrix}\right]\)</span></p>
 </div>
@@ -534,9 +540,9 @@ window.Quarto = {
 <p>By applying Euler’s formula <span class="math inline">\(e^{-i\pi/2} = -i\)</span> and introducing <span class="math inline">\(\phi' = \phi - \pi/2\)</span> one can show that this state vector expressed in the computational basis is equivalent to the expected <span class="math inline">\(|\psi\rangle\)</span> state, up to a global phase.</p>
 <p>Designing efficient circuits for quantum devices requires scientists to understand how to best express them in restricted native gate sets. This symbolic simulator facilitates the process of establishing quantum circuit equivalences that can be used in the compilation process. For example, we can circumvent the use of the <span class="math inline">\(R_X\)</span> gate by leveraging the identity <span class="math inline">\(R_X = H R_Z H\)</span> to perform the equivalent operation.</p>
 <div id="cell-9" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>h_rz_circuit <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"RZ"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>theta), Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"RZ"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>phi)])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>h_rz_circuit <span class="op">=</span> Circuit([Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"RZ"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>theta), Gate(<span class="st">"H"</span>, <span class="dv">0</span>), Gate(<span class="st">"RZ"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>phi)])</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>_, sv <span class="op">=</span> symbolic_backend.simulate(h_rz_circuit, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="4">
 <p><span class="math inline">\(\displaystyle \left[\begin{matrix}\frac{e^{- \frac{i \phi}{2}} e^{\frac{i \theta}{2}}}{2} + \frac{e^{- \frac{i \phi}{2}} e^{- \frac{i \theta}{2}}}{2}\\- \frac{e^{\frac{i \phi}{2}} e^{\frac{i \theta}{2}}}{2} + \frac{e^{\frac{i \phi}{2}} e^{- \frac{i \theta}{2}}}{2}\end{matrix}\right]\)</span></p>
 </div>
@@ -551,7 +557,7 @@ window.Quarto = {
 <p>An entangler spanning four qubits is analog to a double fermionic excitation operator, in the Jordan-Wigner mapping. The central <span class="math inline">\(R_Z\)</span> rotation gate has the role of parametrizing the excitation via changing the entanglement magnitude between the qubits. This entanglement has an effect on the measured eigenvalues, and necessarily on the computed molecular energy, as we demonstrate in the next few cells.</p>
 <p>Tangelo provides a built-in ansatz for this single-entangler instance; the next cell builds the resulting quantum circuit.</p>
 <div id="cell-11" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator <span class="im">import</span> RUCC</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.ansatz_generator <span class="im">import</span> RUCC</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># One-parameter circuit, and it is set to theta.</span></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>ansatz <span class="op">=</span> RUCC(<span class="dv">1</span>)</span>
@@ -559,7 +565,7 @@ window.Quarto = {
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>ansatz.build_circuit()</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>single_entangler_circuit <span class="op">=</span> ansatz.circuit</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>single_entangler_circuit.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>single_entangler_circuit.draw()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <figure class="figure">
@@ -570,8 +576,8 @@ window.Quarto = {
 </div>
 <p>We now perform the symbolic simulation.</p>
 <div id="cell-13" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hist, statevector <span class="op">=</span> symbolic_backend.simulate(single_entangler_circuit, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>hist, statevector <span class="op">=</span> symbolic_backend.simulate(single_entangler_circuit, return_statevector<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>{'1010': 1.0*cos(theta/2)**2,
  '0101': 1.0*sin(theta/2)**2,
@@ -580,7 +586,7 @@ window.Quarto = {
 </div>
 <p>As we can see from the results, the probabilities are function of the angle. For any <span class="math inline">\(\theta \in [0, 2\pi]\)</span>, only two bitstrings might be measured, preserving the total number of electrons and parity in the circuit. In the next cell, we map the <span class="math inline">\(\text{H}_2\)</span> Hamiltonian to a sum of tensor products of Pauli operators. This operator is then applied onto the single-entangler circuit to get the expectation value, i.e the molecular energy.</p>
 <div id="cell-15" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2_sto3g</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.molecule_library <span class="im">import</span> mol_H2_sto3g</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.operators <span class="im">import</span> QubitOperator</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.qubit_mappings.mapping_transform <span class="im">import</span> fermion_to_qubit_mapping</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -588,14 +594,14 @@ window.Quarto = {
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                             mol_H2_sto3g.n_active_sos, mol_H2_sto3g.n_active_electrons, </span>
 <span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                             up_then_down <span class="op">=</span> <span class="va">True</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>energy <span class="op">=</span> symbolic_backend.get_expectation_value(H, single_entangler_circuit)</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>energy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>energy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="7">
 <p><span class="math inline">\(\displaystyle - 0.181288808211496 \sin{\left(\theta \right)} - 0.78796735887703 \cos{\left(\theta \right)} - 0.328717028208312\)</span></p>
 </div>
 </div>
 <p>The molecular energy is then a function of <span class="math inline">\(\theta\)</span>, plotted below.</p>
 <div id="cell-17" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plot(energy, (theta, <span class="fl">0.</span>, <span class="dv">2</span><span class="op">*</span>pi), xlabel<span class="op">=</span>theta, ylabel<span class="op">=</span><span class="st">"Energy (Hartree)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>plot(energy, (theta, <span class="fl">0.</span>, <span class="dv">2</span><span class="op">*</span>pi), xlabel<span class="op">=</span>theta, ylabel<span class="op">=</span><span class="st">"Energy (Hartree)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -607,7 +613,7 @@ window.Quarto = {
 <p>The energy function is described by a simple peiodic function. As a side note, when the energy exhibits this periodic form, the variational parameter can be optimized anatically using few sampling points with the <a href="https://doi.org/10.22331/q-2021-01-28-391">Rotosolve algorithm</a>.</p>
 <p>The minimum energy of this expression is computed in the next cell, and corresponds to the Full-Configuration Interaction (FCI) solution (i.e.&nbsp;the best known ground-state solution).</p>
 <div id="cell-19" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.calculus.util <span class="im">import</span> minimum</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.calculus.util <span class="im">import</span> minimum</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.solvers <span class="im">import</span> solve</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> FCISolver</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -623,7 +629,7 @@ window.Quarto = {
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> bitstring, prob <span class="kw">in</span> hist.items():</span>
 <span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  numerical_prob <span class="op">=</span> prob.subs(theta, minimum_theta)</span>
 <span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> numerical_prob <span class="op">&gt;</span> <span class="fl">1e-7</span>:</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>bitstring<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>numerical_prob<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>bitstring<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>numerical_prob<span class="sc">:.4f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Difference between FCI and minimum energy = 2.22044604925031E-16 Ha at theta = 0.2261
 
@@ -639,7 +645,7 @@ The histogram at theta = 0.2261
 <p><a href="https://en.wikipedia.org/wiki/Amplitude_amplification">Amplitude amplification</a> is a technique that generalizes the idea behind the <a href="https://arxiv.org/abs/quant-ph/9605043">Grover’s search algorithm</a>. It is expected to be an important building block for fault-torelant quantum algorithms. Quantum computing is inherently probabilistic, and this technique can improve the statistical occurence of a meaningful state, i.e.&nbsp;increasing its measurement probability. This algorithm has been explained on many platforms: we recommend the Qiskit documentation page on the <a href="https://qiskit.org/documentation/tutorials/algorithms/06_grover.html">Grover’s Algorithm and Amplitude Amplification</a> for more information.</p>
 <p>In the next cell, we first define an empirical state preparation dependent of a parameter <span class="math inline">\(\theta\)</span>. The oracle is defined to select the <span class="math inline">\(|11\rangle\)</span> state. Finally, the diffuser circuit is constructed using the known state preparation.</p>
 <div id="cell-21" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Circuit taken from: https://qiskit.org/documentation/tutorials/algorithms/06_grover.html</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Circuit taken from: https://qiskit.org/documentation/tutorials/algorithms/06_grover.html</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Empirical state prep: a|01&gt; + b|10&gt; + c|11&gt;</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>state_prep <span class="op">=</span> Circuit([Gate(<span class="st">"RY"</span>, <span class="dv">0</span>, parameter<span class="op">=</span>theta), Gate(<span class="st">"CH"</span>, <span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>), Gate(<span class="st">"X"</span>, <span class="dv">1</span>)])</span>
@@ -651,7 +657,7 @@ The histogram at theta = 0.2261
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>diffuser_circ <span class="op">=</span> state_prep.inverse() <span class="op">+</span> Circuit([Gate(<span class="st">"Z"</span>, <span class="dv">0</span>), Gate(<span class="st">"Z"</span>, <span class="dv">1</span>), Gate(<span class="st">"CZ"</span>, <span class="dv">1</span>, control<span class="op">=</span><span class="dv">0</span>)]) <span class="op">+</span> state_prep</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>amplitude_amp_circuit <span class="op">=</span> state_prep <span class="op">+</span> oracle_circ <span class="op">+</span> diffuser_circ</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>amplitude_amp_circuit.draw()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>amplitude_amp_circuit.draw()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 <figure class="figure">
@@ -662,9 +668,9 @@ The histogram at theta = 0.2261
 </div>
 <p>Let’s get the probability of observing the <span class="math inline">\(|11\rangle\)</span> state with the state preparation circuit.</p>
 <div id="cell-23" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>results_state_prep, _ <span class="op">=</span> symbolic_backend.simulate(state_prep, return_statevector<span class="op">=</span><span class="va">False</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>results_state_prep, _ <span class="op">=</span> symbolic_backend.simulate(state_prep, return_statevector<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Probability of getting the |11&gt; state after the state preparation:</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>results_state_prep[<span class="st">"11"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>results_state_prep[<span class="st">"11"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Probability of getting the |11&gt; state after the state preparation:
 </code></pre>
@@ -676,9 +682,9 @@ The histogram at theta = 0.2261
 <p>This probability is proportional to <span class="math inline">\(\sin^2(\theta/2)\)</span>. It reaches its maximum value for <span class="math inline">\(\theta = \pi/2\)</span>, yielding a probability of <span class="math inline">\(\sin^2(\pi/2)/2 = 0.5\)</span>.</p>
 <p>Now, let’s repeat these steps for the amplitude amplification component.</p>
 <div id="cell-25" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>results_aa, _ <span class="op">=</span> symbolic_backend.simulate(amplitude_amp_circuit, return_statevector<span class="op">=</span><span class="va">False</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>results_aa, _ <span class="op">=</span> symbolic_backend.simulate(amplitude_amp_circuit, return_statevector<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Probability of getting the |11&gt; state after the amplitude amplification:</span><span class="ch">\n</span><span class="st">"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>results_aa[<span class="st">"11"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>results_aa[<span class="st">"11"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Probability of getting the |11&gt; state after the amplitude amplification:
 </code></pre>
@@ -689,9 +695,9 @@ The histogram at theta = 0.2261
 </div>
 <p>This probability is still a function of a single variable <span class="math inline">\(\theta\)</span>, but it is difficult to visualize it without a graphing tool. Let’s plot this expression between <span class="math inline">\(0\)</span> and <span class="math inline">\(2\pi\)</span>.</p>
 <div id="cell-27" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> plot(results_state_prep[<span class="st">"11"</span>], (theta, <span class="fl">0.</span>, <span class="dv">2</span><span class="op">*</span>pi), xlabel<span class="op">=</span>theta, ylabel<span class="op">=</span><span class="vs">r"Probability of observing the </span><span class="dv">$</span><span class="cf">|</span><span class="vs">11</span><span class="ch">\r</span><span class="vs">angle</span><span class="dv">$</span><span class="vs"> state"</span>, label<span class="op">=</span><span class="st">"After state preparation"</span>, show<span class="op">=</span><span class="va">False</span>, legend<span class="op">=</span><span class="va">True</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>graph <span class="op">=</span> plot(results_state_prep[<span class="st">"11"</span>], (theta, <span class="fl">0.</span>, <span class="dv">2</span><span class="op">*</span>pi), xlabel<span class="op">=</span>theta, ylabel<span class="op">=</span><span class="vs">r"Probability of observing the </span><span class="dv">$</span><span class="cf">|</span><span class="vs">11</span><span class="ch">\r</span><span class="vs">angle</span><span class="dv">$</span><span class="vs"> state"</span>, label<span class="op">=</span><span class="st">"After state preparation"</span>, show<span class="op">=</span><span class="va">False</span>, legend<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>graph.extend(plot(results_aa[<span class="st">"11"</span>], (theta, <span class="fl">0.</span>, <span class="dv">2</span><span class="op">*</span>pi), label<span class="op">=</span><span class="st">"With amplitude amplification"</span>, show<span class="op">=</span><span class="va">False</span>))</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>graph.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>graph.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -763,13 +769,14 @@ The histogram at theta = 0.2261
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

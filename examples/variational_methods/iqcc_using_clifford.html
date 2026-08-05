@@ -2,17 +2,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.29">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>Iterative Qubit Coupled Cluster using only Clifford circuits</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,10 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-0815c480559380816a4d1ea211a47e91.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-3dda1845477dc7f1524a5eab81bb33ae.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-85e4cfae3e0166205f71cc494429f6f8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -469,18 +475,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="abstract">Abstract</h3>
 <p>We draw attention to a variant of the iterative qubit coupled cluster (iQCC) method that only uses Clifford circuits. The iQCC method relies on a small parameterized wave function ansatz, which takes form as a product of exponentiated Pauli word operators, to approximate the ground state electronic energy of a mean field reference state through iterative qubit Hamiltonian transformations. In this variant of the iQCC method, the wave function ansatz at each iteration is restricted to a single exponentiated Pauli word operator and parameter. The Rotosolve algorithm utilizes Hamiltonian expectation values computed with Clifford circuits to optimize the single-parameter Pauli word ansatz. Although the exponential growth of Hamiltonian terms is preserved with this variation of iQCC, we suggest several methods to mitigate this effect. This method is useful for near-term variational quantum algorithm applications as it generates good initial parameters by using Clifford circuits which can be efficiently simulated on a classical computers according to the Gottesman–Knill theorem. It may also be useful beyond the NISQ era to create short-depth Clifford pre-optimized circuits that improve the success probability for fault-tolerant algorithms such as phase estimation.</p>
 <div id="cell-3" class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Installation of tangelo if not already installed.</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> tangelo</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">ModuleNotFoundError</span>:</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">!</span>pip install git<span class="op">+</span>https:<span class="op">//</span>github.com<span class="op">/</span>sandbox<span class="op">-</span>quantum<span class="op">/</span>Tangelo.git<span class="op">@</span>develop <span class="op">--</span>quiet</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="define-clifford-simulator" class="level3">
 <h3 class="anchored" data-anchor-id="define-clifford-simulator">Define Clifford simulator</h3>
 <p>We define a Clifford simulator using cirq. This is a child class of <code>CirqSimulator</code> where we overwrite <code>simulate_circuit</code> and use <code>cirq.CliffordSimulator</code>.</p>
 <div id="cell-5" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> Circuit</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq.target.target_cirq <span class="im">import</span> CirqSimulator</span>
@@ -517,14 +523,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> initial_statevector <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Initial statevector is not currently supported in </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span><span class="va">__class__</span><span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (frequencies, <span class="va">self</span>._current_state) <span class="cf">if</span> return_statevector <span class="cf">else</span> (frequencies, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (frequencies, <span class="va">self</span>._current_state) <span class="cf">if</span> return_statevector <span class="cf">else</span> (frequencies, <span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="class-that-implements-iqcc-using-only-clifford-circuits" class="level3">
 <h3 class="anchored" data-anchor-id="class-that-implements-iqcc-using-only-clifford-circuits">Class that implements iQCC using only Clifford circuits</h3>
 <p>The <code>iQCConlyClifford</code> class is defined as a child class of <code>ADAPTSolver</code> and replaces the <code>simulate</code> and <code>rank_pool</code> functions. A non-clifford backend is used only to check that the full circuit obtains the same energy using the original qubit hamiltonian.</p>
 <div id="cell-7" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Type</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Type</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms <span class="im">import</span> ADAPTSolver</span>
@@ -701,13 +707,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a>        dis_group_gens <span class="op">=</span> get_gens_from_idxs(dis_group_idxs)</span>
 <span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>        dis.append(dis_group_gens)</span>
 <span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a>    dis_flat <span class="op">=</span> [item <span class="cf">for</span> sublist <span class="kw">in</span> dis <span class="cf">for</span> item <span class="kw">in</span> sublist]</span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dis_flat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dis_flat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="running-the-algorithm-for-h3" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-algorithm-for-h3">Running the algorithm for H<sub>3</sub></h3>
 <div id="cell-9" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.molecule <span class="im">import</span> SecondQuantizedMolecule</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.toolboxes.molecular_computation.molecule <span class="im">import</span> SecondQuantizedMolecule</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.algorithms.classical <span class="im">import</span> FCISolver</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Define molecular system</span></span>
@@ -743,7 +749,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss"> The final energy is </span><span class="sc">{</span>iQCC_C_solver<span class="sc">.</span>energies[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss"> with error </span><span class="sc">{</span>iQCC_C_solver<span class="sc">.</span>energies[<span class="op">-</span><span class="dv">1</span>]<span class="op">-</span>exact<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st"> The number of H terms at each iteration is"</span>)</span>
 <span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(iQCC_C_solver.qu_op_length)</span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#adapt_circ = adapt_solver.vqe_solver.optimal_circuit</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co">#adapt_circ = adapt_solver.vqe_solver.optimal_circuit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
  Iteration 1 of iQCC using only Clifford circuits.
@@ -780,7 +786,7 @@ with corresponding parameters
 <section id="plots-of-energy-convergence-and-growth-of-hamiltonian-terms" class="level3">
 <h3 class="anchored" data-anchor-id="plots-of-energy-convergence-and-growth-of-hamiltonian-terms">Plots of energy convergence and growth of Hamiltonian terms</h3>
 <div id="cell-11" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>fig.set_size_inches(<span class="dv">16</span>, <span class="dv">8</span>)</span>
@@ -795,7 +801,7 @@ with corresponding parameters
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>ax2.set_ylabel(<span class="st">"# H terms"</span>, fontdict<span class="op">=</span>{<span class="st">"size"</span>: <span class="dv">14</span>})</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>ax2.set_xticks(<span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(iQCC_C_solver.qu_op_length))))</span>
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>ax2.set_xlabel(<span class="st">"Iteration #"</span>, fontdict<span class="op">=</span>{<span class="st">"size"</span>: <span class="dv">14</span>})</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax2.semilogy(<span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(iQCC_C_solver.qu_op_length))), iQCC_C_solver.qu_op_length)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>ax2.semilogy(<span class="bu">list</span>(<span class="bu">range</span>(<span class="bu">len</span>(iQCC_C_solver.qu_op_length))), iQCC_C_solver.qu_op_length)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -809,14 +815,14 @@ with corresponding parameters
 <h3 class="anchored" data-anchor-id="optimizing-interior-generators">Optimizing interior generators</h3>
 <p>Below is the method highlighted in the manuscript to optimize interior generators</p>
 <div id="cell-13" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tangelo.linq <span class="im">import</span> get_backend, Gate, Circuit</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>dressed_qu_op <span class="op">=</span> qcc_op_dress(deepcopy(iQCC_C_solver.qubit_hamiltonian),</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                             iQCC_C_solver.vqe_solver.ansatz.operators[::<span class="op">-</span><span class="dv">1</span>],</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                             iQCC_C_solver.vqe_solver.optimal_var_params[::<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ref_circ <span class="op">=</span> iQCC_C_solver.vqe_solver.ansatz.prepare_reference_state()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ref_circ <span class="op">=</span> iQCC_C_solver.vqe_solver.ansatz.prepare_reference_state()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="cell-14" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> optimize_interior_generator(op_index, ref_circ):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> optimize_interior_generator(op_index, ref_circ):</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    dressed_qu_op <span class="op">=</span> qcc_op_dress(deepcopy(iQCC_C_solver.qubit_hamiltonian),</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                                 <span class="bu">list</span>(<span class="bu">reversed</span>(iQCC_C_solver.vqe_solver.ansatz.operators[op_index<span class="op">+</span><span class="dv">1</span>:<span class="dv">4</span>])),</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                                 <span class="bu">list</span>(<span class="bu">reversed</span>(iQCC_C_solver.vqe_solver.optimal_var_params[op_index<span class="op">+</span><span class="dv">1</span>:<span class="dv">4</span>])))</span>
@@ -869,11 +875,11 @@ with corresponding parameters
 <span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> <span class="dv">1</span><span class="op">/</span><span class="dv">2</span><span class="op">*</span>(epl<span class="op">+</span>emi)</span>
 <span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    new_energy <span class="op">=</span> a<span class="op">*</span>np.sin(theta_min<span class="op">+</span>b)<span class="op">+</span>c</span>
 <span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta_min, new_energy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> theta_min, new_energy</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Perform one rotosolve sweep</p>
 <div id="cell-16" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>starting_energy <span class="op">=</span> iQCC_C_solver.vqe_solver.energy_estimation(iQCC_C_solver.vqe_solver.optimal_var_params)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>starting_energy <span class="op">=</span> iQCC_C_solver.vqe_solver.energy_estimation(iQCC_C_solver.vqe_solver.optimal_var_params)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"iQCC using only Clifford circuits results in energy </span><span class="sc">{</span>starting_energy<span class="sc">}</span><span class="ss"> with error </span><span class="sc">{</span>starting_energy<span class="op">-</span>exact<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Start at max_cycles-1 as operator 0 was the last optimized.</span></span>
@@ -882,7 +888,7 @@ with corresponding parameters
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss"> Optimizing operator </span><span class="sc">{</span>op_index<span class="sc">}</span><span class="ss"> results in new energy of </span><span class="sc">{</span>new_energy<span class="sc">}</span><span class="ss">"</span>)</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    iQCC_C_solver.vqe_solver.optimal_var_params[op_index] <span class="op">=</span> theta_min</span>
 <span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    calculated_new_energy <span class="op">=</span> iQCC_C_solver.vqe_solver.energy_estimation(iQCC_C_solver.vqe_solver.optimal_var_params)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"The calculated new energy is </span><span class="sc">{</span>calculated_new_energy<span class="sc">}</span><span class="ss"> with error </span><span class="sc">{</span>calculated_new_energy<span class="op">-</span>exact<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"The calculated new energy is </span><span class="sc">{</span>calculated_new_energy<span class="sc">}</span><span class="ss"> with error </span><span class="sc">{</span>calculated_new_energy<span class="op">-</span>exact<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>iQCC using only Clifford circuits results in energy -1.526758299682792 with error 0.0001887054536875432
 
@@ -959,13 +965,14 @@ The calculated new energy is -1.5268319664163104 with error 0.000115038720169158
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
